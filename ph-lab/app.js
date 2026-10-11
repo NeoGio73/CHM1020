@@ -404,11 +404,38 @@
     }));
   }
 
+  // A step or warning note stays up for a few seconds before labels for whatever the pointer is
+  // over take its place: the pointer is usually still over the well it was just used on, and a
+  // warning such as "goes in well 2, not well 1" must be readable.
+  var holdNoteUntil = 0;
+  var pendingHover = null;
+  var hoverTimer = null;
+
   function note(text, kind, temporary) {
-    if (!temporary) persistentNote = { text: text, kind: kind || '' };
+    if (!temporary) {
+      persistentNote = { text: text, kind: kind || '' };
+      holdNoteUntil = Date.now() + (kind === 'warn' ? 4000 : 2500);
+      pendingHover = null;
+    }
     var node = $('stage-note');
     node.textContent = text;
     if (kind) node.setAttribute('data-kind', kind); else node.removeAttribute('data-kind');
+  }
+
+  // text: a label for what the pointer is over, or null when it is over nothing.
+  function hoverNote(text) {
+    clearTimeout(hoverTimer);
+    var wait = holdNoteUntil - Date.now();
+    if (wait > 0) {
+      pendingHover = text;
+      if (text !== null) hoverTimer = setTimeout(function () {
+        if (pendingHover !== null) { var t = pendingHover; pendingHover = null; note(t, '', true); }
+      }, wait);
+      return;
+    }
+    pendingHover = null;
+    if (text === null) note(persistentNote.text, persistentNote.kind, true);
+    else note(text, '', true);
   }
 
   function name(n) { return M.SOLUTIONS[n - 1]; }
@@ -450,11 +477,20 @@
         takeVerdicts(e);
         break;
       case 'hover':
-        if (e.item === 'pipette') note('Pipette ' + e.n + ': ' + name(e.n), '', true);
-        else if (e.item === 'well') note('Well ' + e.n + (state.filled.indexOf(e.n) >= 0 ? ': ' + name(e.n) : ': empty'), '', true);
-        else if (e.item === 'strip') note('Strip from well ' + e.n + ' (' + name(e.n) + '). Click it to hold it next to the color chart.', '', true);
-        else if (e.item === 'vial') note('pH paper. Drag a strip into a well to test it.', '', true);
-        else note(persistentNote.text, persistentNote.kind, true);
+        if (e.item === 'pipette') hoverNote('Pipette ' + e.n + ': ' + name(e.n));
+        else if (e.item === 'well') hoverNote('Well ' + e.n + (state.filled.indexOf(e.n) >= 0 ? ': ' + name(e.n) : ': empty'));
+        else if (e.item === 'strip') hoverNote('Strip from well ' + e.n + ' (' + name(e.n) + '). Click it to hold it next to the color chart.');
+        else if (e.item === 'vial') hoverNote('pH paper. Drag a strip into a well to test it, or click the vial and then the well.');
+        else hoverNote(null);
+        break;
+      case 'holding':
+        clearTimeout(hoverTimer);
+        pendingHover = null;
+        if (e.item === 'pipette') note('Holding pipette ' + e.n + ' (' + name(e.n) + '). Tap or click well ' + e.n + ' to add a few drops, or anywhere else to put it back.', '', true);
+        else note('Holding a strip of pH paper. Tap or click a well that has solution in it to dip the strip, or anywhere else to put it back.', '', true);
+        break;
+      case 'returned':
+        note(persistentNote.text, persistentNote.kind, true);
         break;
       case 'filled':
         state.filled = e.filled;

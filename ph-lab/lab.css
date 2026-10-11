@@ -214,6 +214,11 @@ body {
 
 .stage-note[data-kind="warn"] { color: var(--flag); }
 
+.stage-tip { display: none; margin: 4px 0 0; color: var(--ink-faint); font-size: 0.86rem; }
+@media (max-width: 700px) and (orientation: portrait) {
+  .stage-tip { display: block; }
+}
+
 .stage-controls {
   display: flex;
   align-items: center;
