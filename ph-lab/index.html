@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pH of Common Solutions</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Crect x='13' y='4' width='6' height='24' rx='1' fill='%23fff'/%3E%3Crect x='13' y='19' width='6' height='9' rx='1' fill='%2334a85a'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>pH of Common Solutions</h1>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+
+  <section class="part" id="part-predict" aria-labelledby="predict-title">
+    <h2 id="predict-title"><span class="step" aria-hidden="true">1</span>Predict</h2>
+    <p class="lede">Before you test anything, predict whether each solution is an acid, a base or neutral. Use what you know about each one. A prediction does not have to be right: it is what the experiment tests.</p>
+    <div class="predictions" id="predictions"></div>
+    <div class="lock-row">
+      <button type="button" class="primary-button" id="lock-predictions">Lock my predictions and open the bench</button>
+      <p class="lock-status" id="lock-status" role="status"></p>
+    </div>
+  </section>
+
+  <section class="part" id="part-measure" aria-labelledby="measure-title">
+    <h2 id="measure-title"><span class="step" aria-hidden="true">2</span>Measure</h2>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood holding a microtiter plate, twelve labeled pipettes, a vial of pH paper and its color chart"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+          <div class="stage-lock" id="stage-lock">
+            <p>Make your twelve predictions in part 1 and lock them. The bench opens after that, so your predictions come before your results.</p>
+          </div>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="plate" aria-pressed="false">Plate</button>
+            <button type="button" class="view-button" data-view="chart" aria-pressed="false">Color chart</button>
+          </div>
+          <div class="reset-wrap">
+            <button type="button" class="quiet-button" id="reset-bench">Clean the plate</button>
+            <span class="confirm" id="reset-confirm" hidden>
+              Empty every well and throw away the strips? Recorded pH values will be cleared.
+              <button type="button" class="quiet-button danger" id="reset-yes">Clean the plate</button>
+              <button type="button" class="quiet-button" id="reset-no">Keep going</button>
+            </span>
+          </div>
+        </div>
+        <ol class="procedure">
+          <li>Drag each pipette to the well with its number. A few drops go in.</li>
+          <li>Drag a strip of pH paper from the vial into a well. It is dipped and pulled out at once, then laid on the paper towel.</li>
+          <li>Count to 5 while the color settles. Then click the strip to hold it next to the color chart.</li>
+          <li>Record the pH of the closest color, and whether your prediction was correct.</li>
+        </ol>
+      </div>
+
+      <div class="data-column">
+        <table class="data-table" id="data-table">
+          <caption>Table 1. pH of common solutions</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-num">#</th>
+              <th scope="col">Solution</th>
+              <th scope="col">Prediction</th>
+              <th scope="col" class="col-ph">Measured pH</th>
+              <th scope="col" class="col-yn">Prediction correct?</th>
+            </tr>
+          </thead>
+          <tbody id="data-rows"></tbody>
+        </table>
+        <p class="table-status" id="table-status" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="part" id="part-rank" aria-labelledby="rank-title">
+    <h2 id="rank-title"><span class="step" aria-hidden="true">3</span>Rank</h2>
+    <p class="lede">Put the solutions in order of increasing acidity, from the least acidic at the top to the most acidic at the bottom. Use your measured pH values. Solutions with the same pH can go in either order.</p>
+    <div class="rank-layout">
+      <ol class="rank-list" id="rank-list" aria-describedby="rank-msg"></ol>
+      <p class="msg" id="rank-msg" role="status"></p>
+    </div>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">4</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="start-over">Start over</button>
+      <span class="confirm" id="start-confirm" hidden>
+        This erases your predictions and everything you have recorded.
+        <button type="button" class="quiet-button danger" id="start-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="start-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Shown here with the sash raised and with different materials.
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.PhLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/PhLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/PhLab.data.unityweb",
+      frameworkUrl: buildUrl + "/PhLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/PhLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "pH of Common Solutions",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>
