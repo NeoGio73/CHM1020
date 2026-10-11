@@ -1,8 +1,9 @@
 /*
- * Density of an Unknown Metal: shared model.
- * Generates each student's unknown from a short code, holds the true values,
- * and checks readings and worksheet answers. Used by the lab page and by the
- * instructor key, so both always agree.
+ * Density of an Unknown Metal: the page's model.
+ * Unknown codes, reading what a student typed, the messages for each kind of reading, the graph,
+ * and the worksheet checks. It holds nothing about any student's unknown: which metal a code
+ * stands for, and whether a reading matches the balance or the cylinder, are worked out inside
+ * the 3D lab, which tells the page only the verdict for each reading.
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -10,22 +11,10 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  // ---- Settings an instructor may want to change -------------------------------------------
+  // ---- Settings ------------------------------------------------------------------------------
 
   var INITIAL_ML = 26.2;            // water already in the cylinder
-  var METALS = [                    // candidate unknowns, density in g/mL
-    { id: 'Al', name: 'aluminum', density: 2.70 },
-    { id: 'Ti', name: 'titanium', density: 4.51 },
-    { id: 'Zn', name: 'zinc', density: 7.14 },
-    { id: 'Fe', name: 'iron', density: 7.87 },
-    { id: 'Cu', name: 'copper', density: 8.96 },
-    { id: 'Pb', name: 'lead', density: 11.34 }
-  ];
-  var BASE_VOLUMES_ML = [3.0, 5.0, 7.0, 9.5, 12.0]; // nominal piece volumes, smallest to largest
-  var VOLUME_SPREAD_ML = 0.6;       // each piece varies by up to this much per student
-  var MASS_TOLERANCE_G = 0.011;     // balance reads to 0.01 g
-  var VOLUME_TOLERANCE_ML = 0.2;    // cylinder is read to 0.1 mL
-  var MENISCUS_RISE_ML = 0.9;       // how far the water climbs the glass above the true level
+  var PIECE_COUNT = 5;
 
   // ---- Small helpers ----------------------------------------------------------------------
 
@@ -34,17 +23,6 @@
     return Math.round((value + (value >= 0 ? 1e-9 : -1e-9)) * f) / f;
   }
   function near(a, b, tol) { return Math.abs(a - b) <= tol + 1e-9; }
-
-  function mulberry32(seed) {
-    var a = seed >>> 0;
-    return function () {
-      a = (a + 0x6D2B79F5) >>> 0;
-      var t = a;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
 
   // ---- Unknown codes ----------------------------------------------------------------------
   // A code is four characters plus one check character, e.g. "K7Q4M". The check character
@@ -80,6 +58,8 @@
     if (checkChar(digits) !== code[4]) return null;
     return ((digits[0] * BASE + digits[1]) * BASE + digits[2]) * BASE + digits[3];
   }
+  function isCode(text) { return numberFromCode(text) !== null; }
+
   function randomCode() {
     var n;
     if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
@@ -90,42 +70,6 @@
       n = Math.floor(Math.random() * CODE_SPACE);
     }
     return codeFromNumber(n);
-  }
-
-  // ---- The unknown behind a code ------------------------------------------------------------
-
-  function unknownFromCode(text) {
-    var n = numberFromCode(text);
-    if (n === null) return null;
-    var rnd = mulberry32(Math.imul(n + 1, 0x9E3779B1) ^ 0x85EBCA6B);
-    rnd(); rnd();
-    var metal = METALS[Math.floor(rnd() * METALS.length)];
-    var volumes = BASE_VOLUMES_ML.map(function (base) {
-      return round(base + (rnd() * 2 - 1) * VOLUME_SPREAD_ML, 2);
-    });
-    var masses = volumes.map(function (v) { return round(metal.density * v, 2); });
-    return {
-      code: codeFromNumber(n),
-      metal: metal,
-      initialVolume: INITIAL_ML,
-      pieces: volumes.map(function (v, i) {
-        return { number: i + 1, volume: v, mass: masses[i] };
-      })
-    };
-  }
-
-  // True cylinder reading right after each piece went in. `order` lists piece numbers in the
-  // order they were added. Returns a map: piece number -> true reading (mL).
-  function trueReadings(unknown, order) {
-    var level = unknown.initialVolume;
-    var out = {};
-    (order || []).forEach(function (num) {
-      var piece = unknown.pieces[num - 1];
-      if (!piece || out[num] !== undefined) return;
-      level = round(level + piece.volume, 2);
-      out[num] = level;
-    });
-    return out;
   }
 
   // ---- Reading what a student typed ----------------------------------------------------------
@@ -161,74 +105,48 @@
     return /^g\/(ml|cm3|cm\^3|cc)$/.test(k) || /^g(ml|cm3|cm\^3)\^?-1$/.test(k);
   }
 
-  // ---- Checks on the two readings --------------------------------------------------------------
-  // Every check returns { ok, message }. `ok` is true, false, or null (nothing to check yet).
+  // ---- The two readings --------------------------------------------------------------------------
+  // Results are { ok, message }, where ok is true, false, or null (nothing to say yet).
+  //
+  // The page screens what was typed: an empty box, something that is not a number, or the wrong
+  // unit. Anything else goes to the 3D lab, which compares it with the balance or the cylinder
+  // and answers with one of the verdicts below.
 
-  function checkMass(unknown, pieceNumber, text) {
+  function screenReading(kind, text) {
     if (!String(text || '').trim()) return { ok: null, message: '' };
     var q = parseQuantity(text);
-    if (!q) return { ok: false, message: 'Enter the mass as a number.' };
-    if (q.unit && !isMassUnit(q.unit)) return { ok: false, message: 'Mass is recorded in grams.' };
-    var piece = unknown.pieces[pieceNumber - 1];
-    if (near(q.value, piece.mass, MASS_TOLERANCE_G)) {
-      if (q.decimals !== 2) {
-        return { ok: false, message: 'Record every digit the balance shows, to 0.01 g.' };
-      }
-      return { ok: true, message: '' };
+    var mass = kind === 'mass';
+    if (!q) return { ok: false, message: mass ? 'Enter the mass as a number.' : 'Enter the volume as a number.' };
+    if (q.unit && !(mass ? isMassUnit(q.unit) : isVolumeUnit(q.unit))) {
+      return { ok: false, message: mass ? 'Mass is recorded in grams.' : 'Volume is recorded in mL.' };
     }
-    for (var i = 0; i < unknown.pieces.length; i++) {
-      if (i !== pieceNumber - 1 && near(q.value, unknown.pieces[i].mass, MASS_TOLERANCE_G)) {
-        return { ok: false, message: 'That is the mass of a different piece. Check the number on the piece you weighed.' };
-      }
-    }
-    return {
-      ok: false,
-      message: 'That does not match piece ' + pieceNumber +
-        '. Zero the balance, put only this piece on the pan, and read it again.'
-    };
+    return { ok: null, message: '', ready: true, value: q.value, decimals: q.decimals };
   }
 
-  function checkVolume(unknown, order, pieceNumber, text) {
-    if (!String(text || '').trim()) return { ok: null, message: '' };
-    var q = parseQuantity(text);
-    if (!q) return { ok: false, message: 'Enter the volume as a number.' };
-    if (q.unit && !isVolumeUnit(q.unit)) return { ok: false, message: 'Volume is recorded in mL.' };
-    var truth = trueReadings(unknown, order)[pieceNumber];
-    if (truth === undefined) {
-      return { ok: false, message: 'Add piece ' + pieceNumber + ' to the cylinder first, then read the water level.' };
-    }
-    var diff = q.value - truth;
-    if (Math.abs(diff) <= VOLUME_TOLERANCE_ML + 1e-9) {
-      if (q.decimals !== 1) {
-        return { ok: false, message: 'Read to the nearest 0.1 mL: estimate one digit between the 1 mL lines.' };
-      }
-      return { ok: true, message: '' };
-    }
-    if (diff > VOLUME_TOLERANCE_ML && diff <= MENISCUS_RISE_ML + 0.35) {
-      return { ok: false, message: 'A little high. Read the bottom of the meniscus, not where the water touches the glass.' };
-    }
-    var other = trueReadings(unknown, order);
-    for (var key in other) {
-      if (Number(key) !== pieceNumber && near(q.value, other[key], VOLUME_TOLERANCE_ML)) {
-        return { ok: false, message: 'That was the level after a different piece. Record the reading taken right after piece ' + pieceNumber + ' went in.' };
-      }
-    }
-    if (near(q.value, round(truth - unknown.initialVolume, 2), VOLUME_TOLERANCE_ML) && order[0] !== pieceNumber) {
-      return { ok: false, message: 'Record the water level you read on the cylinder, not the change in volume.' };
-    }
-    var whole = Math.round(diff);
-    if (whole !== 0 && Math.abs(diff - whole) <= VOLUME_TOLERANCE_ML + 1e-9 && Math.abs(whole) <= 10) {
-      return { ok: false, message: 'Close, but count the lines again from the nearest numbered mark. Each line is 1 mL.' };
-    }
-    return { ok: false, message: 'That reading is off. Open the cylinder close-up and read the bottom of the meniscus.' };
+  function readingMessage(kind, verdict, pieceNumber) {
+    if (verdict === 'ok') return { ok: true, message: '' };
+    var text = kind === 'mass' ? {
+      digits: 'Record every digit the balance shows, to 0.01 g.',
+      'other-piece': 'That is the mass of a different piece. Check the number on the piece you weighed.',
+      mismatch: 'That does not match piece ' + pieceNumber + '. Zero the balance, put only this piece on the pan, and read it again.'
+    }[verdict] : {
+      digits: 'Read to the nearest 0.1 mL: estimate one digit between the 1 mL lines.',
+      'not-added': 'Add piece ' + pieceNumber + ' to the cylinder first, then read the water level.',
+      high: 'A little high. Read the bottom of the meniscus, not where the water touches the glass.',
+      'other-level': 'That was the level after a different piece. Record the reading taken right after piece ' + pieceNumber + ' went in.',
+      change: 'Record the water level you read on the cylinder, not the change in volume.',
+      'count-lines': 'Close, but count the lines again from the nearest numbered mark. Each line is 1 mL.',
+      off: 'That reading is off. Open the cylinder close-up and read the bottom of the meniscus.'
+    }[verdict];
+    return text ? { ok: false, message: text } : { ok: null, message: '' };
   }
 
   // ---- Points for the graph -----------------------------------------------------------------
   // x = (cylinder reading - initial volume), y = running total of the masses in the cylinder.
   // Uses the values the student recorded. Returns null until every added piece has both values.
 
-  function plottedPoints(unknown, order, recorded) {
-    if (!order || order.length !== unknown.pieces.length) return null;
+  function plottedPoints(order, recorded) {
+    if (!order || order.length !== PIECE_COUNT) return null;
     var total = 0;
     var points = [];
     for (var i = 0; i < order.length; i++) {
@@ -241,7 +159,7 @@
         piece: order[i],
         mass: mass.value,
         reading: vol.value,
-        x: round(vol.value - unknown.initialVolume, 2),
+        x: round(vol.value - INITIAL_ML, 2),
         y: total
       });
     }
@@ -267,8 +185,8 @@
       major = steps[i] * pow;
       if (target / major <= 9) break;
     }
-    var lead = Math.round(major / Math.pow(10, Math.floor(Math.log10(major) + 1e-9)));
-    var minor = lead === 2 ? major / 4 : major / 5;
+    var leading = Math.round(major / Math.pow(10, Math.floor(Math.log10(major) + 1e-9)));
+    var minor = leading === 2 ? major / 4 : major / 5;
     var max = Math.ceil(target / major - 1e-9) * major;
     var places = Math.max(0, -Math.floor(Math.log10(minor) + 1e-9));
     return { max: round(max, 6), major: round(major, 6), minor: round(minor, 6), places: places };
@@ -394,22 +312,19 @@
 
   return {
     INITIAL_ML: INITIAL_ML,
-    METALS: METALS,
-    VOLUME_TOLERANCE_ML: VOLUME_TOLERANCE_ML,
-    MASS_TOLERANCE_G: MASS_TOLERANCE_G,
+    PIECE_COUNT: PIECE_COUNT,
     round: round,
     randomCode: randomCode,
     codeFromNumber: codeFromNumber,
     numberFromCode: numberFromCode,
     normalizeCode: normalizeCode,
-    unknownFromCode: unknownFromCode,
-    trueReadings: trueReadings,
+    isCode: isCode,
     parseQuantity: parseQuantity,
     isVolumeUnit: isVolumeUnit,
     isMassUnit: isMassUnit,
     isDensityUnit: isDensityUnit,
-    checkMass: checkMass,
-    checkVolume: checkVolume,
+    screenReading: screenReading,
+    readingMessage: readingMessage,
     plottedPoints: plottedPoints,
     fitLine: fitLine,
     axisFor: axisFor,

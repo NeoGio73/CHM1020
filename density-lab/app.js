@@ -1,18 +1,20 @@
 /*
  * Density of an Unknown Metal: page logic.
- * Keeps the student's work, checks it with the shared model, draws the graph, and talks to the
- * 3D lab (a Unity build in the canvas: a fume hood with the bench inside it). The 3D lab never
- * knows the "right answers"; it only reports what the student did, and this page does the checking.
+ * Keeps the student's work, draws the graph, checks the worksheet, and talks to the 3D lab (a
+ * Unity build in the canvas: a fume hood with the bench inside it). The page does not know which
+ * metal a code stands for or what the true readings are. The 3D lab works that out from the code,
+ * and the page sends it each recorded reading and shows the verdict that comes back.
  */
 (function () {
   'use strict';
 
   var M = window.DensityLabModel;
   var PIECES = [1, 2, 3, 4, 5];
-  var STORE_KEY = 'density-lab:v1';
+  var STORE_KEY = 'density-lab:v2';   // v1 work used an older rule for the unknowns
   var SVG_NS = 'http://www.w3.org/2000/svg';
   var params = new URLSearchParams(window.location.search);
-  var isMock = params.has('mock');
+  // Automated tests of the page run it without the 3D lab, against a stand-in they supply.
+  var standIn = typeof window.DensityLabStandIn === 'function' ? window.DensityLabStandIn : null;
 
   function $(id) { return document.getElementById(id); }
   function el(tag, attrs, text) {
@@ -34,7 +36,7 @@
     var rec = {};
     PIECES.forEach(function (n) { rec[n] = { mass: '', volume: '' }; });
     return {
-      v: 1,
+      v: 2,
       code: code || M.randomCode(),
       name: '',
       order: [],
@@ -47,7 +49,7 @@
   function loadState() {
     try {
       var saved = JSON.parse(window.localStorage.getItem(STORE_KEY));
-      if (!saved || saved.v !== 1 || !M.unknownFromCode(saved.code)) return null;
+      if (!saved || saved.v !== 2 || !M.isCode(saved.code)) return null;
       var fresh = blankState(saved.code);
       PIECES.forEach(function (n) { if (!saved.rec || !saved.rec[n]) saved.rec = fresh.rec; });
       saved.ws = Object.assign(fresh.ws, saved.ws || {});
@@ -65,11 +67,8 @@
 
   var state = loadState();
   var requested = M.normalizeCode(params.get('code') || '');
-  if (requested && M.unknownFromCode(requested) && (!state || state.code !== M.unknownFromCode(requested).code)) {
-    state = blankState(M.unknownFromCode(requested).code);
-  }
+  if (requested && M.isCode(requested) && (!state || state.code !== requested)) state = blankState(requested);
   if (!state) state = blankState();
-  var unknown = M.unknownFromCode(state.code);
 
   var graph = null;          // { points, fit, xAxis, yAxis } once the data is complete
   var lastFlagged = {};      // field -> last value that was flagged, so retyping is not counted twice
@@ -123,22 +122,80 @@
     state.flags[group] += 1;
   }
 
+  // ---- Checking the readings --------------------------------------------------------------------
+  // The page screens each entry itself (empty, not a number, wrong unit). A proper reading goes to
+  // the 3D lab, which compares it with the balance or the cylinder and sends back a verdict. Until
+  // the verdict for the current entry is in, the entry is shown as neither right nor wrong.
+
+  var verdicts = {};      // field -> { context, verdict }: the 3D lab's last word on that field
+  var asked = {};         // request number -> { field: context } for the readings sent with it
+  var nextAsk = 1;
+  var toCount = {};       // fields the student just finished: count a flag once their result is in
+
+  // A volume verdict depends on the order the pieces went in as well as on what was typed.
+  function contextOf(n, kind) {
+    var text = state.rec[n][kind];
+    return kind === 'mass' ? text : text + '|' + state.order.join(',');
+  }
+
+  function readingResult(n, kind) {
+    var screened = M.screenReading(kind, state.rec[n][kind]);
+    if (!screened.ready) return { ok: screened.ok, message: screened.message };
+    var known = verdicts[kind + '-' + n];
+    if (!known || known.context !== contextOf(n, kind)) return { ok: null, message: '', waiting: true };
+    return M.readingMessage(kind, known.verdict, n);
+  }
+
   // changedField: the input the student just finished, so a wrong entry is counted once.
   function checkReadings(changedField) {
+    if (changedField) toCount[changedField] = true;
+    showReadings();
+    askBench();
+  }
+
+  function showReadings() {
     PIECES.forEach(function (n) {
-      var mass = M.checkMass(unknown, n, state.rec[n].mass);
-      var volume = M.checkVolume(unknown, state.order, n, state.rec[n].volume);
-      results.readings['mass-' + n] = mass;
-      results.readings['volume-' + n] = volume;
-      paint($('mass-' + n), $('msg-mass-' + n), mass);
-      paint($('volume-' + n), $('msg-volume-' + n), volume);
-      if (changedField === 'mass-' + n) countFlag('readings', changedField, state.rec[n].mass, mass);
-      if (changedField === 'volume-' + n) countFlag('readings', changedField, state.rec[n].volume, volume);
+      ['mass', 'volume'].forEach(function (kind) {
+        var field = kind + '-' + n;
+        var result = readingResult(n, kind);
+        results.readings[field] = result;
+        paint($(field), $('msg-' + field), result);
+        if (toCount[field] && !result.waiting) {
+          delete toCount[field];
+          countFlag('readings', field, state.rec[n][kind], result);
+        }
+      });
     });
     saveState();
     updateTableStatus();
     updateGraph();
-    if (changedField && /^mass-/.test(changedField)) tellBenchWhatIsWeighed();
+  }
+
+  function askBench() {
+    if (!benchReady) return;
+    var id = nextAsk++, sent = {}, readings = [];
+    PIECES.forEach(function (n) {
+      var row = { piece: n, hasMass: false, mass: 0, massDecimals: 0, hasVolume: false, volume: 0, volumeDecimals: 0 };
+      var mass = M.screenReading('mass', state.rec[n].mass), volume = M.screenReading('volume', state.rec[n].volume);
+      if (mass.ready) { row.hasMass = true; row.mass = mass.value; row.massDecimals = mass.decimals; sent['mass-' + n] = contextOf(n, 'mass'); }
+      if (volume.ready) { row.hasVolume = true; row.volume = volume.value; row.volumeDecimals = volume.decimals; sent['volume-' + n] = contextOf(n, 'volume'); }
+      readings.push(row);
+    });
+    asked[id] = sent;
+    sendBench('Check', JSON.stringify({ id: id, readings: readings }));
+  }
+
+  function takeVerdicts(e) {
+    var sent = asked[e.id];
+    delete asked[e.id];
+    if (!sent || e.code !== state.code) return;
+    (e.rows || []).forEach(function (row) {
+      ['mass', 'volume'].forEach(function (kind) {
+        var field = kind + '-' + row.piece;
+        if (row[kind] && sent[field] !== undefined) verdicts[field] = { context: sent[field], verdict: row[kind] };
+      });
+    });
+    showReadings();
   }
 
   function readingsAccepted() {
@@ -161,7 +218,7 @@
 
   function updateGraph() {
     var ready = readingsAccepted() === 10;
-    var points = ready ? M.plottedPoints(unknown, state.order, state.rec) : null;
+    var points = ready ? M.plottedPoints(state.order, state.rec) : null;
     var fit = points ? M.fitLine(points) : null;
     if (!points || !fit) {
       graph = null;
@@ -205,7 +262,7 @@
     var x0 = sx(0), x1 = sx(graph.xAxis.max), y0 = sy(0), y1 = sy(graph.yAxis.max);
 
     root.appendChild(svg('text', { x: x0, y: 26, 'class': 'graph-title' }, 'Total mass vs. volume of metal'));
-    root.appendChild(svg('text', { x: x0, y: 45, 'class': 'graph-subtitle' }, 'Unknown ' + unknown.code + ', pieces added one at a time to 26.2 mL of water'));
+    root.appendChild(svg('text', { x: x0, y: 45, 'class': 'graph-subtitle' }, 'Unknown ' + state.code + ', pieces added one at a time to 26.2 mL of water'));
     root.appendChild(svg('rect', { x: x0, y: y1, width: x1 - x0, height: y0 - y1, 'class': 'plot-paper' }));
 
     var i, v, steps;
@@ -435,15 +492,12 @@
 
   var unity = null;
   var unityAwake = false;
+  var benchReady = false;     // the 3D lab has set up this student's unknown and can check readings
   var persistentNote = { text: '', kind: '' };
 
   function sendBench(method, value) {
     if (!unity) return;
     try { unity.SendMessage('Lab', method, value == null ? '' : String(value)); } catch (e) { console.error(e); }
-  }
-
-  function weighedPieces() {
-    return PIECES.filter(function (n) { return M.checkMass(unknown, n, state.rec[n].mass).ok === true; });
   }
 
   // A fresh lab opens on the whole fume hood and then moves in to the bench. Someone coming back
@@ -455,22 +509,17 @@
     return state.order.length > 0 || PIECES.some(function (n) { return state.rec[n].mass !== '' || state.rec[n].volume !== ''; });
   }
 
+  // The 3D lab makes the five pieces from the code. Once it says "configured", the page sends it
+  // the readings, and pieces whose mass is accepted may go straight into the cylinder.
   function configureBench() {
     if (!unity || !unityAwake) return;
+    benchReady = false;
     sendBench('Configure', JSON.stringify({
-      metal: unknown.metal.id,
-      initial: unknown.initialVolume,
-      pieces: unknown.pieces.map(function (p) { return { mass: p.mass, volume: p.volume }; }),
+      code: state.code,
       order: state.order,
-      weighed: weighedPieces(),
       intro: params.get('intro') !== '0' && !calm && !workUnderWay(),
       calm: calm
     }));
-  }
-
-  // Lets a piece go straight into the cylinder after a reload if its mass is already recorded.
-  function tellBenchWhatIsWeighed() {
-    if (unity && unityAwake) sendBench('MarkWeighed', weighedPieces().join(','));
   }
 
   function note(text, kind, temporary) {
@@ -502,8 +551,12 @@
       case 'configured':
         $('stage-cover').hidden = true;
         if (Array.isArray(e.order)) state.order = e.order;
+        benchReady = true;
         note(state.order.length === 5 ? 'All five pieces are in the cylinder.' : 'Drag a piece onto the balance to begin.');
         checkReadings();
+        break;
+      case 'checked':
+        takeVerdicts(e);
         break;
       case 'hover':
         if (e.piece) note('Piece ' + e.piece + (e.where === 'pan' ? ', on the balance' : ''), '', true);
@@ -596,7 +649,7 @@
     });
     $('new-yes').addEventListener('click', function () {
       state = blankState();
-      unknown = M.unknownFromCode(state.code);
+      verdicts = {};
       lastFlagged = {};
       saveState();
       $('new-confirm').hidden = true;
@@ -608,8 +661,8 @@
   }
 
   function refreshAll() {
-    $('unknown-code').textContent = unknown.code;
-    $('initial-volume').textContent = unknown.initialVolume.toFixed(1);
+    $('unknown-code').textContent = state.code;
+    $('initial-volume').textContent = M.INITIAL_ML.toFixed(1);
     PIECES.forEach(function (n) {
       $('mass-' + n).value = state.rec[n].mass;
       $('volume-' + n).value = state.rec[n].volume;
@@ -626,7 +679,7 @@
   // ---- Wiring for the Unity loader in index.html ---------------------------------------------------
 
   var lab = window.DensityLab = {
-    isMock: isMock,
+    isMock: !!standIn,      // true when a test stand-in replaces the 3D lab
     view: 'bench',          // which camera view the 3D lab is showing or moving to
     viewSettled: false,     // false while the camera is still travelling
     onUnityEvent: onBenchEvent,
@@ -654,25 +707,11 @@
   refreshAll();
   saveState();
 
-  // ---- Stand-in bench for automated tests (open the page with ?mock) --------------------------------
+  // ---- Stand-in for the 3D lab, supplied by automated tests -------------------------------------
 
-  if (isMock) {
-    var mockOrder = [];
-    unity = {
-      SendMessage: function (object, method, value) {
-        if (method === 'Configure') { mockOrder = JSON.parse(value).order.slice(); onBenchEvent(JSON.stringify({ type: 'configured', order: mockOrder })); }
-        if (method === 'SetView') {
-          onBenchEvent(JSON.stringify({ type: 'view', view: value }));
-          onBenchEvent(JSON.stringify({ type: 'arrived', view: value }));
-        }
-        if (method === 'ResetBench') { mockOrder = []; onBenchEvent(JSON.stringify({ type: 'reset' })); }
-      }
-    };
-    lab.mockAdd = function (piece) {
-      if (mockOrder.indexOf(piece) >= 0) return;
-      mockOrder.push(piece);
-      onBenchEvent(JSON.stringify({ type: 'added', piece: piece, order: mockOrder.slice() }));
-    };
+  if (standIn) {
+    unity = standIn(onBenchEvent);
+    lab.mockAdd = function (piece) { unity.add(piece); };
     onBenchEvent('{"type":"ready"}');
   }
 })();
