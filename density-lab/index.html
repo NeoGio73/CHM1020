@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Density of an Unknown Metal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Cpath d='M12 5h8v2h-1v17a3 3 0 0 1-6 0V7h-1z' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3Cpath d='M13.9 16h4.2v8a2.1 2.1 0 0 1-4.2 0z' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>Density of an Unknown Metal</h1>
+    <p class="unknown-tag">Unknown <span id="unknown-code" class="code">&nbsp;</span></p>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+
+  <section class="part" id="part-measure" aria-labelledby="measure-title">
+    <h2 id="measure-title"><span class="step" aria-hidden="true">1</span>Measure</h2>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood holding a balance, five metal pieces and a graduated cylinder"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="balance" aria-pressed="false">Balance</button>
+            <button type="button" class="view-button" data-view="cylinder" aria-pressed="false">Cylinder close-up</button>
+          </div>
+          <div class="reset-wrap">
+            <button type="button" class="quiet-button" id="reset-bench">Reset bench</button>
+            <span class="confirm" id="reset-confirm" hidden>
+              Take every piece back out? Recorded volumes will be cleared.
+              <button type="button" class="quiet-button danger" id="reset-yes">Reset bench</button>
+              <button type="button" class="quiet-button" id="reset-no">Keep going</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-column">
+        <table class="data-table" id="data-table">
+          <caption>Recorded data</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-piece">Piece</th>
+              <th scope="col">Mass <span class="unit">(g)</span></th>
+              <th scope="col">Volume in cylinder <span class="unit">(mL)</span></th>
+            </tr>
+          </thead>
+          <tbody id="data-rows">
+            <tr class="given">
+              <th scope="row">Water only</th>
+              <td>&ndash;</td>
+              <td><span class="given-value" id="initial-volume">26.2</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="table-status" id="table-status" role="status"></p>
+        <table class="plotted-table print-plotted" aria-hidden="true">
+          <thead>
+            <tr><th scope="col">After piece</th><th scope="col">Reading (mL)</th><th scope="col">x: volume of metal (mL)</th><th scope="col">y: total mass (g)</th></tr>
+          </thead>
+          <tbody id="plotted-print-rows"></tbody>
+        </table>
+        <ol class="procedure">
+          <li>Drag a metal piece onto the balance pan and record its mass.</li>
+          <li>Drag the same piece into the graduated cylinder. It already holds 26.2 mL of water.</li>
+          <li>Open the cylinder close-up, read the bottom of the meniscus to the nearest 0.1 mL, and record the volume.</li>
+          <li>Repeat with the other pieces, leaving the earlier ones in the cylinder.</li>
+        </ol>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="part" id="part-graph" aria-labelledby="graph-title">
+    <h2 id="graph-title"><span class="step" aria-hidden="true">2</span>Graph</h2>
+    <p class="locked-note" id="graph-locked">Your graph is drawn here once all five masses and volumes are recorded and checked.</p>
+    <div id="graph-area" hidden>
+      <p class="lede">Each point is the total mass of metal in the cylinder plotted against the volume of that metal, found by difference from the 26.2 mL of water. Click the trendline to drop a guide that helps you read a point off the grid.</p>
+      <figure class="graph-figure">
+        <div class="graph-holder" id="graph-holder"></div>
+        <div class="graph-tools">
+          <span class="legend"><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5" class="legend-dot"/></svg>Recorded data</span>
+          <span class="legend"><svg width="26" height="14" aria-hidden="true"><line x1="1" y1="7" x2="25" y2="7" class="legend-line"/></svg>Trendline (best fit)</span>
+          <button type="button" class="quiet-button" id="clear-guides" hidden>Clear guides</button>
+        </div>
+      </figure>
+      <details class="plotted">
+        <summary>Values plotted on the graph</summary>
+        <table class="plotted-table">
+          <thead>
+            <tr>
+              <th scope="col">After adding</th>
+              <th scope="col">Cylinder reading (mL)</th>
+              <th scope="col">Volume of metal, x (mL)</th>
+              <th scope="col">Total mass of metal, y (g)</th>
+            </tr>
+          </thead>
+          <tbody id="plotted-rows"></tbody>
+        </table>
+      </details>
+    </div>
+  </section>
+
+  <section class="part" id="part-calc" aria-labelledby="calc-title">
+    <h2 id="calc-title"><span class="step" aria-hidden="true">3</span>Calculate</h2>
+    <fieldset class="worksheet" id="worksheet" disabled>
+      <legend class="visually-hidden">Trendline calculations</legend>
+      <div class="ws-grid">
+        <div class="ws-cell ws-head ws-blank"></div>
+        <div class="ws-cell ws-head ws-center">(x<sub>1</sub>, y<sub>1</sub>)</div>
+        <div class="ws-cell ws-head ws-center">(x<sub>2</sub>, y<sub>2</sub>)</div>
+
+        <div class="ws-cell ws-label"><span>Values for Two x, y pairs <strong><u>Exactly</u></strong> on Trendline (including their units)</span></div>
+        <div class="ws-cell">
+          <div class="pair">
+            <label class="field"><span class="field-name">x<sub>1</sub></span><input type="text" id="ws-x1" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+            <label class="field"><span class="field-name">y<sub>1</sub></span><input type="text" id="ws-y1" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+          </div>
+          <p class="msg" id="msg-p1" role="status"></p>
+        </div>
+        <div class="ws-cell">
+          <div class="pair">
+            <label class="field"><span class="field-name">x<sub>2</sub></span><input type="text" id="ws-x2" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+            <label class="field"><span class="field-name">y<sub>2</sub></span><input type="text" id="ws-y2" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+          </div>
+          <p class="msg" id="msg-p2" role="status"></p>
+        </div>
+
+        <div class="ws-cell ws-head ws-wide"><label for="ws-slope-work">Calculation of Slope from Two Points (show work in box)</label></div>
+        <div class="ws-cell ws-head"><label for="ws-slope">Final Value for m (with units!)</label></div>
+        <div class="ws-cell ws-wide"><textarea id="ws-slope-work" rows="3" spellcheck="false"></textarea></div>
+        <div class="ws-cell">
+          <input type="text" id="ws-slope" autocomplete="off" spellcheck="false" placeholder="value and units">
+          <p class="msg" id="msg-slope" role="status"></p>
+        </div>
+
+        <div class="ws-cell ws-head ws-wide"><label for="ws-b-work">Calculation of y-Intercept from Slope and One x, y pair (show work in box)</label></div>
+        <div class="ws-cell ws-head"><label for="ws-b">Final Value for y-Intercept (with units!)</label></div>
+        <div class="ws-cell ws-wide"><textarea id="ws-b-work" rows="3" spellcheck="false"></textarea></div>
+        <div class="ws-cell">
+          <input type="text" id="ws-b" autocomplete="off" spellcheck="false" placeholder="value and unit">
+          <p class="msg" id="msg-b" role="status"></p>
+        </div>
+
+        <div class="ws-cell ws-head ws-full"><label for="ws-equation">Final Equation for Line (y = mx + b) Using Slope and y-Intercept Values (above, including units!)</label></div>
+        <div class="ws-cell ws-full">
+          <input type="text" id="ws-equation" autocomplete="off" spellcheck="false" placeholder="y = ">
+          <p class="msg" id="msg-equation" role="status"></p>
+        </div>
+      </div>
+    </fieldset>
+    <p class="locked-note" id="calc-locked">The worksheet opens when your graph is drawn.</p>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">4</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="new-unknown">Start over with a new unknown</button>
+      <span class="confirm" id="new-confirm" hidden>
+        This erases everything you have recorded.
+        <button type="button" class="quiet-button danger" id="new-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="new-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Shown here with the sash raised and with different materials.
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.DensityLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/DensityLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/DensityLab.data.unityweb",
+      frameworkUrl: buildUrl + "/DensityLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/DensityLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "Density of an Unknown Metal",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>
