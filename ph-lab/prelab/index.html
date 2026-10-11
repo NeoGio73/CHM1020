@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pH Prelab Review</title>
+  <meta name="description" content="A short review of pH before the pH of Common Solutions lab: what the numbers mean, why every step is ten times, where pH matters in everyday life, and how pH paper works.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='15' text-anchor='middle' fill='white'%3EpH%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #74807c;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --acid: #c41e3a;
+      --base: #3a2e8f;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead {
+      padding: 28px 20px 26px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 60ch; color: var(--ink-soft); }
+    .lab-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 6px;
+      background: var(--enamel); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .lab-button:hover { background: var(--enamel-deep); color: #fff; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 44px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 26px 0 10px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 68ch; }
+    .soft { color: var(--ink-soft); }
+    .ion { white-space: nowrap; font-weight: 600; }
+
+    /* ---- Acid / neutral / base ---- */
+
+    .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 14px; }
+    .trio-card { padding: 14px 16px 6px; border: 1px solid var(--rule); border-radius: 8px; border-top: 6px solid var(--c); }
+    .trio-card h3 { margin: 0 0 2px; font-size: 1.12rem; }
+    .trio-card .range { margin: 0 0 8px; color: var(--ink-soft); font-weight: 600; font-size: 0.95rem; }
+    .trio-card ul { margin: 0 0 10px; padding-left: 1.1em; font-size: 0.96rem; }
+    .trio-card li { margin-bottom: 4px; }
+    .safety {
+      max-width: 68ch; margin: 6px 0 0; padding: 10px 14px;
+      border-left: 3px solid var(--flag); background: var(--flag-wash); border-radius: 0 6px 6px 0; font-size: 0.96rem;
+    }
+
+    /* ---- Ten-times ladder ---- */
+
+    .ladder-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+    .ladder { margin: 6px 0 0; padding: 0; list-style: none; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+    .ladder li { display: grid; grid-template-columns: 4.6rem 1fr; align-items: center; border-top: 1px solid var(--rule); }
+    .ladder li:first-child { border-top: 0; }
+    .ladder .chip { align-self: stretch; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--chip-ink, #fff); background: var(--c); }
+    .ladder .times { padding: 7px 12px; font-variant-numeric: tabular-nums; }
+    .ladder .times b { font-size: 1.05rem; }
+    .callout {
+      padding: 16px 18px 6px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1;
+    }
+    .callout h3 { margin-top: 0; }
+    .math { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    /* ---- Explorer ---- */
+
+    .explorer { margin-top: 14px; padding: 18px 18px 16px; border: 1px solid var(--rule); border-radius: 10px; background: #fbfcfb; }
+    .explorer-help { margin: 0 0 14px; color: var(--ink-soft); font-size: 0.95rem; }
+    .lanes { display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); row-gap: 4px; column-gap: 10px; }
+    .lane-label { display: flex; align-items: center; justify-content: flex-end; color: var(--ink-soft); font-size: 0.84rem; font-weight: 600; text-align: right; line-height: 1.15; }
+    .lane { position: relative; height: 36px; border-radius: 4px; background: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / 15 - 1px), rgba(23,33,30,0.07) calc(100% / 15 - 1px), rgba(23,33,30,0.07) calc(100% / 15)); }
+    .span { position: absolute; top: 16px; height: 4px; border-radius: 2px; background: var(--cat); opacity: 0.45; }
+    .span.open-low { background: linear-gradient(90deg, transparent, var(--cat)); }
+    .span.open-high { background: linear-gradient(90deg, var(--cat), transparent); }
+    .dot {
+      position: absolute; top: 9px; width: 18px; height: 18px; margin-left: -9px; padding: 0;
+      border: 2px solid #fff; border-radius: 50%; background: var(--cat); cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(23,33,30,0.35); transition: transform 0.12s ease-out;
+    }
+    .dot:hover, .dot:focus-visible { transform: scale(1.25); outline: none; box-shadow: 0 0 0 2px var(--ink); }
+    .dot[aria-pressed="true"] { transform: scale(1.3); box-shadow: 0 0 0 2px var(--ink); }
+    .dot.up { top: 0; }
+    .dot.down { top: 18px; }
+    .bar-cell { position: relative; }
+    .bar-wrap { position: relative; }
+    .bar {
+      position: relative; display: grid; grid-template-columns: repeat(15, 1fr); height: 46px;
+      border-radius: 6px; overflow: hidden; cursor: ew-resize; touch-action: none;
+      box-shadow: inset 0 0 0 1px rgba(23,33,30,0.18);
+    }
+    .bar:focus-visible { outline: 3px solid var(--enamel); outline-offset: 3px; }
+    .bar span { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3px; font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.92); text-shadow: 0 1px 1px rgba(0,0,0,0.3); pointer-events: none; }
+    .bar span.dark { color: rgba(23,33,30,0.8); text-shadow: none; }
+    .ends { display: flex; justify-content: space-between; margin-top: 10px; color: var(--ink-faint); font-size: 0.8rem; font-weight: 600; }
+    .probe { position: absolute; top: -6px; bottom: -6px; width: 0; pointer-events: none; }
+    .probe::before { content: ""; position: absolute; top: 0; bottom: 0; left: -1.5px; width: 3px; border-radius: 2px; background: var(--ink); box-shadow: 0 0 0 1.5px #fff; }
+    .probe::after { content: ""; position: absolute; bottom: -7px; left: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 2px #fff; }
+    .probe-line { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px dashed rgba(23,33,30,0.45); pointer-events: none; }
+
+    .readout { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 18px; align-items: start; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); }
+    .reading { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 8.5rem; }
+    .reading .value { font-family: var(--serif); font-size: 2rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .kind { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; color: #fff; }
+    .kind.acid { background: var(--acid); }
+    .kind.neutral { background: #5d8f3a; }
+    .kind.base { background: var(--base); }
+    .readout-text p { margin: 0 0 8px; }
+    .near { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .near a { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 8px; border: 1px solid var(--rule); border-radius: 999px; background: #fff; color: var(--ink); text-decoration: none; font-size: 0.9rem; }
+    .near a:hover { border-color: var(--rule-strong); }
+    .near i { width: 10px; height: 10px; border-radius: 50%; background: var(--cat); }
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 12px 0 0; padding: 0; list-style: none; color: var(--ink-soft); font-size: 0.86rem; }
+    .legend i { display: inline-block; width: 11px; height: 11px; margin-right: 6px; border-radius: 50%; background: var(--cat); vertical-align: -1px; }
+
+    /* ---- Fact cards ---- */
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+    .card {
+      position: relative; display: flex; flex-direction: column; padding: 14px 16px 10px;
+      border: 1px solid var(--rule); border-left: 5px solid var(--cat); border-radius: 8px; background: #fff;
+      scroll-margin-top: 24px; transition: box-shadow 0.25s;
+    }
+    .card.flash { box-shadow: 0 0 0 3px var(--enamel); }
+    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin: 0 0 6px; }
+    .card h4 { margin: 0; font-size: 1.02rem; line-height: 1.3; }
+    .badge {
+      flex: none; margin-top: 1px; padding: 1px 8px; border-radius: 5px;
+      background: var(--c); color: var(--chip-ink, #fff); font-size: 0.82rem; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums;
+    }
+    .card p { margin: 0 0 8px; font-size: 0.95rem; }
+    .card .show { align-self: flex-start; margin-top: auto; padding: 0; border: 0; background: none; color: var(--enamel-deep); font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .card cite { font-style: normal; font-size: 0.8rem; color: var(--ink-faint); }
+    .card.ocean { border-left-color: #2a7fb0; background: linear-gradient(180deg, #f2f8fc, #fff 60%); }
+
+    /* ---- Measuring ---- */
+
+    .measure-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+    .cabbage { display: flex; gap: 8px; margin: 10px 0 14px; padding: 0; list-style: none; }
+    .cabbage li { flex: 1; padding: 34px 6px 6px; border-radius: 6px; background: var(--c); color: #fff; font-size: 0.82rem; font-weight: 700; text-align: center; }
+    .cabbage small { display: block; font-weight: 500; opacity: 0.92; }
+    .tips { margin: 0; padding-left: 1.2em; }
+    .tips li { margin-bottom: 8px; }
+    .mini-chart { display: grid; grid-template-columns: repeat(15, 1fr); gap: 2px; margin: 10px 0 4px; }
+    .mini-chart span { height: 26px; border-radius: 3px; background: var(--c); }
+    .mini-nums { display: grid; grid-template-columns: repeat(15, 1fr); gap: 2px; font-size: 0.72rem; color: var(--ink-soft); text-align: center; font-variant-numeric: tabular-nums; }
+    .strip-demo { position: relative; height: 26px; margin: 10px 0 0; }
+    .strip-demo .paper { position: absolute; top: 5px; height: 16px; left: calc(100% / 15 * 6 + 2px); width: 44%; border-radius: 2px; background: #ecca74; }
+    .strip-demo .wet { position: absolute; top: 5px; height: 16px; left: calc(100% / 15 * 6 + 2px); width: calc(100% / 15 - 2px); border-radius: 2px 0 0 2px; background: #c0d644; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12); }
+    .caption { margin-top: 6px; color: var(--ink-soft); font-size: 0.88rem; }
+
+    /* ---- Self-check ---- */
+
+    .quiz { display: grid; gap: 14px; max-width: 760px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .next p { margin: 0; max-width: 60ch; }
+    .sources { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 0.86rem; color: var(--ink-soft); }
+    .sources h2 { font-size: 1.1rem; }
+    .sources ol { margin: 0; padding-left: 1.4em; }
+    .sources li { margin-bottom: 4px; }
+    .sources a { color: inherit; overflow-wrap: anywhere; }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 820px) {
+      .trio, .ladder-wrap, .measure-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 22px 16px 20px; }
+      h1 { font-size: 1.7rem; }
+      .explorer { padding: 14px 10px 12px; }
+      .lanes { grid-template-columns: 3.4rem minmax(0, 1fr); column-gap: 6px; }
+      .lane-label { font-size: 0.72rem; }
+      .dot { width: 14px; height: 14px; margin-left: -7px; top: 11px; }
+      .dot.up { top: 3px; }
+      .dot.down { top: 19px; }
+      .bar span { font-size: 0.66rem; }
+      .readout { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .dot, .card { transition: none; }
+    }
+    @media print {
+      .explorer, .lab-button, .card .show, .next { display: none !important; }
+      .masthead { background: none; }
+      section { break-inside: avoid-page; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <p class="eyebrow">Prelab review · pH of Common Solutions</p>
+        <h1>pH: one small number that runs a lot of your life</h1>
+        <p class="dek">About ten minutes. Read it before the lab, try the scale explorer, then check yourself with the questions at the end.</p>
+      </div>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <section id="what" aria-labelledby="what-title">
+      <h2 id="what-title"><span class="step" aria-hidden="true">1</span>What pH tells you</h2>
+      <div class="prose">
+        <p>Whether a pickle is safe to keep on a shelf, whether your pool water keeps you healthy, whether a hydrangea blooms blue or pink: all of these come down to <strong>pH</strong>, a number that says how acidic or basic a watery solution is.</p>
+        <p>Acids put extra hydrogen ions (<span class="ion">H<sup>+</sup></span>) into water. Bases do the opposite: they pull hydrogen ions out, often by adding hydroxide ions (<span class="ion">OH<sup>−</sup></span>) that grab them. pH counts how many hydrogen ions are around, but backwards: <strong>the more hydrogen ions, the lower the pH</strong>. Everyday solutions fall between about 0 and 14.</p>
+      </div>
+
+      <div class="trio">
+        <div class="trio-card" style="--c: var(--acid)">
+          <h3>Acidic</h3>
+          <p class="range">pH below 7</p>
+          <ul>
+            <li>Taste sour: think pickles, yogurt and sour candy.</li>
+            <li>Fizz when they meet baking soda.</li>
+            <li>The lower the number, the stronger the acid.</li>
+          </ul>
+        </div>
+        <div class="trio-card" style="--c: #78bc4e">
+          <h3>Neutral</h3>
+          <p class="range">pH exactly 7</p>
+          <ul>
+            <li>Neither acidic nor basic: the hydrogen and hydroxide ions balance.</li>
+            <li>The middle of the scale.</li>
+          </ul>
+        </div>
+        <div class="trio-card" style="--c: var(--base)">
+          <h3>Basic <span class="soft" style="font-weight:400">(also called alkaline)</span></h3>
+          <p class="range">pH above 7</p>
+          <ul>
+            <li>Taste bitter and feel slippery, like soap.</li>
+            <li>Many cleaning products, like bleach, are bases.</li>
+            <li>The higher the number, the stronger the base.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="safety"><strong>Never taste or touch lab chemicals.</strong> People worked out "acids are sour, bases are bitter" centuries ago by tasting things. Strong acids and strong bases burn skin and eyes, which is why real labs use goggles and gloves.</p>
+    </section>
+
+    <section id="ten" aria-labelledby="ten-title">
+      <h2 id="ten-title"><span class="step" aria-hidden="true">2</span>Every step is ten times</h2>
+      <div class="ladder-wrap">
+        <div>
+          <p class="prose">pH is not like a ruler where every step is the same size. Each step down the scale means <strong>ten times</strong> more hydrogen ions. So pH 5 is 10 times as acidic as pH 6, and 100 times as acidic as pH 7. A small change in the number is a big change in the solution.</p>
+          <ol class="ladder" id="ladder" aria-label="Hydrogen ions compared with a neutral solution"></ol>
+        </div>
+        <div class="callout">
+          <h3>Why a "tiny" change can matter</h3>
+          <p>Because the scale works in tens, even a drop of 0.1 pH unit means about <span class="math">10<sup>0.1</sup> ≈ 1.26</span> times as many hydrogen ions: roughly a quarter more. (Ocean scientists round it to 30%.)</p>
+          <p>That is why ocean scientists worry about the sea's slowly falling pH. As the ocean soaks up carbon dioxide from the air, it forms carbonic acid. That makes it harder for corals, clams, oysters and some plankton to build their shells and skeletons. You'll measure ocean water in the lab.</p>
+          <p class="soft" style="font-size:0.85rem">Sources: <a href="#src-whoi">WHOI</a>, <a href="#src-epa-ocean">EPA</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="explore" aria-labelledby="explore-title">
+      <h2 id="explore-title"><span class="step" aria-hidden="true">3</span>Explore the scale</h2>
+      <div class="explorer">
+        <p class="explorer-help">Drag along the colored bar (or click it and use the arrow keys) to move the pointer. Tap a dot to jump to something from everyday life. The colors are the same ones on your pH paper's chart in the lab.</p>
+        <div class="lanes" id="lanes"></div>
+        <ul class="legend" id="legend" aria-hidden="true"></ul>
+        <div class="readout" aria-live="polite">
+          <div class="reading">
+            <span class="value" id="read-value">pH 7.0</span>
+            <span class="kind neutral" id="read-kind">Neutral</span>
+          </div>
+          <div class="readout-text">
+            <p id="read-compare"></p>
+            <ul class="near" id="read-near"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="life" aria-labelledby="life-title">
+      <h2 id="life-title"><span class="step" aria-hidden="true">4</span>Where pH shows up</h2>
+      <p class="prose">A few places where a couple of pH units make a real difference. Each card has a button that shows it on the scale above.</p>
+      <div id="groups"></div>
+    </section>
+
+    <section id="measure" aria-labelledby="measure-title">
+      <h2 id="measure-title"><span class="step" aria-hidden="true">5</span>How you'll measure pH</h2>
+      <div class="measure-grid">
+        <div class="prose">
+          <p>An <strong>indicator</strong> is a dye that changes color with pH. You can make one in your kitchen: the purple juice from boiled red cabbage turns red or pink in acids, stays purple or blue in neutral solutions, and turns green or yellow in bases.</p>
+          <ul class="cabbage" aria-label="Red cabbage indicator colors">
+            <li style="--c:#c8336f">Red / pink<small>acid</small></li>
+            <li style="--c:#6a4a9c">Purple / blue<small>neutral</small></li>
+            <li style="--c:#4f9a3a">Green / yellow<small>base</small></li>
+          </ul>
+          <p><strong>pH paper</strong> works the same way, but it is soaked in a mix of several indicators, each changing color over a different part of the scale. Together they give a different color for each pH from 0 to 14.</p>
+          <p class="soft" style="font-size:0.85rem">Cabbage colors: <a href="#src-acs">American Chemical Society</a></p>
+        </div>
+        <div>
+          <h3 style="margin-top:0">In the virtual lab</h3>
+          <ol class="tips">
+            <li>Lock in your predictions first. A prediction doesn't have to be right; the experiment tests it.</li>
+            <li>Put a few drops of each solution in its own well, using the pipette with the same number.</li>
+            <li>Dip a fresh strip into the well, then wait about 5 seconds for the color to settle.</li>
+            <li>Hold the wet end of the strip next to the color chart and find the closest color. Record that whole number.</li>
+          </ol>
+          <div class="mini-chart" id="mini-chart" aria-hidden="true"></div>
+          <div class="mini-nums" id="mini-nums" aria-hidden="true"></div>
+          <div class="strip-demo" aria-hidden="true"><span class="paper"></span><span class="wet"></span></div>
+          <p class="caption">This strip's wet end matches the 6 best, so you'd record pH 6.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">6</span>Check yourself</h2>
+      <p class="prose">Not graded. Pick an answer to see whether it's right and why; you can change your answer as often as you like.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p><strong>Ready?</strong> Head to the lab, lock in your predictions for the twelve solutions, and find out how close you were.</p>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+
+    <section class="sources" aria-labelledby="sources-title">
+      <h2 id="sources-title">Sources</h2>
+      <ol id="sources"></ol>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // The colors printed on the lab's pH paper chart, pH 0 to 14.
+  var PAPER = ['#c41e3a', '#e03232', '#ee622c', '#f49228', '#f7be2d', '#f1de3e', '#c0d644', '#78bc4e',
+               '#37a062', '#209682', '#287eac', '#3658a6', '#544298', '#683486', '#502668'];
+  var LIGHT = { 4: 1, 5: 1, 6: 1 };   // swatches light enough to need dark text
+
+  var SOURCES = [
+    { id: 'okstate', text: 'Oklahoma State University Extension. "The Importance of Food pH in Commercial Canning Operations."', url: 'https://extension.okstate.edu/fact-sheets/the-importance-of-food-ph-in-commercial-canning-operations.html' },
+    { id: 'dawes', text: 'Dawes, C. "What Is the Critical pH and Why Does a Tooth Dissolve in Acid?" Journal of the Canadian Dental Association 69, no. 11 (2003): 722–24.', url: 'https://jcda.ca/sites/default/files/back_issues/vol-69/issue-11/722.pdf' },
+    { id: 'umich', text: 'Williams, J. "Stomach." GI physiology lecture notes, University of Michigan (Open.Michigan), 2009.', url: 'https://open.umich.edu/sites/default/files/downloads/j.williams.giphys.4-stomach-38-65-notes.pdf' },
+    { id: 'statpearls', text: '"Physiology, Acid Base Balance." StatPearls, NCBI Bookshelf.', url: 'https://www.ncbi.nlm.nih.gov/books/NBK507807/' },
+    { id: 'cdc', text: 'Centers for Disease Control and Prevention. "Home Pool and Hot Tub Water Treatment and Testing."', url: 'https://www.cdc.gov/healthy-swimming/about/home-pool-and-hot-tub-water-treatment-and-testing.html' },
+    { id: 'poison', text: 'Nebraska Regional Poison Center. "Bleach."', url: 'https://nebraskapoison.com/about/states-regions-served/federated-states-of-micronesia/bleachfsm22' },
+    { id: 'pubchem', text: 'PubChem. "Sodium Bicarbonate" (pH of a 0.1 M solution, from the Merck Index).', url: 'https://pubchem.ncbi.nlm.nih.gov/compound/516892' },
+    { id: 'epa-rain', text: 'U.S. Environmental Protection Agency. "What is Acid Rain?" (archived January 2025).', url: 'https://19january2025snapshot.epa.gov/acidrain/what-acid-rain' },
+    { id: 'uga', text: 'University of Georgia CAES Field Report. "Hydrangea blooms turn colors based on soil pH levels."', url: 'https://fieldreport.caes.uga.edu/news/hydrangea-blooms-turn-colors-based-on-soil-ph-levels/' },
+    { id: 'whoi', text: 'Woods Hole Oceanographic Institution, Oceanus. "Small Drop in pH Means Big Change in Acidity."', url: 'https://www.whoi.edu/oceanus/feature/small-drop-in-ph-means-big-change-in-acidity' },
+    { id: 'epa-ocean', text: 'U.S. Environmental Protection Agency. "Climate Change Indicators: Ocean Acidity" (archived January 2025).', url: 'https://19january2025snapshot.epa.gov/climate-indicators/climate-change-indicators-ocean-acidity' },
+    { id: 'acs', text: 'American Chemical Society. "Red Cabbage Indicator" (home activity).', url: 'https://www.acs.org/content/dam/acsorg/education/outreach/activities/red-cabbage-indicator/red-cabbage-indicator-home.pdf' }
+  ];
+
+  var CATS = [
+    { id: 'body', name: 'Your body', short: 'Body', color: '#c8417a' },
+    { id: 'food', name: 'Food and cooking', short: 'Food', color: '#d9822b' },
+    { id: 'home', name: 'Around the house', short: 'Home', color: '#2f7fbf' },
+    { id: 'nature', name: 'Outdoors', short: 'Outdoors', color: '#3b8f4f' }
+  ];
+
+  // lo/hi: the pH range; open: 'low' for "or lower", 'high' for "or higher".
+  var ITEMS = [
+    { id: 'stomach', cat: 'body', name: 'Stomach juice', lo: 1, hi: 2, src: 'umich',
+      text: 'Cells in your stomach lining pump out hydrochloric acid, which makes stomach juice the most acidic liquid in your body. The acid kills many of the germs you swallow, and pepsin, the enzyme that starts digesting protein, works best around pH 2. Antacid tablets are bases: they neutralize extra acid when it causes heartburn.' },
+    { id: 'enamel', cat: 'body', name: 'Tooth enamel starts to dissolve', lo: 5.5, hi: 5.5, src: 'dawes', label: 'below about 5.5',
+      text: 'Enamel is a mineral that starts dissolving when the liquid around your teeth is more acidic than about pH 5.5. The exact point depends on your saliva: anywhere from about 5.1 to 6.5. Sipping acidic drinks all day keeps teeth below that line for longer. In the lab you’ll test a soda pop, so check which side of 5.5 it lands on.' },
+    { id: 'blood', cat: 'body', name: 'Blood', lo: 7.35, hi: 7.45, src: 'statpearls',
+      text: 'Your body keeps blood pH inside this very narrow window. Below 7.35 is called acidemia and above 7.45 alkalemia, and your lungs and kidneys work all the time to keep it in range. That’s a difference of only 0.1 unit, about a quarter more or fewer hydrogen ions.' },
+
+    { id: 'cranberry', cat: 'food', name: 'Cranberry sauce', lo: 2.4, hi: 2.4, src: 'okstate',
+      text: 'Cranberries are so acidic that the sauce sits near pH 2.4. That sharp, puckery taste is the acid: sour is how your tongue detects acids.' },
+    { id: 'pickles', cat: 'food', name: 'Dill pickles', lo: 3.2, hi: 3.5, src: 'okstate',
+      text: 'Pickling is pH engineering. An acidic brine, or bacteria that ferment the cucumbers, pushes the pH far below 4.6, where botulism bacteria can’t grow. Sauerkraut (3.4–3.6) works the same way.' },
+    { id: 'canning', cat: 'food', name: 'The canning safety line', lo: 4.6, hi: 4.6, src: 'okstate',
+      text: 'Clostridium botulinum, the bacterium that makes botulism toxin, can’t grow at pH 4.6 or below. So acidic foods like jams, pickles and most fruit can be canned in a boiling-water bath, while low-acid foods need a pressure canner that reaches 240 °F (116 °C) or more.' },
+    { id: 'tomato', cat: 'food', name: 'Fresh tomatoes', lo: 4.2, hi: 4.9, src: 'okstate',
+      text: 'Tomatoes sit right on the 4.6 safety line, depending on the variety and the season. That’s why canning recipes tell you to add an acid, such as citric acid, before canning them.' },
+    { id: 'chicken', cat: 'food', name: 'Canned corn and chicken', lo: 6.0, hi: 6.7, src: 'okstate',
+      text: 'Most vegetables and meats are low-acid foods: canned corn is about 6.0 and chicken 6.5–6.7. Because botulism bacteria could grow at these pH values, they need the high heat of a pressure canner.' },
+    { id: 'soda-bread', cat: 'food', name: 'Baking soda in water', lo: 8.3, hi: 8.3, src: 'pubchem',
+      text: 'Baking soda (sodium bicarbonate) is a mild base. In a recipe it reacts with an acidic ingredient, like buttermilk, yogurt or honey, to release bubbles of carbon dioxide. That is what makes pancakes and muffins rise.' },
+
+    { id: 'pool', cat: 'home', name: 'Swimming pool', lo: 7.0, hi: 7.8, src: 'cdc',
+      text: 'The CDC recommends keeping pools and hot tubs between pH 7.0 and 7.8. Above that, chlorine gets worse at killing germs, especially above 8. Below it, the water starts to corrode pipes and equipment, especially below 7.' },
+    { id: 'bleach', cat: 'home', name: 'Household bleach', lo: 11, hi: 12, src: 'poison',
+      text: 'Bleach is a strong base. Never mix it with ammonia or with acidic cleaners: the mixtures give off chlorine or chloramine gas, which damages your lungs.' },
+
+    { id: 'hydrangea-blue', cat: 'nature', name: 'Blue hydrangeas (soil)', lo: 4.5, hi: 5.5, open: 'low', src: 'uga', label: '5.5 or lower',
+      text: 'The same hydrangea bush can bloom blue or pink depending on its soil. In acidic soil, pH 5.5 or lower, the roots can take up aluminum, which turns the flowers blue.' },
+    { id: 'rain', cat: 'nature', name: 'Clean rain', lo: 5.6, hi: 5.6, src: 'epa-rain', label: 'about 5.6',
+      text: 'Even unpolluted rain is a little acidic, because carbon dioxide from the air dissolves in it and forms weak carbonic acid. Burning fossil fuels adds sulfur dioxide and nitrogen oxides, which become sulfuric and nitric acids and make acid rain. You’ll measure acid rain in the lab.' },
+    { id: 'hydrangea-pink', cat: 'nature', name: 'Pink hydrangeas (soil)', lo: 7.0, hi: 8.0, open: 'high', src: 'uga', label: '7.0 or higher',
+      text: 'In alkaline soil, pH 7.0 or higher, aluminum is locked up in the soil where the roots can’t get it, and the same bush blooms pink. Gardeners change the color by changing the soil’s pH.' }
+  ];
+
+  var QUESTIONS = [
+    { q: 'A solution has a pH of 3. It is…', options: ['acidic', 'neutral', 'basic'], answer: 0,
+      why: 'Anything below 7 is acidic, and 3 is well below 7.' },
+    { q: 'How many times as many hydrogen ions does a pH 2 solution have as a pH 4 solution?', options: ['2', '20', '100', '1,000'], answer: 2,
+      why: 'Two steps down the scale is 10 × 10 = 100 times as many hydrogen ions.' },
+    { q: 'Which of these is the most basic?', options: ['pH 6', 'pH 7', 'pH 8', 'pH 11'], answer: 3,
+      why: 'The higher the pH above 7, the more basic. pH 11 is furthest above 7.' },
+    { q: 'Why can pickles be canned in a pot of boiling water, while green beans need a pressure canner?', options: ['Pickles have less water, so they heat through faster', 'Pickles are too acidic for botulism bacteria to grow', 'Green beans are more acidic, so they need more heat', 'The salt in the brine kills every kind of bacteria'], answer: 1,
+      why: 'Botulism bacteria can’t grow at pH 4.6 or below. Pickles are well below that line; most vegetables are above it, so they need the higher heat of a pressure canner.' },
+    { q: 'A pool test reads pH 8.4. What is the main problem?', options: ['The chlorine kills germs less well', 'The water will corrode the pipes', 'Nothing: a higher pH is always safer', 'The water has turned acidic'], answer: 0,
+      why: 'Above the recommended 7.0–7.8, and especially above 8, chlorine becomes less effective at killing germs. Corroding pipes is the problem at low pH.' },
+    { q: 'A few drops of red cabbage juice turn a mystery liquid green. The liquid is most likely…', options: ['an acid', 'neutral', 'a base'], answer: 2,
+      why: 'Red cabbage indicator turns green or yellow in bases, red or pink in acids, and stays purple or blue when neutral.' },
+    { q: 'In the lab, a strip’s color falls between the pH 5 and pH 6 colors on the chart, but looks closer to 6. What do you record?', options: ['5', '5.5', '6', 'Between 5 and 6'], answer: 2,
+      why: 'Record the whole number of the closest color on the chart. pH paper can’t tell values apart more finely than that.' }
+  ];
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function catOf(id) { for (var i = 0; i < CATS.length; i++) if (CATS[i].id === id) return CATS[i]; return null; }
+  function itemOf(id) { for (var i = 0; i < ITEMS.length; i++) if (ITEMS[i].id === id) return ITEMS[i]; return null; }
+  function mid(it) { return (it.lo + it.hi) / 2; }
+  function swatch(pH) { return Math.max(0, Math.min(14, Math.round(pH))); }
+  function chipStyle(node, pH) {
+    var i = swatch(pH);
+    node.style.setProperty('--c', PAPER[i]);
+    if (LIGHT[i]) node.style.setProperty('--chip-ink', '#17211e');
+  }
+  function decimals(x) { var s = String(x), i = s.indexOf('.'); return i < 0 ? 0 : s.length - i - 1; }
+  function rangeText(it) {
+    if (it.label) return 'pH ' + it.label;
+    var d = Math.max(decimals(it.lo), decimals(it.hi));
+    return it.lo === it.hi ? 'pH ' + it.lo.toFixed(d) : 'pH ' + it.lo.toFixed(d) + '–' + it.hi.toFixed(d);
+  }
+  // Position of a pH value across the 15-swatch bar (each swatch is centred on its whole number).
+  function pct(pH) { return ((pH + 0.5) / 15 * 100) + '%'; }
+
+  // ---- Sources ----
+  var srcIndex = {};
+  SOURCES.forEach(function (s, i) {
+    srcIndex[s.id] = i + 1;
+    var li = el('li'); li.id = 'src-' + s.id;
+    li.appendChild(document.createTextNode(s.text + ' '));
+    var a = el('a', null, s.url.replace(/^https:\/\//, '').replace(/\/$/, '')); a.href = s.url; a.rel = 'noopener'; a.target = '_blank';
+    li.appendChild(a);
+    $('sources').appendChild(li);
+  });
+
+  // ---- Ten-times ladder ----
+  var ladder = $('ladder');
+  var names = ['the same as', '10 times', '100 times', '1,000 times', '10,000 times', '100,000 times', '1,000,000 times'];
+  for (var p = 7; p >= 1; p--) {
+    var li = el('li');
+    var chip = el('span', 'chip', 'pH ' + p); chipStyle(chip, p);
+    var t = el('span', 'times');
+    var b = el('b', null, names[7 - p]);
+    t.appendChild(b);
+    t.appendChild(document.createTextNode(p === 7 ? ' a neutral solution (the starting point)' : ' as many H⁺ as neutral'));
+    li.appendChild(chip); li.appendChild(t);
+    ladder.appendChild(li);
+  }
+
+  // ---- Explorer ----
+  var lanes = $('lanes');
+  var dots = [];
+  CATS.forEach(function (cat) {
+    lanes.appendChild(el('div', 'lane-label', cat.short));
+    var lane = el('div', 'lane');
+    lane.style.setProperty('--cat', cat.color);
+    var placed = [];
+    ITEMS.filter(function (it) { return it.cat === cat.id; }).forEach(function (it) {
+      if (it.hi > it.lo) {
+        var span = el('span', 'span' + (it.open ? ' open-' + it.open : ''));
+        span.style.left = pct(it.lo); span.style.width = ((it.hi - it.lo) / 15 * 100) + '%';
+        lane.appendChild(span);
+      }
+      var dot = el('button', 'dot');
+      dot.type = 'button';
+      var at = it.open === 'low' ? it.hi - 0.35 : it.open === 'high' ? it.lo + 0.35 : mid(it);
+      dot.style.left = pct(at);
+      dot.setAttribute('aria-label', it.name + ', ' + rangeText(it));
+      dot.title = it.name + ' (' + rangeText(it) + ')';
+      dot.setAttribute('aria-pressed', 'false');
+      dot.dataset.item = it.id;
+      dot.addEventListener('click', function () { setProbe(at, it.id); });
+      lane.appendChild(dot);
+      dots.push(dot);
+      placed.push({ at: at, dot: dot });
+    });
+    // two dots closer than 0.6 of a pH unit: lift one and drop the other so both can be clicked
+    placed.sort(function (a, b) { return a.at - b.at; });
+    for (var j = 1; j < placed.length; j++) {
+      if (placed[j].at - placed[j - 1].at < 0.6) { placed[j - 1].dot.classList.add('up'); placed[j].dot.classList.add('down'); }
+    }
+    lanes.appendChild(lane);
+  });
+  lanes.appendChild(el('div', 'lane-label', 'pH'));
+  var barCell = el('div', 'bar-cell');
+  var bar = el('div', 'bar');
+  bar.tabIndex = 0;
+  bar.setAttribute('role', 'slider');
+  bar.setAttribute('aria-label', 'pH pointer');
+  bar.setAttribute('aria-valuemin', '0');
+  bar.setAttribute('aria-valuemax', '14');
+  for (var i = 0; i <= 14; i++) {
+    var s = el('span', LIGHT[i] ? 'dark' : null, String(i));
+    s.style.background = PAPER[i];
+    bar.appendChild(s);
+  }
+  var probe = el('div', 'probe');
+  var barWrap = el('div', 'bar-wrap');
+  barWrap.appendChild(bar);
+  barWrap.appendChild(probe);
+  barCell.appendChild(barWrap);
+  var ends = el('div', 'ends');
+  ends.appendChild(el('span', null, '← more acidic'));
+  ends.appendChild(el('span', null, 'neutral'));
+  ends.appendChild(el('span', null, 'more basic →'));
+  barCell.appendChild(ends);
+  lanes.appendChild(barCell);
+  // a dashed line through the lanes above the pointer
+  var line = el('div', 'probe-line');
+  lanes.style.position = 'relative';
+  lanes.appendChild(line);
+
+  var legend = $('legend');
+  CATS.forEach(function (cat) { var li = el('li', null, cat.name); var i = el('i'); i.style.setProperty('--cat', cat.color); li.insertBefore(i, li.firstChild); legend.appendChild(li); });
+
+  var value = 7;
+  function setProbe(v, picked) {
+    value = Math.max(0, Math.min(14, Math.round(v * 10) / 10));
+    probe.style.left = pct(value);
+    var barBox = bar.getBoundingClientRect(), lanesBox = lanes.getBoundingClientRect();
+    line.style.left = (barBox.left - lanesBox.left + barBox.width * (value + 0.5) / 15) + 'px';
+    line.style.top = '0px';
+    line.style.height = (barBox.top - lanesBox.top) + 'px';
+    bar.setAttribute('aria-valuenow', value.toFixed(1));
+    bar.setAttribute('aria-valuetext', 'pH ' + value.toFixed(1));
+    $('read-value').textContent = 'pH ' + value.toFixed(1);
+    var kind = $('read-kind');
+    var d = 7 - value;
+    if (Math.abs(d) < 0.05) { kind.className = 'kind neutral'; kind.textContent = 'Neutral'; }
+    else if (d > 0) { kind.className = 'kind acid'; kind.textContent = 'Acidic'; }
+    else { kind.className = 'kind base'; kind.textContent = 'Basic'; }
+    $('read-compare').textContent = compareText(value);
+
+    var near = $('read-near');
+    near.textContent = '';
+    var found = ITEMS.filter(function (it) {
+      var lo = it.open === 'low' ? -1 : it.lo, hi = it.open === 'high' ? 15 : it.hi;
+      if (it.open === 'low') lo = it.hi - 1.5;
+      if (it.open === 'high') hi = it.lo + 1.5;
+      return value >= lo - 0.3 && value <= hi + 0.3;
+    });
+    if (picked && found.indexOf(itemOf(picked)) < 0) found.unshift(itemOf(picked));
+    if (!found.length) {
+      near.appendChild(el('li', 'soft', 'Nothing from the cards sits right here. Keep dragging, or tap a dot.'));
+    }
+    found.forEach(function (it) {
+      var li = el('li'), a = el('a');
+      a.href = '#card-' + it.id;
+      var i = el('i'); i.style.setProperty('--cat', catOf(it.cat).color);
+      a.appendChild(i);
+      a.appendChild(document.createTextNode(it.name + ' · ' + rangeText(it).replace('pH ', '')));
+      a.addEventListener('click', function () { flash(it.id); });
+      li.appendChild(a); near.appendChild(li);
+    });
+    dots.forEach(function (dot) { dot.setAttribute('aria-pressed', dot.dataset.item === picked ? 'true' : 'false'); });
+  }
+
+  function times(x) {
+    if (x < 10) return (Math.round(x * 10) / 10).toString();
+    var digits = Math.floor(Math.log10(x)) + 1;
+    var unit = Math.pow(10, Math.max(0, digits - 2));
+    return (Math.round(x / unit) * unit).toLocaleString('en-US');
+  }
+  function compareText(v) {
+    var d = 7 - v;
+    if (Math.abs(d) < 0.05) return 'Right in the middle: hydrogen and hydroxide ions balance. This is the starting point for every comparison.';
+    var steps = Math.abs(d).toFixed(1);
+    var f = times(Math.pow(10, Math.abs(d)));
+    var approx = Math.abs(d) % 1 < 0.05 ? '' : 'about ';
+    if (d > 0) return steps + ' steps below neutral, so it has ' + approx + f + ' times as many hydrogen ions as a neutral solution.';
+    return steps + ' steps above neutral, so it has ' + approx + f + ' times fewer hydrogen ions than a neutral solution.';
+  }
+
+  function fromPointer(e) {
+    var box = bar.getBoundingClientRect();
+    var x = (e.clientX - box.left) / box.width;
+    return x * 15 - 0.5;
+  }
+  var dragging = false;
+  bar.addEventListener('pointerdown', function (e) { dragging = true; bar.setPointerCapture(e.pointerId); setProbe(fromPointer(e)); bar.focus(); e.preventDefault(); });
+  bar.addEventListener('pointermove', function (e) { if (dragging) setProbe(fromPointer(e)); });
+  bar.addEventListener('pointerup', function () { dragging = false; });
+  bar.addEventListener('pointercancel', function () { dragging = false; });
+  bar.addEventListener('keydown', function (e) {
+    var step = { ArrowLeft: -0.1, ArrowDown: -0.1, ArrowRight: 0.1, ArrowUp: 0.1, PageDown: -1, PageUp: 1 }[e.key];
+    if (step != null) { setProbe(value + step); e.preventDefault(); }
+    else if (e.key === 'Home') { setProbe(0); e.preventDefault(); }
+    else if (e.key === 'End') { setProbe(14); e.preventDefault(); }
+  });
+  window.addEventListener('resize', function () { setProbe(value); });
+
+  // ---- Cards ----
+  var groups = $('groups');
+  CATS.forEach(function (cat) {
+    groups.appendChild(el('h3', null, cat.name));
+    var wrap = el('div', 'cards');
+    var items = ITEMS.filter(function (it) { return it.cat === cat.id; }).sort(function (a, b) { return mid(a) - mid(b); });
+    items.forEach(function (it) {
+      var card = el('article', 'card'); card.id = 'card-' + it.id;
+      card.style.setProperty('--cat', cat.color);
+      var head = el('div', 'card-head');
+      head.appendChild(el('h4', null, it.name));
+      var badge = el('span', 'badge', rangeText(it)); chipStyle(badge, mid(it));
+      head.appendChild(badge);
+      card.appendChild(head);
+      card.appendChild(el('p', null, it.text));
+      var show = el('button', 'show', 'Show on the scale');
+      show.type = 'button';
+      show.addEventListener('click', function () {
+        var at = it.open === 'low' ? it.hi - 0.35 : it.open === 'high' ? it.lo + 0.35 : mid(it);
+        setProbe(at, it.id);
+        $('explore').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+      card.appendChild(show);
+      var cite = el('cite');
+      var a = el('a', null, 'Source ' + srcIndex[it.src]); a.href = '#src-' + it.src;
+      cite.appendChild(a);
+      card.appendChild(cite);
+      wrap.appendChild(card);
+    });
+    if (cat.id === 'nature') {
+      var ocean = el('article', 'card ocean'); ocean.id = 'card-ocean';
+      ocean.appendChild(el('h4', null, 'The ocean’s pH is falling'));
+      ocean.appendChild(el('p', null, 'The ocean absorbs much of the carbon dioxide we release, and the dissolved gas forms carbonic acid, so seawater has been slowly becoming more acidic. Because each pH step is ten times, even a few tenths of a unit matter to animals that build shells.'));
+      var c2 = el('cite'); var a1 = el('a', null, 'Source ' + srcIndex['epa-ocean']); a1.href = '#src-epa-ocean';
+      c2.appendChild(a1); ocean.appendChild(c2);
+      wrap.appendChild(ocean);
+    }
+    groups.appendChild(wrap);
+  });
+
+  function flash(id) {
+    var card = $('card-' + id);
+    if (!card) return;
+    card.classList.remove('flash');
+    void card.offsetWidth;
+    card.classList.add('flash');
+    setTimeout(function () { card.classList.remove('flash'); }, 1600);
+  }
+
+  // ---- Mini chart in the measuring section ----
+  for (var k = 0; k <= 14; k++) {
+    var sw = el('span'); sw.style.setProperty('--c', PAPER[k]); $('mini-chart').appendChild(sw);
+    $('mini-nums').appendChild(el('span', null, String(k)));
+  }
+
+  // ---- Self-check ----
+  var quiz = $('quiz');
+  var state = QUESTIONS.map(function () { return null; });
+  QUESTIONS.forEach(function (q, qi) {
+    var li = el('li', 'q');
+    var text = el('p', 'q-text', q.q); text.id = 'q' + qi;
+    li.appendChild(text);
+    var opts = el('div', 'options'); opts.setAttribute('role', 'group'); opts.setAttribute('aria-labelledby', text.id);
+    var fb = el('p', 'feedback'); fb.setAttribute('aria-live', 'polite');
+    q.options.forEach(function (o, oi) {
+      var btn = el('button', null, o); btn.type = 'button';
+      btn.addEventListener('click', function () {
+        state[qi] = oi === q.answer;
+        Array.prototype.forEach.call(opts.children, function (b2, j) {
+          b2.removeAttribute('data-state');
+          b2.setAttribute('aria-pressed', j === oi ? 'true' : 'false');
+        });
+        btn.setAttribute('data-state', state[qi] ? 'right' : 'wrong');
+        fb.textContent = '';
+        var verdict = el('b', state[qi] ? 'right' : 'wrong', state[qi] ? 'Right. ' : 'Not quite. ');
+        fb.appendChild(verdict);
+        fb.appendChild(document.createTextNode(state[qi] ? q.why : 'Try another answer.' + (q.hint ? ' ' + q.hint : '')));
+        score();
+      });
+      opts.appendChild(btn);
+    });
+    li.appendChild(opts);
+    li.appendChild(fb);
+    quiz.appendChild(li);
+  });
+  function score() {
+    var answered = state.filter(function (s) { return s !== null; }).length;
+    var right = state.filter(function (s) { return s === true; }).length;
+    var out = $('score');
+    out.textContent = '';
+    if (!answered) return;
+    if (right === QUESTIONS.length) { out.appendChild(el('span', 'done', 'All ' + right + ' right. You’re ready for the lab.')); return; }
+    out.textContent = right + ' of ' + QUESTIONS.length + ' right so far.';
+  }
+
+  setProbe(7);
+})();
+</script>
+</body>
+</html>

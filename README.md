@@ -29,6 +29,11 @@ to most acidic.
 
 **Open the lab:** https://neogio73.github.io/CHM1020/ph-lab/
 
+**Prelab review:** https://neogio73.github.io/CHM1020/ph-lab/prelab/ explains what pH means and
+why each step is ten times. It has an interactive pH scale with everyday examples (stomach acid,
+canning, pools, hydrangeas, rain), shows how pH paper works, and ends with ungraded self-check
+questions. Its examples avoid giving away the pH of the twelve lab solutions.
+
 - Every student tests the same twelve solutions, with pH values taken from published sources.
 - The bench stays closed until the predictions are locked, so predictions come before results.
 - Work is saved in the student's browser as they go, and the finished report prints (or saves as
