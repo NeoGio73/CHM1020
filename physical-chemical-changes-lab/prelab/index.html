@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Physical and Chemical Changes: Prelab Review</title>
+  <meta name="description" content="A short review before the Physical and Chemical Changes lab: the difference between a physical and a chemical change, the four signs of a chemical change, homogeneous and heterogeneous mixtures, and how to describe what you see.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Cpath d='M12 5h8v2h-1v16a3 3 0 0 1-6 0V7h-1z' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3Cpath d='M13.9 17h4.2v6a2.1 2.1 0 0 1-4.2 0z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    /* Same look as the lab pages and the other prelabs: paper white, bench slate for ink, enamel blue. */
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #74807c;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --physical: #1f5f8f;
+      --chemical: #b3401f;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead {
+      padding: 28px 20px 26px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 60ch; color: var(--ink-soft); }
+    .lab-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 6px;
+      background: var(--enamel); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .lab-button:hover { background: var(--enamel-deep); color: #fff; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 44px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 22px 0 6px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 68ch; }
+    .soft { color: var(--ink-soft); }
+    .callout { max-width: 68ch; margin-top: 16px; padding: 14px 18px 4px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1; }
+    .callout h3 { margin-top: 0; }
+
+    /* ---- Cards in a row ---- */
+
+    .duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0 6px; max-width: 900px; }
+    .quad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0 6px; }
+    .card { padding: 14px 16px 6px; border: 1px solid var(--rule); border-radius: 8px; border-top: 6px solid var(--c); }
+    .card h3 { margin: 0 0 4px; font-size: 1.12rem; }
+    .card p { font-size: 0.96rem; }
+    .card .eg { color: var(--ink-soft); font-size: 0.92rem; }
+    .sign { font-size: 1.7rem; line-height: 1; margin: 0 0 6px; }
+
+    /* ---- Clues that mislead ---- */
+
+    .pairs { width: 100%; max-width: 900px; margin: 12px 0 6px; border-collapse: collapse; font-size: 0.96rem; }
+    .pairs th, .pairs td { padding: 8px 10px; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+    .pairs thead th { background: var(--wash); font-size: 0.86rem; }
+    .tag { font-weight: 650; white-space: nowrap; }
+    .tag.p { color: var(--physical); }
+    .tag.c { color: var(--chemical); }
+
+    /* ---- Describing: three swatches to practice on ---- */
+
+    .describe { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .thing { padding: 14px 14px 12px; border: 1px solid var(--rule); border-radius: 8px; }
+    .thing h3 { margin: 8px 0 8px; font-family: var(--sans); font-size: 1.02rem; }
+    .glass { height: 74px; border-radius: 6px 6px 14px 14px; border: 2px solid rgba(23, 33, 30, 0.25); border-top-color: transparent; background: var(--fill); position: relative; overflow: hidden; }
+    .glass.see::after { content: "A B C"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.3rem; letter-spacing: 0.2em; color: rgba(23, 33, 30, 0.55); }
+    .nail { height: 74px; display: flex; align-items: center; justify-content: center; }
+    .nail i { display: block; width: 78%; height: 12px; border-radius: 3px 8px 8px 3px; background: linear-gradient(#f4f5f6, #9aa1a8 45%, #6d747b 60%, #c9ced3); box-shadow: -10px 0 0 4px #8d949b; }
+    .thing label { display: block; margin-bottom: 6px; font-size: 0.86rem; color: var(--ink-soft); }
+    .thing select { width: 100%; margin-top: 2px; padding: 6px 8px; border: 1px solid var(--rule-strong); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-size: 0.95rem; }
+    .thing select[data-state="right"] { border-color: var(--good); background: var(--good-wash); }
+    .thing select[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); }
+    .thing .say { min-height: 1.4em; margin: 6px 0 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+    /* ---- At the bench ---- */
+
+    .bench-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+    .tips { margin: 0; padding-left: 1.2em; }
+    .tips li { margin-bottom: 8px; }
+    .whys { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .whys li { padding: 10px 14px; border: 1px solid var(--rule); border-radius: 8px; font-size: 0.95rem; }
+    .whys b { display: block; }
+
+    /* ---- Self-check ---- */
+
+    .quiz { display: grid; gap: 14px; max-width: 760px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .next p { margin: 0; max-width: 60ch; }
+    .credit { margin-top: 30px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 0.84rem; color: var(--ink-faint); }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 900px) {
+      .quad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 820px) {
+      .duo, .describe, .bench-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 22px 16px 20px; }
+      h1 { font-size: 1.7rem; }
+      .quad { grid-template-columns: minmax(0, 1fr); }
+      .pairs { font-size: 0.88rem; }
+      .pairs th, .pairs td { padding: 6px 7px; }
+    }
+    @media print {
+      .lab-button, .next { display: none !important; }
+      .masthead { background: none; }
+      section { break-inside: avoid-page; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <p class="eyebrow">Prelab review · Physical and Chemical Changes</p>
+        <h1>Same stuff, or something new?</h1>
+        <p class="dek">About ten minutes. Read it before the lab, practice describing three everyday things, then check yourself with the questions at the end.</p>
+      </div>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <section id="two-kinds" aria-labelledby="two-kinds-title">
+      <h2 id="two-kinds-title"><span class="step" aria-hidden="true">1</span>Two kinds of change</h2>
+      <p class="prose">Tear a sheet of paper in half and you have two smaller sheets of paper. Burn it and you have ash and smoke. Both times the paper changed, but only the second time did it stop being paper. That is the difference this lab is about.</p>
+      <div class="duo">
+        <div class="card" style="--c: var(--physical)">
+          <h3>Physical change</h3>
+          <p>The substance is still the same substance. Only its form has changed: its shape, its size, its state (solid, liquid or gas), or what it is mixed with.</p>
+          <p class="eg">Tearing paper. Water boiling into steam. Bending a wire. Stirring sand into water.</p>
+        </div>
+        <div class="card" style="--c: var(--chemical)">
+          <h3>Chemical change</h3>
+          <p>At least one <em>new</em> substance forms. Some of what you started with is used up, and something that was not there before appears. Another name for it is a chemical reaction.</p>
+          <p class="eg">Paper burning. Iron rusting. A match being struck. Bread dough rising.</p>
+        </div>
+      </div>
+      <p class="prose soft">A physical change can usually be undone by another physical change: cool the steam back into water, pick the sand back out. To undo a chemical change you would need another chemical change.</p>
+    </section>
+
+    <section id="signs" aria-labelledby="signs-title">
+      <h2 id="signs-title"><span class="step" aria-hidden="true">2</span>Four signs of a chemical change</h2>
+      <p class="prose">You cannot see a new substance being made, atom by atom. What you can see is evidence. When two things are put together and a chemical change happens, there is often (not always) one or more of these four signs.</p>
+      <div class="quad">
+        <div class="card" style="--c: #7b45b8">
+          <p class="sign" aria-hidden="true">◐</p>
+          <h3>A change of color</h3>
+          <p class="eg">Bleach taking the color out of a stain. A test strip changing color in pool water.</p>
+        </div>
+        <div class="card" style="--c: #8a5a2b">
+          <p class="sign" aria-hidden="true">▣</p>
+          <h3>A solid forms</h3>
+          <p>When a solid appears out of two clear solutions it is called a <strong>precipitate</strong>.</p>
+          <p class="eg">Soap scum in hard water. Milk curdling when lemon juice is added.</p>
+        </div>
+        <div class="card" style="--c: #1f8fb0">
+          <p class="sign" aria-hidden="true">◌</p>
+          <h3>A gas forms</h3>
+          <p>You see it as bubbles rising through a liquid.</p>
+          <p class="eg">An antacid tablet fizzing in water. Baking soda dropped into vinegar.</p>
+        </div>
+        <div class="card" style="--c: var(--chemical)">
+          <p class="sign" aria-hidden="true">△</p>
+          <h3>A change in temperature</h3>
+          <p>The mixture gets warmer or colder by itself, with nothing heating or cooling it.</p>
+          <p class="eg">A hand warmer heating up. An instant cold pack going cold.</p>
+        </div>
+      </div>
+
+      <h3>Signs are clues, not proof</h3>
+      <p class="prose">Each of the four signs can also turn up in a change that is only physical. So a sign tells you to look harder and ask the real question: <strong>is there a new substance?</strong></p>
+      <table class="pairs">
+        <thead>
+          <tr><th scope="col">What you see</th><th scope="col">When it is only a physical change</th><th scope="col">When it is a chemical change</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Bubbles</th><td>Water boiling: the bubbles are water, as a gas. <span class="tag p">Same substance.</span></td><td>An antacid tablet in water: the bubbles are carbon dioxide, which was not there before. <span class="tag c">New substance.</span></td></tr>
+          <tr><th scope="row">A new color</th><td>Blue paint stirred into yellow paint looks green, but both paints are still there. <span class="tag p">Same substances.</span></td><td>A copper roof slowly turning green: the green is a new compound of copper. <span class="tag c">New substance.</span></td></tr>
+          <tr><th scope="row">A solid appears</th><td>Melted candle wax going hard as it cools. <span class="tag p">Same substance.</span></td><td>Two clear solutions mixed, and a cloudy solid comes out. <span class="tag c">New substance.</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="mixtures" aria-labelledby="mixtures-title">
+      <h2 id="mixtures-title"><span class="step" aria-hidden="true">3</span>When things only mix</h2>
+      <p class="prose">If two things are put together and no chemical change happens, what you have is a <strong>mixture</strong>: two or more substances side by side, each still itself. Mixtures come in two kinds, and you can usually tell them apart just by looking.</p>
+      <div class="duo">
+        <div class="card" style="--c: var(--enamel)">
+          <h3>Homogeneous</h3>
+          <p>The same all the way through. Any spoonful you take out looks like, and is made of the same as, any other. You cannot see separate parts.</p>
+          <p class="eg">Air. Brass. Apple juice. Sweetened tea.</p>
+        </div>
+        <div class="card" style="--c: #6c5aa8">
+          <h3>Heterogeneous</h3>
+          <p>Not the same all the way through. There are separate parts, and one spoonful can be different from the next.</p>
+          <p class="eg">A salad. Sand in water. Granite. Orange juice with pulp.</p>
+        </div>
+      </div>
+      <p class="prose soft">Making a mixture is a physical change, and so is taking one apart: filtering sand out of water, or letting the water evaporate from salty water, gives back the same substances that went in.</p>
+    </section>
+
+    <section id="describe" aria-labelledby="describe-title">
+      <h2 id="describe-title"><span class="step" aria-hidden="true">4</span>Say exactly what you see</h2>
+      <div class="prose">
+        <p>Most of this lab is careful looking. For everything you describe, before mixing and after, give at least these three things, and then anything else you notice (its texture, its shape, whether it is the same all the way through).</p>
+        <p><strong>State.</strong> Solid, liquid or gas.<br>
+        <strong>Color.</strong> If it has no color of its own, say <em>colorless</em>.<br>
+        <strong>Clear or cloudy.</strong> <em>Clear</em> means you can see through it. <em>Cloudy</em> means you cannot.</p>
+        <p><strong>Clear is not a color.</strong> Apple juice is clear and it is also yellow-brown. Water is clear and colorless. Milk is neither: it is white and cloudy. So &ldquo;clear&rdquo; and &ldquo;colorless&rdquo; are two different observations, and a good description gives both.</p>
+      </div>
+      <p class="prose">Try it on these three. None of them is in the lab.</p>
+      <div class="describe" id="describe-things"></div>
+    </section>
+
+    <section id="bench" aria-labelledby="bench-title">
+      <h2 id="bench-title"><span class="step" aria-hidden="true">5</span>What you will do in the lab</h2>
+      <div class="bench-grid">
+        <ol class="tips">
+          <li>There are seven numbered test tubes in a rack, and a row of bottles and jars behind them. Each tube gets one pair of substances.</li>
+          <li><strong>Before</strong> you mix a pair, you look closely at each of the two and record its state, its color and how it looks.</li>
+          <li>You add each substance with the tool that stands in its bottle or jar: a dropper, a spatula, or forceps.</li>
+          <li>For four of the tubes you also read a thermometer, before mixing and after.</li>
+          <li>Three of the tubes are stirred with a glass rod.</li>
+          <li><strong>After</strong> mixing you look closely again and record everything you see.</li>
+          <li>Then you decide, from your own observations, what evidence of a chemical change there was in each tube, and which kind of mixture you made in the others.</li>
+        </ol>
+        <ul class="whys">
+          <li><b>Why record &ldquo;before&rdquo; at all?</b>You can only say that something changed if you know what it looked like to begin with.</li>
+          <li><b>Why a thermometer?</b>Two colorless liquids can be mixed and still look like one colorless liquid. A change in temperature may be the only evidence there is.</li>
+          <li><b>Why keep looking at a tube?</b>Some changes are over in a second. Others take several minutes to show. One of your tubes is slow: come back to it.</li>
+          <li><b>Why not shake or stir everything?</b>Stirring is part of the method for some tubes and would spoil what you are watching in others. The lab page tells you which are which.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">6</span>Check yourself</h2>
+      <p class="prose soft">Pick an answer for each. Nothing here is graded or saved.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p>Ready? In the lab you will mix seven pairs, watch closely, and work out for yourself which changes were chemical.</p>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+
+    <p class="credit">A review for a simulation based on the Physical and Chemical Changes experiment of the Daytona State College Science Department. The examples here are everyday ones; none of them is a mixture from the lab.</p>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- Describe three everyday things ----
+
+  var THINGS = [
+    { name: 'Apple juice', kind: 'glass see', fill: 'rgba(214, 158, 46, 0.55)', state: 'liquid', color: 'yellow-brown', look: 'clear',
+      say: 'A liquid, yellow-brown, and clear: you can read through it. Clear, but not colorless.' },
+    { name: 'Milk', kind: 'glass', fill: '#f4f3ee', state: 'liquid', color: 'white', look: 'cloudy',
+      say: 'A liquid, white, and cloudy: you cannot see through it at all.' },
+    { name: 'A steel nail', kind: 'nail', fill: '', state: 'solid', color: 'grey', look: 'shiny',
+      say: 'A solid, grey, and shiny. For a solid, say how its surface looks: shiny, dull, powdery, grainy.' }
+  ];
+  var LISTS = {
+    state: ['solid', 'liquid', 'gas'],
+    color: ['colorless', 'white', 'grey', 'yellow-brown', 'blue'],
+    look: ['clear', 'cloudy', 'shiny', 'dull powder']
+  };
+  var NAMES = { state: 'State', color: 'Color', look: 'It looks' };
+
+  var holder = document.getElementById('describe-things');
+  THINGS.forEach(function (thing) {
+    var card = document.createElement('div');
+    card.className = 'thing';
+    var picture = document.createElement('div');
+    picture.className = thing.kind;
+    if (thing.fill) picture.style.setProperty('--fill', thing.fill);
+    if (thing.kind === 'nail') picture.appendChild(document.createElement('i'));
+    picture.setAttribute('aria-hidden', 'true');
+    card.appendChild(picture);
+    var title = document.createElement('h3');
+    title.textContent = thing.name;
+    card.appendChild(title);
+    var say = document.createElement('p');
+    say.className = 'say';
+    say.setAttribute('aria-live', 'polite');
+    var right = {};
+    Object.keys(LISTS).forEach(function (key) {
+      var label = document.createElement('label');
+      label.appendChild(document.createTextNode(NAMES[key]));
+      var select = document.createElement('select');
+      var none = document.createElement('option');
+      none.value = '';
+      none.textContent = '–';
+      select.appendChild(none);
+      LISTS[key].forEach(function (word) {
+        var option = document.createElement('option');
+        option.value = word;
+        option.textContent = word;
+        select.appendChild(option);
+      });
+      select.addEventListener('change', function () {
+        if (!select.value) { select.removeAttribute('data-state'); right[key] = false; }
+        else {
+          right[key] = select.value === thing[key];
+          select.setAttribute('data-state', right[key] ? 'right' : 'wrong');
+        }
+        say.textContent = right.state && right.color && right.look ? thing.say : (select.value && !right[key] ? 'Look again.' : '');
+      });
+      label.appendChild(select);
+      card.appendChild(label);
+    });
+    card.appendChild(say);
+    holder.appendChild(card);
+  });
+
+  // ---- Self-check ----
+
+  var QUESTIONS = [
+    {
+      text: 'What makes a change a chemical change?',
+      options: ['It cannot be seen', 'A new substance forms', 'It happens quickly', 'Something changes state'],
+      right: 1,
+      why: 'A chemical change always makes at least one new substance. Everything else is a physical change.'
+    },
+    {
+      text: 'A pot of water boils, and bubbles rise through it. Is that a chemical change?',
+      options: ['Yes: bubbles mean a gas formed', 'No: the bubbles are still water'],
+      right: 1,
+      why: 'The bubbles are water as a gas. No new substance was made, so it is a physical change. Bubbles are a clue, not proof.'
+    },
+    {
+      text: 'Two clear, colorless solutions are mixed and the mixture turns cloudy white. What is the white solid called?',
+      options: ['A solute', 'A precipitate', 'A residue'],
+      right: 1,
+      why: 'A solid that forms out of a mixture of solutions is a precipitate. It is one of the four signs of a chemical change.'
+    },
+    {
+      text: 'A liquid is pale green, and you can read a page through it. Which description is right?',
+      options: ['Clear and colorless', 'Clear and green', 'Cloudy and green'],
+      right: 1,
+      why: 'You can see through it, so it is clear. It has a color, so it is not colorless. Clear is not a color.'
+    },
+    {
+      text: 'Sand is stirred into a glass of water and left to stand. What kind of mixture is it?',
+      options: ['Homogeneous', 'Heterogeneous'],
+      right: 1,
+      why: 'You can see separate parts: sand at the bottom and water above. It is not the same all the way through.'
+    },
+    {
+      text: 'Two colorless liquids are mixed. The result is one colorless liquid that looks no different. Can you be sure that no chemical change happened?',
+      options: ['Yes: nothing changed', 'No: there may be evidence you cannot see'],
+      right: 1,
+      why: 'A change in temperature is evidence too, and you cannot see it. That is why you will read a thermometer.'
+    }
+  ];
+
+  var list = document.getElementById('quiz'), score = document.getElementById('score');
+  var answered = 0, first = 0;
+
+  QUESTIONS.forEach(function (q) {
+    var item = document.createElement('li');
+    item.className = 'q';
+    var text = document.createElement('p');
+    text.className = 'q-text';
+    text.textContent = q.text;
+    var options = document.createElement('div');
+    options.className = 'options';
+    var feedback = document.createElement('p');
+    feedback.className = 'feedback';
+    feedback.setAttribute('aria-live', 'polite');
+    var tried = false, done = false;
+    q.options.forEach(function (label, i) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.addEventListener('click', function () {
+        if (done) return;
+        var right = i === q.right;
+        button.setAttribute('data-state', right ? 'right' : 'wrong');
+        feedback.textContent = '';
+        var mark = document.createElement('b');
+        mark.className = right ? 'right' : 'wrong';
+        mark.textContent = right ? 'Yes. ' : 'Not quite. ';
+        feedback.appendChild(mark);
+        feedback.appendChild(document.createTextNode(right ? q.why : 'Try another answer.'));
+        if (right) {
+          done = true;
+          answered++;
+          if (!tried) first++;
+          score.textContent = '';
+          if (answered === QUESTIONS.length) {
+            var span = document.createElement('span');
+            span.className = 'done';
+            span.textContent = 'All ' + QUESTIONS.length + ' answered, ' + first + ' on the first try.';
+            score.appendChild(span);
+          } else {
+            score.textContent = answered + ' of ' + QUESTIONS.length + ' answered.';
+          }
+        }
+        tried = true;
+      });
+      options.appendChild(button);
+    });
+    item.appendChild(text);
+    item.appendChild(options);
+    item.appendChild(feedback);
+    list.appendChild(item);
+  });
+})();
+</script>
+</body>
+</html>

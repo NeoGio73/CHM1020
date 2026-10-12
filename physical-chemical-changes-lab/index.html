@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Physical and Chemical Changes</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Cpath d='M12 5h8v2h-1v16a3 3 0 0 1-6 0V7h-1z' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3Cpath d='M13.9 17h4.2v6a2.1 2.1 0 0 1-4.2 0z' fill='%23fff'/%3E%3Ccircle cx='15' cy='13' r='1' fill='%23fff'/%3E%3Ccircle cx='17.2' cy='10.5' r='0.8' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>Physical and Chemical Changes</h1>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+
+  <section class="part" id="part-bench" aria-labelledby="bench-title">
+    <h2 id="bench-title"><span class="step" aria-hidden="true">1</span>Mix and observe</h2>
+    <p class="prelab-note">New to this? Read the <a href="prelab/">prelab review</a> first: physical and chemical changes, the signs of a chemical change, kinds of mixture, and how to describe what you see.</p>
+    <p class="lede">Put two substances together and one of two things happens. Either they only mix, and each is still what it was: a <strong>physical change</strong>. Or a new substance forms: a <strong>chemical change</strong>. You cannot watch the atoms, but a chemical change often gives itself away. In this lab you put seven pairs of substances together, one pair to a test tube, and record carefully what you see before and after.</p>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood holding a rack of seven numbered test tubes, a row of eleven labeled bottles and jars, a stirring rod and a thermometer"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <p class="stage-tip">Tip: turn your phone sideways for a bigger bench.</p>
+        <p class="run-status" id="run-status" aria-live="off"></p>
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="tubes" aria-pressed="false">Tubes</button>
+            <button type="button" class="view-button" data-view="bottles" aria-pressed="false">Bottles</button>
+            <button type="button" class="view-button" data-view="close" aria-pressed="false">Close-up</button>
+          </div>
+          <button type="button" class="quiet-button" id="speed-up" aria-pressed="false" disabled>Speed up the wait</button>
+          <div class="reset-wrap">
+            <button type="button" class="quiet-button" id="reset-bench">Wash the tubes and start again</button>
+            <span class="confirm" id="reset-confirm" hidden>
+              Empty all seven tubes and start again? What you recorded stays, but it will need checking against the new tubes.
+              <button type="button" class="quiet-button danger" id="reset-yes">Wash the tubes</button>
+              <button type="button" class="quiet-button" id="reset-no">Keep going</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-column">
+        <ol class="procedure">
+          <li><strong>Look first.</strong> Before you mix anything, look at each chemical. Click the name in front of a bottle or jar for a close look, and record how it looks under &ldquo;Before mixing&rdquo; in Tables 1 and 2.</li>
+          <li><strong>Add.</strong> Click a bottle, a jar or the beaker to pick up its dropper, spatula or forceps, then click the tube it goes into. The note under the bench says which tube is next. Click anywhere else to put a tool back.</li>
+          <li><strong>The thermometer.</strong> Click it, then click a tube, to stand it in that tube. In tubes 2 and 3, put it in <em>before</em> the second chemical goes in, and watch it.</li>
+          <li><strong>Tube 1 is slow.</strong> Leave it alone, go on with the others, and come back to it. Do not stir it.</li>
+          <li><strong>Tubes 5, 6 and 7</strong> are stirred. Click the glass rod, then the tube.</li>
+          <li><strong>Look closely.</strong> Click a tube for a close look at what is in it, and record it under &ldquo;After mixing&rdquo;.</li>
+        </ol>
+        <p class="hint-box"><strong>In a real lab</strong> you would wear goggles and gloves: silver nitrate stains skin, and hydrochloric acid and sodium hydroxide burn. You would never look straight down a tube. You would feel the bottom of tube 2 with your fingers; here a thermometer does that job. At the end, tubes 1, 3 and 6 go into the waste container in the hood and the others down the sink with plenty of water.</p>
+      </div>
+    </div>
+
+    <figure class="strips" id="strips">
+      <img id="strips-img" alt="" hidden>
+      <figcaption id="strips-caption" hidden></figcaption>
+    </figure>
+  </section>
+
+  <section class="part" id="part-chemical" aria-labelledby="chemical-title">
+    <h2 id="chemical-title"><span class="step" aria-hidden="true">2</span>Table 1. Evidence of chemical change</h2>
+    <p class="lede">For each tube, record how each chemical looks <strong>before</strong> mixing, and what you see <strong>after</strong>. Be as descriptive as you can: its state, its color, whether you can see through it, its texture. Pick from the short lists, then describe it in your own words. Read the thermometer before and after.</p>
+    <div class="tube-cards" id="cards-1"></div>
+  </section>
+
+  <section class="part" id="part-physical" aria-labelledby="physical-title">
+    <h2 id="physical-title"><span class="step" aria-hidden="true">3</span>Table 2. Physical changes</h2>
+    <p class="lede">The same for the three mixtures that are stirred. Record what you see once the stirring has stopped and the tube has settled.</p>
+    <div class="tube-cards" id="cards-2"></div>
+  </section>
+
+  <section class="part" id="part-questions" aria-labelledby="questions-title">
+    <h2 id="questions-title"><span class="step" aria-hidden="true">4</span>Looking back</h2>
+    <ol class="questions">
+      <li class="question" id="q-evidence">
+        <p class="question-text">Look over your observations in Table 1. For each mixture, tick the kind or kinds of evidence of a chemical change that you saw. Do not copy your observations out again.</p>
+        <div class="evidence-grid" id="evidence-rows"></div>
+      </li>
+      <li class="question" id="q-mixture">
+        <p class="question-text">Look over your observations in Table 2. Classify each mixture as <strong>homogeneous</strong> (the same all the way through) or <strong>heterogeneous</strong> (with separate parts).</p>
+        <div class="pick-rows" id="mixture-rows"></div>
+      </li>
+      <li class="question" id="q-events">
+        <p class="question-text">Classify each of these everyday events as a chemical change or a physical change.</p>
+        <div class="pick-rows" id="event-rows"></div>
+      </li>
+      <li class="question" id="q-own-chemical">
+        <label for="own-chemical">Give one example of a <strong>chemical</strong> change from your everyday life. <span class="question-hint">Not one of the nine events in question 3.</span></label>
+        <textarea id="own-chemical" rows="3"></textarea>
+      </li>
+      <li class="question" id="q-own-physical">
+        <label for="own-physical">Give one example of a <strong>physical</strong> change from your everyday life. <span class="question-hint">Not one of the nine events in question 3.</span></label>
+        <textarea id="own-physical" rows="3"></textarea>
+      </li>
+    </ol>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">5</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="start-over">Start over</button>
+      <span class="confirm" id="start-confirm" hidden>
+        This washes the tubes and erases everything you have recorded.
+        <button type="button" class="quiet-button danger" id="start-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="start-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    A simulation based on the Physical and Chemical Changes experiment of the Daytona State College Science Department.
+    Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Shown here with the sash raised and with different materials.
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.ChangesLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/ChangesLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/ChangesLab.data.unityweb",
+      frameworkUrl: buildUrl + "/ChangesLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/ChangesLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "Physical and Chemical Changes",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>

@@ -103,12 +103,47 @@ ungraded self-check questions. The inks in it are made up, so it gives away no o
 - Based on the experiment "Separations: Who Wrote the Ransom Note?" of the Daytona State College
   Science Department.
 
+## Physical and Chemical Changes
+
+A virtual lab at the same fume hood, on telling a physical change from a chemical one. Students
+put seven pairs of substances together, one pair to a test tube: copper wire with silver nitrate,
+sodium hydroxide with hydrochloric acid, zinc powder with hydrochloric acid, sodium carbonate with
+calcium chloride, vinegar with water, vegetable oil with water, and sodium chloride with water.
+They look closely at each substance before mixing and at each tube afterwards, read a thermometer
+in four of the tubes, stir three of them, and record what they see. From their own observations
+they then name the evidence of chemical change in each reaction, classify three mixtures as
+homogeneous or heterogeneous, and classify nine everyday events.
+
+**Open the lab:** https://neogio73.github.io/CHM1020/physical-chemical-changes-lab/
+
+**Prelab review:** https://neogio73.github.io/CHM1020/physical-chemical-changes-lab/prelab/
+explains the difference between a physical and a chemical change, the four signs of a chemical
+change (and why each is a clue, not proof), the two kinds of mixture, and how to describe what
+you see: state, color, clear or cloudy. It has three everyday things to practice describing and
+ungraded self-check questions. None of its examples is a mixture from the lab.
+
+- Every student mixes the same seven pairs. The page says what to do next and never what will be
+  seen: seeing it is the lab.
+- For each substance and each tube, students pick its state, its color and how it looks from
+  short lists, which the page checks, and describe what they saw in their own words, which it
+  does not: that is for the instructor to read.
+- A thermometer takes the place of feeling a tube with the fingers. One tube changes slowly, and
+  the wait can be sped up.
+- A picture of the student's own seven tubes is printed with the report.
+- Work is saved in the student's browser as they go, and the finished report prints (or saves as
+  a PDF).
+- What each substance looks like, what happens in each tube and every answer the page checks are
+  compiled into the 3D lab rather than written in the page's script.
+- Based on the Physical and Chemical Changes experiment of the Daytona State College Science
+  Department.
+
 ## Credits
 
-The fume hood in all four labs is the model
+The fume hood in all five labs is the model
 ["Dm3-004-08"](https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f) by
 foxart3d, used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). It is shown with
 the sash raised and with different materials.
 
 The labs were built with Unity. The files in `density-lab/`, `ph-lab/`,
-`double-replacement-lab/` and `separations-lab/` are the finished browser builds.
+`double-replacement-lab/`, `separations-lab/` and `physical-chemical-changes-lab/` are the
+finished browser builds.
