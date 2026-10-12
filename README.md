@@ -42,12 +42,42 @@ questions. Its examples avoid giving away the pH of the twelve lab solutions.
   so on the report. The pH values
   themselves are compiled into the 3D lab rather than written in the page's script.
 
+## Double Replacement Reactions
+
+A virtual lab at the same fume hood. Students work on a laminated sheet marked with a grid: five
+solutions down the side (AgNO3, Pb(NO3)2, CaCl2, CuSO4, FeCl3) and eight across the top (KI, NaCl,
+NaOH, Na2SO4, Na3PO4, Na2CO3, CuSO4, FeCl3). They put one drop of each into a box, stir the pair
+with a toothpick, look closely, and record what they see in each of the 36 boxes: the color of
+the precipitate, or no reaction. From their finished table they pick out which ions tend to form
+precipitates, and then they write balanced equations for eight of the pairs.
+
+**Open the lab:** https://neogio73.github.io/CHM1020/double-replacement-lab/
+
+**Prelab review:** https://neogio73.github.io/CHM1020/double-replacement-lab/prelab/ explains
+what is in a solution of an ionic compound, how ions trade partners, and what a precipitate is.
+It walks through six mixtures a step at a time, has a formula builder that shows the charges
+cancelling, gives everyday examples (the barium drink before an X-ray, kidney stones, soap scum,
+lead pipes, photographic film) and ends with ungraded self-check questions. It works none of the
+pairs on the lab's sheet and gives no list of solubility rules, so the table, the questions and
+the equations stay the students' own work.
+
+- Every student mixes the same 36 pairs. A box is accepted only once both drops are in and
+  stirred. Three boxes that are borderline in a real lab accept either answer.
+- The two "which ions" questions are checked against the student's own table. Each equation is
+  checked for its formulas and its balancing, and the page says which part is off without giving
+  the answer.
+- Work is saved in the student's browser as they go, and the finished report prints on one page
+  (or saves as a PDF).
+- What each pair does is compiled into the 3D lab rather than written in the page's script.
+- Based on the Double Replacement Reactions experiment of the Daytona State College Science
+  Department.
+
 ## Credits
 
-The fume hood in both labs is the model
+The fume hood in all three labs is the model
 ["Dm3-004-08"](https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f) by
 foxart3d, used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). It is shown with
 the sash raised and with different materials.
 
-The labs were built with Unity. The files in `density-lab/` and `ph-lab/` are the finished
-browser builds.
+The labs were built with Unity. The files in `density-lab/`, `ph-lab/` and
+`double-replacement-lab/` are the finished browser builds.

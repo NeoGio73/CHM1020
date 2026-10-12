@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Double Replacement Reactions</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Ccircle cx='11' cy='12' r='5' fill='%23fff'/%3E%3Ccircle cx='21' cy='20' r='5' fill='%23f2c81d'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>Double Replacement Reactions</h1>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+
+  <section class="part" id="part-bench" aria-labelledby="bench-title">
+    <h2 id="bench-title"><span class="step" aria-hidden="true">1</span>Mix and observe</h2>
+    <p class="prelab-note">New to this? Read the <a href="prelab/">prelab review</a> first: how ions trade partners, what a precipitate is, and how to write a formula from the charges.</p>
+    <p class="lede">When two solutions of ionic compounds are mixed, their ions can trade partners. If one of the new pairs does not dissolve in water, it comes out as a solid: a <strong>precipitate</strong>. You will mix 36 pairs of solutions, one drop of each, on a laminated sheet and record what happens in each box.</p>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood holding a laminated sheet marked with a grid of boxes, a rack of eleven labeled pipets and a toothpick"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <p class="stage-tip">Tip: turn your phone sideways for a bigger bench.</p>
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="sheet" aria-pressed="false">Sheet from above</button>
+            <button type="button" class="view-button" data-view="close" aria-pressed="false">Close-up</button>
+          </div>
+          <div class="reset-wrap">
+            <button type="button" class="quiet-button" id="reset-bench">Rinse the sheet</button>
+            <span class="confirm" id="reset-confirm" hidden>
+              Rinse every drop off the sheet and start again? Everything recorded in Table 1 will be cleared.
+              <button type="button" class="quiet-button danger" id="reset-yes">Rinse the sheet</button>
+              <button type="button" class="quiet-button" id="reset-no">Keep going</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-column">
+        <ol class="procedure">
+          <li><strong>Using a pipet.</strong> Click a pipet, or its name in front of the rack, to pick it up. Then click a box on the sheet: one drop falls there. The pipet stays in your hand for the next box. Click anywhere off the sheet to put it back.</li>
+          <li>With the AgNO₃ pipet, put one drop on each X in the top row.</li>
+          <li>Add one drop of the solution named at the top of each column onto the AgNO₃ drop in that column.</li>
+          <li>Pick up the toothpick and click each box to stir its two drops together.</li>
+          <li>Click a box (with nothing in your hand) for a close look, and record what you see in Table 1: the color of the precipitate, or N.R. if there is no reaction.</li>
+          <li>Do the same for the Pb(NO₃)₂ row, then CaCl₂, CuSO₄ and FeCl₃. Leave out the four boxes marked Skip.</li>
+        </ol>
+        <p class="hint-box"><strong>What counts as a precipitate?</strong> A solid can look cloudy, milky, grainy or like a jelly, not only like an obvious powder. Two colored solutions that simply blend, such as blue and yellow making green, have not reacted if the drop stays clear.</p>
+        <p class="hint-box"><strong>In a real lab</strong> you would wear goggles and gloves. Silver nitrate stains skin dark brown. At the end you would rinse and wash the sheet, and wash your hands.</p>
+      </div>
+    </div>
+
+    <div class="grid-wrap">
+      <table class="data-table grid-table" id="table-1">
+        <caption>Table 1. What happened in each box <span class="caption-note">(N.R. = no reaction; ppt = precipitate)</span></caption>
+        <thead><tr id="grid-head"><th scope="col" class="grid-corner"></th></tr></thead>
+        <tbody id="grid-rows"></tbody>
+      </table>
+      <p class="msg" id="grid-msg" role="status"></p>
+      <p class="table-status" id="table-status" role="status"></p>
+    </div>
+  </section>
+
+  <section class="part" id="part-ions" aria-labelledby="ions-title">
+    <h2 id="ions-title"><span class="step" aria-hidden="true">2</span>Which ions form precipitates?</h2>
+    <p class="lede">Use your Table 1. The page checks your answers against your own table once every box is recorded.</p>
+    <div class="ion-questions">
+      <fieldset class="ion-question" id="q-cations">
+        <legend>1. Which <strong>two</strong> positive ions (cations) tend to form precipitates?</legend>
+        <p class="ion-hint">Look for rows in which almost every box shows a reaction.</p>
+        <div class="ion-options" id="cation-options"></div>
+        <p class="msg" id="msg-cations" role="status"></p>
+      </fieldset>
+      <fieldset class="ion-question" id="q-anions">
+        <legend>2. Which <strong>three</strong> negative ions (anions) tend to form precipitates?</legend>
+        <p class="ion-hint">Look for columns in which every box shows a reaction. Use the six columns from KI to Na₂CO₃.</p>
+        <div class="ion-options" id="anion-options"></div>
+        <p class="msg" id="msg-anions" role="status"></p>
+      </fieldset>
+    </div>
+  </section>
+
+  <section class="part" id="part-equations" aria-labelledby="equations-title">
+    <h2 id="equations-title"><span class="step" aria-hidden="true">3</span>Balanced equations</h2>
+    <p class="lede">Write a balanced equation for each pair of solutions. The reactants and their ions are given. First decide which positive ion ends up with which negative ion. Then use the charges to write each product's formula, in the smallest whole numbers. Last, put in coefficients so that each ion is counted the same on both sides.</p>
+    <p class="lede">Type formulas with plain numbers, such as <span class="typed">Ca3(PO4)2</span>; the page shows them with the numbers lowered. Leave a coefficient box empty for 1. Count an ion made of several atoms, such as SO₄²⁻ or OH⁻, as one unit.</p>
+    <div class="equation example" id="equation-example"></div>
+    <ol class="equations" id="equations"></ol>
+    <p class="table-status" id="equation-status" role="status"></p>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">4</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="start-over">Start over</button>
+      <span class="confirm" id="start-confirm" hidden>
+        This rinses the sheet and erases everything you have recorded.
+        <button type="button" class="quiet-button danger" id="start-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="start-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    A simulation based on the Double Replacement Reactions experiment of the Daytona State College Science Department.
+    Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Shown here with the sash raised and with different materials.
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.DoubleLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/DoubleLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/DoubleLab.data.unityweb",
+      frameworkUrl: buildUrl + "/DoubleLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/DoubleLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "Double Replacement Reactions",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>

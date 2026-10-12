@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Double Replacement Reactions: Prelab Review</title>
+  <meta name="description" content="A short review before the Double Replacement Reactions lab: what is in a solution of an ionic compound, how ions trade partners, what a precipitate is, how to write a formula from the charges, and where precipitates turn up in everyday life.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Ccircle cx='11' cy='12' r='5' fill='%23fff'/%3E%3Ccircle cx='21' cy='20' r='5' fill='%23f2c81d'/%3E%3C/svg%3E">
+  <style>
+    /* Same look as the lab pages and the other prelabs: paper white, bench slate for ink, enamel blue. */
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #74807c;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --plus: #b3401f;
+      --plus-wash: #fbece6;
+      --minus: #1f5f8f;
+      --minus-wash: #e6f0f8;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead {
+      padding: 28px 20px 26px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 60ch; color: var(--ink-soft); }
+    .lab-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 6px;
+      background: var(--enamel); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .lab-button:hover { background: var(--enamel-deep); color: #fff; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 44px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 22px 0 6px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 68ch; }
+    .soft { color: var(--ink-soft); }
+    .cite { color: var(--ink-soft); font-size: 0.85rem; }
+    .formula { font-weight: 600; white-space: nowrap; }
+    .callout { max-width: 68ch; padding: 14px 18px 4px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1; }
+    .callout h3 { margin-top: 0; }
+
+    /* ---- Three cards in a row ---- */
+
+    .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 6px; }
+    .duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0 14px; max-width: 860px; }
+    .trio-card { padding: 14px 16px 6px; border: 1px solid var(--rule); border-radius: 8px; border-top: 6px solid var(--c); }
+    .trio-card h3 { margin: 0 0 4px; font-size: 1.12rem; }
+    .trio-card p { font-size: 0.96rem; }
+    .swap {
+      max-width: 860px; margin: 16px 0; padding: 14px 16px; border-radius: 8px; background: var(--wash);
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 600; text-align: center; letter-spacing: 0.02em;
+    }
+    .swap .a { color: var(--plus); }
+    .swap .b { color: var(--minus); }
+    .swap small { display: block; margin-top: 2px; font-family: var(--sans); font-size: 0.86rem; font-weight: 400; letter-spacing: 0; color: var(--ink-soft); }
+
+    /* ---- Ions as small tiles ---- */
+
+    .ion {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 3.1rem;
+      padding: 3px 9px; border-radius: 999px; font-weight: 650; font-size: 0.98rem; white-space: nowrap;
+      border: 1.5px solid var(--plus); background: var(--plus-wash); color: var(--plus);
+    }
+    .ion.neg { border-color: var(--minus); background: var(--minus-wash); color: var(--minus); }
+    .ions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .pair { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; border: 1px dashed var(--rule-strong); border-radius: 999px; }
+    .with { color: var(--ink-faint); font-size: 0.9rem; }
+
+    /* ---- Explorer: one mixture, a step at a time ---- */
+
+    .explorer { margin-top: 14px; padding: 18px 18px 16px; border: 1px solid var(--rule); border-radius: 10px; background: #fbfcfb; }
+    .explorer-help { max-width: 78ch; margin: 0 0 12px; color: var(--ink-soft); font-size: 0.95rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+    .chip {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    }
+    .chip:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .chip[aria-pressed="true"] { border-color: var(--enamel); background: var(--enamel); color: #fff; }
+    .mix-layout { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 24px; align-items: start; }
+    .drops { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 8px; justify-items: center; text-align: center; font-size: 0.86rem; color: var(--ink-soft); line-height: 1.3; }
+    .drop {
+      width: 74px; height: 74px; margin: 0 auto 6px; border-radius: 50%;
+      border: 1.5px solid rgba(23, 33, 30, 0.22);
+      background: radial-gradient(circle at 34% 30%, #fff 0 10%, rgba(255, 255, 255, 0) 24%), var(--c, #e6f1fa);
+      box-shadow: 0 3px 7px rgba(23, 33, 30, 0.12);
+    }
+    .drops .result { grid-column: 1 / -1; margin-top: 4px; }
+    .drops .result .drop { width: 104px; height: 104px; transition: background-color 0.5s; }
+    .drops .result[data-shown="false"] .drop { background: repeating-linear-gradient(135deg, #f3f6f4 0 8px, #e7ece9 8px 16px); box-shadow: none; }
+    .drops b { display: block; color: var(--ink); font-size: 0.95rem; }
+    .walk { margin: 0; padding: 0; list-style: none; counter-reset: walk; }
+    .walk li { position: relative; margin: 0 0 12px; padding: 0 0 0 2.3rem; counter-increment: walk; }
+    .walk li::before {
+      content: counter(walk); position: absolute; left: 0; top: 0.1rem;
+      display: flex; align-items: center; justify-content: center; width: 1.55rem; height: 1.55rem; border-radius: 50%;
+      border: 1.5px solid var(--enamel); color: var(--enamel-deep); font-size: 0.86rem; font-weight: 700;
+    }
+    .walk li[hidden] { display: none; }
+    .walk h4 { margin: 0 0 4px; font-size: 1rem; }
+    .walk p { margin: 0 0 6px; font-size: 0.97rem; }
+    .equation-line { margin: 2px 0 6px; font-size: 1.15rem; font-weight: 600; }
+    .walk-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0 2.3rem; }
+    .button {
+      padding: 8px 14px; border: 1.5px solid var(--enamel); border-radius: 6px; background: var(--enamel);
+      color: #fff; font: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    }
+    .button:hover { background: var(--enamel-deep); }
+    .button.quiet { background: #fff; color: var(--enamel-deep); }
+    .button.quiet:hover { background: var(--enamel-wash); }
+    .button[hidden] { display: none; }
+
+    /* ---- Formula builder ---- */
+
+    .builder-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; align-items: start; }
+    .pick-title { margin: 0 0 6px; font-weight: 600; }
+    .pick { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+    .pick button {
+      min-width: 3.4rem; padding: 6px 10px; border-radius: 999px; font: inherit; font-weight: 650; cursor: pointer;
+      border: 1.5px solid var(--plus); background: #fff; color: var(--plus);
+    }
+    .pick.neg button { border-color: var(--minus); color: var(--minus); }
+    .pick button[aria-pressed="true"] { background: var(--plus); color: #fff; }
+    .pick.neg button[aria-pressed="true"] { background: var(--minus); color: #fff; }
+    .scale { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin: 0 0 12px; }
+    .scale .side { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 8px; border-radius: 8px; background: var(--plus-wash); min-height: 6.4rem; justify-content: center; }
+    .scale .side.neg { background: var(--minus-wash); }
+    .scale .total { font-size: 0.9rem; font-weight: 700; color: var(--plus); }
+    .scale .side.neg .total { color: var(--minus); }
+    .scale .equals { font-size: 1.3rem; color: var(--ink-faint); }
+    .built { margin: 0 0 8px; font-family: var(--serif); font-size: 2rem; font-weight: 600; line-height: 1.1; }
+    .built-why { margin: 0; font-size: 0.97rem; }
+
+    /* ---- Fact cards ---- */
+
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+    .card {
+      display: flex; flex-direction: column; padding: 14px 16px 10px;
+      border: 1px solid var(--rule); border-left: 5px solid var(--cat); border-radius: 8px; background: #fff;
+    }
+    .card h3 { margin: 0 0 6px; font-family: var(--sans); font-size: 1.02rem; line-height: 1.3; }
+    .card .kind { margin: 0 0 4px; color: var(--cat); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .card p { margin: 0 0 8px; font-size: 0.95rem; }
+    .card .solid { font-weight: 600; }
+    .card .show { align-self: flex-start; margin-top: auto; padding: 0; border: 0; background: none; color: var(--enamel-deep); font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .card cite { margin-top: 4px; font-style: normal; font-size: 0.8rem; color: var(--ink-faint); }
+
+    /* ---- In the lab ---- */
+
+    .measure-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+    .tips { margin: 0; padding-left: 1.2em; }
+    .tips li { margin-bottom: 8px; }
+    .looks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .looks li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--rule); border-radius: 8px; font-size: 0.93rem; line-height: 1.3; }
+    .looks .drop { flex: none; width: 46px; height: 46px; margin: 0; }
+    .looks b { display: block; }
+
+    /* ---- Self-check ---- */
+
+    .quiz { display: grid; gap: 14px; max-width: 760px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .next p { margin: 0; max-width: 60ch; }
+    .sources { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 0.86rem; color: var(--ink-soft); }
+    .sources h2 { font-size: 1.1rem; }
+    .sources ol { margin: 0; padding-left: 1.4em; }
+    .sources li { margin-bottom: 4px; }
+    .sources a { color: inherit; overflow-wrap: anywhere; }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 820px) {
+      .trio, .duo, .mix-layout, .builder-grid, .measure-grid { grid-template-columns: minmax(0, 1fr); }
+      .drops { max-width: 16rem; margin: 0 auto; }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 22px 16px 20px; }
+      h1 { font-size: 1.7rem; }
+      .explorer { padding: 14px 12px 12px; }
+      .swap { font-size: 1.25rem; }
+      .walk li { padding-left: 2rem; }
+      .walk-buttons { margin-left: 2rem; }
+      .looks { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .drops .result .drop { transition: none; }
+    }
+    @media print {
+      .lab-button, .next, .chips, .walk-buttons, .pick, .pick-title, .card .show { display: none !important; }
+      .masthead { background: none; }
+      .walk li[hidden] { display: block; }
+      section { break-inside: avoid-page; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <p class="eyebrow">Prelab review · Double Replacement Reactions</p>
+        <h1>When ions trade partners</h1>
+        <p class="dek">About ten minutes. Read it before the lab, walk through a few mixtures, build some formulas, then check yourself with the questions at the end.</p>
+      </div>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <section id="ions" aria-labelledby="ions-title">
+      <h2 id="ions-title"><span class="step" aria-hidden="true">1</span>What is really in the bottle</h2>
+      <div class="prose">
+        <p>A patient about to have a stomach X-ray drinks a chalky white liquid. Soap leaves a film on your hands in some towns and not in others. A kidney stone grows from a liquid that looked perfectly clear. All three come down to the same event: ions in water meeting a partner they would rather hold on to.</p>
+        <p>Every solution in this lab is an <strong>ionic compound</strong> dissolved in water. An ionic compound is made of two kinds of charged particles: positive ions, called <strong>cations</strong>, and negative ions, called <strong>anions</strong>. When it dissolves, the two kinds come apart and spread out among the water molecules. A solution of table salt, NaCl, is really Na⁺ ions and Cl⁻ ions moving about on their own. That is why it looks like plain water.</p>
+      </div>
+      <div class="trio">
+        <div class="trio-card" style="--c: var(--plus)">
+          <h3>Cation</h3>
+          <p>A positive ion, such as <span class="ion">Na⁺</span> <span class="ion">Mg²⁺</span> or <span class="ion">Al³⁺</span>. It is written first in a formula.</p>
+        </div>
+        <div class="trio-card" style="--c: var(--minus)">
+          <h3>Anion</h3>
+          <p>A negative ion, such as <span class="ion neg">Cl⁻</span> or <span class="ion neg">Br⁻</span>. It is written second.</p>
+        </div>
+        <div class="trio-card" style="--c: #6c5aa8">
+          <h3>Polyatomic ion</h3>
+          <p>A small group of atoms that stays together and carries one charge, such as <span class="ion neg">SO₄²⁻</span> or <span class="ion neg">OH⁻</span>. Treat the whole group as one unit.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="swap" aria-labelledby="swap-title">
+      <h2 id="swap-title"><span class="step" aria-hidden="true">2</span>Trading partners</h2>
+      <p class="prose">Mix two of these solutions and four kinds of ions are suddenly in the same water. Each positive ion can now meet the <em>other</em> solution's negative ion. On paper, the ions trade partners:</p>
+      <p class="swap"><span class="a">A</span><span class="b">B</span> + <span class="a">C</span><span class="b">D</span> → <span class="a">A</span><span class="b">D</span> + <span class="a">C</span><span class="b">B</span><small>a double replacement reaction: each positive ion ends up with the other one's negative ion</small></p>
+      <p class="prose">What you actually see depends on the two new pairs.</p>
+      <div class="duo">
+        <div class="trio-card" style="--c: var(--enamel)">
+          <h3>One new pair holds together</h3>
+          <p>If one new pair clings together more strongly than water can pull it apart, it comes out of the solution as a solid. That solid is a <strong>precipitate</strong>. The clear mixture turns cloudy, milky, grainy or jelly-like, and the solid may settle.</p>
+        </div>
+        <div class="trio-card" style="--c: var(--rule-strong)">
+          <h3>Both new pairs stay dissolved</h3>
+          <p>Then all four ions go on moving about separately, exactly as before. Nothing has changed, so there is <strong>no reaction</strong>. You record that as N.R.</p>
+        </div>
+      </div>
+      <p class="prose soft">Acids and bases trade partners in the same way. When an acid meets a base, one of the new pairs is water.</p>
+    </section>
+
+    <section id="explore" aria-labelledby="explore-title">
+      <h2 id="explore-title"><span class="step" aria-hidden="true">3</span>Watch the ions trade partners</h2>
+      <div class="explorer">
+        <p class="explorer-help">Pick a mixture, then go a step at a time. Before each step, try to say what comes next. None of these pairs is on your lab sheet; the lab is where you find out what yours do.</p>
+        <div class="chips" id="mix-chips" role="group" aria-label="Mixture"></div>
+        <div class="mix-layout">
+          <div class="drops" aria-live="polite">
+            <div><div class="drop" id="drop-a"></div><b id="name-a"></b><span id="formula-a"></span></div>
+            <div><div class="drop" id="drop-b"></div><b id="name-b"></b><span id="formula-b"></span></div>
+            <div class="result" id="result" data-shown="false"><div class="drop" id="drop-mix"></div><b id="result-title">Mixed</b><span id="result-text">Work through the steps to see what happens.</span></div>
+          </div>
+          <div>
+            <ol class="walk" id="walk" aria-live="polite"></ol>
+            <div class="walk-buttons">
+              <button type="button" class="button" id="walk-next">Next step</button>
+              <button type="button" class="button quiet" id="walk-all">Show every step</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="formula" aria-labelledby="formula-title">
+      <h2 id="formula-title"><span class="step" aria-hidden="true">4</span>Charges must cancel</h2>
+      <div class="prose">
+        <p>The formula of an ionic compound is not a guess. The positive and negative charges have to add up to zero, using the <strong>smallest whole numbers</strong> of each ion that do it. Pick an ion of each kind and watch the numbers work out.</p>
+      </div>
+      <div class="explorer">
+        <div class="builder-grid">
+          <div>
+            <p class="pick-title">Positive ion</p>
+            <div class="pick" id="pick-cation" role="group" aria-label="Positive ion"></div>
+            <p class="pick-title">Negative ion</p>
+            <div class="pick neg" id="pick-anion" role="group" aria-label="Negative ion"></div>
+          </div>
+          <div aria-live="polite">
+            <div class="scale">
+              <div class="side" id="side-plus"></div>
+              <span class="equals" aria-hidden="true">=</span>
+              <div class="side neg" id="side-minus"></div>
+            </div>
+            <p class="built" id="built"></p>
+            <p class="built-why" id="built-why"></p>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top: 18px">
+        <h3>Then balance the equation</h3>
+        <p>With the right formulas written down, put a number (a coefficient) in front of each one so that every ion is counted the same on both sides. Count a polyatomic ion as a unit.</p>
+        <p>Take <span class="formula">MgCl₂ + NaOH → Mg(OH)₂ + NaCl</span>. One Mg(OH)₂ holds two OH⁻, so you need 2 NaOH. Those bring two Na⁺, which pair with the two Cl⁻ as 2 NaCl. Balanced: <span class="formula">MgCl₂ + 2 NaOH → Mg(OH)₂ + 2 NaCl</span>.</p>
+      </div>
+    </section>
+
+    <section id="life" aria-labelledby="life-title">
+      <h2 id="life-title"><span class="step" aria-hidden="true">5</span>Where precipitates show up</h2>
+      <p class="prose">Whether an ion pair dissolves decides a good deal outside the lab. Some of these cards have a button that walks through the reaction above.</p>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <section id="lab" aria-labelledby="lab-title">
+      <h2 id="lab-title"><span class="step" aria-hidden="true">6</span>What you'll do in the lab</h2>
+      <div class="measure-grid">
+        <div>
+          <ol class="tips">
+            <li>On a laminated sheet marked with a grid, put one drop of the solution named at the left of a row on each X in that row.</li>
+            <li>Add one drop of the solution named at the top of each column, then stir the two drops together with a toothpick.</li>
+            <li>Look closely and record what you see in each box: the color of the precipitate, or N.R.</li>
+            <li>Use your finished table to find which ions tend to form precipitates.</li>
+            <li>Write balanced equations for eight of the pairs. The reactants and their ions are given; the products are yours to work out.</li>
+          </ol>
+        </div>
+        <div>
+          <h3 style="margin-top:0">A precipitate does not always look like powder</h3>
+          <ul class="looks">
+            <li><span class="drop" style="--c:#f3f2ee"></span><span><b>Milky or cloudy</b>You can no longer see through the drop.</span></li>
+            <li><span class="drop" style="--c:#e9d98a"></span><span><b>Grainy</b>Specks or curds, sometimes colored.</span></li>
+            <li><span class="drop" style="--c:#7fb1e6"></span><span><b>Jelly-like</b>A soft blob that holds its shape.</span></li>
+            <li><span class="drop" style="--c:rgba(125, 185, 110, 0.35)"></span><span><b>Not a precipitate</b>Two colors blending while the drop stays clear.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">7</span>Check yourself</h2>
+      <p class="prose">Not graded. Pick an answer to see whether it's right and why; you can change your answer as often as you like.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p><strong>Ready?</strong> Head to the lab and mix all 36 pairs. Some will surprise you.</p>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+
+    <section class="sources" aria-labelledby="sources-title">
+      <h2 id="sources-title">Sources</h2>
+      <ol id="sources"></ol>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SOURCES = [
+    { id: 'medline', text: 'MedlinePlus, U.S. National Library of Medicine. "Barium Sulfate."', url: 'https://medlineplus.gov/druginfo/meds/a606010.html' },
+    { id: 'britannica', text: 'Encyclopaedia Britannica. "Technology of photography: Black-and-white films."', url: 'https://www.britannica.com/technology/technology-of-photography/Black-and-white-films' },
+    { id: 'niddk', text: 'National Institute of Diabetes and Digestive and Kidney Diseases. "Definition & Facts for Kidney Stones."', url: 'https://www.niddk.nih.gov/health-information/urologic-diseases/kidney-stones/definition-facts' },
+    { id: 'usgs', text: 'U.S. Geological Survey, Water Science School. "Hardness of Water."', url: 'https://www.usgs.gov/special-topics/water-science-school/science/hardness-water' },
+    { id: 'epa', text: 'U.S. Environmental Protection Agency. "Overview of Drinking Water Treatment Technologies" (phosphate feed).', url: 'https://www.epa.gov/sdwa/overview-drinking-water-treatment-technologies' }
+  ];
+
+  // f: how the ion is written inside a formula; q: the size of its charge; neg: a negative ion;
+  // group: an ion of several atoms, which takes brackets when there is more than one of it.
+  var IONS = {
+    Na: { f: 'Na', q: 1 }, K: { f: 'K', q: 1 }, NH4: { f: 'NH4', q: 1, group: true }, Ag: { f: 'Ag', q: 1 },
+    Mg: { f: 'Mg', q: 2 }, Ca: { f: 'Ca', q: 2 }, Ba: { f: 'Ba', q: 2 }, Zn: { f: 'Zn', q: 2 }, Pb: { f: 'Pb', q: 2 },
+    Al: { f: 'Al', q: 3 },
+    Cl: { f: 'Cl', q: 1, neg: true }, Br: { f: 'Br', q: 1, neg: true }, NO3: { f: 'NO3', q: 1, neg: true, group: true },
+    OH: { f: 'OH', q: 1, neg: true, group: true }, SO4: { f: 'SO4', q: 2, neg: true, group: true },
+    CO3: { f: 'CO3', q: 2, neg: true, group: true }, C2O4: { f: 'C2O4', q: 2, neg: true, group: true },
+    CrO4: { f: 'CrO4', q: 2, neg: true, group: true }, PO4: { f: 'PO4', q: 3, neg: true, group: true }
+  };
+
+  // The mixtures in the explorer. None is a pair on the lab's sheet. `solid` names the new pair
+  // that does not dissolve (the positive ion's key), or is left out when both stay dissolved.
+  var MIXES = [
+    { id: 'xray', chip: 'BaCl₂ + Na₂SO₄', a: ['barium chloride', 'Ba', 'Cl'], b: ['sodium sulfate', 'Na', 'SO4'], solid: 'Ba', color: '#f4f3ef', look: 'The clear mixture turns milky white.',
+      balance: 'One BaCl₂ gives up two Cl⁻. They pair with the two Na⁺ from one Na₂SO₄, so 2 NaCl.' },
+    { id: 'film', chip: 'AgNO₃ + KBr', a: ['silver nitrate', 'Ag', 'NO3'], b: ['potassium bromide', 'K', 'Br'], solid: 'Ag', color: '#ece6c2', look: 'A pale cream solid appears.',
+      balance: 'Every ion here has a charge of 1, so one of each does it. No coefficients are needed.' },
+    { id: 'stone', chip: 'CaCl₂ + Na₂C₂O₄', a: ['calcium chloride', 'Ca', 'Cl'], b: ['sodium oxalate', 'Na', 'C2O4'], solid: 'Ca', color: '#f2f1ec', look: 'The clear mixture turns cloudy white.',
+      balance: 'One CaCl₂ gives up two Cl⁻. They pair with the two Na⁺ from one Na₂C₂O₄, so 2 NaCl.' },
+    { id: 'yellow', chip: 'Pb(NO₃)₂ + K₂CrO₄', a: ['lead nitrate', 'Pb', 'NO3'], b: ['potassium chromate', 'K', 'CrO4'], bColor: '#f3e27a', solid: 'Pb', color: '#f5c518', look: 'A bright yellow solid appears.',
+      balance: 'One Pb(NO₃)₂ gives up two NO₃⁻. They pair with the two K⁺ from one K₂CrO₄, so 2 KNO₃.' },
+    { id: 'milk', chip: 'AlCl₃ + NaOH', a: ['aluminum chloride', 'Al', 'Cl'], b: ['sodium hydroxide', 'Na', 'OH'], solid: 'Al', color: '#eef0ee', look: 'A white, jelly-like solid appears.',
+      balance: 'One Al(OH)₃ holds three OH⁻, so 3 NaOH. Those bring three Na⁺, which pair with the three Cl⁻ of AlCl₃ as 3 NaCl.' },
+    { id: 'none', chip: 'KNO₃ + NaCl', a: ['potassium nitrate', 'K', 'NO3'], b: ['sodium chloride', 'Na', 'Cl'], look: 'The mixture stays as clear as it was.' }
+  ];
+
+  var FACTS = [
+    { kind: 'Medicine', color: '#c8417a', title: 'The drink before a stomach X-ray', src: 'medline', mix: 'xray',
+      text: 'Before some X-rays and CT scans, the patient drinks a liquid full of barium sulfate. It coats the esophagus, stomach or intestine so that they show up clearly. It can be swallowed because it does not dissolve: it is not absorbed into the body.' },
+    { kind: 'Your body', color: '#d9822b', title: 'Kidney stones', src: 'niddk', mix: 'stone',
+      text: 'Kidney stones form when urine holds high levels of certain minerals. The most common kinds are calcium stones, and most of those are calcium oxalate: calcium ions and oxalate ions that have come together as a solid.' },
+    { kind: 'At home', color: '#2f7fbf', title: 'Soap scum', src: 'usgs',
+      text: 'Hard water is high in dissolved minerals, mostly calcium and magnesium. Soap reacts with the calcium to form soap scum, the film it leaves on your hands. That film is a precipitate, and it is why hard water takes more soap.' },
+    { kind: 'Public health', color: '#3b8f4f', title: 'Keeping lead out of tap water', src: 'epa',
+      text: 'Old lead pipes can let lead into drinking water. Many water systems add a phosphate to the water. It is believed to combine with the lead in the plumbing to form compounds that do not dissolve, so less lead reaches the tap.' },
+    { kind: 'Technology', color: '#6c5aa8', title: 'Photographic film', src: 'britannica', mix: 'film',
+      text: 'The light-sensitive layer of black-and-white film is gelatin carrying tiny crystals of silver bromide. Silver bromide does not dissolve in water: it forms as a solid when a solution with silver ions meets one with bromide ions.' }
+  ];
+
+  var QUESTIONS = [
+    { q: 'In a double replacement reaction, AB + CD gives…', options: ['AC + BD', 'AD + CB', 'A + B + C + D', 'ABCD'], answer: 1,
+      why: 'Each positive ion ends up with the other compound’s negative ion: A with D, and C with B.' },
+    { q: 'Two clear solutions are mixed and the drop turns milky white. What happened?', answer: 2,
+      options: ['Nothing: milky is not a solid', 'One solution was dirty', 'A precipitate formed', 'The water evaporated'],
+      why: 'A solid that will not dissolve makes the mixture cloudy or milky. A precipitate does not have to look like powder.' },
+    { q: 'A blue solution and a yellow solution are mixed. The drop is green and stays perfectly clear. What do you record?', answer: 0,
+      options: ['N.R.', 'A green precipitate', 'A blue precipitate', 'A yellow precipitate'],
+      why: 'Blue and yellow simply blend to green. With no solid in the drop, nothing has reacted.' },
+    { q: 'What is the formula of the compound of Mg²⁺ and PO₄³⁻?', answer: 3,
+      options: ['MgPO₄', 'Mg₂(PO₄)₃', 'Mg₃PO₄', 'Mg₃(PO₄)₂'],
+      why: 'Three Mg²⁺ make 6+ and two PO₄³⁻ make 6−. The brackets show there are two whole PO₄ groups.' },
+    { q: 'Why is it written Al(OH)₃ and not AlOH₃?', answer: 1,
+      options: ['It makes no difference', 'The brackets show three whole OH⁻ groups', 'Brackets always go round the last ion', 'Because aluminum has a charge of 3+'],
+      why: 'AlOH₃ would mean one oxygen and three hydrogens. The brackets say the whole OH⁻ group is there three times.' },
+    { q: 'Which coefficients balance  __ BaCl₂ + __ Na₂SO₄ → __ BaSO₄ + __ NaCl ?', answer: 2,
+      options: ['1, 1, 1, 1', '2, 1, 2, 1', '1, 1, 1, 2', '1, 2, 1, 2'],
+      why: 'One BaCl₂ and one Na₂SO₄ hold two Cl⁻ and two Na⁺, which make 2 NaCl. Everything else is already one of each.' },
+    { q: 'Why can a patient safely swallow barium sulfate before an X-ray?', answer: 0,
+      options: ['It does not dissolve, so the body does not absorb it', 'It dissolves completely in the stomach', 'It is the same thing as table salt', 'It turns into water'],
+      why: 'A compound that will not dissolve passes through without being taken up. That is the whole point of choosing it.' },
+    { q: 'In the virtual lab, when is a box ready to record?', answer: 3,
+      options: ['As soon as the first drop is in', 'As soon as both drops are in', 'Before any drops, from the formulas', 'After both drops are in and stirred'],
+      why: 'Some solids only show properly once the two drops are stirred together, so stir first, then look closely.' }
+  ];
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  var SUBS = '₀₁₂₃₄₅₆₇₈₉';
+  // "Al2(SO4)3" -> "Al₂(SO₄)₃": a number after a letter or a closing bracket is a subscript
+  function pretty(text) {
+    var out = '', prev = '', prevSub = false;
+    String(text).split('').forEach(function (ch) {
+      var sub = /\d/.test(ch) && (/[A-Za-z)]/.test(prev) || (/\d/.test(prev) && prevSub));
+      out += sub ? SUBS[+ch] : ch;
+      prev = ch;
+      prevSub = sub;
+    });
+    return out;
+  }
+  function chargeText(ion) { return (ion.q === 2 ? '²' : ion.q === 3 ? '³' : '') + (ion.neg ? '⁻' : '⁺'); }
+  function ionText(key) { return pretty(IONS[key].f) + chargeText(IONS[key]); }
+  function ionTile(key) { return el('span', 'ion' + (IONS[key].neg ? ' neg' : ''), ionText(key)); }
+  function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+  function part(ion, n) { return n > 1 ? (ion.group ? '(' + ion.f + ')' + n : ion.f + n) : ion.f; }
+  // the neutral compound of a positive and a negative ion, in the smallest whole numbers
+  function compound(cKey, aKey) {
+    var c = IONS[cKey], a = IONS[aKey], g = gcd(c.q, a.q);
+    var nc = a.q / g, na = c.q / g;
+    return { cation: cKey, anion: aKey, nc: nc, na: na, formula: part(c, nc) + part(a, na) };
+  }
+  function count(n, word) { return (n === 1 ? 'one' : n === 2 ? 'two' : n === 3 ? 'three' : String(n)) + ' ' + word; }
+
+  // ---- Sources ----
+  var srcIndex = {};
+  SOURCES.forEach(function (s, i) {
+    srcIndex[s.id] = i + 1;
+    var li = el('li'); li.id = 'src-' + s.id;
+    li.appendChild(document.createTextNode(s.text + ' '));
+    var a = el('a', null, s.url.replace(/^https:\/\//, '').replace(/\/$/, '')); a.href = s.url; a.rel = 'noopener'; a.target = '_blank';
+    li.appendChild(a);
+    $('sources').appendChild(li);
+  });
+
+  // ---- Explorer: a mixture, a step at a time ----
+  var mix = MIXES[0], shown = 1, LAST = 5;
+
+  // the four compounds of a mixture and the coefficients that balance it
+  function work(m) {
+    var r1 = compound(m.a[1], m.a[2]), r2 = compound(m.b[1], m.b[2]);
+    var p1 = compound(m.a[1], m.b[2]), p2 = compound(m.b[1], m.a[2]);
+    for (var a = 1; a <= 6; a++) for (var b = 1; b <= 6; b++) {
+      var c = a * r1.nc / p1.nc, d = b * r2.nc / p2.nc;
+      if (c % 1 || d % 1) continue;
+      if (a * r1.na === d * p2.na && b * r2.na === c * p1.na) return { r1: r1, r2: r2, p1: p1, p2: p2, k: [a, b, c, d] };
+    }
+    return null;
+  }
+  function term(n, formula, solid) { return (n > 1 ? n + ' ' : '') + pretty(formula) + (solid ? '(s)' : ''); }
+
+  function stepItem(title, build) {
+    var li = el('li');
+    li.appendChild(el('h4', null, title));
+    build(li);
+    return li;
+  }
+  function pairNode(cKey, aKey) {
+    var p = el('span', 'pair');
+    p.appendChild(ionTile(cKey));
+    p.appendChild(el('span', 'with', 'with'));
+    p.appendChild(ionTile(aKey));
+    return p;
+  }
+
+  function buildWalk() {
+    var w = work(mix), walk = $('walk');
+    var solidIs = mix.solid ? (mix.solid === w.p1.cation ? w.p1 : w.p2) : null;
+    var other = solidIs === w.p1 ? w.p2 : w.p1;
+    walk.textContent = '';
+
+    walk.appendChild(stepItem('The ions that meet', function (li) {
+      li.appendChild(el('p', null, 'The ' + mix.a[0] + ' solution brings ' + ionText(mix.a[1]) + ' and ' + ionText(mix.a[2]) + '. The ' + mix.b[0] + ' solution brings ' + ionText(mix.b[1]) + ' and ' + ionText(mix.b[2]) + '.'));
+      var row = el('div', 'ions');
+      [mix.a[1], mix.a[2], mix.b[1], mix.b[2]].forEach(function (k) { row.appendChild(ionTile(k)); });
+      li.appendChild(row);
+    }));
+    walk.appendChild(stepItem('They trade partners', function (li) {
+      li.appendChild(el('p', null, 'Each positive ion can now pair with the other solution’s negative ion.'));
+      var row = el('div', 'ions');
+      row.appendChild(pairNode(w.p1.cation, w.p1.anion));
+      row.appendChild(pairNode(w.p2.cation, w.p2.anion));
+      li.appendChild(row);
+    }));
+    walk.appendChild(stepItem('Write each new formula so the charges cancel', function (li) {
+      [w.p1, w.p2].forEach(function (p) {
+        var c = IONS[p.cation], a = IONS[p.anion];
+        li.appendChild(el('p', null, pretty(p.formula) + ': ' + count(p.nc, ionText(p.cation)) + ' (' + (p.nc * c.q) + '+) and ' + count(p.na, ionText(p.anion)) + ' (' + (p.na * a.q) + '−).'));
+      });
+    }));
+    walk.appendChild(stepItem('Does either new pair come out as a solid?', function (li) {
+      if (solidIs) {
+        li.appendChild(el('p', null, pretty(solidIs.formula) + ' does not dissolve in water, so it comes out as a solid: a precipitate. ' + pretty(other.formula) + ' dissolves, so its ions stay spread out in the water.'));
+        li.appendChild(el('p', null, 'What you would see: ' + mix.look));
+      } else {
+        li.appendChild(el('p', null, pretty(w.p1.formula) + ' and ' + pretty(w.p2.formula) + ' both dissolve in water. All four ions stay spread out, just as they were, so there is no reaction: N.R.'));
+        li.appendChild(el('p', null, 'What you would see: ' + mix.look));
+      }
+    }));
+    walk.appendChild(stepItem(solidIs ? 'Balance the equation' : 'Nothing to balance', function (li) {
+      if (solidIs) {
+        li.appendChild(el('p', 'equation-line', term(w.k[0], w.r1.formula) + ' + ' + term(w.k[1], w.r2.formula) + ' → ' +
+          term(w.k[2], w.p1.formula, solidIs === w.p1) + ' + ' + term(w.k[3], w.p2.formula, solidIs === w.p2)));
+        li.appendChild(el('p', null, mix.balance + ' The (s) marks the solid.'));
+      } else {
+        li.appendChild(el('p', null, 'No new substance formed, so there is no equation to write. In the lab you would record N.R. for this pair.'));
+      }
+    }));
+
+    $('name-a').textContent = mix.a[0];
+    $('formula-a').textContent = pretty(w.r1.formula);
+    $('name-b').textContent = mix.b[0];
+    $('formula-b').textContent = pretty(w.r2.formula);
+    $('drop-a').style.setProperty('--c', mix.aColor || '#e6f1fa');
+    $('drop-b').style.setProperty('--c', mix.bColor || '#e6f1fa');
+    showSteps();
+  }
+
+  function showSteps() {
+    var items = $('walk').children;
+    for (var i = 0; i < items.length; i++) items[i].hidden = i >= shown;
+    var decided = shown >= 4;
+    $('result').setAttribute('data-shown', decided ? 'true' : 'false');
+    $('drop-mix').style.setProperty('--c', mix.solid ? mix.color : (mix.bColor || '#e6f1fa'));
+    $('result-title').textContent = !decided ? 'Mixed' : (mix.solid ? 'A precipitate' : 'No reaction');
+    $('result-text').textContent = !decided ? 'Go on a step or two to see what happens.' : mix.look;
+    $('walk-next').hidden = shown >= LAST;
+    $('walk-all').hidden = shown >= LAST;
+  }
+
+  function chooseMix(id, all) {
+    mix = MIXES.filter(function (m) { return m.id === id; })[0] || MIXES[0];
+    shown = all ? LAST : 1;
+    Array.prototype.forEach.call($('mix-chips').children, function (b) { b.setAttribute('aria-pressed', b.dataset.mix === mix.id ? 'true' : 'false'); });
+    buildWalk();
+  }
+
+  MIXES.forEach(function (m) {
+    var b = el('button', 'chip', m.chip);
+    b.type = 'button';
+    b.dataset.mix = m.id;
+    b.addEventListener('click', function () { chooseMix(m.id, false); });
+    $('mix-chips').appendChild(b);
+  });
+  $('walk-next').addEventListener('click', function () { shown = Math.min(LAST, shown + 1); showSteps(); });
+  $('walk-all').addEventListener('click', function () { shown = LAST; showSteps(); });
+
+  // ---- Formula builder ----
+  var BUILD_CATIONS = ['K', 'NH4', 'Mg', 'Ba', 'Zn', 'Al'], BUILD_ANIONS = ['Br', 'NO3', 'OH', 'SO4', 'CO3', 'PO4'];
+  var chosen = { cation: 'Al', anion: 'SO4' };
+
+  function buildPick(holder, keys, which) {
+    keys.forEach(function (k) {
+      var b = el('button', null, ionText(k));
+      b.type = 'button';
+      b.dataset.ion = k;
+      b.addEventListener('click', function () { chosen[which] = k; showBuilt(); });
+      holder.appendChild(b);
+    });
+  }
+
+  function showBuilt() {
+    var p = compound(chosen.cation, chosen.anion), c = IONS[chosen.cation], a = IONS[chosen.anion];
+    [['pick-cation', chosen.cation], ['pick-anion', chosen.anion]].forEach(function (pair) {
+      Array.prototype.forEach.call($(pair[0]).children, function (b) { b.setAttribute('aria-pressed', b.dataset.ion === pair[1] ? 'true' : 'false'); });
+    });
+    [['side-plus', chosen.cation, p.nc, c, '+'], ['side-minus', chosen.anion, p.na, a, '−']].forEach(function (s) {
+      var side = $(s[0]);
+      side.textContent = '';
+      var row = el('div', 'ions');
+      row.style.justifyContent = 'center';
+      for (var i = 0; i < s[2]; i++) row.appendChild(ionTile(s[1]));
+      side.appendChild(row);
+      side.appendChild(el('span', 'total', 'total ' + (s[2] * s[3].q) + s[4]));
+    });
+    $('built').textContent = pretty(p.formula);
+    var why = count(p.nc, ionText(chosen.cation)) + ' and ' + count(p.na, ionText(chosen.anion)) + ': ' + (p.nc * c.q) + '+ and ' + (p.na * a.q) + '− cancel.';
+    why = why.charAt(0).toUpperCase() + why.slice(1);
+    if ((a.group && p.na > 1) || (c.group && p.nc > 1)) {
+      var g = a.group && p.na > 1 ? a : c, n = a.group && p.na > 1 ? p.na : p.nc;
+      why += ' ' + pretty(g.f) + ' is a group of atoms, so it goes in brackets when there is more than one: the small ' + n + ' outside counts whole groups.';
+    } else if (p.nc === 1 && p.na === 1 && c.q > 1) {
+      why += ' One of each is enough, so no numbers are written. (Not ' + pretty(part(c, a.q) + part(a, c.q)) + ': always the smallest whole numbers.)';
+    } else if (p.nc === 1 && p.na === 1) {
+      why += ' One of each is enough, so no numbers are written.';
+    }
+    $('built-why').textContent = why;
+  }
+
+  buildPick($('pick-cation'), BUILD_CATIONS, 'cation');
+  buildPick($('pick-anion'), BUILD_ANIONS, 'anion');
+
+  // ---- Fact cards ----
+  FACTS.forEach(function (f) {
+    var card = el('article', 'card');
+    card.style.setProperty('--cat', f.color);
+    card.appendChild(el('p', 'kind', f.kind));
+    card.appendChild(el('h3', null, f.title));
+    card.appendChild(el('p', null, f.text));
+    if (f.mix) {
+      var show = el('button', 'show', 'Walk through the reaction');
+      show.type = 'button';
+      show.addEventListener('click', function () {
+        chooseMix(f.mix, true);
+        $('explore').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+      card.appendChild(show);
+    }
+    var cite = el('cite');
+    var a = el('a', null, 'Source ' + srcIndex[f.src]); a.href = '#src-' + f.src;
+    cite.appendChild(a);
+    card.appendChild(cite);
+    $('cards').appendChild(card);
+  });
+
+  // ---- Self-check ----
+  var quiz = $('quiz');
+  var state = QUESTIONS.map(function () { return null; });
+  QUESTIONS.forEach(function (q, qi) {
+    var li = el('li', 'q');
+    var text = el('p', 'q-text', q.q); text.id = 'q' + qi;
+    li.appendChild(text);
+    var opts = el('div', 'options'); opts.setAttribute('role', 'group'); opts.setAttribute('aria-labelledby', text.id);
+    var fb = el('p', 'feedback'); fb.setAttribute('aria-live', 'polite');
+    q.options.forEach(function (o, oi) {
+      var btn = el('button', null, o); btn.type = 'button';
+      btn.addEventListener('click', function () {
+        state[qi] = oi === q.answer;
+        Array.prototype.forEach.call(opts.children, function (other, j) {
+          other.removeAttribute('data-state');
+          other.setAttribute('aria-pressed', j === oi ? 'true' : 'false');
+        });
+        btn.setAttribute('data-state', state[qi] ? 'right' : 'wrong');
+        fb.textContent = '';
+        fb.appendChild(el('b', state[qi] ? 'right' : 'wrong', state[qi] ? 'Right. ' : 'Not quite. '));
+        fb.appendChild(document.createTextNode(state[qi] ? q.why : 'Try another answer.'));
+        score();
+      });
+      opts.appendChild(btn);
+    });
+    li.appendChild(opts);
+    li.appendChild(fb);
+    quiz.appendChild(li);
+  });
+  function score() {
+    var answered = state.filter(function (s) { return s !== null; }).length;
+    var right = state.filter(function (s) { return s === true; }).length;
+    var out = $('score');
+    out.textContent = '';
+    if (!answered) return;
+    if (right === QUESTIONS.length) { out.appendChild(el('span', 'done', 'All ' + right + ' right. You are ready for the lab.')); return; }
+    out.textContent = right + ' of ' + QUESTIONS.length + ' right so far.';
+  }
+
+  chooseMix('xray', false);
+  showBuilt();
+})();
+</script>
+</body>
+</html>
