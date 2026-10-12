@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Separations: Who Wrote the Ransom Note?</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Crect x='10' y='5' width='12' height='22' rx='1.5' fill='%23fff'/%3E%3Crect x='14.5' y='9' width='3' height='5' rx='1.5' fill='%237b45b8'/%3E%3Crect x='14.5' y='15' width='3' height='4' rx='1.5' fill='%23e5873f'/%3E%3Ccircle cx='16' cy='23' r='1.5' fill='%2317211e'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lab.css">
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <h1>Separations: Who Wrote the Ransom Note?</h1>
+    <p class="unknown-tag">Unknown <span id="unknown-code" class="code">&nbsp;</span></p>
+    <p class="print-header" aria-hidden="true"><span id="print-name"></span><span id="print-date"></span></p>
+  </header>
+
+  <section class="part" id="part-bench" aria-labelledby="bench-title">
+    <h2 id="bench-title"><span class="step" aria-hidden="true">1</span>Develop the chromatograms</h2>
+    <p class="prelab-note">New to this? Read the <a href="prelab/">prelab review</a> first: why black ink is a mixture, how chromatography pulls it apart, and how to compare the plates.</p>
+    <p class="lede">A ransom note was written with a black pen, and several black pens were found in the same room. Black ink is a mixture of dyes, and each make of pen uses its own mixture. You are the analyst: separate the ink from the note and the ink of four of the pens side by side, in two different solvents, and decide whether one of those pens wrote the note.</p>
+
+    <div class="bench-layout">
+      <div class="stage-column">
+        <div class="stage" id="stage">
+          <canvas id="unity-canvas" tabindex="-1" aria-label="3D fume hood holding two chromatography plates on a paper towel, four numbered pens, two glass chambers, three bottles, a graduated cylinder and a timer"></canvas>
+          <div class="stage-cover" id="stage-cover">
+            <p id="stage-status">Setting up the fume hood</p>
+            <div class="progress" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          </div>
+        </div>
+        <p class="stage-note" id="stage-note" role="status"></p>
+        <p class="stage-tip">Tip: turn your phone sideways for a bigger bench.</p>
+        <p class="run-status" id="run-status" aria-live="off"></p>
+        <div class="stage-controls">
+          <div class="views" role="group" aria-label="Camera view">
+            <button type="button" class="view-button" data-view="hood" aria-pressed="false">Fume hood</button>
+            <button type="button" class="view-button" data-view="bench" aria-pressed="true">Bench</button>
+            <button type="button" class="view-button" data-view="plates" aria-pressed="false">Plates from above</button>
+            <button type="button" class="view-button" data-view="chambers" aria-pressed="false">Chambers</button>
+          </div>
+          <button type="button" class="quiet-button" id="speed-up" aria-pressed="false" disabled>Speed up the wait</button>
+          <div class="reset-wrap">
+            <button type="button" class="quiet-button" id="reset-bench">Start again with fresh plates</button>
+            <span class="confirm" id="reset-confirm" hidden>
+              Clear the bench and start again with fresh plates? The times in Table 1 will be cleared.
+              <button type="button" class="quiet-button danger" id="reset-yes">Fresh plates</button>
+              <button type="button" class="quiet-button" id="reset-no">Keep going</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-column">
+        <ol class="procedure">
+          <li><strong>The plates.</strong> Two plates lie on the paper towel, marked Acetone and Alcohol. The ink from the ransom note is already on the middle mark, U, of each. The line and the numbers are in pencil, because ink would run.</li>
+          <li><strong>Dot the pens.</strong> Click a pen, then click each plate: the pen leaves a small dot on the pencil line, above its own number. Do this with all four pens. Click anywhere else to put a pen back.</li>
+          <li><strong>Acetone solvent.</strong> Click the acetone bottle, then the graduated cylinder: 6 mL goes in. Add distilled water the same way, up to the 8 mL line. Then click the cylinder and the chamber marked Acetone.</li>
+          <li><strong>Alcohol solvent.</strong> Make it the same way with isopropyl alcohol, for the chamber marked Alcohol.</li>
+          <li><strong>Start.</strong> Click a plate, then its own chamber, to stand it in the solvent. Record the time on the timer in Table 1. Do the same with the other plate.</li>
+          <li><strong>Watch.</strong> The solvent climbs the plate and carries the dyes with it. When it is 1 to 2 cm from the top, click the chamber to take the plate out, and record the time. The two plates are not ready together.</li>
+        </ol>
+        <table class="data-table time-table" id="table-1">
+          <caption>Table 1. Times on the timer <span class="caption-note">(minutes : seconds)</span></caption>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Acetone-based solvent</th>
+              <th scope="col">Isopropyl alcohol-based solvent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Plate went into the chamber</th>
+              <td><input type="text" id="time-in-0" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0:00" aria-label="Time the acetone plate went into its chamber"></td>
+              <td><input type="text" id="time-in-1" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0:00" aria-label="Time the alcohol plate went into its chamber"></td>
+            </tr>
+            <tr>
+              <th scope="row">Plate came out of the chamber</th>
+              <td><input type="text" id="time-out-0" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0:00" aria-label="Time the acetone plate came out of its chamber"></td>
+              <td><input type="text" id="time-out-1" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0:00" aria-label="Time the alcohol plate came out of its chamber"></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="msg" id="time-msg" role="status"></p>
+        <p class="hint-box"><strong>In a real lab</strong> you would use strips of chromatography paper standing in beakers covered with watch glasses; a plate in a glass chamber does the same job here. You would wear goggles, keep acetone and isopropyl alcohol away from flames, and leave the covers on so the solvent does not evaporate. At the end the solvents go down the sink with plenty of water, and you wash your hands.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="part" id="part-colors" aria-labelledby="colors-title">
+    <h2 id="colors-title"><span class="step" aria-hidden="true">2</span>What each ink separated into</h2>
+    <p class="lede">Look closely at each developed plate (the view &ldquo;Plates from above&rdquo; shows them best). For every lane, tick each color you can see along it. Then press Check. The page flags a lane only if a color that shows clearly is left out, or if a ticked color is not there at all.</p>
+
+    <div class="colors-layout">
+      <div class="colors-table-wrap">
+        <table class="data-table color-table" id="table-2">
+          <caption>Table 2. Colors seen on the developed plates</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-lane">Lane</th>
+              <th scope="col">Acetone-based solvent</th>
+              <th scope="col">Isopropyl alcohol-based solvent</th>
+            </tr>
+          </thead>
+          <tbody id="color-rows"></tbody>
+        </table>
+        <div class="check-row">
+          <button type="button" class="primary-button" id="check-colors">Check my colors</button>
+          <p class="table-status" id="color-status" role="status"></p>
+        </div>
+      </div>
+      <figure class="strips" id="strips">
+        <img id="strips-img" alt="" hidden>
+        <p class="locked-note" id="strips-empty">A picture of your plates appears here as each one is developed. It is printed with your report.</p>
+        <figcaption id="strips-caption" hidden></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="part" id="part-answer" aria-labelledby="answer-title">
+    <h2 id="answer-title"><span class="step" aria-hidden="true">3</span>Which pen wrote the note?</h2>
+    <p class="lede">Compare the unknown with each pen in turn, in <strong>both</strong> solvents. Two inks that are the same separate into the same colors, at the same heights, in both solvents. Inks that look alike in one solvent may still come apart differently in the other. It is possible that none of these four pens wrote the note.</p>
+
+    <div class="answer-block" id="answer-block">
+      <label class="field match-field">
+        <span class="field-name">The pen that best matches the unknown is</span>
+        <select id="match"></select>
+      </label>
+      <p class="msg" id="msg-answer" role="status"></p>
+      <ol class="pen-list" id="pen-list"></ol>
+    </div>
+  </section>
+
+  <section class="part" id="part-questions" aria-labelledby="questions-title">
+    <h2 id="questions-title"><span class="step" aria-hidden="true">4</span>Looking back</h2>
+    <ol class="questions">
+      <li class="question" id="q-longer">
+        <label for="longer">Compare how long the two plates took to develop. Which solvent took longer?</label>
+        <select id="longer">
+          <option value="">&ndash;</option>
+          <option value="acetone">The acetone-based solvent</option>
+          <option value="alcohol">The isopropyl alcohol-based solvent</option>
+        </select>
+        <p class="msg" id="msg-longer" role="status"></p>
+      </li>
+      <li class="question" id="q-improve">
+        <label for="improve">Suppose neither solvent had given a clear match with the unknown. How could you change the solvents to try for a better separation? <span class="question-hint">Hint: look back at how you made each solvent.</span></label>
+        <textarea id="improve" rows="4"></textarea>
+      </li>
+    </ol>
+  </section>
+
+  <section class="part" id="part-report" aria-labelledby="report-title">
+    <h2 id="report-title"><span class="step" aria-hidden="true">5</span>Turn in</h2>
+    <div class="report-row">
+      <label class="field name-field"><span class="field-name">Your name</span><input type="text" id="student-name" autocomplete="name"></label>
+      <button type="button" class="primary-button" id="print-report">Print or save as PDF</button>
+    </div>
+    <p class="report-status" id="report-status" role="status"></p>
+    <p class="fine">
+      Your work is saved in this browser as you go.
+      <button type="button" class="link-button" id="new-unknown">Start over with a new unknown</button>
+      <span class="confirm" id="new-confirm" hidden>
+        This erases everything you have recorded and gives you a different unknown.
+        <button type="button" class="quiet-button danger" id="new-yes">Erase and start over</button>
+        <button type="button" class="quiet-button" id="new-no">Keep my work</button>
+      </span>
+    </p>
+  </section>
+
+  <footer class="print-footer" aria-hidden="true"><span id="print-checks"></span></footer>
+
+  <footer class="credits">
+    A simulation based on the experiment &ldquo;Separations: Who Wrote the Ransom Note?&rdquo; of the Daytona State College Science Department.
+    Fume hood model: <a href="https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f" target="_blank" rel="noopener">&ldquo;Dm3-004-08&rdquo;</a> by foxart3d,
+    used under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Shown here with the sash raised and with different materials.
+  </footer>
+</main>
+
+<script src="model.js"></script>
+<script src="app.js"></script>
+<script>
+  (function () {
+    var lab = window.InkLab;
+    if (lab.isMock) return;
+
+    var canvas = document.querySelector("#unity-canvas");
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/InkLab.loader.js";
+    var config = {
+      arguments: [],
+      dataUrl: buildUrl + "/InkLab.data.unityweb",
+      frameworkUrl: buildUrl + "/InkLab.framework.js.unityweb",
+      codeUrl: buildUrl + "/InkLab.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "DefaultCompany",
+      productName: "Who Wrote the Ransom Note",
+      productVersion: "0.1.0",
+      showBanner: function (message, type) { lab.unityBanner(message, type); }
+    };
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(canvas, config, function (progress) { lab.unityProgress(progress); })
+        .then(function (instance) { lab.attachUnity(instance); })
+        .catch(function (error) { lab.unityFailed(error); });
+    };
+    script.onerror = function () { lab.unityFailed("The lab files did not load."); };
+    document.body.appendChild(script);
+  })();
+</script>
+</body>
+</html>

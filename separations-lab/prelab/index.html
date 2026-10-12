@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Separations: Prelab Review</title>
+  <meta name="description" content="A short review before the lab Separations: Who Wrote the Ransom Note? What a mixture is, how chromatography pulls the dyes of an ink apart, how to compare the developed plates, and what you will do at the bench.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Crect x='10' y='5' width='12' height='22' rx='1.5' fill='%23fff'/%3E%3Crect x='14.5' y='9' width='3' height='5' rx='1.5' fill='%237b45b8'/%3E%3Crect x='14.5' y='15' width='3' height='4' rx='1.5' fill='%23e5873f'/%3E%3Ccircle cx='16' cy='23' r='1.5' fill='%2317211e'/%3E%3C/svg%3E">
+  <style>
+    /* Same look as the lab pages and the other prelabs: paper white, bench slate for ink, enamel blue. */
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #74807c;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead {
+      padding: 28px 20px 26px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 60ch; color: var(--ink-soft); }
+    .lab-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 6px;
+      background: var(--enamel); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .lab-button:hover { background: var(--enamel-deep); color: #fff; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 44px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 22px 0 6px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 68ch; }
+    .soft { color: var(--ink-soft); }
+    .callout { max-width: 68ch; margin-top: 16px; padding: 14px 18px 4px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1; }
+    .callout h3 { margin-top: 0; }
+
+    /* ---- Cards in a row ---- */
+
+    .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 18px 0 6px; }
+    .trio-card { padding: 14px 16px 6px; border: 1px solid var(--rule); border-radius: 8px; border-top: 6px solid var(--c); }
+    .trio-card h3 { margin: 0 0 4px; font-size: 1.12rem; }
+    .trio-card p { font-size: 0.96rem; }
+
+    /* ---- How it works: a drawing beside the words ---- */
+
+    .how { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 23rem); gap: 28px; align-items: start; }
+    .how figure { margin: 0; }
+    .how svg { display: block; width: 100%; height: auto; }
+    .how figcaption { margin-top: 6px; color: var(--ink-soft); font-size: 0.88rem; }
+    .pull { margin: 14px 0; padding: 0; list-style: none; display: grid; gap: 8px; max-width: 68ch; }
+    .pull li { padding: 10px 14px; border: 1px solid var(--rule); border-left: 5px solid var(--c); border-radius: 8px; font-size: 0.97rem; }
+    .pull b { display: block; }
+
+    /* ---- The practice run (the animation is a page of its own, shown in a frame) ---- */
+
+    .demo { margin-top: 14px; padding: 14px; border: 1px solid var(--rule); border-radius: 10px; background: #f6f6f2; }
+    .demo iframe { display: block; width: 100%; height: 720px; border: 0; }
+    .notice { margin: 14px 0 0; padding-left: 1.2em; max-width: 72ch; }
+    .notice li { margin-bottom: 6px; }
+    .made-up { max-width: 72ch; padding: 8px 12px; border-left: 3px solid var(--enamel); background: var(--enamel-wash); border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+
+    /* ---- The worked comparison ---- */
+
+    .compare { width: 100%; max-width: 860px; margin: 12px 0 6px; border-collapse: collapse; font-size: 0.95rem; }
+    .compare th, .compare td { padding: 8px 10px; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+    .compare thead th { background: var(--wash); font-size: 0.86rem; }
+    .compare tbody th { white-space: nowrap; }
+    .verdict { font-weight: 650; white-space: nowrap; }
+    .verdict.out { color: var(--flag); }
+    .verdict.in { color: var(--good); }
+    details.reveal { max-width: 900px; margin-top: 14px; border: 1px solid var(--rule); border-radius: 8px; padding: 10px 14px; }
+    details.reveal summary { cursor: pointer; font-weight: 600; color: var(--enamel-deep); }
+    details.reveal[open] summary { margin-bottom: 8px; }
+
+    /* ---- At the bench ---- */
+
+    .bench-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+    .tips { margin: 0; padding-left: 1.2em; }
+    .tips li { margin-bottom: 8px; }
+    .whys { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .whys li { padding: 10px 14px; border: 1px solid var(--rule); border-radius: 8px; font-size: 0.95rem; }
+    .whys b { display: block; }
+
+    /* ---- Self-check ---- */
+
+    .quiz { display: grid; gap: 14px; max-width: 760px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .next p { margin: 0; max-width: 60ch; }
+    .credit { margin-top: 30px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 0.84rem; color: var(--ink-faint); }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 820px) {
+      .trio, .how, .bench-grid { grid-template-columns: minmax(0, 1fr); }
+      .how figure { max-width: 21rem; }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 22px 16px 20px; }
+      h1 { font-size: 1.7rem; }
+      .demo { padding: 6px; }
+      .compare { font-size: 0.88rem; }
+      .compare th, .compare td { padding: 6px 7px; }
+    }
+    @media print {
+      .lab-button, .next, .demo { display: none !important; }
+      .masthead { background: none; }
+      section { break-inside: avoid-page; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <p class="eyebrow">Prelab review · Separations: Who Wrote the Ransom Note?</p>
+        <h1>Pulling black ink apart</h1>
+        <p class="dek">About ten minutes. Read it before the lab, run the practice plates forward and back, work through one comparison, then check yourself with the questions at the end.</p>
+      </div>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <section id="mixture" aria-labelledby="mixture-title">
+      <h2 id="mixture-title"><span class="step" aria-hidden="true">1</span>Black ink is not one thing</h2>
+      <div class="prose">
+        <p>Write a line with a black pen and it looks like one color. It is not. The ink in most black pens is a <strong>mixture</strong> of several dyes, such as a blue, a red and a yellow, that together look black. Different makes of pen reach black with different dyes, so each ink has its own recipe.</p>
+        <p>That recipe is what you will use in this lab. A ransom note was written in black ink, and several black pens were found in the same room. If you can pull the ink from the note apart into its dyes, and do the same with the ink of each pen, you can see which pen has the same recipe as the note.</p>
+      </div>
+      <div class="trio">
+        <div class="trio-card" style="--c: var(--enamel)">
+          <h3>Mixture</h3>
+          <p>Two or more substances together, each still itself. Ink, air and salt water are mixtures. The parts of a mixture can be separated without changing what they are.</p>
+        </div>
+        <div class="trio-card" style="--c: #6c5aa8">
+          <h3>Pure substance</h3>
+          <p>One substance only, such as water or one single dye. It cannot be split into anything simpler by physical means.</p>
+        </div>
+        <div class="trio-card" style="--c: #b3401f">
+          <h3>Physical separation</h3>
+          <p>Sorting the parts of a mixture without breaking any chemical bonds: filtering, evaporating, or, in this lab, <strong>chromatography</strong>. The dyes that come out are the same dyes that went in.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <h2 id="how-title"><span class="step" aria-hidden="true">2</span>How chromatography separates the dyes</h2>
+      <div class="how">
+        <div>
+          <p class="prose">A small dot of ink is put near the bottom of a plate, and the bottom edge of the plate is stood in a shallow pool of <strong>solvent</strong>. The solvent soaks upward through the plate, the way water creeps up a paper towel. When it reaches the dot, it starts to carry the ink with it.</p>
+          <p class="prose">Every dye in the ink is now pulled two ways at once:</p>
+          <ul class="pull">
+            <li style="--c: #1f8fb0"><b>The moving solvent pulls it along.</b>A dye that dissolves well in the solvent spends most of its time moving, and travels far up the plate.</li>
+            <li style="--c: #c2408f"><b>The plate holds it back.</b>A dye that clings to the surface of the plate spends most of its time stuck, and stays low.</li>
+          </ul>
+          <p class="prose">Each dye strikes its own balance between the two, so each one travels its own distance. The black dot pulls apart into bands or streaks of color, one for each dye. Letting the solvent climb the plate is called <strong>developing</strong> it, and the finished plate is a <strong>chromatogram</strong>.</p>
+          <p class="prose">How far a dye travels depends on the dye <em>and</em> on the solvent. Change the solvent, and the same dye may travel a different distance. That is why you will run every ink in two different solvents.</p>
+        </div>
+        <figure>
+          <svg viewBox="0 0 340 275" role="img" aria-labelledby="how-fig-title">
+            <title id="how-fig-title">Three drawings of one plate: with a black dot on a pencil line, with the solvent partly up and the dot starting to spread into colors, and fully developed with two separate colored bands.</title>
+            <g font-family="system-ui, sans-serif" font-size="13" fill="#4b5854" text-anchor="middle">
+              <!-- three plates -->
+              <g>
+                <rect x="20" y="20" width="80" height="220" rx="3" fill="#f6f5f0" stroke="#8d9994"/>
+                <line x1="26" y1="212" x2="94" y2="212" stroke="#777" stroke-width="1"/>
+                <circle cx="60" cy="212" r="5" fill="#17211e"/>
+                <rect x="20" y="226" width="80" height="14" fill="#1c4c9a" opacity="0.16"/>
+                <text x="60" y="262">Start</text>
+              </g>
+              <g>
+                <rect x="130" y="20" width="80" height="220" rx="3" fill="#f6f5f0" stroke="#8d9994"/>
+                <rect x="130" y="130" width="80" height="110" fill="#1c4c9a" opacity="0.10"/>
+                <line x1="130" y1="130" x2="210" y2="130" stroke="#1c4c9a" stroke-width="1" stroke-dasharray="3 3"/>
+                <line x1="136" y1="212" x2="204" y2="212" stroke="#777" stroke-width="1"/>
+                <circle cx="170" cy="212" r="4" fill="#17211e" opacity="0.35"/>
+                <rect x="164" y="170" width="12" height="26" rx="6" fill="#c2408f" opacity="0.8"/>
+                <rect x="164" y="140" width="12" height="24" rx="6" fill="#1f8fb0" opacity="0.85"/>
+                <text x="170" y="262">Part way</text>
+              </g>
+              <g>
+                <rect x="240" y="20" width="80" height="220" rx="3" fill="#f6f5f0" stroke="#8d9994"/>
+                <line x1="246" y1="42" x2="314" y2="42" stroke="#777" stroke-width="1"/>
+                <line x1="246" y1="212" x2="314" y2="212" stroke="#777" stroke-width="1"/>
+                <circle cx="280" cy="212" r="4" fill="#17211e" opacity="0.2"/>
+                <rect x="274" y="112" width="12" height="28" rx="6" fill="#c2408f" opacity="0.8"/>
+                <rect x="274" y="52" width="12" height="26" rx="6" fill="#1f8fb0" opacity="0.85"/>
+                <text x="280" y="262">Developed</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>One made-up ink with two dyes: a dot on the pencil line, the solvent part of the way up, and the developed plate. The blue dye is carried along by the solvent more than the pink one is, so it ends up higher.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="practice" aria-labelledby="practice-title">
+      <h2 id="practice-title"><span class="step" aria-hidden="true">3</span>Watch two plates develop</h2>
+      <p class="prose">Here are two plates with the same five dots on each: four pens, A to D, and an unknown in the middle. One plate stands in acetone, the other in a mixture of isopropyl alcohol and water. Move the pointer (or your finger) across the picture to run the time forward and back.</p>
+      <p class="made-up">These four inks are made up for practice. They are not the pens in your lab, and this unknown is nobody's unknown.</p>
+      <div class="demo">
+        <iframe src="practice.html" id="demo-frame" title="Animation: two plates in glass chambers, one in acetone and one in isopropyl alcohol with water. The solvent climbs each plate and the five black dots on it pull apart into colored streaks."></iframe>
+      </div>
+      <ul class="notice">
+        <li>Nothing happens to a dot until the solvent reaches it. Then the colors start to move.</li>
+        <li>The pencil line does not move at all. Pencil does not dissolve in these solvents, which is why the plate is marked in pencil and never in ink.</li>
+        <li>The solvent climbs quickly at first and more slowly as it gets higher.</li>
+        <li>The run is stopped while the solvent is still a little below the top of the plate.</li>
+      </ul>
+    </section>
+
+    <section id="compare" aria-labelledby="compare-title">
+      <h2 id="compare-title"><span class="step" aria-hidden="true">4</span>Reading the plates</h2>
+      <div class="prose">
+        <p>Run the practice plates to the end, then compare the unknown with each pen in turn. For each pen, ask the same question in <strong>both</strong> solvents: does this lane show the same colors as the unknown, <em>at the same heights</em>?</p>
+        <p>Decide for yourself which pen matches the unknown before you open the comparison below.</p>
+      </div>
+      <details class="reveal">
+        <summary>Show the comparison for the practice plates</summary>
+        <table class="compare">
+          <thead>
+            <tr><th scope="col">Pen</th><th scope="col">In acetone</th><th scope="col">In alcohol and water</th><th scope="col">So</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">A</th>
+              <td>Blue above pink, at the same heights as the unknown. So far it could be a match.</td>
+              <td>Pink is now <em>above</em> blue. In the unknown, blue is still on top and pink is low. Different.</td>
+              <td><span class="verdict out">eliminated</span></td>
+            </tr>
+            <tr>
+              <th scope="row">B</th>
+              <td>A long brown streak and a green band. The unknown has neither.</td>
+              <td>Brown and green again. Different.</td>
+              <td><span class="verdict out">eliminated</span></td>
+            </tr>
+            <tr>
+              <th scope="row">C</th>
+              <td>Blue above pink, at the same heights as the unknown.</td>
+              <td>Blue high and pink low, at the same heights as the unknown.</td>
+              <td><span class="verdict in">a possible match</span></td>
+            </tr>
+            <tr>
+              <th scope="row">D</th>
+              <td>Yellow and violet. The unknown has neither.</td>
+              <td>Yellow and violet again. Different.</td>
+              <td><span class="verdict out">eliminated</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="prose">The unknown matches pen C. Notice that acetone alone would not have settled it: in acetone, pens A and C look the same. It took the second solvent to tell them apart.</p>
+      </details>
+      <div class="callout">
+        <h3>The rule for a match</h3>
+        <p>Two inks are the same only if they give the same colors at the same heights in <strong>both</strong> solvents. One clear difference in either solvent is enough to eliminate a pen. And it is possible for an unknown to match none of the pens it is compared with.</p>
+      </div>
+    </section>
+
+    <section id="bench" aria-labelledby="bench-title">
+      <h2 id="bench-title"><span class="step" aria-hidden="true">5</span>What you will do in the lab</h2>
+      <div class="bench-grid">
+        <ol class="tips">
+          <li>The lab page shows the code of <strong>your unknown</strong> at the top. Each student has a different one, so the same pens are not on everyone's plates.</li>
+          <li>Two plates are waiting, one for each solvent, with the ink from the ransom note already on the middle mark. You add a small dot from each of four pens, each above its own number.</li>
+          <li>You make each solvent in a graduated cylinder: 6 mL of acetone, or of isopropyl alcohol, and then distilled water up to the 8 mL line. Each one goes into its own glass chamber.</li>
+          <li>You stand each plate in its chamber and record the time on the timer.</li>
+          <li>When the solvent is 1 to 2 cm from the top of a plate, you take the plate out and record the time again. A button lets you speed up the wait.</li>
+          <li>You record the colors on each lane, compare the unknown with each pen, and decide which pen, if any, wrote the note.</li>
+        </ol>
+        <ul class="whys">
+          <li><b>Why pencil?</b>Ink lines on the plate would separate and run along with the samples. Pencil stays where it is.</li>
+          <li><b>Why a small dot?</b>A big blot spreads into wide, smeared streaks that overlap. A small dot gives narrow bands that are easy to compare.</li>
+          <li><b>Why must the solvent start below the dots?</b>If the pool covered the dots, the ink would wash off into the pool, not climb the plate.</li>
+          <li><b>Why keep the lid on?</b>Acetone and alcohol evaporate quickly. The lid keeps the air in the chamber full of solvent vapor, so the plate does not dry out as the solvent climbs.</li>
+          <li><b>Why take the plate out before the solvent reaches the top?</b>Once the solvent has nowhere left to go, the dyes that travel fastest pile up at the top edge, and the pattern is harder to read.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">6</span>Check yourself</h2>
+      <p class="prose soft">Pick an answer for each. Nothing here is graded or saved.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p>Ready? In the lab you will run your own two plates and work out which pen, if any, wrote the note.</p>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+
+    <p class="credit">A review for a simulation based on the experiment &ldquo;Separations: Who Wrote the Ransom Note?&rdquo; of the Daytona State College Science Department. The inks in the practice run are made up.</p>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- The practice run sits in a frame: make the frame as tall as the page inside it ----
+
+  var frame = document.getElementById('demo-frame');
+  function fitFrame() {
+    try {
+      var inside = frame.contentDocument;
+      if (!inside || !inside.body) return;
+      var figure = inside.querySelector('.iso-figure') || inside.body;
+      var height = Math.ceil(figure.getBoundingClientRect().bottom + (inside.defaultView.pageYOffset || 0)) + 14;
+      if (height > 200) frame.style.height = height + 'px';
+    } catch (e) { /* the page was opened straight from a folder: the frame keeps its set height */ }
+  }
+  frame.addEventListener('load', function () {
+    try {
+      // the practice page is made to stand alone: inside the frame it needs no margins of its own
+      var inside = frame.contentDocument;
+      var style = inside.createElement('style');
+      style.textContent = 'html{overflow:hidden!important}html,body{margin:0!important}.iso-page{padding:6px!important;margin:0 auto!important;min-height:0!important}';
+      inside.head.appendChild(style);
+      // and the border round the frame takes the color of the page inside it
+      frame.parentNode.style.background = inside.defaultView.getComputedStyle(inside.body).backgroundColor;
+    } catch (e) { /* as above */ }
+    fitFrame();
+    setTimeout(fitFrame, 400);
+  });
+  window.addEventListener('resize', fitFrame);
+
+  // ---- Self-check ----
+
+  var QUESTIONS = [
+    {
+      text: 'Chromatography separates the dyes in an ink. Is that a physical change or a chemical change?',
+      options: ['Physical', 'Chemical'],
+      right: 0,
+      why: 'No bonds are broken and no new substance forms. The dyes are only moved apart.'
+    },
+    {
+      text: 'Why are the line and the numbers on a plate drawn in pencil?',
+      options: ['Pencil is easier to see', 'Ink would dissolve and run with the samples', 'Pencil makes the solvent climb faster'],
+      right: 1,
+      why: 'An ink line would be carried up the plate along with the dots. Pencil does not dissolve in these solvents.'
+    },
+    {
+      text: 'On a developed plate, one dye is near the top and another has barely moved. Which one was held more strongly by the plate?',
+      options: ['The one near the top', 'The one that barely moved'],
+      right: 1,
+      why: 'A dye that clings to the plate spends most of its time stuck, so it stays low. A dye that dissolves well in the solvent is carried far.'
+    },
+    {
+      text: 'In acetone, a pen and the unknown give the same colors at the same heights. In the alcohol mixture, they look different. What do you conclude?',
+      options: ['Same ink: one match is enough', 'Not the same ink', 'The alcohol plate must be wrong'],
+      right: 1,
+      why: 'The same ink behaves the same way in every solvent. One clear difference in either solvent eliminates the pen.'
+    },
+    {
+      text: 'The unknown looks different from all four pens on your plates. What should you answer?',
+      options: ['Pick the pen that is closest', 'None of these four pens wrote the note'],
+      right: 1,
+      why: 'An unknown does not have to match any of the pens it is compared with. Report what the plates show.'
+    },
+    {
+      text: 'Where must the surface of the solvent be when a plate is first stood in it?',
+      options: ['Above the dots', 'Below the dots', 'It makes no difference'],
+      right: 1,
+      why: 'If the pool covered the dots, the ink would wash off into the pool. The solvent has to climb up to the dots.'
+    }
+  ];
+
+  var list = document.getElementById('quiz'), score = document.getElementById('score');
+  var answered = 0, first = 0;
+
+  QUESTIONS.forEach(function (q) {
+    var item = document.createElement('li');
+    item.className = 'q';
+    var text = document.createElement('p');
+    text.className = 'q-text';
+    text.textContent = q.text;
+    var options = document.createElement('div');
+    options.className = 'options';
+    var feedback = document.createElement('p');
+    feedback.className = 'feedback';
+    feedback.setAttribute('aria-live', 'polite');
+    var tried = false, done = false;
+    q.options.forEach(function (label, i) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.addEventListener('click', function () {
+        if (done) return;
+        var right = i === q.right;
+        button.setAttribute('data-state', right ? 'right' : 'wrong');
+        feedback.textContent = '';
+        var mark = document.createElement('b');
+        mark.className = right ? 'right' : 'wrong';
+        mark.textContent = right ? 'Yes. ' : 'Not quite. ';
+        feedback.appendChild(mark);
+        feedback.appendChild(document.createTextNode(right ? q.why : 'Try another answer.'));
+        if (right) {
+          done = true;
+          answered++;
+          if (!tried) first++;
+          score.textContent = '';
+          if (answered === QUESTIONS.length) {
+            var span = document.createElement('span');
+            span.className = 'done';
+            span.textContent = 'All ' + QUESTIONS.length + ' answered, ' + first + ' on the first try.';
+            score.appendChild(span);
+          } else {
+            score.textContent = answered + ' of ' + QUESTIONS.length + ' answered.';
+          }
+        }
+        tried = true;
+      });
+      options.appendChild(button);
+    });
+    item.appendChild(text);
+    item.appendChild(options);
+    item.appendChild(feedback);
+    list.appendChild(item);
+  });
+})();
+</script>
+</body>
+</html>

@@ -72,12 +72,43 @@ the equations stay the students' own work.
 - Based on the Double Replacement Reactions experiment of the Daytona State College Science
   Department.
 
+## Separations: Who Wrote the Ransom Note?
+
+A virtual lab at the same fume hood, on separating a mixture by chromatography. A ransom note was
+written in black ink, and several black pens were found in the same room. Each student has the
+ink from the note, already on two plates, and four numbered pens. They put a dot from each pen
+beside it, make two solvents in a graduated cylinder (6 mL of acetone, or of isopropyl alcohol,
+made up to 8 mL with distilled water), stand each plate in its own glass chamber, and take it
+out when the solvent is 1 to 2 cm from the top. As the solvent climbs, each black dot pulls
+apart into bands of color. They record the times and the colors, compare the unknown with each
+pen in both solvents, and decide which pen, if any, wrote the note.
+
+**Open the lab:** https://neogio73.github.io/CHM1020/separations-lab/
+
+**Prelab review:** https://neogio73.github.io/CHM1020/separations-lab/prelab/ explains why black
+ink is a mixture, how chromatography pulls its dyes apart, and how to compare two plates. It has
+an animation of two plates developing that can be run forward and back, a worked comparison, and
+ungraded self-check questions. The inks in it are made up, so it gives away no one's result.
+
+- Each student gets their own unknown, shown as a five-character code on the page and on the
+  printed report. Different students have different pens on their plates, and for some the right
+  answer is that none of the four pens wrote the note.
+- The page checks the recorded times and, loosely, the colors recorded for each lane. It does not
+  say whether the pen a student chose is the right one: that is for the instructor to mark.
+- A picture of the student's own developed plates is printed with the report.
+- Work is saved in the student's browser as they go, and the finished report prints (or saves as
+  a PDF). The wait while the plates develop can be sped up.
+- Which pens and which unknown a code stands for, and what each ink separates into, are compiled
+  into the 3D lab rather than written in the page's script.
+- Based on the experiment "Separations: Who Wrote the Ransom Note?" of the Daytona State College
+  Science Department.
+
 ## Credits
 
-The fume hood in all three labs is the model
+The fume hood in all four labs is the model
 ["Dm3-004-08"](https://sketchfab.com/3d-models/dm3-004-08-a640c09386df411e8669ddb19e3fd40f) by
 foxart3d, used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). It is shown with
 the sash raised and with different materials.
 
-The labs were built with Unity. The files in `density-lab/`, `ph-lab/` and
-`double-replacement-lab/` are the finished browser builds.
+The labs were built with Unity. The files in `density-lab/`, `ph-lab/`,
+`double-replacement-lab/` and `separations-lab/` are the finished browser builds.

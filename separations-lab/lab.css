@@ -1,0 +1,613 @@
+/* Separations: Who Wrote the Ransom Note? Lab page. Same look as the other labs:
+   paper white, bench slate for ink, enamel blue for actions and data.
+   Made by Tools/ink_css.py; edit Tools/ink_extra.css, not this file. */
+
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --wash: #f3f6f4;
+  --ink: #17211e;
+  --ink-soft: #4b5854;
+  --ink-faint: #74807c;
+  --rule: #c7d1cc;
+  --rule-strong: #8d9994;
+  --enamel: #1c4c9a;
+  --enamel-deep: #153a78;
+  --enamel-wash: #e9eff9;
+  --good: #1b7a40;
+  --good-wash: #edf7f0;
+  --flag: #ab2a1c;
+  --flag-wash: #fdf1ee;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.sheet {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 20px 20px 56px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Masthead ---- */
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.masthead h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+.unknown-tag {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.code {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 9px;
+  border: 1.5px solid var(--enamel);
+  border-radius: 4px;
+  color: var(--enamel-deep);
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Parts ---- */
+
+.part { margin-top: 30px; }
+
+.part > h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  background: var(--enamel);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.lede {
+  max-width: 68ch;
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+}
+
+.prelab-note {
+  max-width: 68ch;
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--enamel);
+  background: var(--enamel-wash);
+  border-radius: 0 6px 6px 0;
+}
+
+.prelab-note a { color: var(--enamel-deep); font-weight: 600; }
+
+.locked-note {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px dashed var(--rule-strong);
+  border-radius: 6px;
+  color: var(--ink-soft);
+  background: var(--wash);
+}
+
+/* ---- Bench: 3D lab beside the data table ---- */
+
+.bench-layout {
+  /* As wide as the page allows, but never so tall that the bench and its buttons don't fit on
+     the screen together (a short laptop screen keeps the whole 3D view in sight while dragging). */
+  --stage-max: max(640px, calc((100vh - 110px) * 1.5));
+  display: grid;
+  grid-template-columns: minmax(0, var(--stage-max)) 27rem;
+  justify-content: start;
+  gap: 22px;
+  align-items: start;
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #dfe0da;
+  box-shadow: inset 0 0 0 1px rgba(23, 33, 30, 0.14);
+}
+
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  touch-action: none;
+}
+
+.stage-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  background: #dfe0da;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.stage-cover p { margin: 0; max-width: 46ch; }
+.stage-cover[data-state="failed"] p { color: var(--flag); }
+.stage-cover[hidden] { display: none; }
+
+.progress {
+  width: min(260px, 70%);
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(23, 33, 30, 0.14);
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: var(--enamel);
+  transition: width 0.2s ease-out;
+}
+
+.stage-note {
+  min-height: 1.5em;
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.93rem;
+}
+
+.stage-note[data-kind="warn"] { color: var(--flag); }
+
+.stage-tip { display: none; margin: 4px 0 0; color: var(--ink-faint); font-size: 0.86rem; }
+@media (max-width: 700px) and (orientation: portrait) {
+  .stage-tip { display: block; }
+}
+
+.stage-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.views {
+  display: inline-flex;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.view-button {
+  padding: 7px 14px;
+  border: 0;
+  border-right: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.view-button:last-child { border-right: 0; }
+.view-button:hover { background: var(--enamel-wash); }
+.view-button[aria-pressed="true"] { background: var(--enamel); color: #fff; }
+
+.reset-wrap { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 0.92rem; color: var(--ink-soft); }
+
+.confirm { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.confirm[hidden] { display: none; }
+
+.quiet-button {
+  padding: 6px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.quiet-button:hover { background: var(--wash); }
+.quiet-button.danger { border-color: var(--flag); color: var(--flag); }
+.quiet-button.danger:hover { background: var(--flag-wash); }
+
+.primary-button {
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--enamel);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-button:hover { background: var(--enamel-deep); }
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--enamel);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(28, 76, 154, 0.45);
+  outline-offset: 2px;
+}
+
+.procedure {
+  margin: 14px 0 0;
+  padding-left: 1.35em;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.procedure li { margin: 5px 0; padding-left: 3px; }
+
+/* ---- Data table ---- */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table caption {
+  padding: 0 0 8px;
+  text-align: left;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.data-table th,
+.data-table td {
+  padding: 7px 8px;
+  border: 1px solid var(--rule);
+  vertical-align: top;
+  text-align: left;
+}
+
+.data-table thead th {
+  background: var(--wash);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.25;
+  vertical-align: bottom;
+}
+
+.data-table .unit { font-weight: 400; color: var(--ink-soft); white-space: nowrap; }
+.data-table th, .data-table td { padding: 5px 7px; }
+.data-table tbody th, .data-table tbody td { vertical-align: middle; font-size: 0.93rem; }
+.data-table td .msg { font-size: 0.8rem; }
+
+.table-status { margin: 8px 0 0; font-size: 0.9rem; color: var(--ink-soft); min-height: 1.4em; }
+
+/* ---- Inputs and their check marks ---- */
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+textarea { resize: vertical; min-height: 4.6em; line-height: 1.4; }
+
+input::placeholder { color: #9aa5a1; font-size: 0.86em; }
+
+[data-state="ok"] > input,
+input[data-state="ok"],
+select[data-state="ok"] {
+  border-color: var(--good);
+  padding-right: 28px;
+  background: var(--good-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 8.4l3 3 6.6-7' fill='none' stroke='%231b7a40' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 7px center / 15px;
+}
+
+[data-state="bad"] > input,
+input[data-state="bad"],
+select[data-state="bad"] {
+  border-color: var(--flag);
+  padding-right: 28px;
+  background: var(--flag-wash) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 3.2v6' stroke='%23ab2a1c' stroke-width='2.2' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='12.4' r='1.3' fill='%23ab2a1c'/%3E%3C/svg%3E") no-repeat right 7px center / 15px;
+}
+
+.msg {
+  margin: 5px 0 0;
+  color: var(--flag);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.msg:empty { display: none; }
+.msg[data-kind="tip"] { color: var(--ink-soft); }
+
+.field { display: block; }
+.field-name { display: block; margin-bottom: 3px; font-size: 0.84rem; color: var(--ink-soft); }
+
+
+select { padding-right: 6px; cursor: pointer; }
+select[data-state] { background-position: right 22px center; }
+
+/* ---- Layout: the steps and Table 1 sit beside the bench ---- */
+
+/* The bench is wide and low, so the 3D view is wider than in the density and pH labs. */
+.bench-layout {
+  --stage-max: max(640px, calc((100vh - 110px) * 1.78));
+  grid-template-columns: minmax(0, var(--stage-max)) minmax(17rem, 27rem);
+}
+
+/* never taller than the screen, so the whole bench is in sight on a phone turned sideways */
+.stage { aspect-ratio: 16 / 9; max-height: calc(100dvh - 12px); }
+
+.lede { max-width: 82ch; }
+.data-column .procedure { margin-top: 0; font-size: 0.93rem; }
+
+.hint-box {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--enamel);
+  background: var(--enamel-wash);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+}
+
+.prelab-note { max-width: 82ch; margin: 0 0 12px; font-size: 0.95rem; }
+
+.caption-note { font-family: var(--sans); font-size: 0.86rem; font-weight: 400; color: var(--ink-soft); }
+
+/* the timer and how far the solvent has climbed, under the bench */
+.run-status {
+  min-height: 1.5em;
+  margin: 4px 0 0;
+  color: var(--ink);
+  font-size: 0.93rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.run-status:empty { display: none; }
+
+#speed-up[aria-pressed="true"] { border-color: var(--enamel); background: var(--enamel); color: #fff; }
+.quiet-button:disabled { color: var(--ink-faint); border-color: var(--rule); background: var(--paper); cursor: default; }
+
+/* ---- Table 1: the four times ---- */
+
+.time-table { margin-top: 16px; }
+.time-table thead th { text-align: center; }
+.time-table tbody th { width: 38%; font-weight: 500; }
+.time-table input { text-align: center; }
+#time-msg { min-height: 1.35em; margin-top: 6px; font-size: 0.9rem; }
+
+/* ---- Part 2: Table 2 with the picture of the plates beside it ---- */
+
+.colors-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, 30rem); gap: 22px; align-items: start; max-width: 96rem; }
+.color-table .col-lane, .color-table tbody th { width: 6.2rem; background: var(--wash); font-weight: 650; white-space: nowrap; }
+.color-table tbody tr.unknown-row th { color: var(--enamel-deep); }
+.color-table td { padding: 6px 7px; }
+.color-table td[data-state="ok"] { background: var(--good-wash); box-shadow: inset 3px 0 0 var(--good); }
+.color-table td[data-state="bad"] { background: var(--flag-wash); box-shadow: inset 3px 0 0 var(--flag); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { position: relative; display: block; }
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px 3px 6px;
+  border: 1.5px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chip span:hover { border-color: var(--rule-strong); }
+.chip input:checked + span { border-color: var(--ink); background: var(--ink); color: #fff; font-weight: 600; }
+.chip input:focus-visible + span { outline: 3px solid rgba(28, 76, 154, 0.45); outline-offset: 2px; }
+.swatch { display: inline-block; flex: none; width: 0.85em; height: 0.85em; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.85); }
+.color-table td .msg { margin-top: 4px; font-size: 0.82rem; }
+
+.check-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; }
+.check-row .table-status { margin: 0; }
+
+.strips { position: sticky; top: 12px; margin: 0; }
+.strips img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; }
+.strips img[hidden] { display: none; }
+.strips figcaption { margin-top: 6px; color: var(--ink-soft); font-size: 0.86rem; }
+.strips .locked-note[hidden] { display: none; }
+
+/* ---- Part 3: which pen ---- */
+
+.answer-block { max-width: 70rem; }
+.match-field { max-width: 24rem; }
+.match-field .field-name { font-size: 1rem; color: var(--ink); font-weight: 600; }
+#msg-answer { min-height: 1.35em; margin-top: 8px; font-size: 0.92rem; }
+.answer-block[data-state="bad"] .match-field select { border-color: var(--flag); background-color: var(--flag-wash); }
+
+.pen-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0 0; padding: 0; list-style: none; }
+.pen-item { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 10px 12px 12px; border: 1px solid var(--rule); border-radius: 8px; }
+.pen-name { margin: 0; font-family: var(--serif); font-size: 1.05rem; font-weight: 600; }
+.pen-verdict { max-width: 16rem; }
+.print-copy { display: none; }
+
+/* ---- Part 4: two questions ---- */
+
+.questions { display: grid; gap: 16px; max-width: 62rem; margin: 0; padding-left: 1.5em; }
+.question label { display: block; margin-bottom: 6px; font-weight: 500; }
+.question select { max-width: 24rem; }
+.question-hint { display: block; color: var(--ink-soft); font-size: 0.9rem; font-weight: 400; }
+
+/* ---- Turn in ---- */
+
+.report-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 14px; }
+.name-field { width: min(22rem, 100%); }
+.report-status { margin: 10px 0 0; color: var(--ink-soft); min-height: 1.4em; }
+.fine { margin: 14px 0 0; font-size: 0.88rem; color: var(--ink-faint); }
+
+.credits {
+  margin-top: 34px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+}
+.credits a { color: inherit; }
+
+.print-header, .print-footer { display: none; }
+
+/* ---- Narrow screens ---- */
+
+@media (max-width: 1100px) {
+  .bench-layout { grid-template-columns: minmax(0, 1fr); }
+  .data-column { max-width: 44rem; }
+  /* when the height of the screen limits the bench (a phone turned sideways), keep it in the middle */
+  .stage { margin: 0 auto; }
+  .colors-layout { grid-template-columns: minmax(0, 1fr); }
+  .strips { position: static; max-width: 30rem; order: -1; }
+}
+
+@media screen and (max-width: 760px) {
+  .pen-list { grid-template-columns: minmax(0, 1fr); }
+  /* Table 2 as a list: one block for each lane, with its two solvents named */
+  .color-table, .color-table tbody { display: block; }
+  .color-table thead { display: none; }
+  .color-table caption { display: block; }
+  .color-table tr { display: block; margin-bottom: 12px; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+  .color-table tbody th { display: block; width: auto; padding: 6px 10px; border: 0; border-bottom: 1px solid var(--rule); }
+  .color-table td { display: block; padding: 8px 10px; border: 0; }
+  .color-table td + td { border-top: 1px solid var(--rule); }
+  .color-table td::before { content: attr(data-col); display: block; margin-bottom: 5px; color: var(--ink-soft); font-size: 0.84rem; font-weight: 600; }
+}
+
+@media (max-width: 640px) {
+  .sheet { padding: 14px 14px 44px; }
+  .masthead h1 { font-size: 1.4rem; }
+  .view-button { padding: 7px 9px; font-size: 0.86rem; }
+  .time-table tbody th { width: 34%; font-size: 0.88rem; }
+  .chip span { padding: 5px 10px 5px 7px; font-size: 0.88rem; }
+  .questions { padding-left: 1.2em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-fill { transition: none; }
+}
+
+/* ---- Printed report: Table 1, the picture of the plates, Table 2, the answers ---- */
+
+@media print {
+  @page { margin: 12mm 13mm; }
+  body { font-size: 10pt; }
+  .sheet { max-width: none; padding: 0; }
+  .stage-column, .procedure, .hint-box, .lede, .prelab-note, .table-status, .check-row, #part-report, .credits, .reset-wrap, .msg, .locked-note, .question-hint, textarea { display: none !important; }
+  .masthead { padding-bottom: 7px; flex-wrap: wrap; }
+  .masthead h1 { font-size: 16pt; }
+  .print-header { display: flex; flex-basis: 100%; gap: 28px; margin: 2px 0 0; font-size: 10pt; }
+  .bench-layout { display: block; }
+  .data-column { max-width: 34rem; }
+  .time-table { margin-top: 0; }
+  .part { margin-top: 12px; }
+  .part > h2 { font-size: 12pt; margin-bottom: 5px; }
+  .step { width: 1.4rem; height: 1.4rem; background: none; color: var(--ink); border: 1.5px solid var(--ink); }
+  .data-table caption { font-size: 10pt; padding-bottom: 4px; }
+  .data-table th, .data-table td { padding: 3px 6px; font-size: 9pt; }
+  input[type="text"], select { border-color: #999; padding-top: 2px; padding-bottom: 2px; }
+  select { appearance: none; -webkit-appearance: none; }
+  /* the picture of the plates stands in for the strips stapled to a paper report: under Table 2, at a good size */
+  .colors-layout { display: block; }
+  .strips { position: static; width: 120mm; max-width: 100%; margin: 5mm auto 0; break-inside: avoid; }
+  .strips figcaption { font-size: 8pt; }
+  /* only the colors that were ticked are printed */
+  .chip { display: none; }
+  .chip:has(input:checked) { display: block; }
+  .chip span { padding: 1px 7px 1px 5px; border: 1px solid #555; background: none !important; color: var(--ink) !important; font-size: 8.5pt; font-weight: 400 !important; }
+  .color-table td[data-state] { box-shadow: none; }
+  .pen-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3mm; }
+  .pen-item { padding: 5px 8px; break-inside: avoid; }
+  .pen-name { font-size: 10.5pt; }
+  .field-name { font-size: 8.5pt; }
+  .print-copy { display: block; min-height: 2.6em; padding: 2px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .question { break-inside: avoid; }
+  .data-table, .answer-block > .field { break-inside: avoid; }
+  .print-footer { display: block; margin-top: 10px; padding-top: 5px; border-top: 1px solid #999; font-size: 8.5pt; color: #333; }
+  .data-table thead th, .color-table tbody th, input[data-state], select[data-state], .color-table td, .swatch {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
