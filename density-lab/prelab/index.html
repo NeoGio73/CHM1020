@@ -836,6 +836,7 @@
   // climbs the glass above it.
   var LEVELS = [34.6, 47.0, 51.3, 68.8];
   var CLIMB_ML = 0.9;
+  var READING_TOLERANCE = 0.2;   // the same as the lab's (Unknowns.cs, VolumeTolerance)
 
   // A cylinder reading. Returns { ok, message }.
   function judgeReading(text, level) {
@@ -845,18 +846,18 @@
     if (!q) return { ok: false, message: 'Type the reading as a number, such as 52.4.' };
     if (q.unit && !isVolumeUnit(q.unit)) return { ok: false, message: 'A volume is read in mL.' };
     var diff = round(q.value - level, 6);
-    if (Math.abs(diff) <= 0.1 + 1e-9) {
+    if (Math.abs(diff) <= READING_TOLERANCE + 1e-9) {
       if (q.decimals === 0) return { ok: false, message: 'Right level, but give the tenths too, even when they are zero: ' + level.toFixed(1) + ' mL.' };
       if (q.decimals > 1) return { ok: false, message: 'Right level, but give one digit after the point only. The tenths are already your best estimate; a second digit would be a guess.' };
-      return { ok: true, message: diff === 0 ? 'The bottom of the curve is at ' + level.toFixed(1) + ' mL.' : 'Close enough: the bottom of the curve is at ' + level.toFixed(1) + ' mL, and a tenth either way is fair for a reading by eye.' };
+      return { ok: true, message: diff === 0 ? 'The bottom of the curve is at ' + level.toFixed(1) + ' mL.' : 'Close enough: the bottom of the curve is at ' + level.toFixed(1) + ' mL, and a tenth or two either way is fair for a reading by eye.' };
     }
-    if (diff > 0.25 && diff <= 1.25) return { ok: false, message: 'A little high. That is about where the water touches the glass. Read the bottom of the curve, in the middle of the cylinder.' };
+    if (diff > READING_TOLERANCE + 1e-9 && diff <= CLIMB_ML + 0.35) return { ok: false, message: 'A little high. That is about where the water touches the glass. Read the bottom of the curve, in the middle of the cylinder.' };
     var whole = Math.round(diff);
-    if (whole !== 0 && Math.abs(diff - whole) <= 0.15) {
+    if (whole !== 0 && Math.abs(diff - whole) <= READING_TOLERANCE + 1e-9) {
       if (Math.abs(whole) === 10) return { ok: false, message: 'Check which numbered mark you counted from. The numbers are every 10 mL.' };
       if (Math.abs(whole) < 10) return { ok: false, message: 'Close, but count the lines again from the nearest numbered mark. Each line is 1 mL, and the longer ones are every 5 mL.' };
     }
-    if (Math.abs(diff) <= 0.25) return { ok: false, message: 'Close. Judge the tenths again: how far up is the bottom of the curve from the line below it, out of the ten tenths to the next line?' };
+    if (Math.abs(diff) <= READING_TOLERANCE + 0.15) return { ok: false, message: 'Close. Judge the tenths again: how far up is the bottom of the curve from the line below it, out of the ten tenths to the next line?' };
     if (q.decimals === 0) return { ok: false, message: 'Read to the nearest 0.1 mL: estimate one digit between the 1 mL lines.' };
     return { ok: false, message: 'Look again. Find the lowest point of the curve, count the lines from the numbered mark nearest it, then judge the tenths between two lines.' };
   }
