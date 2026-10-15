@@ -71,6 +71,8 @@ the equations stay the students' own work.
 
 - Every student mixes the same 36 pairs. A box is accepted only once both drops are in and
   stirred. Three boxes that are borderline in a real lab accept either answer.
+- A gold outline shows which pipet, or the toothpick, the pointer is on, and the box a held one
+  would be used on.
 - The two "which ions" questions are checked against the student's own table. Each equation is
   checked for its formulas and its balancing, and the page says which part is off without giving
   the answer.
