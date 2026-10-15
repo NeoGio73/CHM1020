@@ -91,6 +91,20 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* The link to the prelab review, under the title */
+.prelab-note {
+  max-width: 78ch;
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--enamel);
+  background: var(--enamel-wash);
+  border-radius: 0 6px 6px 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.prelab-note a { color: var(--enamel-deep); font-weight: 600; }
+
 /* ---- Parts ---- */
 
 .part { margin-top: 30px; }
@@ -552,6 +566,7 @@ input[data-state="bad"] {
     padding: 0;
   }
   .masthead, .sheet > #part-calc, .print-footer { grid-column: 1 / -1; }
+  .prelab-note { display: none; }
   .sheet > #part-measure { grid-column: 1; }
   .sheet > #part-graph { grid-column: 2; }
   .stage-column, .procedure, .graph-tools button, .lede, .locked-note, .table-status, .sheet > #part-report,

@@ -11,8 +11,16 @@ of metal, and they work out the equation of the trendline from two points on it.
 
 **Open the lab:** https://neogio73.github.io/CHM1020/density-lab/
 
+**Prelab review:** https://neogio73.github.io/CHM1020/density-lab/prelab/ explains density, using
+a digital balance and its ZERO button, finding a volume by water displacement, reading a meniscus
+to 0.1 mL (with practice cylinders), and finding the slope, y-intercept and equation of a
+trendline (with a worked example and a checked practice). It ends with ungraded self-check
+questions. Everything it practises on is made up, so it gives away no unknown.
+
 - Each student gets their own unknown, shown as a five-character code on the page and on the
   printed report.
+- A gold outline shows which piece the pointer is on, and the balance or cylinder a carried piece
+  would go to.
 - Work is saved in the student's browser as they go, and the finished report prints on one page
   (or saves as a PDF).
 - The page checks each reading and each worksheet answer and says so on the report.

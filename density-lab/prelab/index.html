@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Density of an Unknown Metal: Prelab Review</title>
+  <meta name="description" content="A short review before the Density of an Unknown Metal lab: what density is, weighing on a digital balance, finding a volume by water displacement, reading a meniscus, graphing mass against volume, finding a slope and an equation, and how the virtual bench works.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231c4c9a'/%3E%3Cpath d='M12 5h8v2h-1v17a3 3 0 0 1-6 0V7h-1z' fill='none' stroke='%23fff' stroke-width='1.8'/%3E%3Cpath d='M13.9 16h4.2v8a2.1 2.1 0 0 1-4.2 0z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    /* Same look as the lab pages and the other prelabs: paper white, bench slate for ink, enamel blue. */
+    :root {
+      --paper: #ffffff;
+      --wash: #f3f6f4;
+      --ink: #17211e;
+      --ink-soft: #4b5854;
+      --ink-faint: #74807c;
+      --rule: #c7d1cc;
+      --rule-strong: #8d9994;
+      --enamel: #1c4c9a;
+      --enamel-deep: #153a78;
+      --enamel-wash: #e9eff9;
+      --good: #1b7a40;
+      --good-wash: #edf7f0;
+      --flag: #ab2a1c;
+      --flag-wash: #fdf1ee;
+      --grid-minor: #dcebe2;
+      --grid-major: #a9cdb8;
+      --guide: #b4541a;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .sheet { max-width: 1040px; margin: 0 auto; padding: 0 20px 64px; }
+
+    a { color: var(--enamel-deep); }
+    a:hover { color: var(--enamel); }
+
+    /* ---- Masthead ---- */
+
+    .masthead {
+      padding: 28px 20px 26px;
+      background: var(--wash);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--ink-faint); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-size: 2.1rem; font-weight: 600; line-height: 1.15; }
+    .dek { margin: 8px 0 0; max-width: 62ch; color: var(--ink-soft); }
+    .lab-button {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border-radius: 6px;
+      background: var(--enamel); color: #fff; font-weight: 600; text-decoration: none; white-space: nowrap;
+    }
+    .lab-button:hover { background: var(--enamel-deep); color: #fff; }
+
+    /* ---- Contents ---- */
+
+    .contents { margin: 26px 0 0; padding: 14px 18px; border: 1px solid var(--rule); border-radius: 10px; }
+    .contents p { margin: 0 0 6px; font-weight: 600; }
+    .contents ol { margin: 0; padding-left: 1.3em; columns: 2; column-gap: 32px; font-size: 0.96rem; }
+    .contents li { margin-bottom: 3px; break-inside: avoid; }
+
+    /* ---- Sections ---- */
+
+    section { margin-top: 46px; }
+    h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; line-height: 1.25; }
+    .step {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: var(--enamel); color: #fff; font-family: var(--sans); font-size: 0.92rem; font-weight: 650;
+    }
+    h3 { margin: 22px 0 6px; font-family: var(--serif); font-size: 1.18rem; font-weight: 600; }
+    p { margin: 0 0 12px; }
+    .prose { max-width: 70ch; }
+    .soft { color: var(--ink-soft); }
+    .math { font-variant-numeric: tabular-nums; }
+    sub, sup { font-size: 0.72em; line-height: 0; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .callout { max-width: 70ch; margin-top: 16px; padding: 14px 18px 4px; border-radius: 8px; background: var(--enamel-wash); border: 1px solid #cfdcf1; }
+    .callout h3 { margin-top: 0; }
+    .made-up { max-width: 72ch; padding: 8px 12px; border-left: 3px solid var(--enamel); background: var(--enamel-wash); border-radius: 0 6px 6px 0; font-size: 0.95rem; }
+    .worked { max-width: 70ch; margin: 0 0 12px; padding: 8px 12px; border-left: 3px solid var(--enamel); background: var(--enamel-wash); border-radius: 0 6px 6px 0; }
+
+    .equation { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; max-width: 40rem; margin: 8px 0 14px 1rem; }
+    .eq { font-family: var(--serif); font-size: 1.18rem; }
+    .eq-note { color: var(--ink-soft); font-size: 0.9rem; }
+    .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 0.25em; line-height: 1.25; }
+    .frac > span:first-child { padding: 0 0.35em 0.12em; border-bottom: 1.5px solid currentColor; }
+    .frac > span:last-child { padding: 0.12em 0.35em 0; }
+
+    /* ---- Part 1: everyday densities ---- */
+
+    .densities { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; max-width: 880px; margin: 10px 0 14px; padding: 0; list-style: none; }
+    .densities li { padding: 10px 12px 8px; border: 1px solid var(--rule); border-top: 4px solid var(--c, var(--enamel)); border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
+    .densities b { display: block; font-size: 1rem; }
+    .densities .value { display: block; margin: 2px 0 4px; font-family: var(--serif); font-size: 1.2rem; font-weight: 600; line-height: 1.3; font-variant-numeric: tabular-nums; }
+    .densities small { color: var(--ink-soft); font-size: 0.86rem; }
+
+    /* ---- Part 2: the balance ---- */
+
+    .tips { max-width: 72ch; margin: 0; padding-left: 1.2em; }
+    .tips li { margin-bottom: 9px; }
+    .balance-demo { display: grid; grid-template-columns: minmax(0, 330px) minmax(0, 1fr); gap: 18px 26px; align-items: center; max-width: 880px; margin-top: 18px; padding: 16px 18px; border: 1px solid var(--rule); border-radius: 10px; }
+    .balance-demo h3 { grid-column: 1 / -1; margin: 0; }
+    .scale-art { position: relative; }
+    .pan-zone { position: relative; height: 60px; }
+    .pan { position: absolute; left: 15%; right: 15%; bottom: 0; height: 10px; border-radius: 5px; background: linear-gradient(#dde2e0, #a9b1ae); box-shadow: 0 1px 0 #7d8783; }
+    .demo-piece { position: absolute; left: 50%; bottom: 10px; width: 44px; height: 36px; margin-left: -22px; border-radius: 7px / 4px; background: linear-gradient(90deg, #7f8388, #d3d5d8 45%, #8d9095); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15); }
+    .demo-piece[hidden] { display: none; }
+    .stem { width: 18px; height: 10px; margin: 0 auto; background: #9aa39f; }
+    .scale-body { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 10px; background: #dfe4e2; border: 1px solid var(--rule-strong); }
+    .lcd { flex: 1; display: flex; align-items: baseline; justify-content: flex-end; gap: 8px; padding: 6px 12px; border-radius: 5px; background: #c6d3bd; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25); color: #18241a; font-family: var(--mono); font-size: 2rem; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .lcd-unit { font-size: 1.1rem; }
+    .zero { flex: none; width: 66px; height: 46px; border: 0; border-radius: 8px; background: #2c3a4a; color: #fff; font: inherit; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; }
+    .zero:hover { background: #1d2733; }
+
+    /* ---- Practice boxes, buttons and answers ---- */
+
+    .practice { max-width: 880px; margin-top: 18px; padding: 16px 18px 14px; border: 1.5px solid var(--enamel); border-radius: 10px; }
+    .practice h3 { margin-top: 0; }
+    .practice .ask { margin: 0 0 10px; }
+    .entry-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-bottom: 8px; }
+    .entry-row label { font-size: 0.95rem; }
+    input[type="text"] { width: 8.5rem; padding: 7px 9px; border: 1px solid var(--rule-strong); border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-variant-numeric: tabular-nums; }
+    input[data-state="right"] { border-color: var(--good); background: var(--good-wash); }
+    input[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); }
+    .unit { color: var(--ink-soft); white-space: nowrap; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .buttons button {
+      padding: 7px 13px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; cursor: pointer;
+    }
+    .buttons button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .buttons button.main { border-color: var(--enamel); background: var(--enamel); color: #fff; font-weight: 600; }
+    .buttons button.main:hover { background: var(--enamel-deep); }
+    .say { min-height: 1.5em; margin: 10px 0 0; font-size: 0.96rem; }
+    .say b.right { color: var(--good); }
+    .say b.wrong { color: var(--flag); }
+    .counter { margin: 0 0 6px; color: var(--ink-soft); font-size: 0.9rem; font-weight: 600; }
+    button:focus-visible, input:focus-visible, a:focus-visible, .zero:focus-visible { outline: 3px solid rgba(28, 76, 154, 0.45); outline-offset: 2px; }
+
+    /* ---- Figures ---- */
+
+    .figure { margin: 16px 0 0; max-width: 560px; }
+    .figure svg { display: block; width: 100%; height: auto; }
+    .figure figcaption { margin-top: 6px; color: var(--ink-soft); font-size: 0.9rem; }
+    .sch-label { font-size: 17px; font-weight: 600; fill: #fff; font-family: var(--sans); }
+    .sch-step { font-size: 17px; font-weight: 700; fill: var(--enamel-deep); font-family: var(--sans); }
+    .sch-num { font-size: 15px; font-weight: 700; fill: var(--ink); font-family: var(--sans); }
+    .sch-text { font-size: 17px; fill: var(--ink); font-family: var(--sans); }
+    .sch-lcd { font-size: 13px; font-weight: 700; fill: #18241a; font-family: var(--mono); }
+
+    /* ---- Part 3: the table of running totals ---- */
+
+    .table-wrap { max-width: 100%; overflow-x: auto; }
+    .data { border-collapse: collapse; margin: 10px 0 8px; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+    .data th, .data td { padding: 6px 10px; border: 1px solid var(--rule); text-align: right; }
+    .data thead th { background: var(--wash); font-size: 0.84rem; text-align: left; vertical-align: bottom; line-height: 1.3; }
+    .data tbody th { text-align: left; font-weight: 600; }
+    .data .typed-col { background: #fff8dc; }
+    .data thead .typed-col { background: #f6ecc0; }
+    .key { display: inline-block; width: 0.9em; height: 0.9em; margin-right: 4px; vertical-align: -0.1em; border: 1px solid var(--rule-strong); background: #fff8dc; }
+
+    /* ---- Part 4: the cylinder ---- */
+
+    .cyl-layout { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 18px 26px; align-items: start; }
+    .cyl-box { margin: 0; }
+    .cyl-box svg { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 8px; }
+    .cyl-box figcaption { margin-top: 6px; color: var(--ink-soft); font-size: 0.9rem; }
+    .cyl-num { font-size: 22px; font-weight: 700; fill: #0d1c55; font-family: var(--sans); }
+    .marker circle { stroke: #fff; stroke-width: 2; }
+    .marker text { fill: #fff; font-size: 15px; font-weight: 700; font-family: var(--sans); }
+    .marker line { stroke-width: 2; }
+
+    /* ---- Graphs, drawn like the lab page's ---- */
+
+    .graph-box { margin: 14px 0 0; max-width: 720px; }
+    .graph-box svg { display: block; width: 100%; height: auto; }
+    .graph-box figcaption { margin-top: 6px; color: var(--ink-soft); font-size: 0.9rem; }
+    .plot-paper { fill: #fdfefc; }
+    .grid-minor { stroke: var(--grid-minor); stroke-width: 1; }
+    .grid-major { stroke: var(--grid-major); stroke-width: 1; }
+    .plot-frame { fill: none; stroke: #5d7567; stroke-width: 1.25; }
+    .trendline { stroke: var(--ink); stroke-width: 1.75; stroke-linecap: round; }
+    .data-dot { fill: var(--enamel); stroke: #fdfefc; stroke-width: 2; }
+    .tick-label { font-size: 13px; fill: var(--ink-soft); font-variant-numeric: tabular-nums; font-family: var(--sans); }
+    .axis-title { font-size: 14px; fill: var(--ink); font-family: var(--sans); }
+    .guide-line { stroke: var(--guide); stroke-width: 1.25; stroke-dasharray: 5 4; }
+    .guide-dot { fill: #fff; stroke: var(--guide); stroke-width: 2.5; }
+    .rise { stroke: var(--flag); stroke-width: 2.25; stroke-dasharray: 7 5; fill: none; }
+    .rise-name { fill: var(--flag); font-size: 13px; font-weight: 700; font-family: var(--sans); paint-order: stroke; stroke: #fdfefc; stroke-width: 4px; stroke-linejoin: round; }
+    .mark-name { fill: var(--guide); font-size: 14px; font-weight: 700; font-family: var(--sans); paint-order: stroke; stroke: #fdfefc; stroke-width: 4px; stroke-linejoin: round; }
+    .typed-ok { fill: none; stroke: var(--good); stroke-width: 2.5; }
+    .typed-bad { fill: none; stroke: var(--flag); stroke-width: 2.5; }
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 6px 0 0; padding: 0; list-style: none; color: var(--ink-soft); font-size: 0.88rem; }
+    .legend svg { display: inline-block; width: auto; vertical-align: -2px; margin-right: 6px; }
+
+    .steps { max-width: 72ch; margin: 0 0 12px; padding-left: 1.3em; }
+    .steps li { margin-bottom: 8px; }
+
+    /* ---- Part 6: the practice worksheet ---- */
+
+    .ws { display: grid; gap: 12px; margin: 14px 0 4px; }
+    .ws-row { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 4px 12px; align-items: start; }
+    .ws-name { padding-top: 7px; font-weight: 600; font-size: 0.95rem; line-height: 1.3; }
+    .ws-fields { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+    .ws-fields label { display: inline-flex; align-items: center; gap: 6px; }
+    .ws input.wide { width: 21rem; max-width: 100%; }
+    .msg { grid-column: 2; margin: 0; color: var(--flag); font-size: 0.92rem; }
+    .msg:empty { display: none; }
+    .msg[data-kind="ok"] { color: var(--good); }
+    .msg[data-kind="tip"] { color: var(--ink-soft); }
+    .shown { max-width: 72ch; margin: 12px 0 0; padding: 10px 14px 2px; border: 1px solid var(--rule); border-radius: 8px; background: var(--wash); }
+    .shown[hidden] { display: none; }
+
+    /* ---- Part 7: at the bench ---- */
+
+    .bench-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 26px; align-items: start; }
+    .things { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .things li { padding: 9px 14px; border: 1px solid var(--rule); border-radius: 8px; font-size: 0.95rem; }
+    .things b { display: block; }
+    .entry-table { width: 100%; border-collapse: collapse; margin: 10px 0 6px; font-size: 0.95rem; }
+    .entry-table th, .entry-table td { padding: 7px 10px; border: 1px solid var(--rule); text-align: left; vertical-align: top; }
+    .entry-table thead th { background: var(--wash); font-size: 0.86rem; }
+    .typed { font-family: var(--mono); font-size: 0.92em; padding: 1px 6px; border: 1px solid var(--rule-strong); border-radius: 4px; background: #fff; white-space: nowrap; }
+
+    /* ---- Self-check ---- */
+
+    .quiz { display: grid; gap: 14px; max-width: 780px; margin: 0; padding: 0; list-style: none; counter-reset: q; }
+    .q { padding: 14px 16px 12px; border: 1px solid var(--rule); border-radius: 8px; counter-increment: q; }
+    .q-text { margin: 0 0 10px; font-weight: 600; }
+    .q-text::before { content: counter(q) ". "; color: var(--ink-faint); }
+    .options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .options button {
+      padding: 7px 12px; border: 1.5px solid var(--rule-strong); border-radius: 6px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+    }
+    .options button:hover { border-color: var(--enamel); background: var(--enamel-wash); }
+    .options button[data-state="right"] { border-color: var(--good); background: var(--good-wash); color: var(--good); font-weight: 600; }
+    .options button[data-state="wrong"] { border-color: var(--flag); background: var(--flag-wash); color: var(--flag); }
+    .feedback { margin: 10px 0 0; font-size: 0.95rem; }
+    .feedback:empty { display: none; }
+    .feedback b.right { color: var(--good); }
+    .feedback b.wrong { color: var(--flag); }
+    .score { margin: 16px 0 0; font-weight: 600; }
+    .score .done { color: var(--good); }
+
+    /* ---- Footer ---- */
+
+    .next { margin-top: 40px; padding: 18px 20px; border-radius: 10px; background: var(--wash); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .next p { margin: 0; max-width: 60ch; }
+    .credit { margin-top: 30px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 0.84rem; color: var(--ink-faint); }
+
+    /* ---- Narrow screens ---- */
+
+    @media (max-width: 820px) {
+      .bench-grid, .balance-demo, .cyl-layout { grid-template-columns: minmax(0, 1fr); }
+      .contents ol { columns: 1; }
+      .cyl-box { max-width: 300px; }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .sheet { padding: 0 16px 48px; }
+      .masthead { padding: 22px 16px 20px; }
+      h1 { font-size: 1.7rem; }
+      .equation { margin-left: 0; }
+      .practice { padding: 14px 12px 12px; }
+      .balance-demo { padding: 14px 12px; }
+      .data th, .data td { padding: 5px 6px; }
+      .data { font-size: 0.88rem; }
+      .ws-row { grid-template-columns: minmax(0, 1fr); }
+      .ws-name { padding-top: 0; }
+      .msg { grid-column: 1; }
+      .entry-table th, .entry-table td { padding: 6px 7px; }
+      .entry-table { font-size: 0.9rem; }
+      .typed { white-space: normal; }
+    }
+    @media print {
+      .lab-button, .next, .buttons, .contents, .zero { display: none !important; }
+      .masthead { background: none; }
+      .practice, .q, figure, .balance-demo, .things li, tr { break-inside: avoid; }
+      .data .typed-col, .data thead .typed-col, .key { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <p class="eyebrow">Prelab review · Density of an Unknown Metal</p>
+        <h1>How much mass in how much space?</h1>
+        <p class="dek">About fifteen minutes. Read it before the lab, try the balance, practice reading a cylinder and finding a slope, then check yourself with the questions at the end.</p>
+      </div>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+  </header>
+
+<div class="sheet">
+  <main>
+    <nav class="contents" aria-label="Contents">
+      <p>In this review</p>
+      <ol>
+        <li><a href="#density">What density is</a></li>
+        <li><a href="#mass">Mass on a digital balance</a></li>
+        <li><a href="#displacement">Volume by water displacement</a></li>
+        <li><a href="#meniscus">Reading the cylinder</a></li>
+        <li><a href="#graph">Graphing mass against volume</a></li>
+        <li><a href="#slope">Slope, y-intercept and the equation</a></li>
+        <li><a href="#bench">At the virtual bench</a></li>
+        <li><a href="#check">Check yourself</a></li>
+      </ol>
+    </nav>
+
+    <section id="density" aria-labelledby="density-title">
+      <h2 id="density-title"><span class="step" aria-hidden="true">1</span>What density is</h2>
+      <p class="prose">Hold a brick in one hand and a loaf of bread of the same size in the other. The brick is far heavier, because far more mass is packed into the same space. <strong>Density</strong> measures exactly that: how much mass there is in each unit of volume.</p>
+      <div class="equation" role="math" aria-label="density equals mass divided by volume">
+        <span class="eq">density = <span class="frac"><span>mass</span><span>volume</span></span></span>
+      </div>
+      <p class="prose">Mass is measured in <strong>grams (g)</strong>. Volume is measured in <strong>milliliters (mL)</strong> or <strong>cubic centimeters (cm³)</strong>. So a density is a number of grams per milliliter, <strong>g/mL</strong>, or grams per cubic centimeter, <strong>g/cm³</strong>.</p>
+      <div class="callout">
+        <h3>1&nbsp;mL and 1&nbsp;cm³ are the same amount of space</h3>
+        <p>A cube 1&nbsp;cm along each edge holds exactly 1&nbsp;mL. So g/mL and g/cm³ are one unit with two names: a density of 1.20&nbsp;g/mL is also 1.20&nbsp;g/cm³. Liquids are usually given in g/mL and solids in g/cm³, but either is correct.</p>
+      </div>
+
+      <h3>Some everyday densities</h3>
+      <ul class="densities">
+        <li style="--c: #9fb6c4"><b>Air</b><span class="value">about 0.0012&nbsp;g/mL</span><small>About a thousand times less dense than water.</small></li>
+        <li style="--c: #d4a72c"><b>Cooking oil</b><span class="value">about 0.92&nbsp;g/mL</span><small>Floats on the vinegar in salad dressing.</small></li>
+        <li style="--c: #7fb8d8"><b>Ice</b><span class="value">0.92&nbsp;g/cm³</span><small>Floats in a drink, mostly under the surface.</small></li>
+        <li style="--c: var(--enamel)"><b>Water</b><span class="value">1.00&nbsp;g/mL</span><small>The one to compare with.</small></li>
+        <li style="--c: #b5651d"><b>Honey</b><span class="value">about 1.4&nbsp;g/mL</span><small>Sinks to the bottom of a cup of tea.</small></li>
+      </ul>
+      <p class="prose">Anything less dense than water floats on it, and anything denser sinks.</p>
+
+      <h3>Density belongs to the material, not to the piece</h3>
+      <p class="prose">Cut a block in half and each half has half the mass and half the volume, so mass divided by volume stays the same. A thimble of water and a bathtub of water both have a density of 1.00&nbsp;g/mL. That is why density helps tell one material from another, and why, in the lab, five pieces of different sizes cut from the same metal should all point to the same density.</p>
+      <p class="worked">A made-up plastic block has a mass of 18.0&nbsp;g and a volume of 15.0&nbsp;cm³.<br><span class="math">density = 18.0&nbsp;g ÷ 15.0&nbsp;cm³ = <strong>1.20&nbsp;g/cm³</strong></span><br>That is more than water’s 1.00&nbsp;g/cm³, so the block sinks in water.</p>
+    </section>
+
+    <section id="mass" aria-labelledby="mass-title">
+      <h2 id="mass-title"><span class="step" aria-hidden="true">2</span>Mass on a digital balance</h2>
+      <p class="prose">The lab’s balance is a digital balance with a flat pan on top. It shows mass in grams to two places after the decimal point, which is to the nearest 0.01&nbsp;g, a hundredth of a gram.</p>
+      <ul class="tips">
+        <li><strong>Start from 0.00.</strong> With the pan empty, the display should read 0.00&nbsp;g. If it does not, press <strong>ZERO</strong>.</li>
+        <li><strong>One piece at a time.</strong> The pan can hold several pieces, and then the display shows them all together.</li>
+        <li><strong>Let the number settle.</strong> Like a real balance, the display moves for a moment after something is put on or taken off. Read it once it stops changing.</li>
+        <li><strong>Record every digit, and the unit.</strong> If the display shows 15.40, write 15.40&nbsp;g, not 15.4&nbsp;g. The last 0 is a measurement too: it says the hundredths were read, and were zero.</li>
+      </ul>
+      <div class="callout">
+        <h3>What ZERO does</h3>
+        <p>ZERO (on some balances it is called TARE) makes the display read 0.00 with whatever is on the pan at that moment, and from then on leaves that out of every reading. Chemists use it to weigh a sample in a container: put the empty container on, press ZERO, then add the sample. In this lab there is no container, so press ZERO only with the pan empty.</p>
+      </div>
+
+      <div class="balance-demo">
+        <h3>Try it</h3>
+        <div class="scale-art">
+          <div class="pan-zone"><div class="pan"></div><div class="demo-piece" id="demo-piece" hidden></div></div>
+          <div class="stem"></div>
+          <div class="scale-body">
+            <div class="lcd" aria-live="polite"><span id="lcd-value">0.00</span><span class="lcd-unit">g</span></div>
+            <button type="button" class="zero" id="demo-zero">ZERO</button>
+          </div>
+        </div>
+        <div>
+          <p class="soft">The piece is a made-up one. Put it on, take it off, and press ZERO at different times to see what the display does.</p>
+          <div class="buttons"><button type="button" class="main" id="demo-put">Put the piece on the pan</button></div>
+          <p class="say" id="demo-say" aria-live="polite">The pan is empty and the display reads 0.00&nbsp;g.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="displacement" aria-labelledby="displacement-title">
+      <h2 id="displacement-title"><span class="step" aria-hidden="true">3</span>Volume by water displacement</h2>
+      <p class="prose">A lump of metal has no scale printed on it, and its shape may be awkward to measure with a ruler. Water can do the measuring instead. When a piece sinks into water, it pushes aside (<strong>displaces</strong>) its own volume of water, and the water level rises by exactly that much. As long as the piece is completely under water, the rise in the level is the volume of the piece.</p>
+      <div class="equation" role="math" aria-label="volume of the piece equals the reading after minus the reading before">
+        <span class="eq">volume of the piece = reading after − reading before</span>
+      </div>
+      <p class="prose">Working out a volume this way, as the difference between two readings, is called finding it <strong>by difference</strong>.</p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 520 290" role="img" aria-label="Two graduated cylinders. On the left, water stands at 26.2 milliliters. On the right, a piece of metal lies at the bottom and the water stands at 28.5 milliliters. The water rose by 2.3 milliliters, the volume of the piece.">
+          <defs>
+            <linearGradient id="metal" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#7f8388"/><stop offset="0.45" stop-color="#d3d5d8"/><stop offset="1" stop-color="#8d9095"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="520" height="290" rx="8" fill="#f1f4f3"/>
+          <!-- left cylinder: water only -->
+          <rect x="94" y="26" width="82" height="214" fill="#f9fbfc" stroke="#8d9994" stroke-width="2"/>
+          <path d="M96 100 Q 135 112 174 100 L174 238 L96 238 Z" fill="rgba(118, 170, 214, 0.45)"/>
+          <path d="M96 100 Q 135 112 174 100" fill="none" stroke="#2d5f8f" stroke-width="2"/>
+          <rect x="70" y="240" width="130" height="10" rx="2" fill="#cfd8dc" stroke="#8d9994"/>
+          <g stroke="#0d1c55" stroke-width="1.5">
+            <line x1="96" x2="114" y1="54" y2="54"/><line x1="96" x2="108" y1="82" y2="82"/><line x1="96" x2="114" y1="110" y2="110"/>
+            <line x1="96" x2="108" y1="138" y2="138"/><line x1="96" x2="114" y1="166" y2="166"/><line x1="96" x2="108" y1="194" y2="194"/>
+          </g>
+          <text x="135" y="276" text-anchor="middle" class="sch-text">Before: 26.2&nbsp;mL</text>
+          <!-- right cylinder: with piece 1 -->
+          <rect x="324" y="26" width="82" height="214" fill="#f9fbfc" stroke="#8d9994" stroke-width="2"/>
+          <path d="M326 86 Q 365 98 404 86 L404 238 L326 238 Z" fill="rgba(118, 170, 214, 0.45)"/>
+          <path d="M326 86 Q 365 98 404 86" fill="none" stroke="#2d5f8f" stroke-width="2"/>
+          <rect x="346" y="214" width="38" height="24" rx="4" fill="url(#metal)"/>
+          <rect x="300" y="240" width="130" height="10" rx="2" fill="#cfd8dc" stroke="#8d9994"/>
+          <g stroke="#0d1c55" stroke-width="1.5">
+            <line x1="326" x2="344" y1="54" y2="54"/><line x1="326" x2="338" y1="82" y2="82"/><line x1="326" x2="344" y1="110" y2="110"/>
+            <line x1="326" x2="338" y1="138" y2="138"/><line x1="326" x2="344" y1="166" y2="166"/><line x1="326" x2="338" y1="194" y2="194"/>
+          </g>
+          <line x1="326" x2="452" y1="106" y2="106" stroke="#b4541a" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="404" x2="452" y1="92" y2="92" stroke="#b4541a" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="446" x2="446" y1="94" y2="104" stroke="#b4541a" stroke-width="2"/>
+          <text x="458" y="96" class="sch-text" fill="#b4541a">rise</text>
+          <text x="458" y="114" class="sch-text">2.3&nbsp;mL</text>
+          <text x="365" y="276" text-anchor="middle" class="sch-text">After piece 1: 28.5&nbsp;mL</text>
+          <path d="M214 140 L 284 140" stroke="#1c4c9a" stroke-width="2.5" marker-end="url(#arrow-a)"/>
+          <defs>
+            <marker id="arrow-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1c4c9a"/></marker>
+          </defs>
+          <text x="249" y="128" text-anchor="middle" class="sch-text">drop in</text>
+        </svg>
+        <figcaption>Piece 1 of a made-up alloy goes into a cylinder that holds 26.2&nbsp;mL of water, as in the lab. The level rises to 28.5&nbsp;mL, so the piece’s volume is 28.5&nbsp;mL − 26.2&nbsp;mL = 2.3&nbsp;mL. (The drawing is not to scale.)</figcaption>
+      </figure>
+
+      <h3>The pieces pile up</h3>
+      <p class="prose">In the lab the pieces stay in the cylinder. Each new piece goes in on top of the ones already there, and the level climbs again. The reading minus the starting 26.2&nbsp;mL is then the volume of <em>all</em> the metal in the cylinder so far, and the mass that goes with it is the sum of the masses of all those pieces. Those two running totals are what you will graph.</p>
+      <p class="made-up">Alloy K, used here and in parts 5 and 6, is made up for practice. None of its numbers is a metal from the lab.</p>
+      <div class="table-wrap">
+        <table class="data" id="k-table">
+          <caption class="visually-hidden"></caption>
+          <thead>
+            <tr>
+              <th scope="col">Piece added</th>
+              <th scope="col" class="typed-col">Mass of this piece (g)</th>
+              <th scope="col" class="typed-col">Cylinder reading (mL)</th>
+              <th scope="col">Metal in the cylinder (mL)</th>
+              <th scope="col">Total mass in the cylinder (g)</th>
+            </tr>
+          </thead>
+          <tbody id="k-rows"></tbody>
+        </table>
+      </div>
+      <p class="prose soft"><span class="key" aria-hidden="true"></span>In the lab you type only the two shaded columns: the mass of each piece, and the cylinder reading after it went in. The page works out the other two for the graph and shows them under it, under “Values plotted on the graph”.</p>
+      <p class="worked" id="k-worked"></p>
+      <p class="prose"><strong>Read the level right after each piece goes in</strong>, before you add the next. Once the next piece is in, that level is gone.</p>
+    </section>
+
+    <section id="meniscus" aria-labelledby="meniscus-title">
+      <h2 id="meniscus-title"><span class="step" aria-hidden="true">4</span>Reading the cylinder</h2>
+      <p class="prose">Water clings to glass. Next to the wall it creeps up a little, so the surface of water in a narrow cylinder is not flat but curved, lowest in the middle. This curved surface is the <strong>meniscus</strong>. The volume is read at the <strong>bottom of the curve</strong>.</p>
+      <div class="cyl-layout">
+        <figure class="cyl-box">
+          <svg id="cyl-example" viewBox="0 0 360 400" role="img" aria-label="A close-up of a graduated cylinder at eye level. The water surface curves up where it meets the glass. Marker A is at the bottom of the curve, level with 42.4 milliliters on the scale. Marker B is where the water climbs the glass, almost a milliliter higher."></svg>
+          <figcaption><strong>A</strong>: the bottom of the curve. Read here: 42.4&nbsp;mL. <strong>B</strong>: the water climbing the glass. Reading here gives a number that is too high.</figcaption>
+        </figure>
+        <div>
+          <ol class="tips">
+            <li><strong>Eye level.</strong> Look straight across at the bottom of the curve. From above, the reading comes out too high; from below, too low. In the lab, the <em>Cylinder close-up</em> view puts your eye level with the water for you.</li>
+            <li><strong>Know the marks.</strong> The lab’s 100&nbsp;mL cylinder has a line for every 1&nbsp;mL, a longer line every 5&nbsp;mL, and a number every 10&nbsp;mL. Find the numbered mark nearest the bottom of the curve and count the lines from it.</li>
+            <li><strong>Estimate one more digit.</strong> Between two 1&nbsp;mL lines, judge how many tenths of the way up the bottom of the curve sits. In the picture it is about 4 tenths of the way from 42 to 43, so the reading is 42.4&nbsp;mL.</li>
+            <li><strong>Always one digit after the point.</strong> If the bottom of the curve sits right on a line, the tenths are zero: write 61.0&nbsp;mL, not 61&nbsp;mL.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="practice" id="cyl-practice">
+        <h3>Practice: read the cylinder</h3>
+        <div class="cyl-layout">
+          <figure class="cyl-box">
+            <svg id="cyl-svg" viewBox="0 0 360 400" role="img" aria-label="A close-up of a graduated cylinder at eye level, with water standing in it and a curved meniscus."></svg>
+          </figure>
+          <div>
+            <p class="counter" id="cyl-count"></p>
+            <p class="ask">These four cylinders are made up. Read each one at the bottom of the curve, to the nearest 0.1&nbsp;mL.</p>
+            <div class="entry-row">
+              <label for="cyl-entry">The water is at</label>
+              <input type="text" id="cyl-entry" inputmode="decimal" autocomplete="off" spellcheck="false">
+              <span class="unit">mL</span>
+            </div>
+            <div class="buttons">
+              <button type="button" class="main" id="cyl-check">Check</button>
+              <button type="button" id="cyl-show">Show me</button>
+              <button type="button" id="cyl-next">Next cylinder</button>
+            </div>
+            <p class="say" id="cyl-say" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="graph" aria-labelledby="graph-title">
+      <h2 id="graph-title"><span class="step" aria-hidden="true">5</span>Graphing mass against volume</h2>
+      <p class="prose">Once all five pieces are in, you have five pairs of numbers: the volume of metal in the cylinder, and the total mass of that metal. A graph of one against the other shows at a glance whether they keep in step.</p>
+      <h3>Which goes where</h3>
+      <ul class="tips">
+        <li><strong>x axis (across): volume of metal in the cylinder, in mL.</strong> This is what you build up, piece by piece.</li>
+        <li><strong>y axis (up): total mass of metal in the cylinder, in g.</strong> This is what comes with it.</li>
+        <li>Each point is one row of the table. For alloy K, the point after piece 3 is 7.0&nbsp;mL across and 39.23&nbsp;g up.</li>
+      </ul>
+      <h3>Why the points fall on a line</h3>
+      <p class="prose">Every bit of one metal has the same density. Twice the volume of metal has twice the mass; three times the volume, three times the mass. When two quantities grow in proportion like this, a graph of one against the other is a <strong>straight line</strong>. With no metal in the cylinder there is no volume and no mass, so the line heads for the corner of the graph, the point (0, 0).</p>
+      <h3>Why a trendline</h3>
+      <p class="prose">Real readings carry small errors, such as a tenth of a milliliter here or there on the cylinder. So the points will not sit exactly on one line. A <strong>trendline</strong>, or line of best fit, is the one straight line that passes as close as it can to all the points together. It averages out the small errors, which is also why it may miss (0, 0) by a little, and may not pass exactly through any of the points. The lab page draws the trendline for you.</p>
+      <figure class="graph-box">
+        <div id="graph-k"></div>
+        <ul class="legend" aria-hidden="true">
+          <li><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#1c4c9a"/></svg>Data: alloy K, made up</li>
+          <li><svg width="26" height="14"><line x1="1" y1="7" x2="25" y2="7" stroke="#17211e" stroke-width="2"/></svg>Trendline</li>
+        </ul>
+        <figcaption>The alloy K results from part 3, drawn the way the lab page draws yours, on graph paper with a fine grid.</figcaption>
+      </figure>
+    </section>
+
+    <section id="slope" aria-labelledby="slope-title">
+      <h2 id="slope-title"><span class="step" aria-hidden="true">6</span>Slope, y-intercept and the equation</h2>
+      <p class="prose">Every straight line can be written as an equation of this form:</p>
+      <div class="equation" role="math" aria-label="y equals m x plus b">
+        <span class="eq"><em>y</em> = <em>m</em><em>x</em> + <em>b</em></span>
+        <span class="eq-note"><em>m</em> is the slope; <em>b</em> is the y-intercept</span>
+      </div>
+      <p class="prose">The <strong>slope</strong> says how steeply the line climbs. The <strong>y-intercept</strong> is where the line crosses the y axis, at x = 0. In the lab you find both from the trendline, in four steps.</p>
+
+      <h3>Step 1. Two points on the line</h3>
+      <p class="prose">Pick two points that lie <strong>on the trendline</strong>, not two of your data points. The trendline stands for all five readings together, while any one data point carries its own small error. Choose spots where the line crosses a corner of the grid, so both numbers can be read cleanly, and take them far apart: the farther apart they are, the less a small misreading matters. Write each number with its unit, such as x<sub>1</sub> = 1.0&nbsp;mL and y<sub>1</sub> = 6.0&nbsp;g.</p>
+
+      <h3>Step 2. The slope</h3>
+      <div class="equation" role="math" aria-label="m equals y 2 minus y 1, divided by x 2 minus x 1">
+        <span class="eq"><em>m</em> = <span class="frac"><span><em>y</em><sub>2</sub> − <em>y</em><sub>1</sub></span><span><em>x</em><sub>2</sub> − <em>x</em><sub>1</sub></span></span></span>
+        <span class="eq-note">the rise divided by the run</span>
+      </div>
+      <p class="prose">Subtract in the same order on top and bottom. The units come along with the numbers: grams divided by milliliters gives <strong>g/mL</strong>. A slope in g/mL is a mass per volume, which is a density. That is the point of the graph: the slope of the trendline is the density of the metal, worked out from all five pieces at once.</p>
+
+      <h3>Step 3. The y-intercept</h3>
+      <p class="prose">Put the slope and one of your two points into y = mx + b and solve for b:</p>
+      <div class="equation" role="math" aria-label="b equals y 1 minus m times x 1">
+        <span class="eq"><em>b</em> = <em>y</em><sub>1</sub> − <em>m</em> × <em>x</em><sub>1</sub></span>
+      </div>
+      <p class="prose">The milliliters cancel (g/mL × mL = g), so b is a mass, in g. It should come out small, close to zero, and it may be negative.</p>
+
+      <h3>Step 4. The equation</h3>
+      <p class="prose">Write y = mx + b with your own numbers, each with its units: y = (slope with units)x + (y-intercept with unit).</p>
+
+      <h3>Worked example: alloy K</h3>
+      <figure class="graph-box">
+        <div id="graph-k2"></div>
+        <figcaption>Two points read from the trendline, P<sub>1</sub> and P<sub>2</sub>. The dashed orange lines show how each is read off the axes; the red ones show the rise and the run between them.</figcaption>
+      </figure>
+      <ol class="steps">
+        <li><strong>Two points on the line.</strong> P<sub>1</sub> = (1.0&nbsp;mL, 6.0&nbsp;g) and P<sub>2</sub> = (11.0&nbsp;mL, 62.0&nbsp;g). The line crosses a grid corner at both.</li>
+        <li><strong>Slope.</strong> <span class="math">m = (62.0&nbsp;g − 6.0&nbsp;g) ÷ (11.0&nbsp;mL − 1.0&nbsp;mL) = 56.0&nbsp;g ÷ 10.0&nbsp;mL = <strong>5.60&nbsp;g/mL</strong></span></li>
+        <li><strong>y-intercept.</strong> <span class="math">b = 6.0&nbsp;g − (5.60&nbsp;g/mL × 1.0&nbsp;mL) = 6.0&nbsp;g − 5.6&nbsp;g = <strong>0.4&nbsp;g</strong></span></li>
+        <li><strong>Equation.</strong> <span class="math"><strong>y = (5.60&nbsp;g/mL)x + 0.4&nbsp;g</strong></span></li>
+      </ol>
+      <p class="prose soft">A quick check: put the other point’s x into the equation. 5.60 × 11.0 + 0.4 = 62.0, which is P<sub>2</sub>’s y. The equation fits both points.</p>
+
+      <div class="practice" id="line-practice">
+        <h3>Practice: alloy R</h3>
+        <p class="ask">Alloy R is made up too. Read two points from its trendline, then work out the slope, the y-intercept and the equation, with units, as you will in the lab. Your points show up on the graph when you press Check.</p>
+        <figure class="graph-box">
+          <div id="graph-r"></div>
+        </figure>
+        <div class="ws">
+          <div class="ws-row">
+            <span class="ws-name">Point 1</span>
+            <div class="ws-fields">
+              <label><span>x<sub>1</sub></span> <input type="text" id="w-x1" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+              <label><span>y<sub>1</sub></span> <input type="text" id="w-y1" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+            </div>
+            <p class="msg" id="m-p1" aria-live="polite"></p>
+          </div>
+          <div class="ws-row">
+            <span class="ws-name">Point 2</span>
+            <div class="ws-fields">
+              <label><span>x<sub>2</sub></span> <input type="text" id="w-x2" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+              <label><span>y<sub>2</sub></span> <input type="text" id="w-y2" autocomplete="off" spellcheck="false" placeholder="value and unit"></label>
+            </div>
+            <p class="msg" id="m-p2" aria-live="polite"></p>
+          </div>
+          <div class="ws-row">
+            <label class="ws-name" for="w-m">Slope, m</label>
+            <div class="ws-fields"><input type="text" id="w-m" autocomplete="off" spellcheck="false" placeholder="value and units"></div>
+            <p class="msg" id="m-m" aria-live="polite"></p>
+          </div>
+          <div class="ws-row">
+            <label class="ws-name" for="w-b">y-intercept, b</label>
+            <div class="ws-fields"><input type="text" id="w-b" autocomplete="off" spellcheck="false" placeholder="value and unit"></div>
+            <p class="msg" id="m-b" aria-live="polite"></p>
+          </div>
+          <div class="ws-row">
+            <label class="ws-name" for="w-eq">Equation</label>
+            <div class="ws-fields"><input type="text" id="w-eq" class="wide" autocomplete="off" spellcheck="false" placeholder="y = "></div>
+            <p class="msg" id="m-eq" aria-live="polite"></p>
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="main" id="w-check">Check</button>
+          <button type="button" id="w-show">Show one way to do it</button>
+          <button type="button" id="w-clear">Clear</button>
+        </div>
+        <p class="say" id="w-say" aria-live="polite"></p>
+        <div class="shown" id="w-shown" hidden>
+          <ol class="steps">
+            <li>Two points where the line crosses grid corners: (1.0&nbsp;mL, 12.0&nbsp;g) and (5.0&nbsp;mL, 64.0&nbsp;g).</li>
+            <li>m = (64.0&nbsp;g − 12.0&nbsp;g) ÷ (5.0&nbsp;mL − 1.0&nbsp;mL) = 52.0&nbsp;g ÷ 4.0&nbsp;mL = 13.0&nbsp;g/mL</li>
+            <li>b = 12.0&nbsp;g − (13.0&nbsp;g/mL × 1.0&nbsp;mL) = 12.0&nbsp;g − 13.0&nbsp;g = −1.0&nbsp;g</li>
+            <li>y = (13.0&nbsp;g/mL)x − 1.0&nbsp;g</li>
+          </ol>
+          <p class="soft">Other points on the line work just as well, and give the same answers to within a little. Here b is negative: the line crosses the y axis just below zero.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="bench" aria-labelledby="bench-title">
+      <h2 id="bench-title"><span class="step" aria-hidden="true">7</span>At the virtual bench</h2>
+      <div class="bench-grid">
+        <div>
+          <figure class="figure">
+            <svg viewBox="0 0 480 230" role="img" aria-label="The bench, seen from the front: a balance on the left, a tray of five numbered pieces in the middle, and a tall graduated cylinder on the right. Arrows show a piece going from the tray to the balance first, then from the tray into the cylinder.">
+              <defs>
+                <linearGradient id="metal-b" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0" stop-color="#7f8388"/><stop offset="0.45" stop-color="#d3d5d8"/><stop offset="1" stop-color="#8d9095"/>
+                </linearGradient>
+                <marker id="arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1c4c9a"/></marker>
+              </defs>
+              <rect x="0" y="0" width="480" height="230" rx="8" fill="#eef2f1"/>
+              <rect x="0" y="186" width="480" height="44" fill="#272b2f"/>
+              <!-- balance -->
+              <rect x="24" y="146" width="140" height="40" rx="5" fill="#d9dedc" stroke="#8d9994"/>
+              <rect x="36" y="156" width="70" height="20" rx="2" fill="#c6d3bd" stroke="#6f7d73"/>
+              <text x="71" y="171" text-anchor="middle" class="sch-lcd">0.00&nbsp;g</text>
+              <rect x="118" y="155" width="36" height="22" rx="4" fill="#2c3a4a"/>
+              <text x="136" y="170" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">ZERO</text>
+              <rect x="86" y="140" width="16" height="6" fill="#9aa39f"/>
+              <rect x="44" y="132" width="100" height="8" rx="3" fill="#c3cac7" stroke="#8d9994"/>
+              <!-- tray of five pieces -->
+              <rect x="192" y="174" width="132" height="12" rx="2" fill="#ebebe4" stroke="#a7aaa3"/>
+              <rect x="200" y="152" width="16" height="22" rx="3" fill="url(#metal-b)"/>
+              <rect x="224" y="150" width="16" height="24" rx="3" fill="url(#metal-b)"/>
+              <rect x="248" y="154" width="16" height="20" rx="3" fill="url(#metal-b)"/>
+              <rect x="272" y="150" width="16" height="24" rx="3" fill="url(#metal-b)"/>
+              <rect x="296" y="153" width="16" height="21" rx="3" fill="url(#metal-b)"/>
+              <text x="208" y="142" text-anchor="middle" class="sch-num">1</text>
+              <text x="232" y="142" text-anchor="middle" class="sch-num">2</text>
+              <text x="256" y="142" text-anchor="middle" class="sch-num">3</text>
+              <text x="280" y="142" text-anchor="middle" class="sch-num">4</text>
+              <text x="304" y="142" text-anchor="middle" class="sch-num">5</text>
+              <!-- cylinder -->
+              <rect x="376" y="178" width="72" height="8" rx="2" fill="#cfd8dc" stroke="#8d9994"/>
+              <rect x="396" y="34" width="32" height="144" fill="#f6f9fb" stroke="#8d9994" stroke-width="1.5"/>
+              <rect x="398" y="140" width="28" height="38" fill="rgba(118, 170, 214, 0.5)"/>
+              <g stroke="#0d1c55" stroke-width="1.2">
+                <line x1="398" x2="408" y1="58" y2="58"/><line x1="398" x2="408" y1="82" y2="82"/><line x1="398" x2="408" y1="106" y2="106"/>
+                <line x1="398" x2="408" y1="130" y2="130"/><line x1="398" x2="408" y1="154" y2="154"/>
+              </g>
+              <!-- what to do -->
+              <path d="M236 122 C 214 82, 150 78, 112 118" fill="none" stroke="#1c4c9a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow-b)"/>
+              <text x="170" y="74" text-anchor="middle" class="sch-step">1. weigh</text>
+              <path d="M268 122 C 296 46, 360 14, 404 26" fill="none" stroke="#1c4c9a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#arrow-b)"/>
+              <text x="290" y="40" text-anchor="end" class="sch-step">2. drop in</text>
+              <text x="94" y="214" text-anchor="middle" class="sch-label">Balance</text>
+              <text x="258" y="214" text-anchor="middle" class="sch-label">Pieces</text>
+              <text x="412" y="214" text-anchor="middle" class="sch-label">Cylinder</text>
+            </svg>
+            <figcaption>The bench inside the fume hood, as a sketch.</figcaption>
+          </figure>
+          <ul class="things">
+            <li><b>Your unknown.</b> The five-character code at the top of the lab page decides which metal your pieces are made of. It is printed on your report.</li>
+            <li><b>The bench.</b> A balance that reads to 0.01&nbsp;g, a tray of five numbered pieces, and a 100&nbsp;mL graduated cylinder that already holds 26.2&nbsp;mL of water.</li>
+          </ul>
+        </div>
+        <ol class="tips">
+          <li><strong>Drag a piece</strong> with the mouse, or with a finger on a touch screen. Let go over the balance pan to weigh it, or over the cylinder to drop it in. Let go anywhere else and it goes back to the tray.</li>
+          <li><strong>Weigh first.</strong> A piece cannot go into the water until it has been on the balance. To zero the balance, click its ZERO button.</li>
+          <li><strong>Four views:</strong> <em>Fume hood</em>, <em>Bench</em>, <em>Balance</em> and <em>Cylinder close-up</em>, from the buttons under the 3D view. In the Bench view, a click on the cylinder or on the balance’s display also takes you in close.</li>
+          <li><strong>Read every volume in the Cylinder close-up.</strong> It puts your eye level with the water, and follows the water as it rises.</li>
+          <li><strong>Record as you go</strong> in the “Recorded data” table, then press Enter or click outside the box. The page checks each entry against the bench. A wrong one turns red, with a note saying what kind of slip it looks like, but never the right number.</li>
+          <li><strong>Reset bench</strong> takes every piece back to the tray, sets the water back to 26.2&nbsp;mL and clears your recorded volumes (not the masses). It asks first.</li>
+          <li><strong>Your work is saved in this browser</strong> as you go, so come back in the same browser on the same computer. “Start over with a new unknown” erases everything and gives you a different unknown: use it only if you mean to.</li>
+          <li><strong>The graph</strong> appears once all ten readings are accepted. Click on it to drop a guide onto the trendline, with dashed lines to both axes, to help you read a point.</li>
+          <li><strong>The worksheet</strong> opens once the graph is drawn. Show your working in the large boxes: they are printed with your report but not checked.</li>
+          <li><strong>Turn in.</strong> Type your name and press “Print or save as PDF”. In the print window, choose a printer, or “Save as PDF” to make a file. The report shows your code, data, graph and worksheet, and how many entries the page flagged before you corrected them.</li>
+        </ol>
+      </div>
+
+      <h3>How the page wants its numbers</h3>
+      <div class="table-wrap">
+        <table class="entry-table">
+          <thead><tr><th scope="col">What you are entering</th><th scope="col">How to type it (alloy K examples)</th><th scope="col">Common slips</th></tr></thead>
+          <tbody>
+            <tr><td>The mass of a piece</td><td>Every digit the balance shows: <span class="typed">12.88</span>. The column is already in grams.</td><td>Dropping a final zero: 15.40, not 15.4. Typing the mass of a different piece.</td></tr>
+            <tr><td>The volume in the cylinder</td><td>The reading itself, to 0.1&nbsp;mL: <span class="typed">28.5</span></td><td>Typing the rise (2.3) instead of the reading. Reading where the water touches the glass. Leaving off the tenths.</td></tr>
+            <tr><td>x<sub>1</sub> and x<sub>2</sub></td><td>A volume with its unit: <span class="typed">1.0&nbsp;mL</span></td><td>Leaving off the unit. A point that is not on the trendline.</td></tr>
+            <tr><td>y<sub>1</sub> and y<sub>2</sub></td><td>A mass with its unit: <span class="typed">6.0&nbsp;g</span></td><td>The same.</td></tr>
+            <tr><td>The slope</td><td>The number and its units: <span class="typed">5.60&nbsp;g/mL</span> (g/cm³ works too)</td><td>Dividing the change in x by the change in y. Subtracting in a different order on top and bottom.</td></tr>
+            <tr><td>The y-intercept</td><td>The number and its unit, with its sign: <span class="typed">0.4&nbsp;g</span></td><td>A slip in the sign: b = y − mx.</td></tr>
+            <tr><td>The equation</td><td><span class="typed">y = (5.60&nbsp;g/mL)x + 0.4&nbsp;g</span></td><td>Leaving off the units. Using numbers other than your own slope and y-intercept.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="check" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step" aria-hidden="true">8</span>Check yourself</h2>
+      <p class="prose">Nothing here is graded or recorded. Pick an answer to see whether it is right and why; you can change your answer as often as you like.</p>
+      <ol class="quiz" id="quiz"></ol>
+      <p class="score" id="score" aria-live="polite"></p>
+    </section>
+
+    <div class="next">
+      <p><strong>Ready?</strong> Open the lab, drag piece 1 onto the balance, and start your table. You can keep this page open in another tab to look back at it.</p>
+      <a class="lab-button" href="../">Open the lab <span aria-hidden="true">→</span></a>
+    </div>
+
+    <p class="credit">A practice page for the simulated lab “Density of an Unknown Metal”. Nothing on this page is graded or recorded. Alloy K, alloy R, the plastic block, the balance piece and the cylinders here are made up for practice; none of their numbers is a metal or a measurement from the lab.</p>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+  var NS = 'http://www.w3.org/2000/svg';
+  // Drawing positions are kept to the nearest half pixel: crisp enough, and short.
+  function q(v) { return Math.round(v * 2) / 2; }
+  function add(parent, tag, attrs, text) {
+    var node = document.createElementNS(NS, tag);
+    Object.keys(attrs).forEach(function (k) {
+      var v = attrs[k];
+      node.setAttribute(k, typeof v === 'number' && k !== 'stroke-width' ? q(v) : v);
+    });
+    if (text != null) node.textContent = text;
+    parent.appendChild(node);
+    return node;
+  }
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+  var MINUS = '−';
+  function say(node, right, text) {
+    node.textContent = '';
+    node.appendChild(el('b', right ? 'right' : 'wrong', right ? 'Yes. ' : 'Not yet. '));
+    node.appendChild(document.createTextNode(text));
+  }
+
+  // ---- Pure checks: begin ---------------------------------------------------------------------
+  // Reading what a student typed, and judging it. Nothing here touches the page, so the same code
+  // can be tried out on its own. The rules follow the lab page's own checks (its model.js).
+
+  function round(value, places) {
+    var f = Math.pow(10, places);
+    return Math.round((value + (value >= 0 ? 1e-9 : -1e-9)) * f) / f;
+  }
+  function near(a, b, tol) { return Math.abs(a - b) <= tol + 1e-9; }
+
+  // "12.50 g" gives { value: 12.5, decimals: 2, unit: "g" }; null when there is no number.
+  function parseQuantity(text) {
+    var s = String(text == null ? '' : text).replace(/[−‒–—]/g, '-').trim();
+    var m = /^([+-]?\s*(?:\d+\.?\d*|\.\d+))\s*(.*)$/.exec(s);
+    if (!m) return null;
+    var mantissa = m[1].replace(/\s+/g, '');
+    var value = parseFloat(mantissa);
+    if (!isFinite(value)) return null;
+    var dot = mantissa.indexOf('.');
+    return { value: value, decimals: dot < 0 ? 0 : mantissa.length - dot - 1, unit: m[2].trim() };
+  }
+  function unitKey(unit) {
+    return String(unit || '').toLowerCase().replace(/³/g, '3').replace(/⁻¹/g, '-1').replace(/[\s.·*⋅()]/g, '');
+  }
+  function isVolumeUnit(unit) { return /^(ml|milliliters?|millilitres?|cm3|cm\^3|cc)$/.test(unitKey(unit)); }
+  function isMassUnit(unit) { return /^(g|grams?|gm)$/.test(unitKey(unit)); }
+  function isDensityUnit(unit) {
+    var k = unitKey(unit).replace(/per/g, '/').replace(/grams?/g, 'g').replace(/milliliters?|millilitres?/g, 'ml');
+    return /^g\/(ml|cm3|cm\^3|cc)$/.test(k) || /^g(ml|cm3|cm\^3)\^?-1$/.test(k);
+  }
+
+  // The lab's graph paper: a round top value, labelled major lines and easy-to-count minor lines.
+  function axisFor(maxValue) {
+    var target = Math.max(maxValue, 1e-6) * 1.08;
+    var pow = Math.pow(10, Math.floor(Math.log10(target / 5)));
+    var steps = [1, 2, 5, 10], major = pow;
+    for (var i = 0; i < steps.length; i++) {
+      major = steps[i] * pow;
+      if (target / major <= 9) break;
+    }
+    var firstDigit = Math.round(major / Math.pow(10, Math.floor(Math.log10(major) + 1e-9)));
+    var minor = firstDigit === 2 ? major / 4 : major / 5;
+    var max = Math.ceil(target / major - 1e-9) * major;
+    var places = Math.max(0, -Math.floor(Math.log10(minor) + 1e-9));
+    return { max: round(max, 6), major: round(major, 6), minor: round(minor, 6), places: places };
+  }
+  function fitLine(points) {
+    var n = points.length, sx = 0, sy = 0, sxx = 0, sxy = 0;
+    points.forEach(function (p) { sx += p.x; sy += p.y; sxx += p.x * p.x; sxy += p.x * p.y; });
+    var slope = (n * sxy - sx * sy) / (n * sxx - sx * sx);
+    return { slope: slope, intercept: (sy - slope * sx) / n };
+  }
+  function graphOf(points) {
+    return {
+      points: points, fit: fitLine(points),
+      xAxis: axisFor(Math.max.apply(null, points.map(function (p) { return p.x; }))),
+      yAxis: axisFor(Math.max.apply(null, points.map(function (p) { return p.y; })))
+    };
+  }
+
+  // The made-up alloys. Their trendlines come out exactly at y = 5.6x + 0.4 and y = 13.0x - 1.0.
+  var START_ML = 26.2;   // the water already in the lab's cylinder
+  var ALLOY_K = { readings: [28.5, 31.1, 33.2, 35.8, 38.0], masses: [12.88, 15.58, 10.77, 15.52, 11.29] };
+  var K_ROWS = [];
+  (function () {
+    var total = 0;
+    ALLOY_K.readings.forEach(function (r, i) {
+      total = round(total + ALLOY_K.masses[i], 2);
+      K_ROWS.push({ piece: i + 1, mass: ALLOY_K.masses[i], reading: r, x: round(r - START_ML, 1), y: total });
+    });
+  })();
+  var K_GRAPH = graphOf(K_ROWS.map(function (r) { return { x: r.x, y: r.y }; }));
+  var R_GRAPH = graphOf([[1.2, 15.05], [2.5, 30.56], [3.6, 46.54], [5.0, 63.39], [6.1, 78.66]].map(function (p) { return { x: p[0], y: p[1] }; }));
+
+  // The cylinder practice: where the bottom of each meniscus is, in mL, and how far the water
+  // climbs the glass above it.
+  var LEVELS = [34.6, 47.0, 51.3, 68.8];
+  var CLIMB_ML = 0.9;
+
+  // A cylinder reading. Returns { ok, message }.
+  function judgeReading(text, level) {
+    var raw = String(text == null ? '' : text).trim();
+    if (!raw) return { ok: false, message: 'Type the reading first.' };
+    var q = parseQuantity(raw);
+    if (!q) return { ok: false, message: 'Type the reading as a number, such as 52.4.' };
+    if (q.unit && !isVolumeUnit(q.unit)) return { ok: false, message: 'A volume is read in mL.' };
+    var diff = round(q.value - level, 6);
+    if (Math.abs(diff) <= 0.1 + 1e-9) {
+      if (q.decimals === 0) return { ok: false, message: 'Right level, but give the tenths too, even when they are zero: ' + level.toFixed(1) + ' mL.' };
+      if (q.decimals > 1) return { ok: false, message: 'Right level, but give one digit after the point only. The tenths are already your best estimate; a second digit would be a guess.' };
+      return { ok: true, message: diff === 0 ? 'The bottom of the curve is at ' + level.toFixed(1) + ' mL.' : 'Close enough: the bottom of the curve is at ' + level.toFixed(1) + ' mL, and a tenth either way is fair for a reading by eye.' };
+    }
+    if (diff > 0.25 && diff <= 1.25) return { ok: false, message: 'A little high. That is about where the water touches the glass. Read the bottom of the curve, in the middle of the cylinder.' };
+    var whole = Math.round(diff);
+    if (whole !== 0 && Math.abs(diff - whole) <= 0.15) {
+      if (Math.abs(whole) === 10) return { ok: false, message: 'Check which numbered mark you counted from. The numbers are every 10 mL.' };
+      if (Math.abs(whole) < 10) return { ok: false, message: 'Close, but count the lines again from the nearest numbered mark. Each line is 1 mL, and the longer ones are every 5 mL.' };
+    }
+    if (Math.abs(diff) <= 0.25) return { ok: false, message: 'Close. Judge the tenths again: how far up is the bottom of the curve from the line below it, out of the ten tenths to the next line?' };
+    if (q.decimals === 0) return { ok: false, message: 'Read to the nearest 0.1 mL: estimate one digit between the 1 mL lines.' };
+    return { ok: false, message: 'Look again. Find the lowest point of the curve, count the lines from the numbered mark nearest it, then judge the tenths between two lines.' };
+  }
+
+  // The worksheet practice, judged as the lab page judges its own worksheet.
+  var ON_LINE_SQUARES = 0.5;   // a point may sit this many small grid squares off the trendline
+
+  function checkCoordinate(text, kind) {
+    if (!String(text || '').trim()) return { ok: null, message: '' };
+    var q = parseQuantity(text);
+    if (!q) return { ok: false, message: 'Enter a number followed by its unit.' };
+    if (!q.unit) return { ok: false, message: kind === 'x' ? 'Include the unit: x is a volume, in mL.' : 'Include the unit: y is a mass, in g.' };
+    if (kind === 'x' && !isVolumeUnit(q.unit)) return { ok: false, message: 'x is a volume. Check the unit.' };
+    if (kind === 'y' && !isMassUnit(q.unit)) return { ok: false, message: 'y is a mass. Check the unit.' };
+    return { ok: true, message: '', value: q.value };
+  }
+
+  function squaresOff(graph, p, line) {
+    var residual = p.y - (line.slope * p.x + line.intercept);
+    var s = line.slope * graph.xAxis.minor / graph.yAxis.minor;
+    return Math.abs(residual / graph.yAxis.minor) / Math.sqrt(1 + s * s);
+  }
+
+  function checkPoint(graph, xText, yText) {
+    var cx = checkCoordinate(xText, 'x'), cy = checkCoordinate(yText, 'y');
+    if (cx.ok === null && cy.ok === null) return { ok: null, message: '', point: null };
+    if (cx.ok === null || cy.ok === null) return { ok: false, message: 'Enter both numbers of this point, each with its unit.', point: null };
+    if (cx.ok !== true) return { ok: false, message: cx.message, point: null };
+    if (cy.ok !== true) return { ok: false, message: cy.message, point: null };
+    var p = { x: cx.value, y: cy.value };
+    if (p.x < -1e-9 || p.x > graph.xAxis.max + 1e-9 || p.y < -1e-9 || p.y > graph.yAxis.max + 1e-9) {
+      return { ok: false, message: 'That point is outside the graph. Pick a point you can read from the grid.', point: p };
+    }
+    // Typed straight from the data rather than read from the line?
+    var isData = graph.points.some(function (d) { return Math.abs(d.x - p.x) <= 0.05 && Math.abs(d.y - p.y) <= 0.05; });
+    if (squaresOff(graph, p, graph.fit) > ON_LINE_SQUARES) {
+      return { ok: false, point: p, message: isData
+        ? 'That is one of the data points, and it is not on the trendline. Use a point on the line itself.'
+        : 'That point is not on the trendline. Pick a spot where the line crosses a corner of the grid, and read both axes again.' };
+    }
+    // Close enough to pass, as in the lab, but worth a word.
+    if (isData) return { ok: true, point: p, message: 'That is one of the data points. It sits close enough to the line to pass, but a point read from the trendline itself is better.' };
+    return { ok: true, message: '', point: p };
+  }
+
+  function checkSpacing(graph, p1, p2) {
+    if (!p1 || !p2) return { ok: null, message: '' };
+    var dx = Math.abs(p2.x - p1.x);
+    if (dx < graph.xAxis.minor * 2 - 1e-9) return { ok: false, message: 'Choose two different points that are far apart on the line.' };
+    if (dx < graph.xAxis.max * 0.3) return { ok: true, message: 'These points are close together. Points farther apart give a more reliable slope.' };
+    return { ok: true, message: '' };
+  }
+
+  function checkSlope(p1, p2, text) {
+    if (!String(text || '').trim()) return { ok: null, message: '' };
+    var q = parseQuantity(text);
+    if (!q) return { ok: false, message: 'Enter the slope as a number followed by its units.' };
+    if (!q.unit) return { ok: false, message: 'Include the units. Slope is rise over run: the y unit divided by the x unit.' };
+    if (!isDensityUnit(q.unit)) return { ok: false, message: 'Check the units. Slope is the y unit divided by the x unit.' };
+    if (!p1 || !p2) return { ok: false, message: 'Fix your two points first. The slope is worked out from them.' };
+    var expected = (p2.y - p1.y) / (p2.x - p1.x);
+    if (near(q.value, expected, Math.abs(expected) * 0.015 + 0.005)) return { ok: true, message: '', value: q.value };
+    if (near(q.value, -expected, Math.abs(expected) * 0.015 + 0.005)) return { ok: false, message: 'Check the sign. Subtract the points in the same order on top and bottom.' };
+    if (Math.abs(expected) > 1e-9 && near(q.value, 1 / expected, Math.abs(1 / expected) * 0.015 + 0.0005)) {
+      return { ok: false, message: 'That is run over rise. Slope is the change in y divided by the change in x.' };
+    }
+    return { ok: false, message: 'That does not match your two points. Slope = (y₂ − y₁) ÷ (x₂ − x₁).' };
+  }
+
+  function checkIntercept(p1, p2, slopeText, text) {
+    if (!String(text || '').trim()) return { ok: null, message: '' };
+    var q = parseQuantity(text);
+    if (!q) return { ok: false, message: 'Enter the y-intercept as a number followed by its unit.' };
+    if (!q.unit) return { ok: false, message: 'Include the unit. The y-intercept is a value on the y axis, a mass.' };
+    if (!isMassUnit(q.unit)) return { ok: false, message: 'Check the unit. The y-intercept is a value on the y axis, a mass.' };
+    var slope = parseQuantity(slopeText);
+    if (!p1 || !p2 || !slope) return { ok: false, message: 'Finish the slope first. The y-intercept is worked out from it.' };
+    var exact = (p2.y - p1.y) / (p2.x - p1.x);
+    var right = [], flipped = [];
+    [p1, p2].forEach(function (p) {
+      [slope.value, exact].forEach(function (m) {
+        var tol = 0.2 + 0.003 * Math.abs(p.y);
+        right.push({ b: p.y - m * p.x, tol: tol });
+        flipped.push({ b: m * p.x - p.y, tol: tol });
+      });
+    });
+    function hit(list) { return list.some(function (c) { return near(q.value, c.b, c.tol); }); }
+    if (hit(right)) return { ok: true, message: '', value: q.value };
+    if (hit(flipped)) return { ok: false, message: 'Check the sign. Rearranging y = mx + b gives b = y − mx.' };
+    return { ok: false, message: 'That does not match your slope and points. Put one of your points into y = mx + b and solve for b.' };
+  }
+
+  function checkEquation(slopeText, interceptText, text) {
+    if (!String(text || '').trim()) return { ok: null, message: '' };
+    var s = String(text).replace(/[−‒–—]/g, '-').replace(/³/g, '3')
+      .replace(/⁻¹/g, '^-1').replace(/[\s()\[\]]/g, '').toLowerCase();
+    var num = '(?:\\d+\\.?\\d*|\\.\\d+)';
+    var re = new RegExp('^(?:y|mass|m)=([+-]?' + num + ')([a-z0-9/^.\\u00b7*-]*?)[*\\u00b7\\u00d7]?(?:x|volume|v)([+-])([+-]?' + num + ')([a-z]*)$');
+    var m = re.exec(s);
+    if (!m) return { ok: false, message: 'Write it in the form y = (slope with units)x + (y-intercept with unit).' };
+    var mVal = parseFloat(m[1]);
+    var bVal = parseFloat(m[4]) * (m[3] === '-' ? -1 : 1);
+    if (!m[2] || !m[5]) return { ok: false, message: 'Include the units on both the slope and the y-intercept.' };
+    if (!isDensityUnit(m[2]) || !isMassUnit(m[5])) return { ok: false, message: 'Check the units in your equation.' };
+    var slope = parseQuantity(slopeText), intercept = parseQuantity(interceptText);
+    if (!slope || !intercept) return { ok: false, message: 'Finish the slope and the y-intercept first.' };
+    var okM = near(mVal, slope.value, Math.abs(slope.value) * 0.005 + 1e-6);
+    var okB = near(bVal, intercept.value, Math.abs(intercept.value) * 0.005 + 1e-6);
+    if (okM && okB) return { ok: true, message: '' };
+    if (okM && near(bVal, -intercept.value, Math.abs(intercept.value) * 0.005 + 1e-6)) return { ok: false, message: 'Check the sign of the y-intercept in your equation.' };
+    return { ok: false, message: 'Use the slope and y-intercept you found above.' };
+  }
+
+  // The whole worksheet at once, in the order the lab page checks it.
+  function checkWorksheet(graph, w) {
+    var r = {};
+    r.p1 = checkPoint(graph, w.x1, w.y1);
+    r.p2 = checkPoint(graph, w.x2, w.y2);
+    var pt1 = r.p1.ok === true ? r.p1.point : null, pt2 = r.p2.ok === true ? r.p2.point : null;
+    r.spacing = checkSpacing(graph, pt1, pt2);
+    if (r.spacing.ok === false) { r.p2 = { ok: false, message: r.spacing.message, point: r.p2.point }; pt2 = null; }
+    else if (r.spacing.message) r.p2 = { ok: true, message: r.spacing.message, point: r.p2.point };
+    r.slope = checkSlope(pt1, pt2, w.m);
+    r.b = checkIntercept(pt1, pt2, r.slope.ok === true ? w.m : '', w.b);
+    r.eq = checkEquation(r.slope.ok === true ? w.m : '', r.b.ok === true ? w.b : '', w.eq);
+    return r;
+  }
+
+  var PURE = {
+    parseQuantity: parseQuantity, isDensityUnit: isDensityUnit, axisFor: axisFor, fitLine: fitLine,
+    K_ROWS: K_ROWS, K_GRAPH: K_GRAPH, R_GRAPH: R_GRAPH, LEVELS: LEVELS,
+    judgeReading: judgeReading, checkWorksheet: checkWorksheet
+  };
+  // ---- Pure checks: end -----------------------------------------------------------------------
+
+  if (typeof document === 'undefined') { if (typeof module === 'object') module.exports = PURE; return; }
+
+  var phone = window.matchMedia('(max-width: 600px)');
+
+  // ---- 2. The balance -------------------------------------------------------------------------
+
+  var demo = { on: false, tare: 0, mass: 12.88 };
+  function showBalance(text) {
+    var r = round((demo.on ? demo.mass : 0) - demo.tare, 2);
+    if (Math.abs(r) < 0.005) r = 0;
+    $('lcd-value').textContent = (r < 0 ? MINUS : '') + Math.abs(r).toFixed(2);
+    $('demo-piece').hidden = !demo.on;
+    $('demo-put').textContent = demo.on ? 'Take the piece off' : 'Put the piece on the pan';
+    $('demo-say').textContent = text;
+  }
+  $('demo-put').addEventListener('click', function () {
+    demo.on = !demo.on;
+    if (demo.on && demo.tare === 0) showBalance('The piece is on the pan. Record every digit the display shows, with the unit: 12.88 g.');
+    else if (demo.on) showBalance('The display reads 0.00 g with the piece on the pan, because ZERO was pressed while it was there. Take it off, press ZERO with the pan empty, and weigh it again.');
+    else if (demo.tare === 0) showBalance('The pan is empty and the display reads 0.00 g.');
+    else showBalance('A negative number: the balance is still leaving out the piece it was zeroed with. Press ZERO now, with the pan empty.');
+  });
+  $('demo-zero').addEventListener('click', function () {
+    demo.tare = demo.on ? demo.mass : 0;
+    if (demo.on) showBalance('You pressed ZERO with the piece on the pan. The display reads 0.00 g, so this piece can no longer be weighed. Take it off and see what happens.');
+    else showBalance('ZERO with an empty pan: the display reads 0.00 g, and anything put on now is weighed by itself.');
+  });
+
+  // ---- 3. The table of running totals ----------------------------------------------------------
+
+  K_ROWS.forEach(function (r) {
+    var tr = el('tr');
+    var th = el('th', null, String(r.piece)); th.setAttribute('scope', 'row');
+    tr.appendChild(th);
+    tr.appendChild(el('td', 'typed-col', r.mass.toFixed(2)));
+    tr.appendChild(el('td', 'typed-col', r.reading.toFixed(1)));
+    tr.appendChild(el('td', null, r.x.toFixed(1)));
+    tr.appendChild(el('td', null, r.y.toFixed(2)));
+    $('k-rows').appendChild(tr);
+  });
+  $('k-table').querySelector('caption').textContent = 'Made-up results for alloy K, five pieces added one at a time to 26.2 mL of water';
+  (function () {
+    var a = K_ROWS[0], b = K_ROWS[1], box = $('k-worked');
+    box.appendChild(document.createTextNode('After piece 2 the cylinder reads ' + b.reading.toFixed(1) + ' mL. The metal in the cylinder is pieces 1 and 2 together:'));
+    box.appendChild(el('br'));
+    box.appendChild(el('span', 'math', b.reading.toFixed(1) + ' mL ' + MINUS + ' ' + START_ML.toFixed(1) + ' mL = ' + b.x.toFixed(1) + ' mL of metal'));
+    box.appendChild(el('br'));
+    box.appendChild(el('span', 'math', a.mass.toFixed(2) + ' g + ' + b.mass.toFixed(2) + ' g = ' + b.y.toFixed(2) + ' g of metal'));
+  })();
+
+  // ---- 4. The cylinder close-up -----------------------------------------------------------------
+  // Drawn like the lab's close-up: eye level with the water, about 12.5 mL of scale on show, a line
+  // every 1 mL, a longer one every 5 mL and a number every 10 mL.
+
+  var CYL = { inL: 72, inR: 288, mid: 180, perMl: 32, centre: 200 };
+  function drawCylinder(svg, level, opts) {
+    opts = opts || {};
+    clear(svg);
+    function y(ml) { return CYL.centre - (ml - level) * CYL.perMl; }
+    add(svg, 'rect', { x: 0, y: 0, width: 360, height: 400, fill: '#e6ecef' });
+    add(svg, 'rect', { x: 58, y: -4, width: 244, height: 408, fill: '#cfdde5', stroke: '#9fb3bf', 'stroke-width': 1.5 });
+    add(svg, 'rect', { x: CYL.inL, y: -4, width: CYL.inR - CYL.inL, height: 408, fill: '#f6f9fb' });
+    var half = (CYL.inR - CYL.inL) / 2, d = '';
+    for (var i = 0; i <= 72; i++) {
+      var x = CYL.inL + (CYL.inR - CYL.inL) * i / 72;
+      var t = Math.abs(x - CYL.mid) / half;
+      d += (i ? ' L' : 'M') + q(x) + ' ' + q(y(level + CLIMB_ML * Math.pow(t, 4)));
+    }
+    add(svg, 'path', { d: d + ' L' + CYL.inR + ' 404 L' + CYL.inL + ' 404 Z', fill: 'rgba(118, 170, 214, 0.34)' });
+    add(svg, 'path', { d: d, fill: 'none', stroke: 'rgba(45, 95, 143, 0.22)', 'stroke-width': 8, transform: 'translate(0 4)' });
+    add(svg, 'path', { d: d, fill: 'none', stroke: '#2d5f8f', 'stroke-width': 2.4 });
+    var lo = Math.ceil(level - 6.7), hi = Math.floor(level + 6.7);
+    for (var ml = lo; ml <= hi; ml++) {
+      if (ml < 10 || ml > 100) continue;
+      var ten = ml % 10 === 0, five = ml % 5 === 0;
+      add(svg, 'line', { x1: 80, x2: ten ? 196 : (five ? 174 : 152), y1: y(ml), y2: y(ml), stroke: '#0d1c55', 'stroke-width': ten ? 2.4 : 1.6 });
+      if (ten) add(svg, 'text', { x: 204, y: y(ml), dy: '0.35em', 'class': 'cyl-num' }, String(ml));
+    }
+    // a glint down the glass
+    add(svg, 'rect', { x: 268, y: -4, width: 7, height: 408, fill: 'rgba(255, 255, 255, 0.45)' });
+    if (opts.line) {
+      add(svg, 'line', { x1: 62, x2: 298, y1: y(level), y2: y(level), stroke: '#b4541a', 'stroke-width': 2, 'stroke-dasharray': '7 5' });
+    }
+    if (opts.markers) {
+      marker(svg, 'A', '#1b7a40', CYL.mid + 66, y(level) + 42, CYL.mid + 6, y(level) + 4);
+      marker(svg, 'B', '#ab2a1c', CYL.inR - 40, y(level + CLIMB_ML) - 56, CYL.inR - 4, y(level + CLIMB_ML) - 2);
+    }
+  }
+  function marker(svg, letter, color, cx, cy, tx, ty) {
+    var g = add(svg, 'g', { 'class': 'marker' });
+    add(g, 'line', { x1: cx, y1: cy, x2: tx, y2: ty, stroke: color });
+    add(g, 'circle', { cx: cx, cy: cy, r: 13, fill: color });
+    add(g, 'text', { x: cx, y: cy, dy: '0.35em', 'text-anchor': 'middle' }, letter);
+  }
+
+  drawCylinder($('cyl-example'), 42.4, { markers: true, line: true });
+
+  var cylAt = 0;
+  function showCylinder() {
+    drawCylinder($('cyl-svg'), LEVELS[cylAt]);
+    $('cyl-count').textContent = 'Cylinder ' + (cylAt + 1) + ' of ' + LEVELS.length;
+    $('cyl-entry').value = '';
+    $('cyl-entry').removeAttribute('data-state');
+    $('cyl-say').textContent = '';
+  }
+  function checkCylinder() {
+    var result = judgeReading($('cyl-entry').value, LEVELS[cylAt]);
+    $('cyl-entry').setAttribute('data-state', result.ok ? 'right' : 'wrong');
+    say($('cyl-say'), result.ok, result.message);
+    if (result.ok) drawCylinder($('cyl-svg'), LEVELS[cylAt], { line: true });
+  }
+  $('cyl-check').addEventListener('click', checkCylinder);
+  $('cyl-entry').addEventListener('keydown', function (e) { if (e.key === 'Enter') checkCylinder(); });
+  $('cyl-show').addEventListener('click', function () {
+    drawCylinder($('cyl-svg'), LEVELS[cylAt], { line: true });
+    $('cyl-say').textContent = 'The dashed line runs through the bottom of the curve, at ' + LEVELS[cylAt].toFixed(1) + ' mL. Follow it across to the scale and count the lines from the numbered mark.';
+  });
+  $('cyl-next').addEventListener('click', function () { cylAt = (cylAt + 1) % LEVELS.length; showCylinder(); });
+  showCylinder();
+
+  // ---- 5 and 6. Graphs, drawn like the lab page's ---------------------------------------------
+
+  function graphSize() {
+    return phone.matches
+      ? { w: 400, h: 350, left: 54, right: 14, top: 14, bottom: 52 }
+      : { w: 680, h: 450, left: 66, right: 22, top: 16, bottom: 56 };
+  }
+
+  // spec: { graph, label, holder, marks: [{x, y, name}], riseRun: [p1, p2], typed: [{x, y, ok}] }
+  function drawGraph(spec) {
+    var g = spec.graph, S = graphSize();
+    var root = document.createElementNS(NS, 'svg');
+    root.setAttribute('viewBox', '0 0 ' + S.w + ' ' + S.h);
+    root.setAttribute('role', 'img');
+    root.setAttribute('aria-label', spec.label);
+    function sx(v) { return S.left + v / g.xAxis.max * (S.w - S.left - S.right); }
+    function sy(v) { return S.h - S.bottom - v / g.yAxis.max * (S.h - S.top - S.bottom); }
+    var x0 = sx(0), x1 = sx(g.xAxis.max), y0 = sy(0), y1 = sy(g.yAxis.max);
+    add(root, 'rect', { x: x0, y: y1, width: x1 - x0, height: y0 - y1, 'class': 'plot-paper' });
+    var i, v, n;
+    n = Math.round(g.xAxis.max / g.xAxis.minor);
+    for (i = 0; i <= n; i++) { v = i * g.xAxis.minor; add(root, 'line', { x1: sx(v), x2: sx(v), y1: y0, y2: y1, 'class': 'grid-minor' }); }
+    n = Math.round(g.yAxis.max / g.yAxis.minor);
+    for (i = 0; i <= n; i++) { v = i * g.yAxis.minor; add(root, 'line', { x1: x0, x2: x1, y1: sy(v), y2: sy(v), 'class': 'grid-minor' }); }
+    n = Math.round(g.xAxis.max / g.xAxis.major);
+    for (i = 0; i <= n; i++) {
+      v = i * g.xAxis.major;
+      add(root, 'line', { x1: sx(v), x2: sx(v), y1: y0, y2: y1, 'class': 'grid-major' });
+      add(root, 'text', { x: sx(v), y: y0 + 19, 'text-anchor': 'middle', 'class': 'tick-label' }, round(v, 6).toFixed(g.xAxis.places));
+    }
+    n = Math.round(g.yAxis.max / g.yAxis.major);
+    for (i = 0; i <= n; i++) {
+      v = i * g.yAxis.major;
+      add(root, 'line', { x1: x0, x2: x1, y1: sy(v), y2: sy(v), 'class': 'grid-major' });
+      add(root, 'text', { x: x0 - 8, y: sy(v) + 4.5, 'text-anchor': 'end', 'class': 'tick-label' }, round(v, 6).toFixed(g.yAxis.places));
+    }
+    add(root, 'rect', { x: x0, y: y1, width: x1 - x0, height: y0 - y1, 'class': 'plot-frame' });
+    add(root, 'text', { x: (x0 + x1) / 2, y: S.h - 14, 'text-anchor': 'middle', 'class': 'axis-title' }, 'Volume of metal, by difference (mL)');
+    add(root, 'text', { x: 0, y: 0, 'text-anchor': 'middle', 'class': 'axis-title', transform: 'translate(17 ' + q((y0 + y1) / 2) + ') rotate(-90)' }, 'Total mass of metal (g)');
+
+    var clipId = 'clip-' + spec.holder;
+    var clip = add(root, 'clipPath', { id: clipId });
+    add(clip, 'rect', { x: x0, y: y1, width: x1 - x0, height: y0 - y1 });
+    var plot = add(root, 'g', { 'clip-path': 'url(#' + clipId + ')' });
+    add(plot, 'line', { x1: sx(0), y1: sy(g.fit.intercept), x2: sx(g.xAxis.max), y2: sy(g.fit.slope * g.xAxis.max + g.fit.intercept), 'class': 'trendline' });
+
+    (spec.marks || []).forEach(function (p) {
+      add(root, 'line', { x1: sx(p.x), y1: sy(p.y), x2: sx(p.x), y2: y0, 'class': 'guide-line' });
+      add(root, 'line', { x1: sx(p.x), y1: sy(p.y), x2: x0, y2: sy(p.y), 'class': 'guide-line' });
+    });
+    if (spec.riseRun) {
+      var a = spec.riseRun[0], b = spec.riseRun[1];
+      add(root, 'polyline', { points: q(sx(a.x)) + ',' + q(sy(a.y)) + ' ' + q(sx(b.x)) + ',' + q(sy(a.y)) + ' ' + q(sx(b.x)) + ',' + q(sy(b.y)), 'class': 'rise' });
+      add(root, 'text', { x: (sx(a.x) + sx(b.x)) / 2, y: sy(a.y) - 8, 'text-anchor': 'middle', 'class': 'rise-name' }, 'run: ' + (b.x - a.x).toFixed(1) + ' mL');
+      add(root, 'text', { x: sx(b.x) - 8, y: (sy(a.y) + sy(b.y)) / 2, 'text-anchor': 'end', 'class': 'rise-name' }, 'rise: ' + (b.y - a.y).toFixed(1) + ' g');
+    }
+    g.points.forEach(function (p) { add(root, 'circle', { cx: sx(p.x), cy: sy(p.y), r: 5, 'class': 'data-dot' }); });
+    (spec.marks || []).forEach(function (p, k) {
+      add(root, 'circle', { cx: sx(p.x), cy: sy(p.y), r: 6.5, 'class': 'guide-dot' });
+      // P1 sits close to the mass axis, so its name goes below and to the right of it
+      var label = add(root, 'text', { x: sx(p.x) + (k === 0 ? 9 : 10), y: sy(p.y) + (k === 0 ? 16 : 20), 'class': 'mark-name' }, 'P');
+      add(label, 'tspan', { 'baseline-shift': 'sub', 'font-size': '10px' }, String(k + 1));
+    });
+    (spec.typed || []).forEach(function (p) {
+      if (p.x < 0 || p.x > g.xAxis.max || p.y < 0 || p.y > g.yAxis.max) return;
+      add(root, 'circle', { cx: sx(p.x), cy: sy(p.y), r: 8, 'class': p.ok ? 'typed-ok' : 'typed-bad' });
+    });
+
+    var holder = $(spec.holder);
+    clear(holder);
+    holder.appendChild(root);
+  }
+
+  var typedPoints = [];
+  function drawGraphs() {
+    drawGraph({ holder: 'graph-k', graph: K_GRAPH,
+      label: 'Graph of total mass of metal against volume of metal for the made-up alloy K. Five data points lie close to a straight trendline that rises from near the origin to about 66 grams at about 12 milliliters.' });
+    drawGraph({ holder: 'graph-k2', graph: K_GRAPH, marks: [{ x: 1, y: 6 }, { x: 11, y: 62 }], riseRun: [{ x: 1, y: 6 }, { x: 11, y: 62 }],
+      label: 'The alloy K graph with two points marked on the trendline: P1 at 1.0 milliliters and 6.0 grams, and P2 at 11.0 milliliters and 62.0 grams. Between them the line runs 10.0 milliliters and rises 56.0 grams.' });
+    drawGraph({ holder: 'graph-r', graph: R_GRAPH, typed: typedPoints,
+      label: 'Graph of total mass of metal against volume of metal for the made-up alloy R, with five data points and a straight trendline. The volume axis runs to 7 milliliters with a fine grid line every 0.2 milliliters; the mass axis runs to 90 grams with a fine grid line every 2 grams.' });
+  }
+  if (phone.addEventListener) phone.addEventListener('change', drawGraphs); else phone.addListener(drawGraphs);
+  drawGraphs();
+
+  // ---- 6. The worksheet practice -------------------------------------------------------------
+
+  var FIELDS = { x1: 'w-x1', y1: 'w-y1', x2: 'w-x2', y2: 'w-y2', m: 'w-m', b: 'w-b', eq: 'w-eq' };
+  function paintInput(id, ok) {
+    if (ok === true) $(id).setAttribute('data-state', 'right');
+    else if (ok === false) $(id).setAttribute('data-state', 'wrong');
+    else $(id).removeAttribute('data-state');
+  }
+  function paintMsg(id, result, tip) {
+    var node = $(id);
+    node.textContent = result.message || tip || '';
+    if (result.ok === true && !result.message && !tip) { node.textContent = 'Right.'; node.setAttribute('data-kind', 'ok'); }
+    else if (result.ok === true) node.setAttribute('data-kind', 'tip');
+    else node.removeAttribute('data-kind');
+  }
+  function checkPractice() {
+    var w = {};
+    Object.keys(FIELDS).forEach(function (k) { w[k] = $(FIELDS[k]).value; });
+    var r = checkWorksheet(R_GRAPH, w);
+    [['1', r.p1], ['2', r.p2]].forEach(function (pair) {
+      var res = pair[1], which = pair[0];
+      var xr = checkCoordinate(w['x' + which], 'x'), yr = checkCoordinate(w['y' + which], 'y');
+      paintInput(FIELDS['x' + which], xr.ok === true ? res.ok : xr.ok);
+      paintInput(FIELDS['y' + which], yr.ok === true ? res.ok : yr.ok);
+      paintMsg('m-p' + which, res);
+    });
+    paintInput(FIELDS.m, r.slope.ok); paintMsg('m-m', r.slope);
+    paintInput(FIELDS.b, r.b.ok); paintMsg('m-b', r.b);
+    paintInput(FIELDS.eq, r.eq.ok); paintMsg('m-eq', r.eq);
+
+    typedPoints = [r.p1, r.p2].filter(function (p) { return p.point; }).map(function (p) { return { x: p.point.x, y: p.point.y, ok: p.ok === true }; });
+    drawGraphs();
+
+    var all = [r.p1, r.p2, r.slope, r.b, r.eq];
+    var right = all.filter(function (x) { return x.ok === true; }).length;
+    var empty = all.filter(function (x) { return x.ok === null; }).length;
+    var node = $('w-say');
+    if (right === all.length) say(node, true, 'All five are right. That is everything the lab’s worksheet asks for, apart from showing your working.');
+    else if (empty === all.length) say(node, false, 'Fill in the boxes first, starting with your two points.');
+    else node.textContent = right + ' of 5 right so far.';
+  }
+  $('w-check').addEventListener('click', checkPractice);
+  Object.keys(FIELDS).forEach(function (k) {
+    var input = $(FIELDS[k]);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') checkPractice(); });
+    input.addEventListener('input', function () { input.removeAttribute('data-state'); });
+  });
+  $('w-show').addEventListener('click', function () {
+    var box = $('w-shown');
+    box.hidden = !box.hidden;
+    $('w-show').textContent = box.hidden ? 'Show one way to do it' : 'Hide the worked answer';
+  });
+  $('w-clear').addEventListener('click', function () {
+    Object.keys(FIELDS).forEach(function (k) { $(FIELDS[k]).value = ''; $(FIELDS[k]).removeAttribute('data-state'); });
+    ['m-p1', 'm-p2', 'm-m', 'm-b', 'm-eq', 'w-say'].forEach(function (id) { $(id).textContent = ''; $(id).removeAttribute('data-kind'); });
+    typedPoints = [];
+    drawGraphs();
+  });
+
+  // ---- 8. Self-check ------------------------------------------------------------------------------
+
+  var QUESTIONS = [
+    { q: 'A made-up block has a mass of 30.0 g and a volume of 20.0 cm³. What is its density?', answer: 0,
+      options: ['1.50 g/cm³', '0.667 g/cm³', '600 g/cm³', '50.0 g'],
+      why: 'Density is mass divided by volume: 30.0 g ÷ 20.0 cm³ = 1.50 g/cm³. Dividing the other way round gives volume per mass.' },
+    { q: 'Which of these is the same amount of space as 1 mL?', answer: 1,
+      options: ['1 cm', '1 cm³', '1 g', '1 L'],
+      why: 'A cube 1 cm on each edge holds 1 mL, so 1 mL = 1 cm³ and g/mL = g/cm³. A centimeter is a length, a gram is a mass, and a liter is 1000 mL.' },
+    { q: 'The balance display shows 15.40. How do you record the mass?', answer: 1,
+      options: ['15.4 g', '15.40 g', '15 g'],
+      why: 'Record every digit the balance shows, and the unit. The final 0 is a measured hundredth, not padding.' },
+    { q: 'What does the ZERO button on a balance do?', answer: 0,
+      options: ['Sets the display to 0.00 with whatever is on the pan, and leaves that out of later readings', 'Rounds the reading to a whole number of grams', 'Clears the last mass you recorded'],
+      why: 'ZERO (or TARE) takes away whatever is on the pan when it is pressed. In the lab, press it only with the pan empty.' },
+    { q: 'The cylinder reads 26.2 mL. After a piece goes in, it reads 29.0 mL. What is the volume of the piece?', answer: 1,
+      options: ['29.0 mL', '2.8 mL', '55.2 mL', '26.2 mL'],
+      why: 'By difference: 29.0 mL − 26.2 mL = 2.8 mL. The water rose by exactly the volume of the piece.' },
+    { q: 'In the lab’s data table, what goes in the volume box for that piece?', answer: 0,
+      options: ['The cylinder reading, 29.0', 'The rise in the water, 2.8'],
+      why: 'Record what the cylinder reads. The page subtracts the 26.2 mL itself when it draws the graph.' },
+    { q: 'Where do you read the volume of water in a cylinder?', answer: 2,
+      options: ['Where the water touches the glass', 'From above, looking down into the cylinder', 'At the bottom of the curved surface, with your eye level with it'],
+      why: 'The meniscus is read at the bottom of the curve, at eye level. Where the water climbs the glass the reading comes out too high, and so does a reading taken from above.' },
+    { q: 'The bottom of the meniscus sits exactly on the line for 53 mL. How do you record it?', answer: 1,
+      options: ['53 mL', '53.0 mL', '53.00 mL'],
+      why: 'Read to the nearest 0.1 mL, always with one digit after the point. The 0 says you looked at the tenths and there were none. A second digit would be more than the marks allow.' },
+    { q: 'Three pieces are in the cylinder. Which volume belongs on the x axis for this point?', answer: 0,
+      options: ['All three pieces together: the reading minus 26.2 mL', 'The third piece alone', 'The cylinder reading itself'],
+      why: 'Each point is a running total: the volume of all the metal in the cylinder (x) against the mass of all that metal (y).' },
+    { q: 'Why do you take your two points from the trendline rather than from your data?', answer: 1,
+      options: ['Data points cannot be read from the grid', 'The trendline stands for all five readings, so a small error in any one of them counts for less', 'The page does not show the data points'],
+      why: 'Each data point carries its own small error. The trendline averages them, so points on it give a more reliable slope.' },
+    { q: 'What units does the slope of your graph have?', answer: 2,
+      options: ['mL/g', 'g', 'g/mL', 'mL'],
+      why: 'The slope is the rise over the run: grams on the y axis divided by milliliters on the x axis. A mass per volume is a density.' }
+  ];
+
+  var quiz = $('quiz');
+  var state = QUESTIONS.map(function () { return null; });
+  QUESTIONS.forEach(function (q, qi) {
+    var li = el('li', 'q');
+    var text = el('p', 'q-text', q.q); text.id = 'q' + qi;
+    li.appendChild(text);
+    var opts = el('div', 'options'); opts.setAttribute('role', 'group'); opts.setAttribute('aria-labelledby', text.id);
+    var fb = el('p', 'feedback'); fb.setAttribute('aria-live', 'polite');
+    q.options.forEach(function (o, oi) {
+      var btn = el('button', null, o); btn.type = 'button';
+      btn.addEventListener('click', function () {
+        state[qi] = oi === q.answer;
+        Array.prototype.forEach.call(opts.children, function (other, j) {
+          other.removeAttribute('data-state');
+          other.setAttribute('aria-pressed', j === oi ? 'true' : 'false');
+        });
+        btn.setAttribute('data-state', state[qi] ? 'right' : 'wrong');
+        fb.textContent = '';
+        fb.appendChild(el('b', state[qi] ? 'right' : 'wrong', state[qi] ? 'Right. ' : 'Not quite. '));
+        fb.appendChild(document.createTextNode(state[qi] ? q.why : 'Try another answer.'));
+        score();
+      });
+      opts.appendChild(btn);
+    });
+    li.appendChild(opts);
+    li.appendChild(fb);
+    quiz.appendChild(li);
+  });
+  function score() {
+    var answered = state.filter(function (s) { return s !== null; }).length;
+    var right = state.filter(function (s) { return s === true; }).length;
+    var out = $('score');
+    out.textContent = '';
+    if (!answered) return;
+    if (right === QUESTIONS.length) { out.appendChild(el('span', 'done', 'All ' + right + ' right. You are ready for the lab.')); return; }
+    out.textContent = right + ' of ' + QUESTIONS.length + ' right so far.';
+  }
+})();
+</script>
+</body>
+</html>
