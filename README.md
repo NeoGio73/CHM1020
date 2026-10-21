@@ -42,7 +42,8 @@ why each step is ten times. It has an interactive pH scale with everyday example
 canning, pools, hydrangeas, rain), shows how pH paper works, and ends with ungraded self-check
 questions. Its examples avoid giving away the pH of the twelve lab solutions.
 
-- Every student tests the same twelve solutions, with pH values taken from published sources.
+- Every student tests the same twelve solutions, with pH values taken from the results table of
+  Daytona State College's CHM1025 instructor key.
 - The bench stays closed until the predictions are locked, so predictions come before results.
 - Work is saved in the student's browser as they go, and the finished report prints (or saves as
   a PDF).
