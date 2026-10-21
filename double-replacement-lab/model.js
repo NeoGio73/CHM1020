@@ -64,6 +64,7 @@
     { value: 'white', text: 'White ppt', long: 'a white precipitate' },
     { value: 'yellow', text: 'Yellow ppt', long: 'a yellow precipitate' },
     { value: 'brown', text: 'Brown ppt', long: 'a brown precipitate' },
+    { value: 'red', text: 'Red ppt', long: 'a red precipitate' },
     { value: 'blue', text: 'Blue/green ppt', long: 'a blue or green precipitate' }
   ];
 
@@ -183,7 +184,8 @@
     return { boxes: boxes, reactions: reactions };
   }
 
-  // The positive ions whose row shows a reaction in almost every box (three quarters or more).
+  // The positive ions whose row shows a reaction in almost every box. "Almost every" is taken as
+  // three quarters or more: the lab's own reading of the handout's hint, not a number from the key.
   function cationsFrom(grid) {
     return CATIONS.filter(function (ion, row) {
       var t = rowTally(grid, row);

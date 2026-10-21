@@ -71,7 +71,7 @@ pairs on the lab's sheet and gives no list of solubility rules, so the table, th
 the equations stay the students' own work.
 
 - Every student mixes the same 36 pairs. A box is accepted only once both drops are in and
-  stirred. Three boxes that are borderline in a real lab accept either answer.
+  stirred. Two boxes that are borderline in a real lab accept either answer.
 - A gold outline shows which pipet, or the toothpick, the pointer is on, and the box a held one
   would be used on.
 - The two "which ions" questions are checked against the student's own table. Each equation is
@@ -82,6 +82,16 @@ the equations stay the students' own work.
 - What each pair does is compiled into the 3D lab rather than written in the page's script.
 - Based on the Double Replacement Reactions experiment of the Daytona State College Science
   Department.
+
+**Sources**
+
+- What each box shows, and the four boxes marked Skip, follow Table 9 ("Experimental
+  Observations") of Daytona State College's CHM1025 instructor key, checked by Prof. Picione on
+  2026-10-21.
+- Two things are the lab's own choices, not the key's. The two borderline boxes (AgNO3 + CuSO4
+  and CaCl2 + Na2SO4, which the key gives as no reaction) show a faint cloudiness and accept
+  either answer. And in the question on positive ions, "almost every box" is taken to mean three
+  quarters or more of the boxes in a row.
 
 ## Separations: Who Wrote the Ransom Note?
 
