@@ -117,12 +117,31 @@ ungraded self-check questions. The inks in it are made up, so it gives away no o
 - The page checks the recorded times and, loosely, the colors recorded for each lane. It does not
   say whether the pen a student chose is the right one: that is for the instructor to mark.
 - A picture of the student's own developed plates is printed with the report.
+- A gold outline shows which pen, bottle, plate or chamber the pointer is on, and what a held one
+  would be used on. The solvents are drawn as real liquid, which stays level when a bottle or the
+  cylinder is tipped to pour.
 - Work is saved in the student's browser as they go, and the finished report prints (or saves as
   a PDF). The wait while the plates develop can be sped up.
 - Which pens and which unknown a code stands for, and what each ink separates into, are compiled
   into the 3D lab rather than written in the page's script.
 - Based on the experiment "Separations: Who Wrote the Ransom Note?" of the Daytona State College
   Science Department.
+
+**Sources**
+
+- The two solvents (6 mL of acetone, or of isopropyl alcohol, made up to 8 mL with distilled
+  water) and the rule for taking a plate out (when the solvent is 1 to 2 cm from the top) follow
+  steps 7, 10 and 14 of the experiment's handout (Daytona State College, revised 8/1/2022).
+- What each pen's ink separates into was read from real paper strips developed in this
+  experiment: pens 1 to 4 from photographs, pens 5 to 8 from a video. The lab draws these
+  paper-strip results on plates.
+- The development times are modelled: the lab works them out from how fast each solvent climbs,
+  rather than from timing a real run. The page says so.
+- Four things are the instructor's choices: each student's plates carry any four of the eight
+  pens; one unknown in five matches none of the four; a time in Table 1 counts as right within 20
+  seconds of what the timer showed; and in the color check, a color must be ticked if one of its
+  bands is strong (0.6 or more on the lab's scale of 0 to 1), while a ticked color counts as there
+  if one of its bands has a strength of at least 0.2.
 
 ## Physical and Chemical Changes
 

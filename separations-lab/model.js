@@ -18,7 +18,7 @@
 
   var LANES = 5, UNKNOWN_LANE = 2;
   var PLATE_MM = 100;               // the height of a plate
-  var READY_MM = 80;                // the solvent is within 2 cm of the top: the plate may come out
+  var READY_MM = 80;                // the solvent is within 2 cm of the top: the plate may come out (the handout's step 14: within 1 or 2 cm of the top)
   var OVERRUN_MM = 96.5;            // the solvent has reached the top: the plate stayed in too long
   var TIME_TOLERANCE = 20;          // seconds either way on a time read off the timer
 
