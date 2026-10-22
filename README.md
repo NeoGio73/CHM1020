@@ -203,8 +203,8 @@ ungraded self-check questions. None of its examples is a mixture from the lab.
   in-person lab ("CHM1025L", https://youtu.be/c7LD9312NUc), except the sodium carbonate and
   calcium chloride tube, which follows the 2023 handout (the video used copper(II) sulfate).
 - The amounts follow the experiment's handout (Daytona State College, revised 5/5/2023).
-- The thermometer's readings are modelled: the lab works them out rather than taking them from a
-  real run. The page says so.
+- The peak temperatures were measured in the in-person laboratory on 2026-09-30; the
+  thermometer's time course is modelled. The page says so.
 - Three things are the instructor's choices: a temperature counts as right within 1.0 °C of what
   the thermometer showed; the slow tube can be recorded after about 3½ minutes and has finished
   changing after about 15; and "Speed up the wait" runs the clock 40 times faster.
