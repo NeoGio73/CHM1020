@@ -149,8 +149,8 @@ ungraded self-check questions. The inks in it are made up, so it gives away no o
 - What each pen's ink separates into was read from real paper strips developed in this
   experiment: pens 1 to 4 from photographs, pens 5 to 8 from a video. The lab draws these
   paper-strip results on plates.
-- The development times are modelled: the lab works them out from how fast each solvent climbs,
-  rather than from timing a real run. The page says so.
+- The development times were measured in the in-person laboratory on 2026-10-14, one plate per
+  solvent. The page says so.
 - Four things are the instructor's choices: each student's plates carry any four of the eight
   pens; one unknown in five matches none of the four; a time in Table 1 counts as right within 20
   seconds of what the timer showed; and in the color check, a color must be ticked if one of its
