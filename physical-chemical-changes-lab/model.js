@@ -90,7 +90,7 @@
 
   // ---- Temperatures -----------------------------------------------------------------------------
 
-  // "21.8", "21.8 °C", "21,8 C" -> 21.8. Returns null when there is no sensible number.
+  // "25.3", "25.3 °C", "25,3 C" -> 25.3. Returns null when there is no sensible number.
   function parseTemp(text) {
     var s = String(text == null ? '' : text).trim().replace(',', '.');
     var m = /^(-?\d{1,3}(?:\.\d+)?)\s*(?:°|º|deg(?:rees)?)?\s*(c|celsius)?\.?$/i.exec(s);
@@ -127,8 +127,10 @@
   };
 
   // kind: 'before' | 'after' | 'temp' | 'evidence' | 'mixture' | 'event'; part: for before and after, which short answer.
+  // 'boil' is right, with a note: what the instructor key says to tell students who list a gas there.
   function message(kind, verdict, part, why) {
     if (verdict === 'ok') return { ok: true, message: '' };
+    if (verdict === 'boil') return { ok: true, message: 'Counted as right. But any bubbles in this mixture would come from the water boiling in the heat, not from a new gas being made.' };
     if (verdict === 'notyet') return { ok: null, message: why || 'The bench has not got that far yet.' };
     if (!verdict) return { ok: null, message: '' };
     switch (kind) {

@@ -177,6 +177,24 @@ ungraded self-check questions. None of its examples is a mixture from the lab.
 - Based on the Physical and Chemical Changes experiment of the Daytona State College Science
   Department.
 
+**Sources**
+
+- What is accepted for each substance before mixing and for each tube after it, the evidence of
+  chemical change in each reaction, the three mixtures and the nine everyday events follow
+  Daytona State College's CHM1025 instructor key: its Table 3 ("Evidence of Chemical Change"),
+  its Table 2 ("Physical Changes & Classification of Mixtures") and its answers to the data
+  analysis. Where the key accepts a second answer, so does the lab, and where the key says what
+  to tell the student, the page tells them.
+- How the tubes look on the bench was matched to the instructor's demonstration video of the
+  in-person lab ("CHM1025L", https://youtu.be/c7LD9312NUc), except the sodium carbonate and
+  calcium chloride tube, which follows the 2023 handout (the video used copper(II) sulfate).
+- The amounts follow the experiment's handout (Daytona State College, revised 5/5/2023).
+- The thermometer's readings are modelled: the lab works them out rather than taking them from a
+  real run. The page says so.
+- Three things are the instructor's choices: a temperature counts as right within 1.0 °C of what
+  the thermometer showed; the slow tube can be recorded after about 3½ minutes and has finished
+  changing after about 15; and "Speed up the wait" runs the clock 40 times faster.
+
 ## Credits
 
 The fume hood in all five labs is the model

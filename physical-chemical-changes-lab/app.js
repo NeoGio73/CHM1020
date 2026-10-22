@@ -104,7 +104,7 @@
     var f = FIELDS[id], value = valueOf(id);
     if (!value) return { ok: null, message: '' };
     if (f.ticks && !state.checked[id]) return { ok: null, message: '' };
-    if (f.kind === 'temp' && M.parseTemp(value) === null) return { ok: false, message: 'Enter the temperature as the thermometer shows it, such as 21.8.', format: true };
+    if (f.kind === 'temp' && M.parseTemp(value) === null) return { ok: false, message: 'Enter the temperature as the thermometer shows it, such as 25.3.', format: true };
     var known = verdicts[id];
     if (!known || known.context !== contextOf(id)) return { ok: null, message: '', waiting: true };
     var why = known.verdict === 'notyet' ? whyNotYet(f) : '';
@@ -141,7 +141,8 @@
     BLOCKS.forEach(function (b) {
       var bad = b.ids.filter(function (id) { return results[id].ok === false; })[0];
       var tip = b.ids.filter(function (id) { return results[id].ok === null && results[id].message; })[0];
-      var pick = bad || tip;
+      var note = b.ids.filter(function (id) { return results[id].ok === true && results[id].message; })[0];
+      var pick = bad || tip || note;
       b.msg.textContent = pick ? results[pick].message : '';
       if (bad) b.msg.removeAttribute('data-kind'); else b.msg.setAttribute('data-kind', 'tip');
     });
