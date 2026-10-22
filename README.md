@@ -25,6 +25,20 @@ questions. Everything it practises on is made up, so it gives away no unknown.
   (or saves as a PDF).
 - The page checks each reading and each worksheet answer and says so on the report.
 
+**Sources**
+
+- The densities of the metals an unknown can be were checked against the CRC Handbook of
+  Chemistry and Physics, 86th ed. (Lide, D. R., Ed.; CRC Press, 2005), by Prof. Picione on
+  2026-10-21. The lab's pages do not say which metals they are, so that none gives away an
+  unknown.
+- The in-person experiment is the metal-slug density lab of Daytona State College's CHM1025
+  instructor key, which does not name the metals, so the choice of metals is the lab's own.
+- The rest are the instructor's choices: the 26.2 mL of water already in the cylinder; the
+  pieces' sizes (nominally 3.0, 5.0, 7.0, 9.5 and 12.0 mL, each varied by up to ±0.6 mL from one
+  student to the next); a mass counts as right within 0.011 g and a volume within 0.2 mL; the
+  water climbs 0.9 mL up the glass above the true level, which is how a reading taken at the
+  glass is recognized; and the tolerances used to check the graph and the equation.
+
 ## pH of Common Solutions
 
 A virtual lab at the same fume hood. Students first predict whether each of twelve solutions
