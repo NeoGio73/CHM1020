@@ -2,6 +2,13 @@
 
 Course materials for CHM1020 that run in a web browser.
 
+These five labs and how they were built are described in a preprint:
+Picione, J. *From Bench to Game Engine: An Instructor-Built Suite of 3D Laboratory Simulations
+Created with Generative AI.* ChemRxiv, 2026. https://doi.org/10.26434/chemrxiv.15010988
+The repository as it stood when the preprint was posted is tagged
+[`v1.0-preprint`](https://github.com/NeoGio73/CHM1020/tree/v1.0-preprint); later commits may
+improve the labs beyond what the preprint describes.
+
 ## Density of an Unknown Metal
 
 A virtual lab set in a fume hood. Students weigh five pieces of an unknown metal on a digital
