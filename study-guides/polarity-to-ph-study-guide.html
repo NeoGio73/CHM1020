@@ -805,7 +805,7 @@ function genBond(fixed){
   const kindLabel={ionic:'Ionic',nonpolar:'Nonpolar covalent',polar:'Polar covalent'};
   const parts=[
     {type:'num',label:'Electronegativity difference, ΔEN',ans:d,tol:0,abs:0.051,show:'ΔEN = '+d.toFixed(1)},
-    {type:'mc',label:'Which atom gets the larger share of the electrons'+(ionic?' (becomes the negative ion)':' (is δ−)')+'?',options:[{v:A+' ('+ENAMES[A]+')',ok:neg===A},{v:B+' ('+ENAMES[B]+')',ok:neg===B},{v:'Neither; they share equally',ok:neg===null}],show:neg?neg+' is the '+(ionic?'negative ion':'δ− end'):'equal sharing',msg:'The atom with the higher electronegativity pulls harder and gets the larger share.'},
+    {type:'mc',label:'Which atom gets the larger share of the electrons'+(ionic?' (becomes the negative ion)':' (is δ−)')+'?',options:(A===B?[{v:'One of the two '+ENAMES[A]+' atoms',ok:false}]:[{v:A+' ('+ENAMES[A]+')',ok:neg===A},{v:B+' ('+ENAMES[B]+')',ok:neg===B}]).concat([{v:'Neither; they share equally',ok:neg===null}]),show:neg?neg+' is the '+(ionic?'negative ion':'δ− end'):'equal sharing',msg:'The atom with the higher electronegativity pulls harder and gets the larger share.'},
     {type:'mc',label:'Type of bond',options:[{v:'Nonpolar covalent',ok:kind==='nonpolar'},{v:'Polar covalent',ok:kind==='polar'},{v:'Ionic',ok:kind==='ionic'}],show:kindLabel[kind]+' bond',msg:ionic?'Look at the periodic table first: is one of these a metal?':'For two nonmetals, use the size of ΔEN: about 0.4 or less is nonpolar covalent; larger is polar covalent.'}
   ];
   return {ctx:'Electronegativities: '+A+' = '+a.toFixed(1)+', '+B+' = '+b.toFixed(1)+'. '+(mA?A+' is a metal. ':'')+(mB?B+' is a metal. ':'')+(!ionic?'Both are nonmetals.':''),
@@ -931,7 +931,7 @@ function genPH(fixed){
       blanks:{p:{want:m,tol:0}},blankMsg:g=>g.p&&g.p.good===false?'14 − '+n+' = '+m+'.':'',
       hints:['The two exponents add to −14: if [H<sup>+</sup>] is 10<sup>−'+n+'</sup>, then [OH<sup>−</sup>] is 10<sup>−(14 − '+n+')</sup>.','[OH<sup>−</sup>] = 1 × 10<sup>−'+m+'</sup> mol/L.'],
       solution:'<ol><li>pH '+n+' → [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L.</li><li>14 − '+n+' = '+m+', so [OH<sup>−</sup>] = <b>'+sciStr(1,m)+' mol/L</b>.</li><li>Check: 10<sup>−'+n+'</sup> × 10<sup>−'+m+'</sup> = 10<sup>−14</sup>. '+(n<7?'More H<sup>+</sup> than OH<sup>−</sup>: acidic.':n>7?'More OH<sup>−</sup> than H<sup>+</sup>: basic.':'Equal: neutral.')+'</li></ol>'}; }
-  if(type==='times'){ const a=fixed?3:Math.floor(Math.random()*11); const d=fixed?3:1+Math.floor(Math.random()*5); const b=a+d; const ans=Math.pow(10,d);
+  if(type==='times'){ const d=fixed?3:1+Math.floor(Math.random()*5); const a=fixed?3:Math.floor(Math.random()*(15-d)); const b=a+d; const ans=Math.pow(10,d);
     return {ctx:'Each step of one pH unit is a factor of 10 in hydrogen-ion concentration.',q:'Solution A has pH '+a+' ('+EX[a][1]+') and solution B has pH '+b+' ('+EX[b][1]+'). How many times more hydrogen ion does A have than B?',
       parts:[{type:'num',label:'Times more H<sup>+</sup> in A',ans:ans,tol:0,show:fmt(ans,0)+' times'}],
       guided:'<p>Difference in pH: '+b+' − '+a+' = '+blank('d','difference in pH units')+' units.</p><p>Factor = 10 multiplied by itself that many times (10<sup>difference</sup>).</p>',
@@ -956,10 +956,10 @@ function genPH(fixed){
       solution:'<ol><li>pH = −log('+m.toFixed(1)+' × 10<sup>−'+n+'</sup>).</li><li>log('+m.toFixed(1)+') = '+Math.log10(m).toFixed(2)+', so −log[H<sup>+</sup>] = '+n+' − '+Math.log10(m).toFixed(2)+' = <b>'+pH.toFixed(2)+'</b>.</li><li>Sense check: '+sciStr(m.toFixed(1),n)+' is between 1 × 10<sup>−'+n+'</sup> (pH '+n+') and 1 × 10<sup>−'+(n-1)+'</sup> (pH '+(n-1)+'), and so is the answer.</li></ol>'}; }
   const pH=+(1+Math.random()*12).toFixed(1); if(Number.isInteger(pH)) return genPH('calcH'); const H=Math.pow(10,-pH); const n=Math.ceil(pH); const m=Math.pow(10,n-pH);
   return {ctx:'Calculator problem. [H<sup>+</sup>] = 10<sup>−pH</sup>, which needs the 10<sup>x</sup> key when the pH is not a whole number.',q:'A solution has pH '+pH.toFixed(1)+'. What is [H<sup>+</sup>] in mol/L? (Type it as a decimal or as 3.2e-5 style.)',
-    parts:[{type:'num',label:'[H<sup>+</sup>]',ans:H,tol:0.03,unit:'mol/L',show:sciStr(m.toFixed(1),n)+' mol/L'}],
+    parts:[{type:'num',label:'[H<sup>+</sup>]',ans:H,tol:0.03,unit:'mol/L',show:sciStr(m.toFixed(2),n)+' mol/L'}],
     guided:'<p>pH '+pH.toFixed(1)+' lies between '+(n-1)+' and '+n+', so [H<sup>+</sup>] is between 1 × 10<sup>−'+(n-1)+'</sup> and 1 × 10<sup>−'+n+'</sup>. Write 10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup>. On a calculator 10<sup>'+(n-pH).toFixed(1)+'</sup> = '+blank('m','ten to the fractional power',true)+'.</p>',
     blanks:{m:{want:m,tol:0.02}},blankMsg:g=>g.m&&g.m.good===false?'10<sup>'+(n-pH).toFixed(1)+'</sup> = '+m.toFixed(2)+'. Use the 10<sup>x</sup> (or inverse log) key.':'',
-    hints:['[H<sup>+</sup>] = 10<sup>−pH</sup>. Enter −'+pH.toFixed(1)+' and use the 10<sup>x</sup> key.','The answer is '+m.toFixed(1)+' × 10<sup>−'+n+'</sup>: between pH '+(n-1)+' and pH '+n+' on the table.'],
+    hints:['[H<sup>+</sup>] = 10<sup>−pH</sup>. Enter −'+pH.toFixed(1)+' and use the 10<sup>x</sup> key.','The answer is '+m.toFixed(2)+' × 10<sup>−'+n+'</sup>: between pH '+(n-1)+' and pH '+n+' on the table.'],
     solution:'<ol><li>[H<sup>+</sup>] = 10<sup>−'+pH.toFixed(1)+'</sup> mol/L.</li><li>10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup> = '+m.toFixed(2)+' × 10<sup>−'+n+'</sup>, so [H<sup>+</sup>] = <b>'+sciStr(m.toFixed(1),n)+' mol/L</b> ('+H.toExponential(1).replace('e-',' × 10^−').replace(/\^−(\d+)/,'<sup>−$1</sup>')+').</li><li>Check: pH '+pH.toFixed(1)+' is '+cls(pH)+', and the concentration sits between the table values for pH '+(n-1)+' and pH '+n+'.</li></ol>'};
 }
 
