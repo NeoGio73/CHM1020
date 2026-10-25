@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polarity to pH Study Guide</title>
+<style>
+/* Layout: one 880px column, pill tabs, one section at a time (same system as the CHM1045 guides) */
+:root{
+  --ink:#1b2430; --muted:#566070; --line:#d6dbe3; --soft:#f3f5f8; --bg:#ffffff;
+  --navy:#1f3a5f; --navy-d:#152b49;
+  --ok:#17693f; --ok-bg:#e4f4ea;
+  --bad:#a3241d; --bad-bg:#fcebe9;
+  --warn:#6f4b00; --warn-bg:#fff5d9;
+  --info:#274b7a; --info-bg:#e9f0fa;
+  --acid-bg:#fde8e4; --acid-line:#d85a3a; --acid-ink:#7a2a14;
+  --base-bg:#e2ecfb; --base-line:#3e74c9; --base-ink:#1d3f78;
+  --neu-bg:#e6f4e8; --neu-line:#3f9a5a; --neu-ink:#1d5a2e;
+  --dm:#c43c33; --dp:#2a63c9;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.app{max-width:880px;margin:0 auto;padding-block:20px 48px;padding-inline:16px}
+sub{font-size:.72em;line-height:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:3px solid #4c7fd6;outline-offset:2px}
+button{font:inherit}
+.st{font-size:.72em;margin-left:.08em;opacity:.8}
+
+/* Header */
+.top h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 .4rem;text-wrap:balance}
+.top p{margin:0;color:var(--muted);max-width:64ch}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;font-size:.92rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs button:not([data-n]){padding-left:14px}
+.tabs .tn{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--soft);font-size:.82rem}
+.tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs button[aria-selected="true"] .tn{background:#fff;color:var(--navy)}
+.tabs button:not([aria-selected="true"]):hover{border-color:var(--navy)}
+.tabs button.done .tn{background:var(--ok);color:#fff}
+.tabs button[aria-selected="true"].done .tn{background:#fff;color:var(--ok)}
+
+/* Section */
+h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:0 0 .35rem;text-wrap:balance}
+h3{font-family:var(--serif);font-weight:600;font-size:1.18rem;line-height:1.25;margin:28px 0 8px}
+h4{font-size:1rem;margin:0 0 .4rem}
+.lede{margin:0 0 18px;max-width:66ch}
+p{max-width:70ch}
+ul,ol{max-width:68ch}
+li{margin-bottom:4px}
+.src{font-size:.85rem;color:var(--muted);margin:4px 0 0}
+
+/* Key-idea cards */
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:12px 0 4px}
+.idea{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;min-width:0}
+.idea h4{margin:0 0 4px}
+.idea p{margin:0;font-size:.95rem}
+.idea ul{margin:4px 0 0;padding-left:1.1em;font-size:.95rem}
+
+/* Callouts */
+.call{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:12px 16px;margin:16px 0}
+.call p{margin:0 0 6px}
+.call p:last-child{margin-bottom:0}
+.call .lab{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:4px}
+.call.world{border-color:#b8740f;background:#fff8e8}
+.call.world .lab{color:#8a5508}
+
+/* Buttons */
+.btn{appearance:none;font-weight:600;font-size:.95rem;border-radius:8px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-d)}
+.btn.inline{padding:4px 10px;font-size:.9rem}
+.btn:disabled{opacity:.45;cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.tally{font-size:.9rem;color:var(--muted);margin:12px 2px 0}
+
+/* Activity box */
+.act{border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;margin:12px 0 18px;min-width:0}
+.act .how{margin:0 0 12px;color:var(--muted)}
+.q{font-size:1.08rem;margin:0 0 12px;max-width:62ch}
+.choice{display:flex;flex-wrap:wrap;gap:8px}
+.choice button{appearance:none;border:1.5px solid #8b95a3;border-radius:8px;padding:7px 14px;font-size:1rem;background:#fff;color:var(--ink);cursor:pointer;text-align:left}
+.choice button:hover{border-color:var(--navy)}
+.choice button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.choice button.ok[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.choice button.no[aria-pressed="true"]{background:var(--bad-bg);color:var(--bad);border:2px dashed var(--bad)}
+.choice button:disabled{cursor:default}
+.choice.stack{flex-direction:column;align-items:flex-start}
+.choice.stack button{width:100%;max-width:40rem}
+.choice.stack button[aria-pressed="true"]{width:100%}
+.pin{font:inherit;font-size:1.05rem;width:7.5em;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;color:var(--ink);background:#fff}
+.pin.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.pin.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.pin:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.row label{font-weight:600}
+select.sel{font:inherit;font-size:1rem;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;background:#fff;color:var(--ink)}
+
+/* Feedback */
+.fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
+.fb.show{display:flex}
+.fb .ic{font-weight:700;font-size:1.05rem;line-height:1.5}
+.fb p{margin:0}
+.fb p+p{margin-top:6px}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok);color:#0f4a2c}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad);color:#6f1712}
+.fb.warn{background:var(--warn-bg);border-color:#c98f12;color:var(--warn)}
+.fb.info{background:var(--info-bg);border-color:#5a86c4;color:var(--info)}
+
+/* Molecule figure */
+.molwrap{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+.mol{width:200px;max-width:100%;height:auto;flex:0 0 auto}
+.mol text{font-family:var(--sans);font-weight:700}
+.mol .dl{font-size:13px;font-weight:700}
+.mol .dm{fill:var(--dm)} .mol .dp{fill:var(--dp)}
+.molname{font-size:1.15rem;font-weight:600;margin:0 0 4px}
+.molnote{color:var(--muted);font-size:.92rem;margin:0}
+
+/* Roadmap chain */
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:14px 0 16px}
+.chain .node{appearance:none;flex:1 1 120px;min-width:0;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.chain .node b{font-size:.95rem;line-height:1.2}
+.chain .node small{font-size:.78rem;color:var(--muted)}
+.chain .node:hover{border-color:var(--navy)}
+.chain .node[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.chain .node[aria-pressed="true"] small{color:#dfe7f3}
+.chain .arr{align-self:center;color:var(--muted);font-size:1.3rem;padding:0 2px}
+.detail{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:14px 16px;min-height:100px}
+.detail p{margin:0 0 8px}
+.detail p:last-child{margin-bottom:0}
+.detail .ex{font-family:var(--serif);font-size:1.06rem}
+
+/* EN bar */
+.enbar{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,#cfe3c9 0%,#cfe3c9 11%,#f3d9a4 11%,#f3d9a4 48%,#f0b7a8 48%,#f0b7a8 100%);margin:14px 0 26px;max-width:36rem}
+.enbar .mk{position:absolute;top:-6px;width:4px;height:26px;background:var(--navy);border-radius:2px;transform:translateX(-50%)}
+.enbar .lbl{position:absolute;top:18px;font-size:.78rem;color:var(--muted);transform:translateX(-50%);white-space:nowrap}
+.bigpair{font-family:var(--serif);font-size:1.6rem;margin:6px 0}
+.bigpair .dl{font-family:var(--sans);font-size:.85rem;font-weight:700;vertical-align:super}
+.bigpair .dm{color:var(--dm)} .bigpair .dp{color:var(--dp)}
+
+/* Flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:10px 0}
+.flip{appearance:none;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;text-align:left;cursor:pointer;color:var(--ink);min-width:0}
+.flip b{display:block;margin-bottom:4px}
+.flip .back{display:none;font-size:.93rem;color:var(--ink)}
+.flip .hint{font-size:.85rem;color:var(--muted)}
+.flip[aria-expanded="true"]{background:var(--soft);border-color:var(--navy)}
+.flip[aria-expanded="true"] .back{display:block}
+.flip[aria-expanded="true"] .hint{display:none}
+
+/* Order-tap */
+.taps{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.taps button{appearance:none;border:1.5px solid #8b95a3;border-radius:8px;padding:8px 14px;background:#fff;color:var(--ink);cursor:pointer;font-size:1rem}
+.taps button:disabled{background:var(--soft);color:var(--muted);cursor:default}
+.seq{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:2.4em;margin:8px 0;font-weight:600}
+.seq .sl{border:1.5px dashed #8b95a3;border-radius:8px;padding:4px 10px;color:var(--muted);font-weight:400}
+.seq .fl{border:1.5px solid var(--navy);border-radius:8px;padding:4px 10px;background:var(--info-bg)}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:.95rem;margin:8px 0}
+.tbl th,.tbl td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tbl td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tblwrap{overflow-x:auto;max-width:100%}
+.pill{display:inline-block;white-space:nowrap;border-radius:999px;padding:1px 9px;font-size:.8rem;font-weight:700}
+.pill.strong{background:var(--acid-bg);color:var(--acid-ink)}
+.pill.weak{background:var(--warn-bg);color:var(--warn)}
+.pill.base{background:var(--base-bg);color:var(--base-ink)}
+
+/* Beaker/bulb figures */
+.fig{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-start;margin:10px 0}
+.fig svg{max-width:100%;height:auto}
+.fig .cap{flex:1 1 240px;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:.85rem;color:var(--muted);margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:.9em;height:.9em;border-radius:50%;display:inline-block;border:1.5px solid #666}
+
+/* pH scale */
+.phband{height:28px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(90deg,#c8102e 0%,#e2401c 10%,#f07a1a 20%,#f6b31b 30%,#f4de2b 40%,#b6d33a 47%,#4caf50 50%,#2f9e8f 57%,#2275c4 65%,#2f55b5 75%,#4b3ea8 85%,#5b2b8a 95%,#3f1b63 100%)}
+.phticks{position:relative;height:1.4em;font-size:.8rem;color:var(--muted);margin-top:4px}
+.phticks span{position:absolute;transform:translateX(-50%)}
+.phcursor{position:relative;height:0}
+.phcursor i{position:absolute;top:-34px;width:3px;height:34px;background:var(--ink);transform:translateX(-50%);border-radius:2px}
+input[type=range]{width:100%;max-width:100%;margin:8px 0}
+.phread{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.stat{border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;min-width:0}
+.stat .k{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat .v{font-size:1.2rem;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .v.sm{font-size:1rem}
+.litmus{display:inline-flex;align-items:center;gap:8px;margin-right:14px}
+.litmus i{display:inline-block;width:14px;height:34px;border-radius:3px;border:1px solid #777}
+.chip{display:inline-block;border-radius:999px;padding:2px 10px;font-weight:700;font-size:.85rem}
+.chip.acid{background:var(--acid-bg);color:var(--acid-ink)}
+.chip.base{background:var(--base-bg);color:var(--base-ink)}
+.chip.neu{background:var(--neu-bg);color:var(--neu-ink)}
+
+/* Equations */
+.eq{font-family:var(--serif);font-size:1.3rem;line-height:1.5;background:var(--soft);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+.eq .hl{background:#fff1dc;border-radius:5px;padding:0 .2em;box-shadow:0 2px 0 #dd962a}
+.eq .hb{background:#ddf2ee;border-radius:5px;padding:0 .2em;box-shadow:0 2px 0 #2c9383}
+.eq.sm{font-size:1.1rem}
+
+/* Review quiz */
+.score{font-size:1.1rem;font-weight:600;margin:10px 0}
+.qnum{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.prog{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;margin:8px 0 14px}
+.prog i{display:block;height:100%;background:var(--navy);width:0}
+.review li{margin-bottom:8px}
+
+/* Key terms */
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+.filters button{appearance:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 12px;background:#fff;color:var(--ink);cursor:pointer;font-size:.88rem;font-weight:600}
+.filters button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+
+@media (prefers-reduced-motion:no-preference){
+  .bulbglow{transition:opacity .4s}
+}
+@media (max-width:520px){
+  .top h1{font-size:1.6rem}
+  .act{padding:14px}
+  .eq{font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Polarity to pH Study Guide</h1>
+    <p>Polar molecules, intermolecular forces, solutions, electrolytes, acids and bases, and the pH scale. Start with the roadmap, then work through the sections in order. Each one ends with a short self-check, and the review quiz mixes everything together. Nothing here is graded.</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="view"></main>
+</div>
+<script>
+(function(){
+'use strict';
+const $ = (s,r) => (r||document).querySelector(s);
+const $$ = (s,r) => Array.from((r||document).querySelectorAll(s));
+const view=$('#view'), nav=$('#tabs');
+
+/* ---------- Formula formatting: "H2SO4", "SO4^2-", "NH4^+", "HCl(aq)" ---------- */
+function F(s){
+  return String(s)
+    .replace(/\^(\d*)([+\-])/g, (m,n,c)=>'<sup>'+n+(c==='-'?'−':'+')+'</sup>')
+    .replace(/([A-Za-z\)\]])(\d+)/g,'$1<sub>$2</sub>')
+    .replace(/\((aq|s|l|g)\)/g,'<span class="st">($1)</span>')
+    .replace(/->/g,' → ').replace(/<=>/g,' ⇌ ');
+}
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; };
+const pick = a => a[Math.floor(Math.random()*a.length)];
+
+/* ---------- Tabs and state ---------- */
+const TABS=[
+  {id:'map',    label:'Roadmap'},
+  {id:'polar',  label:'Polarity', n:1},
+  {id:'imf',    label:'Intermolecular forces', n:2},
+  {id:'sol',    label:'Solutions', n:3},
+  {id:'elec',   label:'Electrolytes', n:4},
+  {id:'acid',   label:'Acids and bases', n:5},
+  {id:'ph',     label:'The pH scale', n:6},
+  {id:'review', label:'Review quiz', n:7},
+  {id:'terms',  label:'Key terms'}
+];
+const state={
+  tab:'map', mapSel:'polar', done:{},
+  cy:{},                                   // check-yourself progress per section
+  polar:{deck:null,i:0,score:0,answered:false, a:'O', b:'H'},
+  imf:{deck:null,i:0,score:0,answered:false, bp:{set:0,seq:[],checked:false}},
+  sol:{solute:'salt',solvent:'water',pred:null, conc:{val:'0.020',unit:'mg/L',cont:'lead'}},
+  elec:{beaker:'salt',pred:null,tested:false, sort:{}},
+  acid:{deck:null,i:0,score:0,answered:false, acid:'HCl',base:'NaOH', cj:{deck:null,i:0,score:0,answered:false}, bl:{deck:null,i:0,score:0,answered:false}},
+  ph:{v:7, cmpA:3, cmpB:6, prac:{P:null,answered:false,solved:0}},
+  review:{qs:null,i:0,score:0,answered:false,log:[]},
+  terms:{filter:'all',open:{}}
+};
+function renderTabs(){
+  nav.innerHTML=TABS.map(t=>
+    '<button role="tab" data-tab="'+t.id+'"'+(t.n?' data-n="'+t.n+'"':'')+' aria-selected="'+(state.tab===t.id)+'"'+(state.done[t.id]?' class="done" title="Self-check complete"':'')+'>'+
+    (t.n?'<span class="tn">'+(state.done[t.id]?'✓':t.n)+'</span>':'')+t.label+'</button>').join('');
+}
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  state.tab=b.dataset.tab; render();
+  window.scrollTo({top:0,behavior:'auto'});
+});
+function render(){
+  renderTabs();
+  const R={map:renderMap,polar:renderPolar,imf:renderIMF,sol:renderSol,elec:renderElec,acid:renderAcid,ph:renderPH,review:renderReview,terms:renderTerms};
+  R[state.tab]();
+}
+function markDone(id){ if(!state.done[id]){ state.done[id]=true; renderTabs(); } }
+
+/* ---------- Shared pieces ---------- */
+const fbBox = (id) => '<div class="fb" id="'+id+'" role="status" aria-live="polite"></div>';
+function setFb(id,type,html){
+  const el=typeof id==='string'?$('#'+id):id; if(!el) return;
+  const ic={ok:'✓',bad:'✗',warn:'!',info:'i'}[type];
+  el.className='fb show '+type; el.innerHTML='<span class="ic" aria-hidden="true">'+ic+'</span><div>'+html+'</div>';
+}
+function clearFb(id){ const el=$('#'+id); if(el){el.className='fb'; el.innerHTML='';} }
+const ideas = items => '<div class="ideas">'+items.map(i=>'<div class="idea"><h4>'+i.t+'</h4>'+(i.p?'<p>'+i.p+'</p>':'')+(i.l?'<ul>'+i.l.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'')+'</div>').join('')+'</div>';
+const world = (title,html) => '<div class="call world"><div class="lab">'+title+'</div>'+html+'</div>';
+const note = (title,html) => '<div class="call"><div class="lab">'+title+'</div>'+html+'</div>';
+
+/* Check yourself: a few multiple-choice questions with instant feedback. Section is marked done when all are correct. */
+function checkYourself(sec, qs){
+  const S=state.cy[sec] || (state.cy[sec]={ok:{},tried:{}});
+  const html='<h3>Check yourself</h3><p class="how" style="color:var(--muted);margin:0 0 10px">Pick an answer for each question. You can change your answer until it is right.</p>'+
+    qs.map((q,qi)=>{
+      const okd=S.ok[qi];
+      return '<div class="act" data-cy="'+qi+'"><p class="q">'+(qi+1)+'. '+q.q+'</p>'+
+        '<div class="choice stack">'+q.o.map((o,oi)=>'<button type="button" data-oi="'+oi+'" aria-pressed="'+(okd===oi)+'"'+(okd!==undefined?' class="ok" disabled':'')+'>'+o+'</button>').join('')+'</div>'+
+        fbBox('cy-'+sec+'-'+qi)+'</div>';
+    }).join('');
+  // wire after insertion
+  setTimeout(()=>{
+    $$('[data-cy]',view).forEach(box=>{
+      const qi=+box.dataset.cy, q=qs[qi];
+      if(S.ok[qi]!==undefined){ setFb('cy-'+sec+'-'+qi,'ok','<p>'+q.e+'</p>'); }
+      box.addEventListener('click',e=>{
+        const b=e.target.closest('button[data-oi]'); if(!b||b.disabled) return;
+        const oi=+b.dataset.oi;
+        $$('button[data-oi]',box).forEach(x=>{x.setAttribute('aria-pressed','false');x.classList.remove('ok','no');});
+        b.setAttribute('aria-pressed','true');
+        if(oi===q.a){
+          b.classList.add('ok'); $$('button[data-oi]',box).forEach(x=>x.disabled=true);
+          S.ok[qi]=oi; setFb('cy-'+sec+'-'+qi,'ok','<p>'+q.e+'</p>');
+          if(qs.every((_,i)=>S.ok[i]!==undefined)) markDone(sec);
+        } else {
+          b.classList.add('no'); S.tried[qi]=(S.tried[qi]||0)+1;
+          setFb('cy-'+sec+'-'+qi,'bad','<p>'+(q.w&&q.w[oi]?q.w[oi]:'Not quite. Try another answer.')+'</p>');
+        }
+      });
+    });
+  },0);
+  return html;
+}
+
+/* ---------- Molecule drawings (small inline SVGs) ---------- */
+const ACOL={H:['#f7f8fa','#1b2430'],C:['#4a4f57','#fff'],N:['#3b6fd6','#fff'],O:['#d6453b','#fff'],Cl:['#2f9e5b','#fff'],F:['#5fae7a','#fff'],S:['#d4b31f','#1b2430'],Br:['#a0522d','#fff'],I:['#6a3d9a','#fff']};
+const MOLS={
+  H2O:{name:'Water', f:'H2O', atoms:[['O',100,58],['H',62,92],['H',138,92]], bonds:[[0,1],[0,2]], d:{m:[0],p:[1,2]}, arrow:[100,118,100,30], lp:[[86,38],[114,38]]},
+  CO2:{name:'Carbon dioxide', f:'CO2', atoms:[['C',100,70],['O',42,70],['O',158,70]], bonds:[[0,1,2],[0,2,2]], d:{m:[1,2],p:[0]}, arrows:[[82,100,52,100],[118,100,148,100]]},
+  HCl:{name:'Hydrogen chloride', f:'HCl', atoms:[['H',62,70],['Cl',132,70]], bonds:[[0,1]], d:{m:[1],p:[0]}, arrow:[66,104,128,104]},
+  HF:{name:'Hydrogen fluoride', f:'HF', atoms:[['H',66,70],['F',130,70]], bonds:[[0,1]], d:{m:[1],p:[0]}, arrow:[70,104,126,104]},
+  O2:{name:'Oxygen', f:'O2', atoms:[['O',66,70],['O',134,70]], bonds:[[0,1,2]], d:{m:[],p:[]}},
+  N2:{name:'Nitrogen', f:'N2', atoms:[['N',66,70],['N',134,70]], bonds:[[0,1,3]], d:{m:[],p:[]}},
+  Br2:{name:'Bromine', f:'Br2', atoms:[['Br',62,70],['Br',138,70]], bonds:[[0,1]], d:{m:[],p:[]}},
+  CH4:{name:'Methane', f:'CH4', atoms:[['C',100,70],['H',100,24],['H',100,116],['H',54,70],['H',146,70]], bonds:[[0,1],[0,2],[0,3],[0,4]], d:{m:[],p:[]}},
+  CCl4:{name:'Carbon tetrachloride', f:'CCl4', atoms:[['C',100,70],['Cl',100,22],['Cl',100,118],['Cl',48,70],['Cl',152,70]], bonds:[[0,1],[0,2],[0,3],[0,4]], d:{m:[1,2,3,4],p:[0]}},
+  NH3:{name:'Ammonia', f:'NH3', atoms:[['N',100,58],['H',56,96],['H',100,106],['H',144,96]], bonds:[[0,1],[0,2],[0,3]], d:{m:[0],p:[1,2,3]}, arrow:[100,128,100,28], lp:[[100,34]]},
+  CH3OH:{name:'Methanol (wood alcohol)', f:'CH3OH', atoms:[['C',66,76],['H',30,54],['H',30,98],['H',66,120],['O',122,56],['H',164,36]], bonds:[[0,1],[0,2],[0,3],[0,4],[4,5]], d:{m:[4],p:[5]}, arrow:[60,32,122,20]},
+  H2S:{name:'Hydrogen sulfide', f:'H2S', atoms:[['S',100,58],['H',60,94],['H',140,94]], bonds:[[0,1],[0,2]], d:{m:[0],p:[1,2]}, arrow:[100,120,100,30]},
+  C2H5OH:{name:'Ethanol', f:'C2H5OH', atoms:[['C',44,80],['H',14,60],['H',14,100],['H',44,122],['C',96,80],['H',96,122],['H',96,38],['O',146,60],['H',184,40]], bonds:[[0,1],[0,2],[0,3],[0,4],[4,5],[4,6],[4,7],[7,8]], d:{m:[7],p:[8]}}
+};
+function molSVG(key, opts){
+  opts=opts||{}; const m=MOLS[key]; const r=opts.r||15;
+  let s='<svg class="mol" viewBox="0 0 200 140" role="img" aria-label="'+esc(m.name)+' molecule">';
+  m.bonds.forEach(b=>{
+    const A=m.atoms[b[0]],B=m.atoms[b[1]],o=b[2]||1;
+    const dx=B[2]-A[2],dy=B[1]-A[1],L=Math.hypot(dx,dy)||1,nx=-dy/L*4,ny=dx/L*4;
+    const offs=o===1?[0]:o===2?[-1,1]:[-1.3,0,1.3];
+    offs.forEach(k=>{ s+='<line x1="'+(A[1]+nx*k)+'" y1="'+(A[2]+ny*k)+'" x2="'+(B[1]+nx*k)+'" y2="'+(B[2]+ny*k)+'" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>'; });
+  });
+  m.atoms.forEach((a,i)=>{
+    const c=ACOL[a[0]]; const rr=a[0]==='H'?r*.78:r;
+    s+='<circle cx="'+a[1]+'" cy="'+a[2]+'" r="'+rr+'" fill="'+c[0]+'" stroke="#1b2430" stroke-width="1.2"/>';
+    s+='<text x="'+a[1]+'" y="'+(a[2]+4.5)+'" text-anchor="middle" font-size="'+(a[0].length>1?11:13)+'" fill="'+c[1]+'">'+a[0]+'</text>';
+  });
+  if(opts.lp && m.lp){ m.lp.forEach(p=>{ s+='<circle cx="'+(p[0]-3)+'" cy="'+p[1]+'" r="1.8" fill="#1b2430"/><circle cx="'+(p[0]+3)+'" cy="'+p[1]+'" r="1.8" fill="#1b2430"/>'; }); }
+  if(opts.delta){
+    m.d.m.forEach(i=>{const a=m.atoms[i]; s+='<text class="dl dm" x="'+(a[1]+r+2)+'" y="'+(a[2]-r+4)+'">δ−</text>';});
+    m.d.p.forEach(i=>{const a=m.atoms[i]; s+='<text class="dl dp" x="'+(a[1]+r*.78+1)+'" y="'+(a[2]-r*.78+2)+'">δ+</text>';});
+  }
+  const arrow=(x1,y1,x2,y2,col)=>{
+    const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
+    const hx=x2-ux*8,hy=y2-uy*8;
+    return '<line x1="'+x1+'" y1="'+y1+'" x2="'+hx+'" y2="'+hy+'" stroke="'+col+'" stroke-width="2.5"/>'+
+      '<polygon points="'+x2+','+y2+' '+(hx-uy*5)+','+(hy+ux*5)+' '+(hx+uy*5)+','+(hy-ux*5)+'" fill="'+col+'"/>'+
+      '<line x1="'+(x1+ux*6-uy*5)+'" y1="'+(y1+uy*6+ux*5)+'" x2="'+(x1+ux*6+uy*5)+'" y2="'+(y1+uy*6-ux*5)+'" stroke="'+col+'" stroke-width="2.5"/>';
+  };
+  if(opts.dipole){
+    if(m.arrow) s+=arrow(m.arrow[0],m.arrow[1],m.arrow[2],m.arrow[3],'#1f3a5f');
+    if(m.arrows) m.arrows.forEach(a=>{ s+=arrow(a[0],a[1],a[2],a[3],'#8b95a3'); });
+  }
+  return s+'</svg>';
+}
+
+/* ---------- Beaker / bulb drawing for the conductivity tester ---------- */
+function testerSVG(level, particles, tint){
+  // level: 0 off, 1 dim, 2 bright
+  const glow=level===2?1:level===1?.45:0;
+  const bulbFill=level===2?'#ffd84d':level===1?'#f3e6a8':'#e9ecf0';
+  let s='<svg viewBox="0 0 300 230" width="300" role="img" aria-label="Conductivity tester: bulb is '+(level===2?'bright':level===1?'dim':'off')+'">';
+  s+='<defs><radialGradient id="gl"><stop offset="0" stop-color="#ffe066" stop-opacity=".9"/><stop offset="1" stop-color="#ffe066" stop-opacity="0"/></radialGradient></defs>';
+  // wires and battery
+  s+='<rect x="18" y="60" width="34" height="18" rx="3" fill="#4a4f57"/><text x="35" y="73" font-size="10" fill="#fff" text-anchor="middle" font-weight="700">9 V</text>';
+  s+='<path d="M18 69 H8 V200 H110" fill="none" stroke="#4a4f57" stroke-width="3"/>';
+  s+='<path d="M52 69 H92 V48 H130" fill="none" stroke="#4a4f57" stroke-width="3"/>';
+  s+='<path d="M170 48 H210 V200 H190" fill="none" stroke="#4a4f57" stroke-width="3"/>';
+  // bulb
+  s+='<circle class="bulbglow" cx="150" cy="40" r="42" fill="url(#gl)" style="opacity:'+glow+'"/>';
+  s+='<circle cx="150" cy="40" r="20" fill="'+bulbFill+'" stroke="#8b95a3" stroke-width="2"/>';
+  s+='<rect x="141" y="58" width="18" height="10" fill="#8b95a3"/>';
+  s+='<path d="M143 44 L150 30 L157 44" fill="none" stroke="'+(level?'#c4760c':'#b6bcc6')+'" stroke-width="2"/>';
+  // beaker
+  s+='<path d="M95 110 V215 Q95 222 102 222 H198 Q205 222 205 215 V110" fill="none" stroke="#1b2430" stroke-width="2.5"/>';
+  s+='<rect x="97" y="140" width="106" height="80" fill="'+tint+'"/>';
+  s+='<line x1="92" y1="140" x2="208" y2="140" stroke="#1b2430" stroke-width="1" opacity=".5"/>';
+  // electrodes
+  s+='<rect x="107" y="120" width="6" height="90" fill="#6b7280"/><rect x="187" y="120" width="6" height="90" fill="#6b7280"/>';
+  // particles
+  particles.forEach(p=>{
+    if(p.t==='+'||p.t==='-'){
+      s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="7" fill="'+(p.t==='+'?'#2a63c9':'#c43c33')+'"/><text x="'+p.x+'" y="'+(p.y+4)+'" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">'+(p.t==='+'?'+':'−')+'</text>';
+    } else {
+      s+='<circle cx="'+(p.x-4)+'" cy="'+p.y+'" r="5" fill="#9aa3b2"/><circle cx="'+(p.x+4)+'" cy="'+(p.y-2)+'" r="5" fill="#b9c0cb"/>';
+    }
+  });
+  return s+'</svg>';
+}
+function particlesFor(kind){
+  // positions inside the liquid area (x 118..182, y 150..212)
+  const pts=[[125,160],[150,155],[175,165],[135,185],[165,180],[150,205],[122,205],[178,205],[150,180]];
+  if(kind==='strong') return pts.map((p,i)=>({x:p[0],y:p[1],t:i%2?'-':'+'}));
+  if(kind==='weak') return pts.map((p,i)=>({x:p[0],y:p[1],t:i<2?(i?'-':'+'):'m'}));
+  if(kind==='few') return pts.map((p,i)=>({x:p[0],y:p[1],t:i<4?(i%2?'-':'+'):'m'}));
+  return pts.map(p=>({x:p[0],y:p[1],t:'m'}));
+}
+
+/* ================= ROADMAP ================= */
+const MAPINFO={
+  polar:{t:'1. Polarity: some molecules have a + end and a − end',
+    h:'<p>Atoms do not always share electrons equally. When one atom pulls harder, the bond is <b>polar</b>: slightly negative (δ−) at one end and slightly positive (δ+) at the other. A molecule as a whole is polar when its polar bonds do not cancel out, which depends on its shape.</p><p class="ex">Water is bent, so it is polar. Carbon dioxide is straight, so its two polar bonds cancel and it is nonpolar.</p>'},
+  imf:{t:'2. Intermolecular forces: polar molecules stick to each other',
+    h:'<p>The + end of one polar molecule attracts the − end of the next. These attractions <b>between</b> molecules are called intermolecular forces. The strongest everyday kind is the <b>hydrogen bond</b>, which is why water boils at 100 °C instead of being a gas like most small molecules, why ice floats, and why water takes so long to heat up.</p>'},
+  sol:{t:'3. Solutions: like dissolves like',
+    h:'<p>Water dissolves things it can attract: ions and polar molecules. It cannot grab onto nonpolar molecules such as oil and wax, so they do not dissolve. Concentration (percent, parts per million) says how much is dissolved.</p><p class="ex">Salt and sugar dissolve in water. Oil floats on top.</p>'},
+  elec:{t:'4. Electrolytes: ions in water conduct electricity',
+    h:'<p>When salt dissolves, it breaks into charged ions, and the solution conducts electricity. Substances that do this are <b>electrolytes</b>. Sugar dissolves as neutral molecules, so sugar water does not conduct. Your nerves and muscles depend on electrolytes.</p>'},
+  acid:{t:'5. Acids and bases: special electrolytes',
+    h:'<p>An <b>acid</b> puts hydrogen ions (H<sup>+</sup>) into water; a <b>base</b> accepts them (or puts hydroxide ions, OH<sup>−</sup>, into water). Strong acids and bases ionize completely, weak ones only a little. Acid + base → salt + water (neutralization).</p><p class="ex">Vinegar, lemon juice, and cola are acids. Baking soda, ammonia, and drain cleaner are bases.</p>'},
+  ph:{t:'6. pH: a number for how acidic a solution is',
+    h:'<p>The pH scale turns the hydrogen-ion concentration into a simple number from 0 to 14. Below 7 is acidic, 7 is neutral, above 7 is basic. Each step on the scale is a factor of 10, so pH 3 has 100 times more H<sup>+</sup> than pH 5.</p><p class="ex">Stomach acid is about pH 1.7, blood is 7.4, and milk of magnesia is 10.5.</p>'}
+};
+function renderMap(){
+  const order=['polar','imf','sol','elec','acid','ph'];
+  const labels={polar:['Polarity','+ and − ends'],imf:['Intermolecular forces','molecules attract'],sol:['Solutions','like dissolves like'],elec:['Electrolytes','ions conduct'],acid:['Acids and bases','H⁺ givers and takers'],ph:['pH','0 to 14']};
+  view.innerHTML='<section><h2>The roadmap</h2>'+
+    '<p class="lede">This guide tells one story. Water molecules are <b>polar</b>, so they attract each other and attract many other substances. That is why water <b>dissolves</b> salts, sugars, and acids, why some of those solutions <b>conduct electricity</b>, and why we need a scale, <b>pH</b>, to say how acidic a solution is. Select any step to see how it fits.</p>'+
+    '<div class="chain" role="group" aria-label="Topics in order">'+
+    order.map((k,i)=>(i?'<span class="arr" aria-hidden="true">→</span>':'')+'<button type="button" class="node" data-id="'+k+'" aria-pressed="'+(state.mapSel===k)+'"><b>'+labels[k][0]+'</b><small>'+labels[k][1]+'</small></button>').join('')+
+    '</div><div class="detail" id="mapdetail"></div>'+
+    '<h3>How to use this guide</h3><ul>'+
+    '<li>Each section opens with the key ideas, then one or more activities you can play with, then a short <b>Check yourself</b>. When you get every question right, the tab gets a checkmark.</li>'+
+    '<li>The <b>Review quiz</b> mixes questions from all six sections, and the <b>Key terms</b> tab works as flashcards.</li>'+
+    '<li>Formulas are written the way your textbook writes them, for example H<sub>2</sub>O for water and OH<sup>−</sup> for the hydroxide ion. A small raised number or sign is a charge; a small lowered number counts atoms.</li>'+
+    '</ul>'+
+    note('Where this comes from','<p>Sections 5 and 6 follow Chapter 7 (Acids and Bases) of <i>Chemistry for Changing Times</i>. Section 2 uses the water properties from Chapter 14 (Water), and Section 3 uses that chapter’s drinking-water standards. Sections 1, 3, and 4 cover the polarity, solution, and electrolyte ideas that the acid–base chapter builds on.</p>')+
+    '</section>';
+  const paint=()=>{ const d=MAPINFO[state.mapSel]; $('#mapdetail').innerHTML='<p><b>'+d.t+'</b></p>'+d.h; $$('.chain .node').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.mapSel)); };
+  paint();
+  $('.chain').addEventListener('click',e=>{ const b=e.target.closest('.node'); if(!b) return; state.mapSel=b.dataset.id; paint(); });
+}
+
+/* ================= 1. POLARITY ================= */
+const EN={H:2.1,Li:1.0,Na:0.9,K:0.8,Mg:1.2,Ca:1.0,Al:1.5,C:2.5,N:3.0,O:3.5,F:4.0,P:2.1,S:2.5,Cl:3.0,Br:2.8,I:2.5};
+const METALS=['Li','Na','K','Mg','Ca','Al'];
+const ENAMES={H:'hydrogen',Li:'lithium',Na:'sodium',K:'potassium',Mg:'magnesium',Ca:'calcium',Al:'aluminum',C:'carbon',N:'nitrogen',O:'oxygen',F:'fluorine',P:'phosphorus',S:'sulfur',Cl:'chlorine',Br:'bromine',I:'iodine'};
+const POLAR_DECK=[
+  {k:'H2O', ans:'polar', why:'The O–H bonds are polar (oxygen pulls harder), and the molecule is <b>bent</b>, so both pulls point toward the oxygen side. The pulls add up instead of canceling. Water is polar.'},
+  {k:'CO2', ans:'nonpolar', why:'Each C=O bond is polar, but the molecule is <b>linear</b>: the two pulls point in exactly opposite directions and cancel. Carbon dioxide is nonpolar, which is one reason it does not dissolve well in water.'},
+  {k:'HCl', ans:'polar', why:'Chlorine pulls the shared electrons much harder than hydrogen. A two-atom molecule with one polar bond has nowhere for the pull to cancel, so HCl is polar.'},
+  {k:'O2', ans:'nonpolar', why:'Both atoms are oxygen, so they pull equally. The bond is nonpolar, and so is the molecule.'},
+  {k:'CH4', ans:'nonpolar', why:'Carbon and hydrogen pull almost equally (ΔEN = 0.4), and the four bonds point symmetrically in all directions (a tetrahedron), so any small pulls cancel. Methane is nonpolar.'},
+  {k:'NH3', ans:'polar', why:'The N–H bonds are polar, and the molecule is a <b>pyramid</b>: the three hydrogens sit on one side and a lone pair of electrons sits on the other. The pulls do not cancel. Ammonia is polar.'},
+  {k:'CCl4', ans:'nonpolar', why:'The C–Cl bonds are polar, but four identical bonds arranged symmetrically (a tetrahedron) cancel each other out. Carbon tetrachloride is nonpolar, which is why it was once used as a dry-cleaning solvent for greasy stains.'},
+  {k:'CH3OH', ans:'polar', why:'The O–H group at one end is strongly polar and nothing on the other side balances it. Methanol is polar, and it mixes with water in any proportion.'}
+];
+function renderPolar(){
+  const P=state.polar;
+  if(!P.deck){ P.deck=shuffle(POLAR_DECK); P.i=0; P.score=0; P.answered=false; }
+  view.innerHTML='<section><h2>1. Polarity</h2>'+
+    '<p class="lede">In a covalent bond, two atoms share a pair of electrons. If one atom pulls the shared electrons harder, the sharing is unequal and the bond has a slightly negative end and a slightly positive end. Whether a whole molecule is polar depends on both its bonds and its shape.</p>'+
+    ideas([
+      {t:'Electronegativity',p:'A measure of how strongly an atom pulls on shared electrons. It increases from left to right across a row of the periodic table and from bottom to top. Fluorine (4.0) pulls hardest; oxygen (3.5), nitrogen and chlorine (3.0) are close behind. Metals pull weakly.'},
+      {t:'Three kinds of bonds',l:['<b>Nonpolar covalent:</b> equal (or nearly equal) sharing. H–H, O=O, C–H.','<b>Polar covalent:</b> unequal sharing. The atom that pulls harder is δ− (“partial negative”); the other is δ+. O–H, N–H, H–Cl.','<b>Ionic:</b> a metal gives up electrons to a nonmetal completely. Na<sup>+</sup>Cl<sup>−</sup>.']},
+      {t:'Polar molecule = polar bonds + a shape that does not cancel',p:'Think of each polar bond as a tug in one direction. If the tugs are arranged symmetrically (straight line, flat triangle, tetrahedron with identical outer atoms) they cancel and the molecule is nonpolar. Bent and pyramid shapes do not cancel.'},
+      {t:'Why it matters',p:'Polarity decides what sticks to what: which liquids mix, what water can dissolve, how soap works, how a microwave oven heats food (it makes polar water molecules rotate), and how your body’s molecules fold and fit together.'}
+    ])+
+    '<h3>Bond polarity explorer</h3><div class="act"><p class="how">Choose two elements to see how unequally they share electrons. The difference in electronegativity (ΔEN) tells you how polar the bond is.</p>'+
+    '<div class="row"><label for="enA">Element A</label><select class="sel" id="enA">'+Object.keys(EN).map(e=>'<option value="'+e+'"'+(P.a===e?' selected':'')+'>'+e+' ('+ENAMES[e]+', '+EN[e].toFixed(1)+')</option>').join('')+'</select>'+
+    '<label for="enB">Element B</label><select class="sel" id="enB">'+Object.keys(EN).map(e=>'<option value="'+e+'"'+(P.b===e?' selected':'')+'>'+e+' ('+ENAMES[e]+', '+EN[e].toFixed(1)+')</option>').join('')+'</select></div>'+
+    '<div id="enout"></div></div>'+
+    '<h3>Polar or nonpolar?</h3><div class="act" id="pdeck"></div>'+
+    checkYourself('polar',[
+      {q:'Which statement best describes a polar covalent bond?',o:['The two atoms share electrons equally.','One atom pulls the shared electrons more strongly, so one end is δ− and the other δ+.','One atom takes the electrons completely, forming ions.','The atoms do not share any electrons.'],a:1,e:'A polar bond is unequal sharing. The atom with the higher electronegativity gets the larger share and is δ−.',w:{0:'Equal sharing is a nonpolar covalent bond.',2:'Complete transfer makes an ionic bond, not a polar covalent one.',3:'A bond with no shared electrons is not covalent at all.'}},
+      {q:'Carbon dioxide has two polar C=O bonds, yet the molecule is nonpolar. Why?',o:['Carbon is more electronegative than oxygen.','The molecule is linear, so the two bond pulls point in opposite directions and cancel.','It is a gas, and gases cannot be polar.','The oxygen atoms have no electrons.'],a:1,e:'Shape matters. In the straight O=C=O molecule the two pulls cancel exactly.',w:{0:'Oxygen (3.5) is more electronegative than carbon (2.5).',2:'Plenty of gases are polar, such as HCl and NH<sub>3</sub>.',3:'Oxygen atoms have eight electrons each.'}},
+      {q:'Water is polar mainly because it is …',o:['linear, like CO<sub>2</sub>.','made of only two kinds of atoms.','bent, so its two polar O–H bonds do not cancel.','a liquid at room temperature.'],a:2,e:'Bent shape plus polar O–H bonds gives water a negative oxygen end and a positive hydrogen end.',w:{0:'Water is bent, not linear. If it were linear it would be nonpolar.',1:'The number of kinds of atoms does not decide polarity; shape and bond polarity do.',3:'Being a liquid is a result of water’s polarity, not the cause.'}},
+      {q:'Which element pulls shared electrons most strongly?',o:['Sodium (Na)','Carbon (C)','Fluorine (F)','Hydrogen (H)'],a:2,e:'Fluorine, at the top right of the periodic table, has the highest electronegativity (4.0).',w:{0:'Sodium is a metal with one of the lowest electronegativities (0.9).',1:'Carbon is in the middle (2.5).',3:'Hydrogen is 2.1.'}}
+    ])+
+    '</section>';
+  const paintEN=()=>{
+    const a=$('#enA').value,b=$('#enB').value; P.a=a; P.b=b;
+    const d=Math.abs(EN[a]-EN[b]); const mA=METALS.includes(a), mB=METALS.includes(b);
+    let kind,expl;
+    if(mA&&mB){ kind='Metallic bond'; expl='Two metals do not form a covalent or ionic bond with each other in the usual sense; they form a metal, which is not covered here. Pick a nonmetal for one of the elements.'; }
+    else if(mA||mB){ kind='Ionic bond'; expl='A metal and a nonmetal with a large electronegativity difference (ΔEN = '+d.toFixed(1)+'). The metal gives up electrons and the nonmetal takes them: separate '+(mA?a:b)+'<sup>+</sup> and '+(mA?b:a)+'<sup>−</sup> ions rather than a shared pair.'; }
+    else if(a===b){ kind='Nonpolar covalent bond'; expl='Two identical atoms pull equally (ΔEN = 0). The electrons sit exactly in the middle.'; }
+    else if(d<=0.4){ kind='Nonpolar covalent bond (essentially)'; expl='ΔEN = '+d.toFixed(1)+'. The sharing is so close to equal that chemists treat the bond as nonpolar. C–H bonds are the classic example; this is why fats and oils are nonpolar.'; }
+    else { kind='Polar covalent bond'; const neg=EN[a]>EN[b]?a:b, pos=neg===a?b:a; expl='ΔEN = '+d.toFixed(1)+'. '+ENAMES[neg].charAt(0).toUpperCase()+ENAMES[neg].slice(1)+' pulls harder, so the '+neg+' end is δ− and the '+pos+' end is δ+.'+(d>=1.5?' This is a very polar bond, close to the ionic end of the range.':''); }
+    const neg=EN[a]>=EN[b]?a:b, pos=neg===a?b:a;
+    const pair=(a===b||mA||mB)?'<div class="bigpair">'+a+'–'+b+'</div>':'<div class="bigpair"><span class="dl dp">δ+</span>'+pos+'–'+neg+'<span class="dl dm">δ−</span></div>';
+    const pct=Math.min(100,d/3.5*100);
+    $('#enout').innerHTML=pair+'<p style="margin:4px 0"><b>'+kind+'.</b> '+expl+'</p>'+
+      '<div class="enbar" aria-hidden="true"><span class="mk" style="left:'+pct+'%"></span><span class="lbl" style="left:5%">0–0.4 nonpolar</span><span class="lbl" style="left:30%">0.5–1.9 polar covalent</span><span class="lbl" style="left:75%">2.0 and up: usually ionic</span></div>'+
+      '<p class="src">The cutoffs are rough guidelines. The surest rule: metal + nonmetal → ionic; nonmetal + nonmetal → covalent, polar when ΔEN is roughly 0.5 or more.</p>';
+  };
+  $('#enA').addEventListener('change',paintEN); $('#enB').addEventListener('change',paintEN); paintEN();
+
+  const paintDeck=()=>{
+    const box=$('#pdeck');
+    if(P.i>=P.deck.length){
+      box.innerHTML='<p class="q">You sorted all '+P.deck.length+' molecules and got <b>'+P.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="pagain">Shuffle and go again</button></div>';
+      $('#pagain').addEventListener('click',()=>{P.deck=shuffle(POLAR_DECK);P.i=0;P.score=0;P.answered=false;paintDeck();});
+      return;
+    }
+    const c=P.deck[P.i], m=MOLS[c.k];
+    box.innerHTML='<p class="how">Molecule '+(P.i+1)+' of '+P.deck.length+'. Look at the shape, decide whether the bond pulls cancel, then choose.</p>'+
+      '<div class="molwrap"><div id="pmol">'+molSVG(c.k,{lp:true})+'</div><div><p class="molname">'+m.name+', '+F(m.f)+'</p><p class="molnote">Colors: O red, N blue, C gray, Cl green, H white. Dots are a lone pair.</p>'+
+      '<div class="choice" id="pch" style="margin-top:10px"><button type="button" data-v="polar">Polar</button><button type="button" data-v="nonpolar">Nonpolar</button></div></div></div>'+
+      fbBox('pfb')+'<div class="actions" id="pact"></div><p class="tally">Right on first try: '+P.score+' of '+P.i+'</p>';
+    $('#pch').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-v]'); if(!b||P.answered) return;
+      P.answered=true; const right=b.dataset.v===c.ans;
+      $$('#pch button').forEach(x=>{x.disabled=true; x.setAttribute('aria-pressed',x===b);});
+      b.classList.add(right?'ok':'no'); if(right) P.score++;
+      $('#pmol').innerHTML=molSVG(c.k,{lp:true,delta:true,dipole:true});
+      setFb('pfb',right?'ok':'bad','<p><b>'+(right?'Correct. ':'Not this time. ')+m.name+' is '+c.ans+'.</b> '+c.why+'</p><p>δ− and δ+ mark the ends of each polar bond. The dark arrow shows the molecule’s overall pull; gray arrows that point away from each other cancel.</p>');
+      $('#pact').innerHTML='<button type="button" class="btn primary" id="pnext">Next molecule</button>';
+      $('#pnext').addEventListener('click',()=>{P.i++;P.answered=false;paintDeck();});
+    });
+  };
+  paintDeck();
+}
+
+/* ================= 2. INTERMOLECULAR FORCES ================= */
+const IMF_DECK=[
+  {k:'H2O', ans:'hb', why:'Each hydrogen is bonded to oxygen, and oxygen has lone pairs. The H of one water molecule is attracted to the O of its neighbor: a hydrogen bond. Water can form up to four of them per molecule.'},
+  {k:'CH4', ans:'disp', why:'Methane is nonpolar, and its hydrogens are bonded to carbon, not to N, O, or F. Only dispersion forces hold methane molecules together, so it boils at −161 °C.'},
+  {k:'HCl', ans:'dd', why:'HCl is polar, so the δ+ H end of one molecule attracts the δ− Cl end of the next: dipole–dipole. It is not a hydrogen bond because the H is on chlorine, not on N, O, or F.'},
+  {k:'NH3', ans:'hb', why:'Hydrogen on nitrogen, and nitrogen has a lone pair. Ammonia molecules hydrogen-bond to each other, and to water, which is why ammonia dissolves so well.'},
+  {k:'CO2', ans:'disp', why:'Carbon dioxide is nonpolar (its two polar bonds cancel), so it has no permanent + and − ends. Dispersion forces only. That is why CO<sub>2</sub> is a gas and dry ice turns straight to vapor.'},
+  {k:'CH3OH', ans:'hb', why:'The O–H group lets methanol molecules hydrogen-bond to each other and to water. Alcohols are the classic example of hydrogen bonding outside of water.'},
+  {k:'Br2', ans:'disp', why:'Two identical atoms: nonpolar. But bromine is heavy with many electrons, so its dispersion forces are strong enough to make it a liquid at room temperature.'},
+  {k:'HF', ans:'hb', why:'Hydrogen bonded to fluorine, the most electronegative element. HF hydrogen-bonds strongly, which is why it boils at 20 °C while HCl boils at −85 °C.'},
+  {k:'H2S', ans:'dd', why:'Hydrogen sulfide is bent and polar, like water, but sulfur is not electronegative enough for true hydrogen bonds. Dipole–dipole only, so it boils at −60 °C instead of 100 °C.'},
+  {k:'O2', ans:'disp', why:'Nonpolar. Dispersion forces only, which is why oxygen is a gas down to −183 °C.'}
+];
+const IMF_LABEL={disp:'Dispersion forces only',dd:'Dipole–dipole forces',hb:'Hydrogen bonding'};
+const BP_SETS=[
+  {title:'Three small molecules of similar size', items:[['CH4','Methane',-161],['H2S','Hydrogen sulfide',-60],['H2O','Water',100]], why:'Methane has dispersion forces only, hydrogen sulfide has dipole–dipole forces, and water has hydrogen bonds. Stronger forces between molecules mean more energy is needed to pull them apart into a gas, so the boiling point climbs.'},
+  {title:'The halogens: all nonpolar', items:[['F2','Fluorine',-188],['Cl2','Chlorine',-34],['Br2','Bromine',59],['I2','Iodine',184]], why:'All four are nonpolar, so dispersion forces are the only attraction. Dispersion forces grow with the number of electrons, so the bigger, heavier molecule has the stronger forces and the higher boiling point. At room temperature fluorine and chlorine are gases, bromine is a liquid, and iodine is a solid.'},
+  {title:'Fuels from the same family', items:[['CH4','Methane (natural gas)',-161],['C3H8','Propane',-42],['C8H18','Octane (in gasoline)',126]], why:'All three are nonpolar hydrocarbons with dispersion forces only. Longer molecules have more electrons and more surface to attract each other, so they boil higher. That is why natural gas is a gas, propane is stored as a liquid under pressure, and gasoline is a liquid.'},
+  {title:'Three hydrogen compounds', items:[['CH4','Methane',-161],['HCl','Hydrogen chloride',-85],['HF','Hydrogen fluoride',20]], why:'Methane: dispersion only. HCl: polar, so dipole–dipole. HF: hydrogen bonding, the strongest of the three, even though HF is the smallest molecule.'}
+];
+function renderIMF(){
+  const S=state.imf;
+  if(!S.deck){ S.deck=shuffle(IMF_DECK); S.i=0; S.score=0; S.answered=false; }
+  view.innerHTML='<section><h2>2. Intermolecular forces</h2>'+
+    '<p class="lede">Chemical bonds hold atoms together <i>inside</i> a molecule. Intermolecular forces are the weaker attractions <i>between</i> molecules. They decide whether a substance is a gas, a liquid, or a solid at room temperature, how high it boils, and whether it mixes with water.</p>'+
+    ideas([
+      {t:'Dispersion forces',p:'Present between all molecules. Electrons are always moving, so for an instant one side of a molecule can be slightly more negative, which attracts a neighbor. Weak for small molecules, stronger for big ones with many electrons. Candle wax is solid only because its long molecules have strong dispersion forces.'},
+      {t:'Dipole–dipole forces',p:'Between polar molecules. The δ+ end of one molecule attracts the δ− end of the next. HCl and H<sub>2</sub>S molecules attract each other this way.'},
+      {t:'Hydrogen bonds',p:'The strongest intermolecular force. When hydrogen is bonded to N, O, or F, it is left so bare of electrons that it is strongly attracted to a lone pair on an N, O, or F of a neighboring molecule. Water, ammonia, alcohols, and the two strands of DNA are held by hydrogen bonds.'},
+      {t:'Ranking',p:'Hydrogen bonding &gt; dipole–dipole &gt; dispersion (for molecules of similar size). Stronger forces mean higher melting and boiling points. All of these are much weaker than a covalent bond: boiling water breaks hydrogen bonds between molecules, never the O–H bonds inside them.'}
+    ])+
+    '<h3>Which force holds these molecules together?</h3><div class="act" id="ideck"></div>'+
+    '<h3>Boiling-point lineup</h3><div class="act" id="bpbox"></div>'+
+    '<h3>Water’s unusual properties</h3><p>Water is a small molecule, yet it behaves like a much heavier one. Every one of these properties comes from hydrogen bonding. Select a card to see why.</p><div class="flips" id="wflips">'+
+    [
+      ['It is a liquid at room temperature','Molecules this small (methane, ammonia, hydrogen sulfide) are normally gases. Water’s hydrogen bonds hold the molecules together up to 100 °C.'],
+      ['Ice floats','As water freezes, hydrogen bonds lock the molecules into an open, hexagonal framework (the pattern you see in snowflakes). That takes more space than the liquid, so ice is less dense and floats. Lakes freeze from the top down and life survives underneath.'],
+      ['It takes a long time to heat up or cool down','Water has a very high specific heat: 4.184 J to raise 1 g by 1 °C (1.00 cal/g·°C), about four times that of rock or metal. Much of the added energy goes into loosening hydrogen bonds instead of raising the temperature. Oceans and lakes therefore moderate climate, and coastal cities have milder days and nights than inland ones.'],
+      ['Sweating cools you','Water has a very high heat of vaporization. A molecule must break free of its hydrogen bonds to escape as vapor, so evaporating even a little water carries away a lot of heat. The same property makes steam burns so severe.'],
+      ['It is the “universal solvent”','Water’s polarity and hydrogen bonding let it pull apart salts and surround sugars, acids, and many other polar substances. Blood, sap, and the water cycle all use water to carry dissolved materials. Unfortunately that includes pollutants.'],
+      ['Drops bead up and insects walk on it','Molecules at the surface are pulled inward by their neighbors, creating surface tension. Water’s hydrogen bonds give it the highest surface tension of any common liquid. The same attraction pulls water up thin tubes in plants (capillary action).'],
+      ['It can act as an acid or a base','Water is amphoteric: it can give up a hydrogen ion or accept one. You will see this in Section 5, where water accepts H<sup>+</sup> from acids and donates H<sup>+</sup> to ammonia.']
+    ].map((c,i)=>'<button type="button" class="flip" aria-expanded="false"><b>'+c[0]+'</b><span class="hint">Why?</span><span class="back">'+c[1]+'</span></button>').join('')+
+    '</div>'+
+    '<div class="tblwrap"><table class="tbl"><caption style="text-align:left;font-size:.85rem;color:var(--muted);padding:4px 0">Specific heat capacities at 25 °C (Table 14.1). Water needs the most energy per gram to warm up.</caption><thead><tr><th>Substance</th><th>J/(g·°C)</th><th>cal/(g·°C)</th></tr></thead><tbody>'+
+    [['Water (liquid)',4.184,1.00],['Ethanol',2.46,0.588],['Ethylene glycol (antifreeze)',2.35,0.561],['Aluminum',0.902,0.216],['Iron',0.449,0.107],['Copper',0.385,0.0920],['Lead',0.128,0.0306]].map(r=>'<tr><td>'+r[0]+'</td><td class="num">'+r[1].toFixed(3)+'</td><td class="num">'+r[2]+'</td></tr>').join('')+
+    '</tbody></table></div>'+
+    checkYourself('imf',[
+      {q:'Which force exists between <i>all</i> molecules, polar or not?',o:['Hydrogen bonding','Dipole–dipole forces','Dispersion forces','Ionic bonds'],a:2,e:'Dispersion forces come from the momentary uneven spread of electrons, which happens in every molecule.',w:{0:'Hydrogen bonds need H attached to N, O, or F.',1:'Dipole–dipole forces need polar molecules.',3:'Ionic bonds hold ions in a crystal; they are not intermolecular forces between molecules.'}},
+      {q:'Which molecule can form hydrogen bonds with other molecules like itself?',o:['CH<sub>4</sub>','CO<sub>2</sub>','HCl','NH<sub>3</sub>'],a:3,e:'Ammonia has hydrogen bonded to nitrogen, and nitrogen has a lone pair. Hydrogen bonding needs H on N, O, or F.',w:{0:'Methane’s hydrogens are on carbon, and it is nonpolar.',1:'CO<sub>2</sub> has no hydrogen at all.',2:'HCl is polar, but hydrogen on chlorine does not form hydrogen bonds. Dipole–dipole only.'}},
+      {q:'Why does ice float on liquid water?',o:['Ice is warmer than water.','Hydrogen bonds hold the molecules in an open framework, so ice is less dense.','Ice contains trapped air.','Frozen water weighs less because some molecules escape.'],a:1,e:'The hexagonal hydrogen-bonded framework of ice takes more space than the jumbled liquid, so ice is about 9% less dense.',w:{0:'Ice is colder, and temperature is not what makes something float anyway; density is.',2:'Even perfectly clear, air-free ice floats.',3:'The mass of the water does not change when it freezes. Its volume increases.'}},
+      {q:'Propane (C<sub>3</sub>H<sub>8</sub>) is a gas and octane (C<sub>8</sub>H<sub>18</sub>) is a liquid at room temperature. The best explanation is that …',o:['octane is polar and propane is not.','octane forms hydrogen bonds.','octane is a bigger molecule with more electrons, so its dispersion forces are stronger.','propane has stronger covalent bonds.'],a:2,e:'Both are nonpolar hydrocarbons. Bigger molecules have stronger dispersion forces and so higher boiling points.',w:{0:'Both are nonpolar; C–H bonds are essentially nonpolar.',1:'Neither has hydrogen on N, O, or F.',3:'Boiling does not break covalent bonds. It separates molecules from each other.'}}
+    ])+
+    '</section>';
+
+  // which-force deck
+  const paintDeck=()=>{
+    const box=$('#ideck');
+    if(S.i>=S.deck.length){
+      box.innerHTML='<p class="q">All '+S.deck.length+' done. <b>'+S.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="iagain">Shuffle and go again</button></div>';
+      $('#iagain').addEventListener('click',()=>{S.deck=shuffle(IMF_DECK);S.i=0;S.score=0;S.answered=false;paintDeck();}); return;
+    }
+    const c=S.deck[S.i], m=MOLS[c.k];
+    box.innerHTML='<p class="how">Molecule '+(S.i+1)+' of '+S.deck.length+'. Ask two questions: Is it polar? Does it have H bonded to N, O, or F? Then pick the <b>strongest</b> force between molecules of this substance.</p>'+
+      '<div class="molwrap"><div>'+molSVG(c.k,{lp:true})+'</div><div><p class="molname">'+m.name+', '+F(m.f)+'</p>'+
+      '<div class="choice stack" id="ich" style="margin-top:8px">'+['disp','dd','hb'].map(k=>'<button type="button" data-v="'+k+'">'+IMF_LABEL[k]+'</button>').join('')+'</div></div></div>'+
+      fbBox('ifb')+'<div class="actions" id="iact"></div><p class="tally">Right on first try: '+S.score+' of '+S.i+'</p>';
+    $('#ich').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-v]'); if(!b||S.answered) return;
+      S.answered=true; const right=b.dataset.v===c.ans;
+      $$('#ich button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);});
+      b.classList.add(right?'ok':'no'); if(right) S.score++;
+      setFb('ifb',right?'ok':'bad','<p><b>'+(right?'Correct: ':'Not quite. The answer is ')+IMF_LABEL[c.ans].toLowerCase()+'.</b> '+c.why+'</p>');
+      $('#iact').innerHTML='<button type="button" class="btn primary" id="inext">Next molecule</button>';
+      $('#inext').addEventListener('click',()=>{S.i++;S.answered=false;paintDeck();});
+    });
+  };
+  paintDeck();
+
+  // boiling point lineup
+  const B=S.bp;
+  const paintBP=()=>{
+    const set=BP_SETS[B.set]; const box=$('#bpbox');
+    const items=set.items;
+    box.innerHTML='<p class="how">Set '+(B.set+1)+' of '+BP_SETS.length+': <b>'+set.title+'</b>. Tap the substances in order from <b>lowest</b> boiling point to <b>highest</b>. Think about which has the strongest forces between its molecules.</p>'+
+      '<div class="taps" id="bptaps">'+items.map((it,i)=>'<button type="button" data-i="'+i+'"'+(B.seq.includes(i)?' disabled':'')+'>'+F(it[0])+' <span style="font-weight:400;color:var(--muted)">'+it[1]+'</span></button>').join('')+'</div>'+
+      '<div class="seq" aria-live="polite"><span style="color:var(--muted);font-weight:400">Lowest →</span>'+items.map((_,i)=>{const k=B.seq[i]; return k===undefined?'<span class="sl">'+(i+1)+'</span>':'<span class="fl">'+F(items[k][0])+'</span>';}).join('<span aria-hidden="true">→</span>')+'<span style="color:var(--muted);font-weight:400">→ highest</span></div>'+
+      fbBox('bpfb')+'<div class="actions"><button type="button" class="btn" id="bpreset">Start over</button><button type="button" class="btn" id="bpnext">'+(B.set+1<BP_SETS.length?'Next set':'Back to set 1')+'</button></div>';
+    $('#bptaps').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-i]'); if(!b||b.disabled||B.checked) return;
+      B.seq.push(+b.dataset.i);
+      if(B.seq.length===items.length){
+        B.checked=true;
+        const correct=items.map((_,i)=>i).sort((x,y)=>items[x][2]-items[y][2]);
+        const right=B.seq.every((v,i)=>v===correct[i]);
+        paintBP();
+        setFb('bpfb',right?'ok':'bad','<p><b>'+(right?'Correct order.':'Not quite. The order is: ')+(right?'':correct.map(i=>F(items[i][0])+' ('+items[i][2]+' °C)').join(' &lt; '))+'</b></p>'+
+          '<p>'+set.why+'</p><p>Boiling points: '+correct.map(i=>items[i][1]+' '+items[i][2]+' °C').join('; ')+'.</p>');
+      } else paintBP();
+    });
+    $('#bpreset').addEventListener('click',()=>{B.seq=[];B.checked=false;paintBP();});
+    $('#bpnext').addEventListener('click',()=>{B.set=(B.set+1)%BP_SETS.length;B.seq=[];B.checked=false;paintBP();});
+  };
+  paintBP();
+  $('#wflips').addEventListener('click',e=>{ const b=e.target.closest('.flip'); if(!b) return; b.setAttribute('aria-expanded',b.getAttribute('aria-expanded')!=='true'); });
+}
+
+/* ================= 3. SOLUTIONS ================= */
+const SOLUTES={
+  salt:{n:'Table salt (NaCl)',type:'ionic',water:true,oil:false,why:'Salt is ionic. Water molecules surround each Na<sup>+</sup> with their δ− oxygen ends and each Cl<sup>−</sup> with their δ+ hydrogen ends, pulling the ions out of the crystal one by one. Oil molecules are nonpolar and have no charged ends to offer, so the crystal just sits there.'},
+  sugar:{n:'Sugar (sucrose)',type:'polar',water:true,oil:false,why:'Sugar molecules are covered with O–H groups, so water hydrogen-bonds to them and carries them off. Oil cannot hydrogen-bond, so sugar does not dissolve in it.'},
+  oil:{n:'Vegetable oil',type:'nonpolar',water:false,oil:true,why:'Oil molecules are long nonpolar hydrocarbon chains. Water molecules would rather hold onto each other than surround something they cannot attract, so the oil is pushed aside and floats (it is less dense). In a nonpolar solvent, dispersion forces are all either side has, so they mix.'},
+  wax:{n:'Candle wax',type:'nonpolar',water:false,oil:true,why:'Wax is a mixture of very long hydrocarbon molecules: nonpolar. Water cannot attract it; a nonpolar solvent can. That is why wax is removed with mineral spirits, not water.'},
+  ethanol:{n:'Ethanol (drinking alcohol)',type:'both',water:true,oil:true,why:'Ethanol is a small molecule with a polar O–H end that hydrogen-bonds to water and a short nonpolar carbon tail that mixes with nonpolar liquids. It dissolves in both. Gasoline blended with ethanol is an everyday example.'},
+  iodine:{n:'Iodine (I<sub>2</sub>)',type:'nonpolar',water:false,oil:true,why:'I<sub>2</sub> is two identical atoms, so it is nonpolar. It barely dissolves in water but dissolves readily in oils and alcohol (tincture of iodine is iodine in alcohol).'},
+  vitc:{n:'Vitamin C',type:'polar',water:true,oil:false,why:'Vitamin C has several O–H groups, so it is polar and water-soluble. Your body cannot store much of it; the excess leaves in urine, so you need it regularly.'},
+  vita:{n:'Vitamin A',type:'nonpolar',water:false,oil:true,why:'Vitamin A is mostly a long hydrocarbon chain: nonpolar and fat-soluble. It dissolves in body fat and can build up to harmful levels if you take far too much.'},
+  soda:{n:'Baking soda (NaHCO<sub>3</sub>)',type:'ionic',water:true,oil:false,why:'Baking soda is an ionic compound (Na<sup>+</sup> and HCO<sub>3</sub><sup>−</sup> ions), so water pulls it apart and dissolves it. Oil cannot.'}
+};
+const SOLVENTS={water:{n:'Water',pol:'polar'},oil:{n:'Hexane (a nonpolar solvent, like gasoline or oil)',pol:'nonpolar'}};
+const EPA=[
+  {k:'lead',n:'Lead',mcl:0.015,note:'From old pipes and solder. Harms brain development in children.'},
+  {k:'arsenic',n:'Arsenic',mcl:0.010,note:'Natural in some rocks and groundwater; also from old pesticides.'},
+  {k:'nitrate',n:'Nitrate (as nitrogen)',mcl:10,note:'From fertilizer and animal waste. Infants can convert it to nitrite, which blocks oxygen transport (“blue baby” syndrome).'},
+  {k:'fluoride',n:'Fluoride',mcl:4.0,note:'Added to many supplies at about 0.7–1.0 ppm to prevent cavities; too much mottles teeth.'},
+  {k:'copper',n:'Copper',mcl:1.3,note:'From copper pipes, especially with acidic water.'},
+  {k:'cyanide',n:'Cyanide',mcl:0.2,note:'From industrial waste.'},
+  {k:'benzene',n:'Benzene',mcl:0.005,note:'A volatile organic chemical from fuel spills and leaking tanks; a carcinogen.'},
+  {k:'chloride',n:'Chloride (secondary standard)',mcl:250,note:'A taste standard, not a health limit. Road salt and seawater intrusion raise it.'},
+  {k:'iron',n:'Iron (secondary standard)',mcl:0.3,note:'Stains laundry and fixtures. One of the “hard water” ions.'},
+  {k:'tds',n:'Total dissolved solids (secondary)',mcl:500,note:'Everything dissolved, mostly minerals. Affects taste.'}
+];
+function renderSol(){
+  const S=state.sol;
+  view.innerHTML='<section><h2>3. Solutions</h2>'+
+    '<p class="lede">A solution is a uniform mixture: the <b>solute</b> (the thing that dissolves) is spread evenly, molecule by molecule or ion by ion, through the <b>solvent</b> (the thing that does the dissolving). When the solvent is water, the solution is <b>aqueous</b>. Whether something dissolves comes down to the forces you just studied.</p>'+
+    ideas([
+      {t:'Like dissolves like',p:'Polar solvents (water) dissolve polar and ionic solutes. Nonpolar solvents (oil, hexane, gasoline) dissolve nonpolar solutes (grease, wax). A solute dissolves when the attractions between solute and solvent are at least as strong as the attractions each had on its own.'},
+      {t:'How water dissolves salt',p:'Water molecules crowd around each ion with the right end facing it: δ− oxygen toward Na<sup>+</sup>, δ+ hydrogens toward Cl<sup>−</sup>. The ions are pulled out of the crystal and carried off wrapped in water (“hydrated”). Sugar dissolves because water hydrogen-bonds to its O–H groups.'},
+      {t:'Solubility and saturation',l:['A solution that holds all the solute it can at that temperature is <b>saturated</b>.','Most solids dissolve better in hot water (sugar in hot tea).','Gases dissolve <i>worse</i> in warm water: warm soda goes flat faster, and warm lake water holds less oxygen for fish.','Pressure forces more gas into a liquid: carbonation.']},
+      {t:'Concentration',l:['<b>Percent:</b> vinegar is about 4% acetic acid by mass.','<b>Parts per million (ppm):</b> 1 ppm = 1 mg of solute per liter of water (1 mg/L). Parts per billion (ppb) = 1 µg/L. Used for water quality.','<b>Molarity (M):</b> moles of solute per liter of solution (mol/L). The pH table in Section 6 uses mol/L.']}
+    ])+
+    note('Soap: a molecule that lives in both worlds','<p>A soap molecule has a long nonpolar tail that dissolves in grease and a charged, polar head that dissolves in water. Soap surrounds a grease droplet with tails pointing in and heads pointing out, and water carries the whole package away. Hard water (water with dissolved Ca<sup>2+</sup>, Mg<sup>2+</sup>, and iron ions from limestone and other rocks) makes soap scum because those ions combine with the soap and pull it out of solution.</p>')+
+    '<h3>Will it dissolve?</h3><div class="act"><p class="how">Pick a solute and a solvent, predict, then test.</p>'+
+    '<div class="row"><label for="solute">Solute</label><select class="sel" id="solute">'+Object.keys(SOLUTES).map(k=>'<option value="'+k+'"'+(S.solute===k?' selected':'')+'>'+SOLUTES[k].n.replace(/<[^>]+>/g,'')+'</option>').join('')+'</select>'+
+    '<label for="solvent">Solvent</label><select class="sel" id="solvent">'+Object.keys(SOLVENTS).map(k=>'<option value="'+k+'"'+(S.solvent===k?' selected':'')+'>'+SOLVENTS[k].n+'</option>').join('')+'</select></div>'+
+    '<p class="q" style="margin-top:12px">Your prediction:</p><div class="choice" id="dch"><button type="button" data-v="yes">It dissolves</button><button type="button" data-v="no">It does not dissolve</button></div>'+
+    '<div class="fig" id="dfig"></div>'+fbBox('dfb')+'</div>'+
+    '<h3>Reading a water-quality report</h3><div class="act"><p class="how">Water utilities report contaminants in mg/L, which is the same as parts per million. The Safe Drinking Water Act lets the EPA set a maximum contaminant level (MCL) for each one. Convert a concentration and compare it to the limit.</p>'+
+    '<div class="row"><label for="cval">Measured</label><input class="pin" id="cval" type="text" inputmode="decimal" value="'+esc(S.conc.val)+'" aria-label="Measured concentration">'+
+    '<select class="sel" id="cunit" aria-label="Unit">'+['mg/L','ppm','ppb','%'].map(u=>'<option'+(S.conc.unit===u?' selected':'')+'>'+u+'</option>').join('')+'</select>'+
+    '<label for="ccont">of</label><select class="sel" id="ccont">'+EPA.map(c=>'<option value="'+c.k+'"'+(S.conc.cont===c.k?' selected':'')+'>'+c.n+'</option>').join('')+'</select></div>'+
+    '<div id="cout" style="margin-top:12px"></div>'+
+    '<p class="src">Limits from Table 14.3 (EPA drinking-water standards). A sense of scale: 1 ppm is about one minute in two years; 1 ppb is about one second in 32 years.</p></div>'+
+    checkYourself('sol',[
+      {q:'In a glass of salt water, the water is the …',o:['solute','solvent','solution','precipitate'],a:1,e:'The solvent does the dissolving and is present in the larger amount. Salt is the solute, and the mixture is the solution.',w:{0:'The solute is the substance being dissolved: the salt.',2:'The solution is the whole mixture.',3:'A precipitate is a solid that comes <i>out</i> of a solution.'}},
+      {q:'Which of these would you expect to dissolve in vegetable oil?',o:['Table salt','Sugar','Candle wax','Baking soda'],a:2,e:'Like dissolves like. Wax is nonpolar, and oil is nonpolar.',w:{0:'Salt is ionic; it needs a polar solvent such as water.',1:'Sugar is polar and hydrogen-bonds to water, not to oil.',3:'Baking soda is ionic and dissolves in water.'}},
+      {q:'A water report lists lead at 0.020 mg/L. In parts per million that is …',o:['20 ppm','2.0 ppm','0.020 ppm','0.000020 ppm'],a:2,e:'1 mg/L = 1 ppm, so 0.020 mg/L = 0.020 ppm (20 ppb). That is above the EPA limit of 0.015 mg/L.',w:{0:'That would be 20 mg/L, a thousand times more.',1:'Check the decimal: mg/L and ppm are the same number.',3:'mg/L and ppm are equal, no conversion factor needed.'}},
+      {q:'Why does a warm can of soda go flat faster than a cold one?',o:['Gases dissolve less in warm liquids.','Warm water is less polar.','Sugar leaves the solution when warm.','Carbon dioxide turns into water when warm.'],a:0,e:'Gas solubility drops as temperature rises, so the dissolved CO<sub>2</sub> escapes faster from warm soda. The same effect lowers the oxygen available to fish in warm water.',w:{1:'Water’s polarity does not change with temperature.',2:'Sugar dissolves better, not worse, when warm.',3:'CO<sub>2</sub> escapes as a gas; it does not become water.'}}
+    ])+
+    '</section>';
+
+  // dissolve activity
+  const paintD=()=>{ const sv=$('#solvent').value; const beaker=(mode,tint)=>{
+      let s='<svg viewBox="0 0 160 170" width="150" role="img" aria-label="'+(mode==='yes'?'Uniform solution':'Solute does not dissolve')+'">';
+      s+='<path d="M30 14 V150 Q30 160 40 160 H120 Q130 160 130 150 V14" fill="none" stroke="#1b2430" stroke-width="2.5"/>';
+      if(mode==='yes'){ s+='<rect x="32" y="50" width="96" height="108" fill="'+tint+'"/>'; for(let i=0;i<14;i++){ const x=40+((i*37)%88), y=60+((i*53)%90); s+='<circle cx="'+x+'" cy="'+y+'" r="3.5" fill="#7a5c3a" opacity=".8"/>'; } }
+      else if(mode==='layer'){ s+='<rect x="32" y="50" width="96" height="108" fill="'+tint+'"/><rect x="32" y="50" width="96" height="28" fill="#e9c46a" opacity=".9"/>'; }
+      else { s+='<rect x="32" y="50" width="96" height="108" fill="'+tint+'"/>'; s+='<path d="M55 150 L62 128 L78 134 L84 118 L98 136 L110 128 L116 150 Z" fill="#8d6e4a"/>'; }
+      return s+'</svg>'; };
+    return beaker; };
+  const dch=$('#dch');
+  const runD=()=>{
+    const k=$('#solute').value, sv=$('#solvent').value; const so=SOLUTES[k]; const dissolves= sv==='water'?so.water:so.oil;
+    const beaker=paintD();
+    const tint=sv==='water'?'#cfe3f7':'#f6efd2';
+    const mode=dissolves?'yes':(k==='oil'||k==='ethanol'?'layer':'solid');
+    $('#dfig').innerHTML=beaker(mode,tint)+'<div class="cap"><p><b>'+so.n+' in '+SOLVENTS[sv].n.split(' (')[0].toLowerCase()+':</b> '+(dissolves?'it dissolves.':'it does not dissolve.')+'</p><p>'+so.why+'</p></div>';
+    if(S.pred){ const right=(S.pred==='yes')===dissolves; setFb('dfb',right?'ok':'bad','<p>'+(right?'Your prediction was right.':'Your prediction was off.')+' Solute: <b>'+so.type+'</b>. Solvent: <b>'+SOLVENTS[sv].pol+'</b>. '+(dissolves?'Like dissolves like.':'Unlike do not mix.')+'</p>'); }
+  };
+  dch.addEventListener('click',e=>{ const b=e.target.closest('button[data-v]'); if(!b) return; S.pred=b.dataset.v; $$('button',dch).forEach(x=>x.setAttribute('aria-pressed',x===b)); runD(); });
+  const resetD=()=>{ S.solute=$('#solute').value; S.solvent=$('#solvent').value; S.pred=null; $$('button',dch).forEach(x=>x.setAttribute('aria-pressed','false')); $('#dfig').innerHTML=''; clearFb('dfb'); };
+  $('#solute').addEventListener('change',resetD); $('#solvent').addEventListener('change',resetD);
+
+  // concentration tool
+  const paintC=()=>{
+    const raw=$('#cval').value.trim().replace(/,/g,''); const u=$('#cunit').value; const c=EPA.find(x=>x.k===$('#ccont').value);
+    S.conc={val:$('#cval').value,unit:u,cont:c.k};
+    const v=parseFloat(raw);
+    if(!(v>=0)){ $('#cout').innerHTML='<p class="src">Enter a number to convert.</p>'; return; }
+    const ppm = u==='mg/L'||u==='ppm' ? v : u==='ppb' ? v/1000 : v*10000;
+    const fmt=x=>{ if(x===0) return '0'; const a=Math.abs(x); if(a>=1000) return x.toLocaleString(undefined,{maximumFractionDigits:0}); if(a>=1) return (+x.toPrecision(4)).toString(); return (+x.toPrecision(3)).toString(); };
+    const over=ppm>c.mcl;
+    $('#cout').innerHTML='<div class="phread">'+
+      '<div class="stat"><div class="k">mg/L = ppm</div><div class="v">'+fmt(ppm)+'</div></div>'+
+      '<div class="stat"><div class="k">ppb (µg/L)</div><div class="v">'+fmt(ppm*1000)+'</div></div>'+
+      '<div class="stat"><div class="k">percent</div><div class="v">'+fmt(ppm/10000)+'%</div></div>'+
+      '<div class="stat"><div class="k">EPA limit for '+c.n.split(' (')[0].toLowerCase()+'</div><div class="v">'+c.mcl+' mg/L</div></div></div>'+
+      '<div class="fb show '+(over?'bad':'ok')+'"><span class="ic" aria-hidden="true">'+(over?'✗':'✓')+'</span><div><p><b>'+(over?'Above':'At or below')+' the limit.</b> '+fmt(ppm)+' ppm is '+(over?fmt(ppm/c.mcl)+' times the':( ppm===0?'well under the':fmt(ppm/c.mcl*100)+'% of the'))+' maximum of '+c.mcl+' mg/L. '+c.note+'</p></div></div>';
+  };
+  ['cval','cunit','ccont'].forEach(id=>$('#'+id).addEventListener('input',paintC)); paintC();
+}
+
+/* ================= 4. ELECTROLYTES ================= */
+const BEAKERS={
+  pure:{n:'Pure (distilled) water',level:0,kind:'non',tint:'#e3eef8',cls:'nonelectrolyte',why:'Water molecules stay almost entirely as molecules. Only about one in 500 million splits into H<sup>+</sup> and OH<sup>−</sup>, far too few to carry a current. Pure water is a poor conductor.'},
+  tap:{n:'Tap water',level:1,kind:'few',tint:'#dfe9f3',cls:'weak conductor (dissolved minerals)',why:'Tap water picks up small amounts of dissolved mineral ions (Ca<sup>2+</sup>, Mg<sup>2+</sup>, Na<sup>+</sup>, Cl<sup>−</sup>, HCO<sub>3</sub><sup>−</sup>) from rocks and soil. Those ions let it conduct, which is why water and electricity are a dangerous mix even though pure water barely conducts.'},
+  salt:{n:'Salt water (NaCl)',level:2,kind:'strong',tint:'#d5e7f7',cls:'strong electrolyte',why:'Sodium chloride is ionic. When it dissolves it <b>dissociates</b> completely into Na<sup>+</sup> and Cl<sup>−</sup> ions, which carry the current between the electrodes. The bulb glows brightly.'},
+  sugar:{n:'Sugar water (sucrose)',level:0,kind:'non',tint:'#eee9dc',cls:'nonelectrolyte',why:'Sugar dissolves as whole, neutral molecules. No ions, no current. Sugar is a nonelectrolyte.'},
+  vinegar:{n:'Vinegar (acetic acid)',level:1,kind:'weak',tint:'#f3e9d3',cls:'weak electrolyte',why:'Acetic acid is a weak acid: fewer than 1 molecule in 100 gives its H<sup>+</sup> to water. A few ions carry a small current, so the bulb glows dimly.'},
+  hcl:{n:'Hydrochloric acid (HCl)',level:2,kind:'strong',tint:'#e8e8ee',cls:'strong electrolyte',why:'HCl is a strong acid. In water essentially every molecule <b>ionizes</b>: HCl + H<sub>2</sub>O → H<sub>3</sub>O<sup>+</sup> + Cl<sup>−</sup>. Plenty of ions, bright bulb.'},
+  ammonia:{n:'Household ammonia (NH<sub>3</sub>)',level:1,kind:'weak',tint:'#e6f0ea',cls:'weak electrolyte',why:'Ammonia is a weak base. Only a small fraction of the molecules take an H<sup>+</sup> from water to form NH<sub>4</sub><sup>+</sup> and OH<sup>−</sup>. Few ions, dim bulb.'},
+  lye:{n:'Lye solution (NaOH)',level:2,kind:'strong',tint:'#e3e8f2',cls:'strong electrolyte',why:'Sodium hydroxide is an ionic compound and a strong base. It dissociates completely into Na<sup>+</sup> and OH<sup>−</sup>. Bright bulb.'},
+  alcohol:{n:'Rubbing alcohol in water',level:0,kind:'non',tint:'#eceff3',cls:'nonelectrolyte',why:'Alcohols dissolve as neutral molecules held by hydrogen bonds. No ions form, so no current flows.'},
+  sports:{n:'Sports drink',level:1,kind:'few',tint:'#dff0f7',cls:'weak conductor (dilute electrolytes)',why:'A sports drink contains sodium and potassium salts (strong electrolytes) but only in small amounts, so there are not many ions per liter. It conducts, but the bulb is dim. “Electrolytes” on the label means exactly these ions.'},
+  sea:{n:'Seawater',level:2,kind:'strong',tint:'#cfe3f0',cls:'strong electrolyte solution',why:'Seawater is about 3.5% dissolved salts, mostly NaCl, all dissociated into ions. Bright bulb. Seawater conducts well enough that ships use it as part of their electrical grounding.'}
+};
+const SORT_ITEMS=[
+  ['NaCl','table salt','strong','An ionic compound that is soluble in water dissociates completely.'],
+  ['HCl','hydrochloric acid','strong','A strong acid ionizes completely in water.'],
+  ['C12H22O11','sugar (sucrose)','non','Dissolves as neutral molecules; no ions.'],
+  ['CH3COOH','acetic acid (vinegar)','weak','A weak acid: only a small fraction ionizes.'],
+  ['NaOH','sodium hydroxide (lye)','strong','A strong base: dissociates completely into Na<sup>+</sup> and OH<sup>−</sup>.'],
+  ['NH3','ammonia','weak','A weak base: only a few molecules take an H<sup>+</sup> from water.'],
+  ['C2H5OH','ethanol','non','An alcohol dissolves as molecules; no ions.'],
+  ['KBr','potassium bromide','strong','A soluble ionic compound: K<sup>+</sup> and Br<sup>−</sup> ions.'],
+  ['H2SO4','sulfuric acid','strong','A strong acid (battery acid).'],
+  ['H2CO3','carbonic acid (in soda water)','weak','A weak acid formed when CO<sub>2</sub> dissolves in water.']
+];
+function renderElec(){
+  const S=state.elec;
+  view.innerHTML='<section><h2>4. Electrolytes</h2>'+
+    '<p class="lede">Dip two wires connected to a battery and a bulb into a solution. If the solution contains ions, the ions carry charge between the wires and the bulb lights. Substances that produce ions in water are <b>electrolytes</b>. Substances that dissolve as neutral molecules are <b>nonelectrolytes</b>.</p>'+
+    ideas([
+      {t:'Strong electrolytes',p:'All, or nearly all, of the dissolved substance is present as ions. Soluble ionic compounds (NaCl, KBr, CaCl<sub>2</sub>), strong acids (HCl, H<sub>2</sub>SO<sub>4</sub>, HNO<sub>3</sub>), and strong bases (NaOH, KOH). The bulb glows brightly.'},
+      {t:'Weak electrolytes',p:'Only a small fraction of the molecules form ions; the rest stay as molecules. Weak acids (acetic acid in vinegar, citric acid, carbonic acid) and weak bases (ammonia). The bulb glows dimly.'},
+      {t:'Nonelectrolytes',p:'Dissolve as whole molecules. Sugar, ethanol, and most other covalent compounds that are not acids or bases. The bulb stays dark.'},
+      {t:'Two ways to make ions',l:['<b>Dissociation:</b> an ionic compound’s ions, already there in the crystal, simply separate: NaCl(s) → Na<sup>+</sup>(aq) + Cl<sup>−</sup>(aq).','<b>Ionization:</b> a molecular compound reacts with water to <i>create</i> ions: HCl(g) + H<sub>2</sub>O → H<sub>3</sub>O<sup>+</sup>(aq) + Cl<sup>−</sup>(aq).']}
+    ])+
+    world('Electrolytes in you','<p>The “electrolytes” in sports drinks and IV fluids are ions: Na<sup>+</sup>, K<sup>+</sup>, Ca<sup>2+</sup>, Mg<sup>2+</sup>, Cl<sup>−</sup>, and HCO<sub>3</sub><sup>−</sup>. Nerves fire and muscles contract by moving Na<sup>+</sup> and K<sup>+</sup> across cell membranes, and your heartbeat depends on Ca<sup>2+</sup> and K<sup>+</sup>. Heavy sweating or vomiting loses electrolytes, which is why rehydration drinks contain salts and not just water. A car battery is an electrolyte at work too: its sulfuric acid solution carries current between the plates.</p>')+
+    '<h3>Virtual conductivity tester</h3><div class="act"><p class="how">Choose a beaker, predict how brightly the bulb will glow, then test it. The particle picture shows what is in the liquid: blue and red circles are + and − ions; gray pairs are neutral molecules.</p>'+
+    '<div class="row"><label for="beaker">Beaker</label><select class="sel" id="beaker">'+Object.keys(BEAKERS).map(k=>'<option value="'+k+'"'+(S.beaker===k?' selected':'')+'>'+BEAKERS[k].n.replace(/<[^>]+>/g,'')+'</option>').join('')+'</select></div>'+
+    '<p class="q" style="margin-top:12px">Your prediction:</p><div class="choice" id="ech"><button type="button" data-v="2">Bright</button><button type="button" data-v="1">Dim</button><button type="button" data-v="0">Off</button></div>'+
+    '<div class="actions"><button type="button" class="btn primary" id="etest">Test it</button></div>'+
+    '<div class="fig" id="efig"></div>'+fbBox('efb')+'</div>'+
+    '<h3>Sort them: strong, weak, or nonelectrolyte</h3><div class="act" id="esort"></div>'+
+    checkYourself('elec',[
+      {q:'A solution conducts electricity because it contains …',o:['dissolved molecules','ions that are free to move','pure water','sugar'],a:1,e:'Moving charged particles (ions) carry the current. Neutral molecules cannot.',w:{0:'Neutral molecules carry no charge, so they carry no current.',2:'Pure water barely conducts at all.',3:'Sugar water does not conduct; sugar is a nonelectrolyte.'}},
+      {q:'Which is a strong electrolyte?',o:['Sugar (sucrose)','Acetic acid','Sodium chloride','Ethanol'],a:2,e:'NaCl is a soluble ionic compound: it dissociates completely into Na<sup>+</sup> and Cl<sup>−</sup>.',w:{0:'Sugar is a nonelectrolyte.',1:'Acetic acid is a weak electrolyte: only a few percent of its molecules ionize.',3:'Ethanol is a nonelectrolyte.'}},
+      {q:'Vinegar makes a bulb glow dimly, while hydrochloric acid of the same concentration makes it glow brightly. Why?',o:['Vinegar is colder.','Acetic acid is a weak acid, so only a few of its molecules form ions.','Vinegar contains no acid.','HCl is a nonelectrolyte.'],a:1,e:'Weak electrolytes produce few ions; strong electrolytes produce many. Same concentration, different fraction ionized.',w:{0:'Temperature is not the difference here.',2:'Vinegar is about 4% acetic acid.',3:'HCl is a strong electrolyte, which is why its bulb is bright.'}},
+      {q:'The word “electrolytes” on a sports-drink label refers to …',o:['sugars','vitamins','dissolved ions such as Na<sup>+</sup> and K<sup>+</sup>','carbonation'],a:2,e:'Electrolytes are the dissolved salts, present as ions, that your nerves and muscles use.',w:{0:'Sugars are nonelectrolytes.',1:'Most vitamins are not electrolytes.',3:'Dissolved CO<sub>2</sub> is a gas, not the electrolytes.'}}
+    ])+
+    '</section>';
+
+  const ech=$('#ech');
+  const paintE=()=>{
+    const b=BEAKERS[S.beaker];
+    if(!S.tested){ $('#efig').innerHTML=testerSVG(0,[],b.tint)+'<div class="cap"><p class="src">Make a prediction and test it.</p></div>'; return; }
+    $('#efig').innerHTML=testerSVG(b.level,particlesFor(b.kind),b.tint)+'<div class="cap"><p><b>'+b.n+': '+(b.level===2?'bright':b.level===1?'dim':'off')+'.</b> This is a '+b.cls+'.</p><p>'+b.why+'</p><div class="legend"><span><i style="background:#2a63c9"></i>positive ion</span><span><i style="background:#c43c33"></i>negative ion</span><span><i style="background:#b9c0cb"></i>neutral molecule</span></div></div>';
+    if(S.pred!==null){ const right=+S.pred===b.level; setFb('efb',right?'ok':'bad','<p>'+(right?'Your prediction was right.':'Your prediction was off: the bulb is '+(b.level===2?'bright':b.level===1?'dim':'off')+'.')+' The brightness depends on how many ions are in the solution.</p>'); }
+  };
+  ech.addEventListener('click',e=>{ const b=e.target.closest('button[data-v]'); if(!b) return; S.pred=b.dataset.v; $$('button',ech).forEach(x=>x.setAttribute('aria-pressed',x===b)); });
+  $('#etest').addEventListener('click',()=>{ S.tested=true; paintE(); });
+  $('#beaker').addEventListener('change',()=>{ S.beaker=$('#beaker').value; S.pred=null; S.tested=false; $$('button',ech).forEach(x=>x.setAttribute('aria-pressed','false')); clearFb('efb'); paintE(); });
+  paintE();
+
+  const paintSort=()=>{
+    const L={strong:'Strong',weak:'Weak',non:'Non'};
+    $('#esort').innerHTML='<p class="how">For each substance, choose strong electrolyte, weak electrolyte, or nonelectrolyte. Ask: ionic and soluble? strong acid or base? weak acid or base? or just molecules?</p>'+
+      SORT_ITEMS.map((it,i)=>{ const got=S.sort[i]; return '<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)" data-si="'+i+'"><span style="flex:1 1 14em;min-width:0"><b>'+F(it[0])+'</b> <span style="color:var(--muted)">'+it[1]+'</span></span><span class="choice">'+['strong','weak','non'].map(k=>'<button type="button" data-k="'+k+'" aria-pressed="'+(got===k)+'"'+(got?' class="'+(k===it[2]?'ok':(got===k?'no':''))+'"':'')+(got===it[2]?' disabled':'')+'>'+L[k]+'</button>').join('')+'</span></div>'+(got?'<div class="fb show '+(got===it[2]?'ok':'bad')+'" style="margin:6px 0 10px"><span class="ic" aria-hidden="true">'+(got===it[2]?'✓':'✗')+'</span><div><p>'+(got===it[2]?'':'Not quite: it is a '+(it[2]==='non'?'nonelectrolyte':it[2]+' electrolyte')+'. ')+it[3]+'</p></div></div>':''); }).join('')+
+      '<p class="tally">Correct: '+SORT_ITEMS.filter((it,i)=>S.sort[i]===it[2]).length+' of '+SORT_ITEMS.length+'</p><div class="actions"><button type="button" class="btn" id="sreset">Clear answers</button></div>';
+  };
+  $('#esort').addEventListener('click',e=>{
+    const b=e.target.closest('button[data-k]'); if(b&&!b.disabled){ const i=+b.closest('[data-si]').dataset.si; S.sort[i]=b.dataset.k; paintSort(); return; }
+    if(e.target.closest('#sreset')){ S.sort={}; paintSort(); }
+  });
+  paintSort();
+}
+
+/* ================= 5. ACIDS AND BASES ================= */
+const AB_DECK=[
+  {n:'Lemon juice',ans:'acid',ph:'2.1',why:'Sour taste from citric acid. Turns blue litmus red.'},
+  {n:'Vinegar',ans:'acid',ph:'2.5',why:'About 4% acetic acid. Sour, and it fizzes with baking soda because the acid reacts with the carbonate.'},
+  {n:'Baking soda dissolved in water',ans:'base',ph:'about 8.3',why:'Sodium bicarbonate, NaHCO<sub>3</sub>, is a mild base: bitter taste, turns red litmus blue, and neutralizes stomach acid.'},
+  {n:'Household ammonia cleaner',ans:'base',ph:'about 11–12',why:'Ammonia accepts H<sup>+</sup> from water to make OH<sup>−</sup>. Feels slippery and turns red litmus blue.'},
+  {n:'Drain cleaner (lye)',ans:'base',ph:'about 13–14',why:'Sodium hydroxide, NaOH, a strong base. Extremely corrosive. It dissolves grease by turning it into soap.'},
+  {n:'Cola',ans:'acid',ph:'2.5–3',why:'Contains phosphoric acid and carbonic acid (dissolved CO<sub>2</sub>). It is more acidic than most people expect.'},
+  {n:'Antacid tablet (calcium carbonate)',ans:'base',ph:'about 9–10 in water',why:'CaCO<sub>3</sub> neutralizes excess stomach acid: CaCO<sub>3</sub> + 2 HCl → CaCl<sub>2</sub> + H<sub>2</sub>O + CO<sub>2</sub>. The CO<sub>2</sub> is the burp.'},
+  {n:'Aspirin',ans:'acid',ph:'about 3 in water',why:'Aspirin is acetylsalicylic acid. Its acidity is one reason it can irritate the stomach.'},
+  {n:'Bar soap',ans:'base',ph:'about 9–10',why:'Soap is made by reacting fat with lye, and it stays mildly basic. That slippery feel is the classic sign of a base.'},
+  {n:'Black coffee',ans:'acid',ph:'about 5',why:'Mildly acidic from several organic acids. Less acidic than fruit juice.'},
+  {n:'Milk of magnesia',ans:'base',ph:'10.5',why:'A suspension of magnesium hydroxide, Mg(OH)<sub>2</sub>, used as an antacid and a laxative.'},
+  {n:'Battery acid',ans:'acid',ph:'below 1',why:'Sulfuric acid, H<sub>2</sub>SO<sub>4</sub>, a strong acid. It is the number-one chemical produced in the United States.'},
+  {n:'Tomatoes',ans:'acid',ph:'about 4.5',why:'Citric and malic acids give the tang. Tomato sauce can even react with aluminum pans.'},
+  {n:'Fresh egg white',ans:'base',ph:'7.6–8.0',why:'Slightly basic. Most body fluids other than stomach acid and urine are near neutral or slightly basic.'},
+  {n:'Seawater',ans:'base',ph:'about 8.1',why:'Slightly basic because of dissolved bicarbonate and carbonate ions. Extra CO<sub>2</sub> from the air is slowly lowering it (ocean acidification).'}
+];
+const ACIDS={HCl:{n:'hydrochloric acid',h:1,anion:'Cl',an:'chloride',s:'strong'},HNO3:{n:'nitric acid',h:1,anion:'NO3',an:'nitrate',s:'strong'},H2SO4:{n:'sulfuric acid',h:2,anion:'SO4',an:'sulfate',s:'strong'},CH3COOH:{n:'acetic acid',h:1,anion:'CH3COO',an:'acetate',s:'weak'}};
+const BASES={NaOH:{n:'sodium hydroxide',oh:1,cat:'Na',cn:'sodium'},KOH:{n:'potassium hydroxide',oh:1,cat:'K',cn:'potassium'},'Ca(OH)2':{n:'calcium hydroxide',oh:2,cat:'Ca',cn:'calcium'},'Mg(OH)2':{n:'magnesium hydroxide',oh:2,cat:'Mg',cn:'magnesium'}};
+const SALT_NOTES={'NaCl':'table salt','KNO3':'saltpeter, used in fertilizer and curing meat','MgSO4':'Epsom salt','CaSO4':'plaster of Paris is its hydrate','Na2SO4':'Glauber’s salt, used in detergents','CaCl2':'road de-icer and the “ice melt” in heat packs','NaCH3COO':'sodium acetate, the salt in reusable hand warmers','KCl':'salt substitute for low-sodium diets','NaNO3':'Chile saltpeter, a fertilizer','Ca(NO3)2':'a fertilizer','MgCl2':'used for dust control and de-icing','K2SO4':'a fertilizer (potash)'};
+function saltFormula(a,b){
+  const A=ACIDS[a],B=BASES[b];
+  // charges: anion charge = -A.h ; cation charge = +B.oh
+  const an=A.h, cat=B.oh; const g=(x,y)=>y?g(y,x%y):x; const l=an*cat/g(an,cat);
+  const nCat=l/cat, nAn=l/an;
+  const wrap=(f,n)=>n===1?f:( /\d/.test(f)||f.length>2 ? '('+f+')'+n : f+n );
+  const anionF=A.anion==='CH3COO'?(nAn===1?'CH3COO':'(CH3COO)'+nAn):wrap(A.anion,nAn);
+  const catF=wrap(B.cat,nCat);
+  return {f:catF+anionF, name:B.cn+' '+A.an, nCat, nAn};
+}
+function neutralization(a,b){
+  const A=ACIDS[a],B=BASES[b]; const salt=saltFormula(a,b);
+  const g=(x,y)=>y?g(y,x%y):x; const l=A.h*B.oh/g(A.h,B.oh);
+  const cA=l/A.h, cB=l/B.oh, cW=l;
+  const co=n=>n===1?'':n+' ';
+  return {A,B,salt,cA,cB,cW,eq:co(cA)+a+' + '+co(cB)+b+' -> '+co(1)+salt.f+' + '+co(cW)+'H2O'};
+}
+const CONJ=[
+  {q:'the conjugate <b>base</b> of HCl',a:'Cl^-',o:['Cl^-','HCl2^-','H2Cl^+','OH^-'],e:'Remove one H<sup>+</sup> from HCl and you get Cl<sup>−</sup>. The charge drops by one.'},
+  {q:'the conjugate <b>acid</b> of NH3',a:'NH4^+',o:['NH4^+','NH2^-','NH3^+','OH^-'],e:'Add one H<sup>+</sup> to NH<sub>3</sub>: NH<sub>4</sub><sup>+</sup>, the ammonium ion.'},
+  {q:'the conjugate <b>base</b> of H2CO3 (carbonic acid)',a:'HCO3^-',o:['HCO3^-','CO3^2-','H3CO3^+','CO2'],e:'Take away one H<sup>+</sup>: HCO<sub>3</sub><sup>−</sup>, bicarbonate. Conjugate pairs differ by exactly one proton, so CO<sub>3</sub><sup>2−</sup> is two steps away.'},
+  {q:'the conjugate <b>acid</b> of OH^-',a:'H2O',o:['H2O','O^2-','H3O^+','H2O2'],e:'Add one H<sup>+</sup> to OH<sup>−</sup> and you get H<sub>2</sub>O.'},
+  {q:'the conjugate <b>base</b> of acetic acid, CH3COOH',a:'CH3COO^-',o:['CH3COO^-','CH3COOH2^+','CH3CO^+','CH3O^-'],e:'The acidic hydrogen is the one on the oxygen. Removing it leaves the acetate ion, CH<sub>3</sub>COO<sup>−</sup>.'},
+  {q:'the conjugate <b>acid</b> of H2O',a:'H3O^+',o:['H3O^+','OH^-','H2O2','H^+'],e:'Water plus a proton is the hydronium ion, H<sub>3</sub>O<sup>+</sup>. Water is amphoteric: its conjugate acid is H<sub>3</sub>O<sup>+</sup> and its conjugate base is OH<sup>−</sup>.'},
+  {q:'the conjugate <b>base</b> of HCO3^- (bicarbonate)',a:'CO3^2-',o:['CO3^2-','H2CO3','HCO2^-','CO2'],e:'Remove one more H<sup>+</sup> from bicarbonate: carbonate, CO<sub>3</sub><sup>2−</sup>. Bicarbonate, like water, can act as either an acid or a base.'},
+  {q:'the conjugate <b>base</b> of sulfuric acid, H2SO4',a:'HSO4^-',o:['HSO4^-','SO4^2-','H3SO4^+','SO3'],e:'One proton off: HSO<sub>4</sub><sup>−</sup>, the hydrogen sulfate ion. Sulfate is two protons away.'}
+];
+const BL=[
+  {eq:'HCl + H2O -> H3O^+ + Cl^-',acid:0,r:['HCl','H2O'],e:'HCl gives its proton to water. HCl is the acid (proton donor); water is the base (proton acceptor) and becomes H<sub>3</sub>O<sup>+</sup>.'},
+  {eq:'NH3 + H2O <=> NH4^+ + OH^-',acid:1,r:['NH3','H2O'],e:'Here water <i>gives</i> a proton to ammonia, so water is the acid and ammonia is the base. Ammonia becomes NH<sub>4</sub><sup>+</sup>; water becomes OH<sup>−</sup>.'},
+  {eq:'HCO3^- + H2O <=> H2CO3 + OH^-',acid:1,r:['HCO3^-','H2O'],e:'Bicarbonate picked up a proton (it became H<sub>2</sub>CO<sub>3</sub>), so it acted as the base. Water donated the proton: water is the acid.'},
+  {eq:'HCO3^- + H2O <=> CO3^2- + H3O^+',acid:0,r:['HCO3^-','H2O'],e:'This time bicarbonate <i>lost</i> a proton (it became CO<sub>3</sub><sup>2−</sup>), so bicarbonate is the acid and water is the base. Bicarbonate can go either way: it is amphoteric, like water.'},
+  {eq:'CH3COOH + NH3 -> CH3COO^- + NH4^+',acid:0,r:['CH3COOH','NH3'],e:'Acetic acid donates its proton to ammonia. No water needed: the Brønsted–Lowry definition works in any solvent, which the Arrhenius definition cannot do.'},
+  {eq:'HNO3 + H2O -> H3O^+ + NO3^-',acid:0,r:['HNO3','H2O'],e:'Nitric acid donates its proton to water. Follow the H: HNO<sub>3</sub> became NO<sub>3</sub><sup>−</sup>, so it lost the proton.'}
+];
+function renderAcid(){
+  const S=state.acid;
+  if(!S.deck){ S.deck=shuffle(AB_DECK).slice(0,8); S.i=0; S.score=0; S.answered=false; }
+  if(!S.cj.deck){ S.cj.deck=shuffle(CONJ); S.cj.i=0; S.cj.score=0; S.cj.answered=false; }
+  if(!S.bl.deck){ S.bl.deck=shuffle(BL); S.bl.i=0; S.bl.score=0; S.bl.answered=false; }
+  const acidTable=[['Sulfuric acid','H2SO4','strong','Battery acid; fertilizer and ore processing; oil refining'],['Hydrochloric acid','HCl','strong','Stomach acid; cleaning metals and brick (sold as muriatic acid)'],['Nitric acid','HNO3','strong','Fertilizers and explosives'],['Phosphoric acid','H3PO4','moderate','Colas and rust removers'],['Carbonic acid','H2CO3','weak','Carbonated drinks (CO<sub>2</sub> in water); normal rain'],['Lactic acid','CH3CHOHCOOH','weak','Yogurt; sour milk; tired muscles'],['Acetic acid','CH3COOH','weak','Vinegar'],['Citric acid','C6H8O7','weak','Citrus fruit; sour candy'],['Boric acid','H3BO3','very weak','Antiseptic eyewash; roach poison']];
+  const baseTable=[['Sodium hydroxide (lye)','NaOH','strong','Drain and oven cleaner; soap making'],['Potassium hydroxide','KOH','strong','Liquid soap; biodiesel'],['Calcium hydroxide (slaked lime)','Ca(OH)2','strong*','Plaster, mortar, cement; “sweetening” acidic soil'],['Magnesium hydroxide','Mg(OH)2','strong*','Milk of magnesia: antacid and laxative'],['Ammonia','NH3','weak','Household cleaners; fertilizer'],['Sodium bicarbonate','NaHCO3','weak','Baking soda; antacid']];
+  view.innerHTML='<section><h2>5. Acids and bases</h2>'+
+    '<p class="lede">Acids and bases are electrolytes with a special job: acids put hydrogen ions into water, and bases take them out. You meet them every day in food, cleaners, medicines, your stomach, and the rain.</p>'+
+    ideas([
+      {t:'How you recognize them',l:['<b>Acids:</b> taste sour (lemon, vinegar), turn blue litmus red, react with active metals such as zinc and magnesium to release hydrogen gas, and neutralize bases.','<b>Bases:</b> taste bitter, feel slippery, turn red litmus blue, and neutralize acids.','Never taste or touch lab chemicals to test them. Use an indicator.']},
+      {t:'Arrhenius definitions',p:'An <b>acid</b> is a substance that produces hydrogen ions, H<sup>+</sup>, in water. A <b>base</b> produces hydroxide ions, OH<sup>−</sup>, in water. In reality a bare H<sup>+</sup> grabs a water molecule and travels as the <b>hydronium ion</b>, H<sub>3</sub>O<sup>+</sup>. The Arrhenius picture cannot explain why ammonia is a base, and it only works in water.'},
+      {t:'Brønsted–Lowry definitions',p:'An <b>acid</b> is a proton (H<sup>+</sup>) donor; a <b>base</b> is a proton acceptor. Now ammonia makes sense: NH<sub>3</sub> + H<sub>2</sub>O ⇌ NH<sub>4</sub><sup>+</sup> + OH<sup>−</sup>. Ammonia accepts a proton from water, and the leftover OH<sup>−</sup> makes the solution basic. Water is amphoteric: it can donate or accept.'},
+      {t:'Strong and weak',p:'<b>Strong</b> acids and bases ionize or dissociate completely in water (HCl, H<sub>2</sub>SO<sub>4</sub>, HNO<sub>3</sub>; NaOH, KOH). <b>Weak</b> ones form ions only partially (acetic acid, carbonic acid; ammonia). Strong is not the same as concentrated: a dilute solution of a strong acid is still a strong acid, just a small amount of it.'},
+      {t:'Neutralization and salts',p:'Acid + base → salt + water. The real action is H<sup>+</sup> + OH<sup>−</sup> → H<sub>2</sub>O. A <b>salt</b> is an ionic compound whose cation is not H<sup>+</sup> and whose anion is not OH<sup>−</sup>. Table salt, Epsom salt, and plaster of Paris are all salts. Measuring how much base neutralizes an acid (a <b>titration</b>, with an indicator that changes color) tells you how much acid was there.'},
+      {t:'Anhydrides: oxides that become acids or bases',p:'<i>Anhydride</i> means “without water.” Nonmetal oxides are acidic anhydrides: CO<sub>2</sub> + H<sub>2</sub>O → H<sub>2</sub>CO<sub>3</sub>, and SO<sub>2</sub>, SO<sub>3</sub>, NO<sub>2</sub> make the stronger acids in acid rain. Metal oxides are basic anhydrides: CaO (lime) + H<sub>2</sub>O → Ca(OH)<sub>2</sub> (slaked lime).'},
+      {t:'Conjugate pairs and buffers',p:'An acid and the base left when it gives up one H<sup>+</sup> form a <b>conjugate acid–base pair</b>: HCl and Cl<sup>−</sup>, NH<sub>4</sub><sup>+</sup> and NH<sub>3</sub>, H<sub>2</sub>CO<sub>3</sub> and HCO<sub>3</sub><sup>−</sup>. A <b>buffer</b> is a weak acid together with its conjugate base; it soaks up added acid or base and holds the pH nearly constant. The carbonic acid–bicarbonate buffer keeps your blood at pH 7.4.'}
+    ])+
+    '<h3>Acid or base?</h3><div class="act" id="abdeck"></div>'+
+    '<h3>Common acids and bases</h3><div class="tblwrap"><table class="tbl"><thead><tr><th>Acid</th><th>Formula</th><th>Strength</th><th>Where you meet it</th></tr></thead><tbody>'+
+    acidTable.map(r=>'<tr><td>'+r[0]+'</td><td>'+F(r[1])+'</td><td><span class="pill '+(r[2]==='strong'?'strong':'weak')+'">'+r[2]+'</span></td><td>'+r[3]+'</td></tr>').join('')+'</tbody></table>'+
+    '<table class="tbl"><thead><tr><th>Base</th><th>Formula</th><th>Strength</th><th>Where you meet it</th></tr></thead><tbody>'+
+    baseTable.map(r=>'<tr><td>'+r[0]+'</td><td>'+F(r[1])+'</td><td><span class="pill '+(r[2].startsWith('strong')?'base':'weak')+'">'+r[2]+'</span></td><td>'+r[3]+'</td></tr>').join('')+'</tbody></table></div>'+
+    '<p class="src">*Calcium and magnesium hydroxide dissociate completely, so they count as strong, but they barely dissolve: it takes over 20 gallons of water to dissolve one gram of Mg(OH)<sub>2</sub>, which is why milk of magnesia is a milky suspension. (Tables 7.1 and 7.2.)</p>'+
+    '<h3>Neutralization builder</h3><div class="act"><p class="how">Choose an acid and a base. The builder writes the balanced neutralization equation and names the salt. Notice that every H<sup>+</sup> needs one OH<sup>−</sup>, which is where the coefficients come from.</p>'+
+    '<div class="row"><label for="nacid">Acid</label><select class="sel" id="nacid">'+Object.keys(ACIDS).map(k=>'<option value="'+k+'"'+(S.acid===k?' selected':'')+'>'+k.replace(/(\d)/g,'$1')+' ('+ACIDS[k].n+')</option>').join('')+'</select>'+
+    '<label for="nbase">Base</label><select class="sel" id="nbase">'+Object.keys(BASES).map(k=>'<option value="'+k+'"'+(S.base===k?' selected':'')+'>'+k+' ('+BASES[k].n+')</option>').join('')+'</select></div><div id="nout"></div></div>'+
+    '<h3>Conjugate pairs</h3><div class="act" id="cjbox"></div>'+
+    '<h3>Who donated the proton?</h3><div class="act" id="blbox"></div>'+
+    world('Acids and bases in daily life','<p><b>Antacids</b> (baking soda NaHCO<sub>3</sub>, Tums CaCO<sub>3</sub>, Amphojel Al(OH)<sub>3</sub>, milk of magnesia Mg(OH)<sub>2</sub>) neutralize excess stomach acid. Too much antacid can push blood pH up (alkalosis), so acid reducers that cut acid production are now more common. <b>Acid rain</b> (pH below 5.6) forms when SO<sub>2</sub> and nitrogen oxides from burning coal and from engines react with water in the air; it damages lakes, forests, metal, and limestone and marble buildings. <b>In industry,</b> sulfuric acid is the top chemical made in the U.S. (about 40 billion kg a year, for fertilizer and batteries); lime made by heating limestone becomes slaked lime for mortar, cement, and soil; lye makes soap and unclogs drains; ammonia is fertilizer. Concentrated acids and bases are corrosive because they tear apart the proteins in skin and eyes.</p>')+
+    checkYourself('acid',[
+      {q:'According to the Brønsted–Lowry definition, a base is a …',o:['proton donor','proton acceptor','substance that produces H<sup>+</sup>','substance that tastes sour'],a:1,e:'A Brønsted–Lowry base accepts a proton (H<sup>+</sup>). An acid donates one.',w:{0:'A proton donor is an acid.',2:'Producing H<sup>+</sup> is the Arrhenius definition of an acid.',3:'Sour taste is a property of acids.'}},
+      {q:'What does “strong acid” mean?',o:['It is very concentrated.','It ionizes completely in water.','It has a low pH no matter how dilute.','It is dangerous to touch.'],a:1,e:'Strength is about the fraction that ionizes: strong acids ionize completely, weak acids only partially. Concentration is a separate idea.',w:{0:'Concentration and strength are different. You can have a dilute strong acid.',2:'A very dilute strong acid can have a pH near 7.',3:'Many weak acids are harmful too; strength is about ionization, not danger.'}},
+      {q:'What are the products when hydrochloric acid reacts with sodium hydroxide?',o:['Hydrogen gas and sodium chloride','Sodium chloride and water','Sodium hydride and chlorine','Carbon dioxide and water'],a:1,e:'HCl + NaOH → NaCl + H<sub>2</sub>O. Acid + base → salt + water.',w:{0:'Hydrogen gas forms when acids react with metals, not with bases.',2:'Those are not the products of neutralization.',3:'CO<sub>2</sub> appears only when the base is a carbonate or bicarbonate, like baking soda.'}},
+      {q:'Which pair is a conjugate acid–base pair?',o:['HCl and NaOH','H<sub>2</sub>CO<sub>3</sub> and HCO<sub>3</sub><sup>−</sup>','H<sub>2</sub>O and O<sub>2</sub>','NH<sub>3</sub> and NaCl'],a:1,e:'Carbonic acid and bicarbonate differ by exactly one H<sup>+</sup>. This pair is the buffer in your blood.',w:{0:'An acid and a base that react are not a conjugate pair. A pair differs by one proton.',2:'Water and oxygen gas are not related by a single proton.',3:'Neither is the other plus or minus one proton.'}},
+      {q:'Sulfur dioxide from burning coal reacts with water in the air. The result is …',o:['a base, because SO<sub>2</sub> is a metal oxide.','an acid, because nonmetal oxides are acidic anhydrides.','pure water, because SO<sub>2</sub> is neutral.','a salt.'],a:1,e:'Nonmetal oxides such as SO<sub>2</sub>, SO<sub>3</sub>, and NO<sub>2</sub> react with water to form acids. That is the chemistry of acid rain.',w:{0:'Sulfur is a nonmetal. Metal oxides such as CaO are the basic ones.',2:'SO<sub>2</sub> reacts with water to make sulfurous acid.',3:'A salt comes from an acid reacting with a base, not an oxide with water.'}}
+    ])+
+    '</section>';
+
+  // Acid or base deck
+  const paintAB=()=>{
+    const box=$('#abdeck');
+    if(S.i>=S.deck.length){ box.innerHTML='<p class="q">Done: <b>'+S.score+'</b> of '+S.deck.length+' right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="abagain">New set</button></div>'; $('#abagain').addEventListener('click',()=>{S.deck=shuffle(AB_DECK).slice(0,8);S.i=0;S.score=0;S.answered=false;paintAB();}); return; }
+    const c=S.deck[S.i];
+    box.innerHTML='<p class="how">Item '+(S.i+1)+' of '+S.deck.length+'. Use what you know about taste, feel, and what it is made of.</p><p class="q"><b>'+c.n+'</b></p>'+
+      '<div class="choice" id="abch"><button type="button" data-v="acid">Acid</button><button type="button" data-v="base">Base</button></div>'+fbBox('abfb')+'<div class="actions" id="abact"></div><p class="tally">Right on first try: '+S.score+' of '+S.i+'</p>';
+    $('#abch').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-v]'); if(!b||S.answered) return; S.answered=true; const right=b.dataset.v===c.ans;
+      $$('#abch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);}); b.classList.add(right?'ok':'no'); if(right) S.score++;
+      setFb('abfb',right?'ok':'bad','<p><b>'+(right?'Correct. ':'Not quite. ')+c.n+' is '+(c.ans==='acid'?'an acid':'a base')+' (pH '+c.ph+').</b> '+c.why+'</p>');
+      $('#abact').innerHTML='<button type="button" class="btn primary" id="abnext">Next</button>'; $('#abnext').addEventListener('click',()=>{S.i++;S.answered=false;paintAB();});
+    });
+  };
+  paintAB();
+
+  // Neutralization builder
+  const paintN=()=>{
+    S.acid=$('#nacid').value; S.base=$('#nbase').value; const r=neutralization(S.acid,S.base);
+    const hl=s=>s; const note=SALT_NOTES[r.salt.f];
+    $('#nout').innerHTML='<div class="eq">'+F(r.eq).replace(F(r.salt.f),'<span class="hl">'+F(r.salt.f)+'</span>').replace(/(\d+ )?H<sub>2<\/sub>O$/,m=>'<span class="hb">'+m+'</span>')+'</div>'+
+      '<p><b>Salt:</b> '+r.salt.name+', '+F(r.salt.f)+(note?' ('+note+')':'')+'. <b>Water:</b> '+r.cW+' molecule'+(r.cW>1?'s':'')+', one for each H<sup>+</sup> that met an OH<sup>−</sup>.</p>'+
+      '<p>'+r.A.n.charAt(0).toUpperCase()+r.A.n.slice(1)+' supplies '+r.A.h+' H<sup>+</sup> per molecule and '+r.B.n+' supplies '+r.B.oh+' OH<sup>−</sup> per formula unit'+(r.cA>1||r.cB>1?', so it takes '+r.cA+' '+S.acid.replace(/\d/g,m=>m)+' for every '+r.cB+' '+S.base+' to use up both':', so they react one to one')+'. The acid’s anion ('+r.A.an+') and the base’s cation ('+r.B.cn+') are left over as the salt.'+(r.A.s==='weak'?' Acetic acid is weak, but it still neutralizes a base completely; the base pulls the H<sup>+</sup> off every molecule.':'')+'</p>';
+  };
+  $('#nacid').addEventListener('change',paintN); $('#nbase').addEventListener('change',paintN); paintN();
+
+  // Conjugate pairs
+  const C=S.cj;
+  const paintCJ=()=>{
+    const box=$('#cjbox');
+    if(C.i>=C.deck.length){ box.innerHTML='<p class="q">All '+C.deck.length+' done: <b>'+C.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="cjagain">Shuffle and go again</button></div>'; $('#cjagain').addEventListener('click',()=>{C.deck=shuffle(CONJ);C.i=0;C.score=0;C.answered=false;paintCJ();}); return; }
+    const q=C.deck[C.i]; const opts=shuffle(q.o);
+    box.innerHTML='<p class="how">Question '+(C.i+1)+' of '+C.deck.length+'. Rule: conjugate base = acid minus one H<sup>+</sup> (charge goes down by one). Conjugate acid = base plus one H<sup>+</sup> (charge goes up by one).</p><p class="q">What is '+q.q+'?</p>'+
+      '<div class="choice" id="cjch">'+opts.map(o=>'<button type="button" data-v="'+o+'">'+F(o)+'</button>').join('')+'</div>'+fbBox('cjfb')+'<div class="actions" id="cjact"></div><p class="tally">Right on first try: '+C.score+' of '+C.i+'</p>';
+    $('#cjch').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-v]'); if(!b||C.answered) return; C.answered=true; const right=b.dataset.v===q.a;
+      $$('#cjch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);}); b.classList.add(right?'ok':'no'); if(right) C.score++;
+      setFb('cjfb',right?'ok':'bad','<p><b>'+(right?'Correct: ':'Not quite. The answer is ')+F(q.a)+'.</b> '+q.e+'</p>');
+      $('#cjact').innerHTML='<button type="button" class="btn primary" id="cjnext">Next</button>'; $('#cjnext').addEventListener('click',()=>{C.i++;C.answered=false;paintCJ();});
+    });
+  };
+  paintCJ();
+
+  // Brønsted–Lowry labeler
+  const B=S.bl;
+  const paintBL=()=>{
+    const box=$('#blbox');
+    if(B.i>=B.deck.length){ box.innerHTML='<p class="q">All '+B.deck.length+' done: <b>'+B.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="blagain">Shuffle and go again</button></div>'; $('#blagain').addEventListener('click',()=>{B.deck=shuffle(BL);B.i=0;B.score=0;B.answered=false;paintBL();}); return; }
+    const q=B.deck[B.i];
+    box.innerHTML='<p class="how">Reaction '+(B.i+1)+' of '+B.deck.length+'. Follow the hydrogen. Which <b>reactant</b> is the Brønsted–Lowry acid, the one that gives away an H<sup>+</sup>?</p><div class="eq">'+F(q.eq)+'</div>'+
+      '<div class="choice" id="blch">'+q.r.map((r,i)=>'<button type="button" data-v="'+i+'">'+F(r)+'</button>').join('')+'</div>'+fbBox('blfb')+'<div class="actions" id="blact"></div><p class="tally">Right on first try: '+B.score+' of '+B.i+'</p>';
+    $('#blch').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-v]'); if(!b||B.answered) return; B.answered=true; const right=+b.dataset.v===q.acid;
+      $$('#blch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);}); b.classList.add(right?'ok':'no'); if(right) B.score++;
+      setFb('blfb',right?'ok':'bad','<p><b>'+(right?'Correct: ':'Not quite. The acid is ')+F(q.r[q.acid])+'.</b> '+q.e+'</p>');
+      $('#blact').innerHTML='<button type="button" class="btn primary" id="blnext">Next</button>'; $('#blnext').addEventListener('click',()=>{B.i++;B.answered=false;paintBL();});
+    });
+  };
+  paintBL();
+}
+
+/* ================= 6. THE pH SCALE ================= */
+const PH_EXAMPLES=[[0,'4% hydrochloric acid; 1 M HCl'],[0.5,'battery acid'],[1.7,'gastric juice (stomach acid)'],[2.1,'lemon juice'],[2.5,'vinegar (4%)'],[2.8,'cola'],[3.5,'oranges'],[4.5,'tomatoes'],[5.0,'black coffee'],[5.6,'normal rainwater'],[6.0,'urine (5.5–7.0)'],[6.5,'milk (6.3–6.6)'],[6.8,'saliva (6.2–7.4)'],[7.0,'pure water'],[7.4,'blood'],[7.8,'fresh egg white (7.6–8.0)'],[8.1,'seawater'],[8.2,'bile (7.8–8.6)'],[8.3,'baking soda solution'],[10.5,'milk of magnesia'],[11.5,'household ammonia'],[12.0,'washing soda'],[13.0,'4% sodium hydroxide'],[14,'1 M sodium hydroxide']];
+function sci(n){ // 10^-n as 1 × 10^-k or decimal-friendly string
+  const k=Math.round(n*100)/100;
+  if(Number.isInteger(k)) return '1 × 10<sup>−'+k+'</sup>';
+  const e=Math.floor(k), m=Math.pow(10,e+1-k);
+  return m.toFixed(1)+' × 10<sup>−'+(e+1)+'</sup>';
+}
+function phColor(v){ const stops=[[0,'#c8102e'],[1.4,'#e2401c'],[2.8,'#f07a1a'],[4.2,'#f6b31b'],[5.6,'#f4de2b'],[6.6,'#b6d33a'],[7,'#4caf50'],[8,'#2f9e8f'],[9.1,'#2275c4'],[10.5,'#2f55b5'],[11.9,'#4b3ea8'],[13.3,'#5b2b8a'],[14,'#3f1b63']];
+  for(let i=1;i<stops.length;i++){ if(v<=stops[i][0]){ const a=stops[i-1],b=stops[i]; const t=(v-a[0])/(b[0]-a[0]); const h=x=>parseInt(x,16); const c1=[h(a[1].slice(1,3)),h(a[1].slice(3,5)),h(a[1].slice(5,7))], c2=[h(b[1].slice(1,3)),h(b[1].slice(3,5)),h(b[1].slice(5,7))]; return 'rgb('+c1.map((x,j)=>Math.round(x+(c2[j]-x)*t)).join(',')+')'; } }
+  return stops[stops.length-1][1]; }
+function makePHProblem(){
+  const t=pick(['toPH','toH','times','which','class','class','toPH']);
+  if(t==='toPH'){ const n=Math.floor(Math.random()*15); return {t,q:'A solution has a hydrogen-ion concentration of '+sci(n)+' mol/L. What is its pH?',ans:n,type:'num',e:'pH is the exponent with the sign flipped: 1 × 10<sup>−'+n+'</sup> mol/L means pH '+n+'. '+(n<7?'Acidic.':n===7?'Neutral.':'Basic.')}; }
+  if(t==='toH'){ const n=Math.floor(Math.random()*15); const o=shuffle([n,(n+1)%15,(n+2)%15,(n+13)%15].map(k=>({v:sci(k)+' mol/L',ok:k===n}))); return {t,q:'A solution has pH '+n+'. What is its hydrogen-ion concentration?',o,type:'mc',e:'pH '+n+' means [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L. Lower pH, more H<sup>+</sup>.'}; }
+  if(t==='times'){ let a=Math.floor(Math.random()*12), d=1+Math.floor(Math.random()*4); const b=a+d; return {t,q:'Solution A has pH '+a+' and solution B has pH '+b+'. How many times more hydrogen ion does A have than B? (Enter a number.)',ans:Math.pow(10,d),type:'num',e:'Each pH unit is a factor of 10. A difference of '+d+' unit'+(d>1?'s':'')+' is 10<sup>'+d+'</sup> = '+Math.pow(10,d).toLocaleString()+' times more H<sup>+</sup> in the lower-pH solution.'}; }
+  if(t==='which'){ const a=(Math.random()*14).toFixed(1), b=(Math.random()*14).toFixed(1); if(a===b) return makePHProblem(); const lo=Math.min(+a,+b); const o=shuffle([{v:'pH '+a,ok:+a===lo},{v:'pH '+b,ok:+b===lo}]); return {t,q:'Which solution is more acidic: pH '+a+' or pH '+b+'?',o,type:'mc',e:'The lower pH has more hydrogen ion, so it is more acidic. pH '+lo+' it is.'}; }
+  const v=(Math.random()*14).toFixed(1); const cls=+v<7?'Acidic':+v>7?'Basic':'Neutral'; return {t,q:'A solution has pH '+v+'. Is it acidic, basic, or neutral?',o:[{v:'Acidic',ok:cls==='Acidic'},{v:'Neutral',ok:cls==='Neutral'},{v:'Basic',ok:cls==='Basic'}],type:'mc',e:'Below 7 is acidic, 7 is neutral, above 7 is basic. pH '+v+' is '+cls.toLowerCase()+'.'};
+}
+function renderPH(){
+  const S=state.ph;
+  if(!S.prac.P){ S.prac.P=makePHProblem(); S.prac.answered=false; }
+  view.innerHTML='<section><h2>6. The pH scale</h2>'+
+    '<p class="lede">The hydrogen-ion concentration of everyday solutions runs from about 1 mol/L down to 0.00000000000001 mol/L. The pH scale squeezes that enormous range into a number between 0 and 14. “pH” stands for “power of hydrogen”: it is the power of ten in the concentration, with the sign flipped.</p>'+
+    ideas([
+      {t:'The definition',p:'If [H<sup>+</sup>] = 1 × 10<sup>−n</sup> mol/L, then pH = n. Written with logarithms, pH = −log[H<sup>+</sup>]. Going the other way, [H<sup>+</sup>] = 10<sup>−pH</sup> mol/L. (Table 7.4)'},
+      {t:'Reading the scale',l:['<b>pH 7 is neutral:</b> pure water has [H<sup>+</sup>] = [OH<sup>−</sup>] = 1 × 10<sup>−7</sup> mol/L.','<b>Below 7 is acidic.</b> The lower the number, the more H<sup>+</sup>.','<b>Above 7 is basic</b> (alkaline). The higher the number, the more OH<sup>−</sup>.','In any water solution, [H<sup>+</sup>] × [OH<sup>−</sup>] = 1 × 10<sup>−14</sup>, so as one goes up the other goes down.']},
+      {t:'Each step is 10 times',p:'A change of one pH unit is a tenfold change in [H<sup>+</sup>]. Lemon juice (pH 2) has 10 times the hydrogen ion of cola (pH 3), 100 times that of tomatoes (pH 4), and 100,000 times that of pure water (pH 7). Small differences in pH are big differences in acidity.'},
+      {t:'Measuring pH',p:'<b>Indicators</b> are dyes that change color with pH: litmus is red in acid and blue in base; phenolphthalein is colorless in acid and pink in base (used in titrations); universal indicator and red-cabbage juice run through a rainbow. A <b>pH meter</b> gives a precise number.'}
+    ])+
+    '<h3>Explore the scale</h3><div class="act"><p class="how">Drag the slider. The band shows the color of universal indicator at that pH.</p>'+
+    '<div class="phband" aria-hidden="true"></div><div class="phcursor" aria-hidden="true"><i id="phcur"></i></div><div class="phticks" aria-hidden="true">'+[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(n=>'<span style="left:'+(n/14*100)+'%">'+n+'</span>').join('')+'</div>'+
+    '<label for="phr" style="font-weight:600">pH <span id="phv">'+S.v+'</span></label><input type="range" id="phr" min="0" max="14" step="0.1" value="'+S.v+'">'+
+    '<div id="phout"></div></div>'+
+    '<h3>Compare two solutions</h3><div class="act"><p class="how">Pick two pH values to see how different their hydrogen-ion concentrations really are.</p>'+
+    '<div class="row"><label for="cmpA">pH</label><input class="pin" id="cmpA" type="number" min="0" max="14" step="1" value="'+S.cmpA+'"><label for="cmpB">compared with pH</label><input class="pin" id="cmpB" type="number" min="0" max="14" step="1" value="'+S.cmpB+'"></div><div id="cmpout" style="margin-top:10px"></div></div>'+
+    '<h3>Practice</h3><div class="act" id="phprac"></div>'+
+    world('pH in your body and your world','<p><b>Blood</b> stays between 7.35 and 7.45; the carbonic acid–bicarbonate buffer holds it there, and drifting even a few tenths either way is a medical emergency. <b>Stomach acid</b> is pH 1.6–1.8, strong enough to dissolve metal, which is why the stomach lining is replaced every few days. <b>Skin</b> is slightly acidic (about 5.5), which is what “pH-balanced” products are matched to. <b>Rain</b> is naturally slightly acidic (5.6) from dissolved CO<sub>2</sub>; below 5.6 counts as acid rain. Farmers raise soil pH with lime; pool owners chase a pH near 7.4 so chlorine works and eyes do not sting.</p>')+
+    checkYourself('ph',[
+      {q:'A solution has [H<sup>+</sup>] = 1 × 10<sup>−11</sup> mol/L. Its pH is …',o:['−11','11','3','1 × 10<sup>11</sup>'],a:1,e:'pH is the exponent with its sign flipped: 11. That is basic.',w:{0:'Flip the sign of the exponent: pH is a positive number here.',2:'That would be [H<sup>+</sup>] = 1 × 10<sup>−3</sup>.',3:'pH is just the small number 11, not a concentration.'}},
+      {q:'How does the hydrogen-ion concentration of pH 3 compare with pH 5?',o:['It is 2 times greater.','It is 100 times greater.','It is 2 times smaller.','It is 100 times smaller.'],a:1,e:'Two pH units lower means 10 × 10 = 100 times more H<sup>+</sup>.',w:{0:'The scale is not linear. Each unit is a factor of 10.',2:'Lower pH means <i>more</i> hydrogen ion.',3:'Lower pH means more H<sup>+</sup>, and two units is a factor of 100.'}},
+      {q:'A pool-test kit reads pH 8.5. The water is …',o:['acidic','neutral','basic','pure'],a:2,e:'Above 7 is basic. Most pools are kept near 7.4.',w:{0:'Acidic would be below 7.',1:'Neutral is exactly 7.',3:'pH says nothing about purity; it measures acidity.'}},
+      {q:'Normal rain has a pH of about 5.6 rather than 7.0 because …',o:['all rain is polluted.','dissolved carbon dioxide forms carbonic acid, a weak acid.','rain contains dissolved salt.','water is naturally acidic.'],a:1,e:'CO<sub>2</sub> from the air dissolves in raindrops and forms carbonic acid. Rain below 5.6 has picked up stronger acids from sulfur and nitrogen oxides: acid rain.',w:{0:'Even clean rain is slightly acidic because of CO<sub>2</sub>.',2:'Salt does not change pH.',3:'Pure water is neutral, pH 7.'}}
+    ])+
+    '</section>';
+
+  const paintPH=()=>{
+    const v=+$('#phr').value; S.v=v; $('#phv').textContent=v.toFixed(1); $('#phcur').style.left=(v/14*100)+'%';
+    const cls=v<6.95?'acid':v>7.05?'base':'neu'; const lab={acid:'Acidic',base:'Basic',neu:'Neutral'}[cls];
+    const near=PH_EXAMPLES.filter(e=>Math.abs(e[0]-v)<=0.35).map(e=>e[1]+' (pH '+e[0]+')');
+    const nearest=PH_EXAMPLES.reduce((b,e)=>Math.abs(e[0]-v)<Math.abs(b[0]-v)?e:b);
+    $('#phout').innerHTML='<div class="phread">'+
+      '<div class="stat" style="border-color:'+phColor(v)+';border-width:3px"><div class="k">Solution is</div><div class="v"><span class="chip '+cls+'">'+lab+'</span></div></div>'+
+      '<div class="stat"><div class="k">[H<sup>+</sup>], mol/L</div><div class="v sm">'+sci(v)+'</div></div>'+
+      '<div class="stat"><div class="k">[OH<sup>−</sup>], mol/L</div><div class="v sm">'+sci(14-v)+'</div></div>'+
+      '<div class="stat"><div class="k">Litmus</div><div class="v sm"><span class="litmus"><i style="background:'+(cls==='base'?'#3e74c9':'#d8453c')+'"></i>'+(cls==='acid'?'blue turns red':cls==='base'?'red turns blue':'no change')+'</span></div></div></div>'+
+      '<p><b>Around pH '+v.toFixed(1)+':</b> '+(near.length?near.join('; '):'nearest example is '+nearest[1]+' (pH '+nearest[0]+')')+'.</p>'+
+      '<p class="src">Compared with pure water, this solution has '+(v<7?Math.pow(10,7-v).toLocaleString(undefined,{maximumFractionDigits:0})+' times more':v>7?Math.pow(10,v-7).toLocaleString(undefined,{maximumFractionDigits:0})+' times less':'the same')+' hydrogen ion. Examples from Table 7.5 and Figure 7.5.</p>';
+  };
+  $('#phr').addEventListener('input',paintPH); paintPH();
+
+  const paintCmp=()=>{
+    let a=Math.round(+$('#cmpA').value), b=Math.round(+$('#cmpB').value);
+    if(!(a>=0&&a<=14&&b>=0&&b<=14)){ $('#cmpout').innerHTML='<p class="src">Enter whole numbers from 0 to 14.</p>'; return; }
+    S.cmpA=a; S.cmpB=b; const d=Math.abs(a-b);
+    if(d===0){ $('#cmpout').innerHTML='<p>Same pH, same hydrogen-ion concentration: '+sci(a)+' mol/L.</p>'; return; }
+    const lo=Math.min(a,b), hi=Math.max(a,b);
+    $('#cmpout').innerHTML='<p><b>pH '+lo+' has '+Math.pow(10,d).toLocaleString()+' times more hydrogen ion than pH '+hi+'.</b> '+sci(lo)+' mol/L versus '+sci(hi)+' mol/L: a difference of '+d+' pH unit'+(d>1?'s':'')+' is 10<sup>'+d+'</sup>.</p>';
+  };
+  $('#cmpA').addEventListener('input',paintCmp); $('#cmpB').addEventListener('input',paintCmp); paintCmp();
+
+  const P=S.prac;
+  const paintPrac=()=>{
+    const p=P.P; const box=$('#phprac');
+    box.innerHTML='<p class="how">New problems every time. Solved this session: '+P.solved+'.</p><p class="q">'+p.q+'</p>'+
+      (p.type==='num'?'<div class="row"><input class="pin" id="pans" type="text" inputmode="numeric" aria-label="Your answer"><button type="button" class="btn primary" id="pcheck">Check</button></div>':
+       '<div class="choice" id="pch">'+p.o.map((o,i)=>'<button type="button" data-i="'+i+'">'+o.v+'</button>').join('')+'</div>')+
+      fbBox('pfb2')+'<div class="actions" id="pact2"></div>';
+    const finish=(right,extra)=>{
+      P.answered=true; if(right) P.solved++;
+      setFb('pfb2',right?'ok':'bad','<p><b>'+(right?'Correct.':'Not quite.')+'</b> '+(extra||'')+p.e+'</p>');
+      $('#pact2').innerHTML='<button type="button" class="btn primary" id="pnext2">Next problem</button>';
+      $('#pnext2').addEventListener('click',()=>{P.P=makePHProblem();P.answered=false;paintPrac();});
+    };
+    if(p.type==='num'){
+      const chk=()=>{ if(P.answered) return; const raw=$('#pans').value.trim().replace(/,/g,''); const v=parseFloat(raw); if(isNaN(v)){ setFb('pfb2','warn','<p>Enter a number.</p>'); return; } const right=Math.abs(v-p.ans)<1e-9; $('#pans').classList.add(right?'ok':'no'); $('#pans').disabled=true; finish(right, right?'':'You entered '+esc(raw)+'. '); };
+      $('#pcheck').addEventListener('click',chk); $('#pans').addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); });
+      $('#pans').focus();
+    } else {
+      $('#pch').addEventListener('click',e=>{ const b=e.target.closest('button[data-i]'); if(!b||P.answered) return; const right=p.o[+b.dataset.i].ok; $$('#pch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);}); b.classList.add(right?'ok':'no'); finish(right); });
+    }
+  };
+  paintPrac();
+}
+
+/* ================= 7. REVIEW QUIZ ================= */
+const BANK=[
+  {s:'Polarity',q:'In a polar covalent bond, the shared electrons are …',o:['shared equally.','pulled closer to the more electronegative atom.','transferred completely to one atom.','not shared at all.'],a:1,e:'Unequal sharing: the more electronegative atom gets the larger share and becomes δ−.'},
+  {s:'Polarity',q:'Which molecule is nonpolar even though it contains polar bonds?',o:['H<sub>2</sub>O','NH<sub>3</sub>','CO<sub>2</sub>','HCl'],a:2,e:'CO<sub>2</sub> is linear, so its two C=O bond pulls cancel.'},
+  {s:'Polarity',q:'A bond between sodium and chlorine is best described as …',o:['nonpolar covalent','polar covalent','ionic','hydrogen bonding'],a:2,e:'Metal + nonmetal with a large electronegativity difference: electrons are transferred, giving Na<sup>+</sup> and Cl<sup>−</sup>.'},
+  {s:'Intermolecular forces',q:'Hydrogen bonding can occur when hydrogen is bonded to …',o:['carbon','nitrogen, oxygen, or fluorine','any other atom','a metal'],a:1,e:'Only N, O, and F are electronegative enough (and small enough) to make hydrogen bonds.'},
+  {s:'Intermolecular forces',q:'Which force is the weakest for small molecules?',o:['dispersion forces','dipole–dipole forces','hydrogen bonds','covalent bonds'],a:0,e:'Dispersion forces are the weakest for small molecules, though they add up for large ones.'},
+  {s:'Intermolecular forces',q:'Water has a high specific heat. A practical result is that …',o:['water boils easily.','large bodies of water moderate nearby temperatures.','ice sinks.','water evaporates quickly.'],a:1,e:'It takes a lot of energy to change water’s temperature, so oceans and lakes keep coastal climates mild.'},
+  {s:'Intermolecular forces',q:'Boiling water breaks …',o:['the O–H bonds inside each molecule.','the hydrogen bonds between molecules.','the oxygen atoms apart.','nothing; boiling is physical.'],a:1,e:'Boiling separates molecules from each other by overcoming intermolecular forces. The molecules themselves stay intact.'},
+  {s:'Solutions',q:'In a cup of sweet tea, the sugar is the …',o:['solvent','solute','solution','electrolyte'],a:1,e:'Sugar is dissolved (solute); water is the solvent.'},
+  {s:'Solutions',q:'Grease does not dissolve in water because …',o:['grease is denser than water.','grease is nonpolar and water is polar.','water is too cold.','grease is an electrolyte.'],a:1,e:'Like dissolves like. Water molecules would rather hydrogen-bond to each other than surround a nonpolar molecule.'},
+  {s:'Solutions',q:'A concentration of 1 mg/L is the same as …',o:['1 ppb','1 ppm','1%','1 mol/L'],a:1,e:'One milligram per liter is one part per million (1 ppm). 1 ppb would be 1 µg/L.'},
+  {s:'Solutions',q:'Water dissolves table salt by …',o:['breaking the Na–Cl covalent bond.','surrounding each ion with water molecules facing the right way.','boiling it.','forming hydrogen bonds with chlorine.'],a:1,e:'Water’s δ− oxygens face Na<sup>+</sup> and its δ+ hydrogens face Cl<sup>−</sup>, pulling the ions out of the crystal.'},
+  {s:'Electrolytes',q:'Which solution would make a conductivity bulb glow brightest?',o:['sugar water','vinegar','salt water','rubbing alcohol'],a:2,e:'NaCl is a strong electrolyte: all of it is present as ions.'},
+  {s:'Electrolytes',q:'A weak electrolyte is a substance that …',o:['dissolves only slightly.','forms ions in water, but only a small fraction of the time.','does not dissolve.','is dangerous.'],a:1,e:'Weak electrolytes such as acetic acid and ammonia stay mostly as molecules, with only a few percent ionized.'},
+  {s:'Electrolytes',q:'Sugar water does not conduct electricity because …',o:['sugar is not soluble.','sugar dissolves as neutral molecules, not ions.','sugar is an acid.','water is a nonelectrolyte.'],a:1,e:'No ions, no current. Sugar is a nonelectrolyte.'},
+  {s:'Acids and bases',q:'An Arrhenius acid produces ___ in water.',o:['OH<sup>−</sup>','H<sup>+</sup>','Na<sup>+</sup>','O<sub>2</sub>'],a:1,e:'Arrhenius acids produce hydrogen ions (really hydronium ions, H<sub>3</sub>O<sup>+</sup>) in water.'},
+  {s:'Acids and bases',q:'In NH<sub>3</sub> + H<sub>2</sub>O → NH<sub>4</sub><sup>+</sup> + OH<sup>−</sup>, ammonia acts as a …',o:['Brønsted–Lowry acid','Brønsted–Lowry base','salt','buffer'],a:1,e:'Ammonia accepts a proton from water, so it is the base. Water is the acid here.'},
+  {s:'Acids and bases',q:'Acid + base → ?',o:['hydrogen gas + salt','salt + water','carbon dioxide + water','acid rain'],a:1,e:'Neutralization produces a salt and water. The core reaction is H<sup>+</sup> + OH<sup>−</sup> → H<sub>2</sub>O.'},
+  {s:'Acids and bases',q:'Which is a strong acid?',o:['acetic acid','carbonic acid','hydrochloric acid','boric acid'],a:2,e:'HCl ionizes completely. Acetic, carbonic, and boric acids are weak.'},
+  {s:'Acids and bases',q:'The conjugate base of H<sub>2</sub>CO<sub>3</sub> is …',o:['CO<sub>2</sub>','HCO<sub>3</sub><sup>−</sup>','CO<sub>3</sub><sup>2−</sup>','H<sub>3</sub>CO<sub>3</sub><sup>+</sup>'],a:1,e:'Remove one H<sup>+</sup>: bicarbonate, HCO<sub>3</sub><sup>−</sup>.'},
+  {s:'Acids and bases',q:'A buffer solution contains …',o:['a strong acid and a strong base.','a weak acid and its conjugate base.','only water.','a salt and sugar.'],a:1,e:'A weak acid plus its conjugate base can absorb added acid or base, holding pH nearly constant, as in blood.'},
+  {s:'Acids and bases',q:'Calcium oxide (lime) reacts with water to form …',o:['an acid','a base, calcium hydroxide','a salt','hydrogen gas'],a:1,e:'Metal oxides are basic anhydrides: CaO + H<sub>2</sub>O → Ca(OH)<sub>2</sub>, slaked lime.'},
+  {s:'Acids and bases',q:'Which antacid ingredient releases carbon dioxide when it neutralizes stomach acid?',o:['Mg(OH)<sub>2</sub>','Al(OH)<sub>3</sub>','CaCO<sub>3</sub>','NaOH'],a:2,e:'Carbonates react with acid to give CO<sub>2</sub>, which is why Tums can make you burp. (NaOH is far too harsh to be an antacid.)'},
+  {s:'pH',q:'A solution with [H<sup>+</sup>] = 1 × 10<sup>−4</sup> mol/L has a pH of …',o:['4','−4','10','14'],a:0,e:'pH is the exponent with the sign flipped: 4.'},
+  {s:'pH',q:'Which solution is the most acidic?',o:['pH 2','pH 5','pH 7','pH 12'],a:0,e:'Lower pH means more hydrogen ion.'},
+  {s:'pH',q:'pH 2 compared with pH 4 has …',o:['2 times more H<sup>+</sup>.','100 times more H<sup>+</sup>.','2 times less H<sup>+</sup>.','100 times less H<sup>+</sup>.'],a:1,e:'Two units lower is 10 × 10 = 100 times more hydrogen ion.'},
+  {s:'pH',q:'Pure water is neutral because …',o:['it contains no ions at all.','[H<sup>+</sup>] and [OH<sup>−</sup>] are equal (1 × 10<sup>−7</sup> mol/L each).','its pH is 0.','it is a nonelectrolyte.'],a:1,e:'A tiny fraction of water molecules split into equal numbers of H<sup>+</sup> and OH<sup>−</sup>, giving pH 7.'},
+  {s:'pH',q:'Blood has a pH of about …',o:['1.7','5.6','7.4','10.5'],a:2,e:'Blood is held near 7.4 by the carbonic acid–bicarbonate buffer. Stomach acid is 1.7; milk of magnesia is 10.5.'},
+  {s:'pH',q:'Litmus paper turns red in …',o:['an acid','a base','pure water','salt water'],a:0,e:'Blue litmus turns red in acid; red litmus turns blue in base.'}
+];
+function renderReview(){
+  const R=state.review;
+  if(!R.qs){ R.qs=shuffle(BANK).slice(0,12); R.i=0; R.score=0; R.answered=false; R.log=[]; }
+  const paint=()=>{
+    if(R.i>=R.qs.length){
+      const pct=Math.round(R.score/R.qs.length*100);
+      view.innerHTML='<section><h2>7. Review quiz</h2><p class="score">You scored '+R.score+' of '+R.qs.length+' ('+pct+'%).</p>'+
+        '<p>'+(pct>=90?'Excellent. You have the whole story from polar molecules to pH.':pct>=70?'Good work. Look over the ones you missed and revisit those sections.':'Worth another pass. Each missed question names its section so you know where to go back.')+'</p>'+
+        (R.log.some(l=>!l.ok)?'<h3>Questions to revisit</h3><ol class="review">'+R.log.filter(l=>!l.ok).map(l=>'<li><b>'+l.s+':</b> '+l.q+'<br><span style="color:var(--muted)">Answer: '+l.ans+'. '+l.e+'</span></li>').join('')+'</ol>':'')+
+        '<div class="actions"><button type="button" class="btn primary" id="ragain">Take a new quiz</button></div></section>';
+      $('#ragain').addEventListener('click',()=>{R.qs=null;renderReview();});
+      if(pct>=70) markDone('review');
+      return;
+    }
+    const q=R.qs[R.i]; const opts=q.o.map((o,i)=>({o,i}));
+    const order=shuffle(opts);
+    view.innerHTML='<section><h2>7. Review quiz</h2><p class="lede">Twelve questions drawn from all six sections, in a new mix each time. Answer each one, read the explanation, and move on. Score 70% or better to earn the checkmark.</p>'+
+      '<div class="act"><div class="qnum">Question '+(R.i+1)+' of '+R.qs.length+' · '+q.s+'</div><div class="prog" aria-hidden="true"><i style="width:'+(R.i/R.qs.length*100)+'%"></i></div><p class="q">'+q.q+'</p>'+
+      '<div class="choice stack" id="rch">'+order.map(x=>'<button type="button" data-i="'+x.i+'">'+x.o+'</button>').join('')+'</div>'+fbBox('rfb')+'<div class="actions" id="ract"></div><p class="tally">Score so far: '+R.score+' of '+R.i+'</p></div></section>';
+    $('#rch').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-i]'); if(!b||R.answered) return; R.answered=true; const right=+b.dataset.i===q.a;
+      $$('#rch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b); if(+x.dataset.i===q.a&&!right){x.style.outline='2px solid var(--ok)';x.style.outlineOffset='-2px';}});
+      b.classList.add(right?'ok':'no'); if(right) R.score++;
+      R.log.push({s:q.s,q:q.q,ok:right,ans:q.o[q.a],e:q.e});
+      setFb('rfb',right?'ok':'bad','<p><b>'+(right?'Correct.':'The answer is: '+q.o[q.a]+'.')+'</b> '+q.e+'</p>');
+      $('#ract').innerHTML='<button type="button" class="btn primary" id="rnext">'+(R.i+1<R.qs.length?'Next question':'See my score')+'</button>';
+      $('#rnext').addEventListener('click',()=>{R.i++;R.answered=false;paint();});
+    });
+  };
+  paint();
+}
+
+/* ================= KEY TERMS ================= */
+const TERMS=[
+  ['Electronegativity','Polarity','A measure of how strongly an atom attracts the electrons it shares in a bond. Highest for fluorine; lowest for metals.'],
+  ['Polar covalent bond','Polarity','A covalent bond in which the electrons are shared unequally, giving one end a partial negative charge (δ−) and the other a partial positive charge (δ+).'],
+  ['Nonpolar covalent bond','Polarity','A covalent bond with equal (or nearly equal) sharing of electrons, as in H–H or C–H.'],
+  ['Ionic bond','Polarity','The attraction between oppositely charged ions formed when a metal transfers electrons to a nonmetal.'],
+  ['Polar molecule','Polarity','A molecule with a positive end and a negative end, because its polar bonds do not cancel. Water is the key example.'],
+  ['Nonpolar molecule','Polarity','A molecule with no overall positive or negative end, either because its bonds are nonpolar or because its polar bonds cancel by symmetry (CO<sub>2</sub>, CH<sub>4</sub>).'],
+  ['Intermolecular force','Intermolecular forces','An attraction between molecules (not within them). Determines melting and boiling points and solubility.'],
+  ['Dispersion force','Intermolecular forces','A weak attraction between all molecules caused by momentary uneven distribution of electrons. Grows with molecular size.'],
+  ['Dipole–dipole force','Intermolecular forces','The attraction between the positive end of one polar molecule and the negative end of another.'],
+  ['Hydrogen bond','Intermolecular forces','An especially strong intermolecular attraction between a hydrogen atom bonded to N, O, or F and a lone pair on an N, O, or F in a neighboring molecule.'],
+  ['Specific heat','Intermolecular forces','The energy needed to raise the temperature of 1 g of a substance by 1 °C. Water’s is unusually high: 4.184 J/(g·°C), or 1.00 cal/(g·°C).'],
+  ['Heat of vaporization','Intermolecular forces','The energy needed to turn a liquid into a gas. High for water because its hydrogen bonds must be broken.'],
+  ['Surface tension','Intermolecular forces','The inward pull on molecules at a liquid’s surface, which makes drops bead up. Highest in water among common liquids.'],
+  ['Amphoteric','Intermolecular forces','Able to act as either an acid or a base. Water and the bicarbonate ion are amphoteric.'],
+  ['Solution','Solutions','A homogeneous (uniform) mixture of a solute dissolved in a solvent.'],
+  ['Solute','Solutions','The substance that is dissolved; usually present in the smaller amount.'],
+  ['Solvent','Solutions','The substance that does the dissolving; usually present in the larger amount. In an aqueous solution the solvent is water.'],
+  ['Like dissolves like','Solutions','Polar solvents dissolve polar and ionic solutes; nonpolar solvents dissolve nonpolar solutes.'],
+  ['Saturated solution','Solutions','A solution holding as much solute as it can at that temperature.'],
+  ['Solubility','Solutions','How much of a solute dissolves in a given amount of solvent at a given temperature. Most solids dissolve better when warm; gases dissolve worse.'],
+  ['Parts per million (ppm)','Solutions','One part of solute in a million parts of solution. For water, 1 ppm = 1 mg/L. Parts per billion (ppb) = 1 µg/L.'],
+  ['Molarity (M)','Solutions','Moles of solute per liter of solution (mol/L).'],
+  ['Hard water','Solutions','Water containing dissolved Ca<sup>2+</sup>, Mg<sup>2+</sup>, and iron ions, which form scum with soap and scale in pipes.'],
+  ['Electrolyte','Electrolytes','A substance that produces ions when dissolved in water, so the solution conducts electricity.'],
+  ['Nonelectrolyte','Electrolytes','A substance that dissolves as neutral molecules; its solution does not conduct. Sugar and alcohol are examples.'],
+  ['Strong electrolyte','Electrolytes','A substance that is completely (or nearly completely) in ion form when dissolved: soluble ionic compounds, strong acids, strong bases.'],
+  ['Weak electrolyte','Electrolytes','A substance that forms ions only partially in water: weak acids and weak bases.'],
+  ['Dissociation','Electrolytes','The separation of an ionic compound’s ions when it dissolves: NaCl → Na<sup>+</sup> + Cl<sup>−</sup>.'],
+  ['Ionization','Electrolytes','The formation of ions from a molecular compound by reaction with water: HCl + H<sub>2</sub>O → H<sub>3</sub>O<sup>+</sup> + Cl<sup>−</sup>.'],
+  ['Acid (Arrhenius)','Acids and bases','A substance that produces hydrogen ions (H<sup>+</sup>) in water.'],
+  ['Base (Arrhenius)','Acids and bases','A substance that produces hydroxide ions (OH<sup>−</sup>) in water.'],
+  ['Acid (Brønsted–Lowry)','Acids and bases','A proton (H<sup>+</sup>) donor.'],
+  ['Base (Brønsted–Lowry)','Acids and bases','A proton (H<sup>+</sup>) acceptor. Explains why ammonia is a base.'],
+  ['Hydronium ion','Acids and bases','H<sub>3</sub>O<sup>+</sup>, the form a hydrogen ion actually takes in water.'],
+  ['Strong acid / strong base','Acids and bases','An acid or base that ionizes or dissociates completely in water (HCl, H<sub>2</sub>SO<sub>4</sub>, HNO<sub>3</sub>; NaOH, KOH).'],
+  ['Weak acid / weak base','Acids and bases','An acid or base that ionizes only partially in water (acetic acid, carbonic acid; ammonia).'],
+  ['Neutralization','Acids and bases','The reaction of an acid with a base to form a salt and water.'],
+  ['Salt','Acids and bases','An ionic compound whose cation is not H<sup>+</sup> and whose anion is not OH<sup>−</sup>; the product of neutralization.'],
+  ['Titration','Acids and bases','Measuring how much of a solution of known concentration is needed to neutralize a sample, using an indicator to spot the endpoint.'],
+  ['Acidic anhydride','Acids and bases','A nonmetal oxide (CO<sub>2</sub>, SO<sub>2</sub>, NO<sub>2</sub>) that forms an acid when it reacts with water.'],
+  ['Basic anhydride','Acids and bases','A metal oxide (CaO, Na<sub>2</sub>O) that forms a base when it reacts with water.'],
+  ['Conjugate acid–base pair','Acids and bases','Two species that differ by exactly one proton, such as HCl and Cl<sup>−</sup> or NH<sub>4</sub><sup>+</sup> and NH<sub>3</sub>.'],
+  ['Buffer','Acids and bases','A solution of a weak acid and its conjugate base that resists changes in pH when small amounts of acid or base are added.'],
+  ['Acid rain','Acids and bases','Rain with a pH below 5.6, caused by sulfur and nitrogen oxides from burning fuels.'],
+  ['Antacid','Acids and bases','A base taken to neutralize excess stomach acid, such as NaHCO<sub>3</sub>, CaCO<sub>3</sub>, Al(OH)<sub>3</sub>, or Mg(OH)<sub>2</sub>.'],
+  ['pH','pH','A measure of acidity: pH = −log[H<sup>+</sup>]. If [H<sup>+</sup>] = 1 × 10<sup>−n</sup> mol/L, pH = n.'],
+  ['Neutral solution','pH','A solution with pH 7, where [H<sup>+</sup>] = [OH<sup>−</sup>]. Pure water is neutral.'],
+  ['Acidic solution','pH','A solution with pH below 7 (more H<sup>+</sup> than OH<sup>−</sup>).'],
+  ['Basic (alkaline) solution','pH','A solution with pH above 7 (more OH<sup>−</sup> than H<sup>+</sup>).'],
+  ['Indicator','pH','A dye that changes color with pH. Litmus is red in acid and blue in base; phenolphthalein is colorless in acid and pink in base.']
+];
+function renderTerms(){
+  const T=state.terms; const secs=['all','Polarity','Intermolecular forces','Solutions','Electrolytes','Acids and bases','pH'];
+  view.innerHTML='<section><h2>Key terms</h2><p class="lede">Flashcards. Select a card to show its definition; select it again to hide it. Filter by section, or shuffle and quiz yourself.</p>'+
+    '<div class="filters" role="group" aria-label="Filter by section">'+secs.map(s=>'<button type="button" data-f="'+s+'" aria-pressed="'+(T.filter===s)+'">'+(s==='all'?'All terms':s)+'</button>').join('')+'</div>'+
+    '<div class="actions" style="margin:0 0 12px"><button type="button" class="btn" id="tshuffle">Shuffle</button><button type="button" class="btn" id="tshow">Show all</button><button type="button" class="btn" id="thide">Hide all</button></div>'+
+    '<div class="terms" id="tcards"></div></section>';
+  let list=TERMS.map((t,i)=>({t,i}));
+  const paint=()=>{
+    const vis=list.filter(x=>T.filter==='all'||x.t[1]===T.filter);
+    $('#tcards').innerHTML=vis.map(x=>'<button type="button" class="flip" data-i="'+x.i+'" aria-expanded="'+!!T.open[x.i]+'"><b>'+x.t[0]+'</b><span class="hint">'+x.t[1]+' · show definition</span><span class="back">'+x.t[2]+'</span></button>').join('');
+  };
+  $('.filters').addEventListener('click',e=>{ const b=e.target.closest('button[data-f]'); if(!b) return; T.filter=b.dataset.f; $$('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b)); paint(); });
+  $('#tcards').addEventListener('click',e=>{ const b=e.target.closest('.flip'); if(!b) return; const i=+b.dataset.i; T.open[i]=!T.open[i]; b.setAttribute('aria-expanded',!!T.open[i]); });
+  $('#tshuffle').addEventListener('click',()=>{ list=shuffle(list); T.open={}; paint(); });
+  $('#tshow').addEventListener('click',()=>{ TERMS.forEach((_,i)=>T.open[i]=true); paint(); });
+  $('#thide').addEventListener('click',()=>{ T.open={}; paint(); });
+  paint();
+}
+
+render();
+})();
+</script>
+</body>
+</html>

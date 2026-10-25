@@ -216,6 +216,18 @@ ungraded self-check questions. None of its examples is a mixture from the lab.
   the thermometer showed; the slow tube can be recorded after about 3½ minutes and has finished
   changing after about 15; and "Speed up the wait" runs the clock 40 times faster.
 
+## Study guides
+
+Two interactive study guides, each a single file that opens in any browser and loads nothing
+from other sites. Each starts with a roadmap, works through its topic in sections that end with a
+short self-check, and finishes with a review quiz and a list of key terms. Nothing is graded or
+recorded.
+
+| Guide | Sections |
+| --- | --- |
+| [Polarity to pH](https://neogio73.github.io/CHM1020/study-guides/polarity-to-ph-study-guide.html) | Polarity · Intermolecular forces · Solutions · Electrolytes · Acids and bases · The pH scale · Review quiz |
+| [Nuclear Chemistry and Energy](https://neogio73.github.io/CHM1020/study-guides/nuclear-chemistry-and-energy-study-guide.html) | Radiation · Nuclear equations · Half-life and dating · Radioisotopes at work · Fission and fusion · Energy and reactions · Fossil fuels and electricity · Nuclear and renewable energy · Review quiz |
+
 ## Credits
 
 The fume hood in all five labs is the model

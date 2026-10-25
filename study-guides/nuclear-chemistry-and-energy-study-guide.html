@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuclear Chemistry and Energy Study Guide</title>
+<style>
+/* Layout: one 880px column, pill tabs, one section at a time (same system as the CHM1045 guides) */
+:root{
+  --ink:#1b2430; --muted:#566070; --line:#d6dbe3; --soft:#f3f5f8; --bg:#ffffff;
+  --navy:#1f3a5f; --navy-d:#152b49;
+  --ok:#17693f; --ok-bg:#e4f4ea;
+  --bad:#a3241d; --bad-bg:#fcebe9;
+  --warn:#6f4b00; --warn-bg:#fff5d9;
+  --info:#274b7a; --info-bg:#e9f0fa;
+  --acid-bg:#fde8e4; --acid-line:#d85a3a; --acid-ink:#7a2a14;
+  --base-bg:#e2ecfb; --base-line:#3e74c9; --base-ink:#1d3f78;
+  --neu-bg:#e6f4e8; --neu-line:#3f9a5a; --neu-ink:#1d5a2e;
+  --dm:#c43c33; --dp:#2a63c9;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+.app{max-width:880px;margin:0 auto;padding-block:20px 48px;padding-inline:16px}
+sub{font-size:.72em;line-height:0}
+sup{font-size:.72em;line-height:0}
+:focus-visible{outline:3px solid #4c7fd6;outline-offset:2px}
+button{font:inherit}
+.st{font-size:.72em;margin-left:.08em;opacity:.8}
+
+/* Header */
+.top h1{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.15;letter-spacing:-.01em;margin:0 0 .4rem;text-wrap:balance}
+.top p{margin:0;color:var(--muted);max-width:64ch}
+
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.tabs button{appearance:none;font-size:.92rem;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.tabs button:not([data-n]){padding-left:14px}
+.tabs .tn{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:50%;background:var(--soft);font-size:.82rem}
+.tabs button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs button[aria-selected="true"] .tn{background:#fff;color:var(--navy)}
+.tabs button:not([aria-selected="true"]):hover{border-color:var(--navy)}
+.tabs button.done .tn{background:var(--ok);color:#fff}
+.tabs button[aria-selected="true"].done .tn{background:#fff;color:var(--ok)}
+
+/* Section */
+h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.2;margin:0 0 .35rem;text-wrap:balance}
+h3{font-family:var(--serif);font-weight:600;font-size:1.18rem;line-height:1.25;margin:28px 0 8px}
+h4{font-size:1rem;margin:0 0 .4rem}
+.lede{margin:0 0 18px;max-width:66ch}
+p{max-width:70ch}
+ul,ol{max-width:68ch}
+li{margin-bottom:4px}
+.src{font-size:.85rem;color:var(--muted);margin:4px 0 0}
+
+/* Key-idea cards */
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:12px 0 4px}
+.idea{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;min-width:0}
+.idea h4{margin:0 0 4px}
+.idea p{margin:0;font-size:.95rem}
+.idea ul{margin:4px 0 0;padding-left:1.1em;font-size:.95rem}
+
+/* Callouts */
+.call{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:12px 16px;margin:16px 0}
+.call p{margin:0 0 6px}
+.call p:last-child{margin-bottom:0}
+.call .lab{font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:4px}
+.call.world{border-color:#b8740f;background:#fff8e8}
+.call.world .lab{color:#8a5508}
+
+/* Buttons */
+.btn{appearance:none;font-weight:600;font-size:.95rem;border-radius:8px;border:1.5px solid var(--navy);background:#fff;color:var(--navy);padding:8px 14px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-d)}
+.btn.inline{padding:4px 10px;font-size:.9rem}
+.btn:disabled{opacity:.45;cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.tally{font-size:.9rem;color:var(--muted);margin:12px 2px 0}
+
+/* Activity box */
+.act{border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;margin:12px 0 18px;min-width:0}
+.act .how{margin:0 0 12px;color:var(--muted)}
+.q{font-size:1.08rem;margin:0 0 12px;max-width:62ch}
+.choice{display:flex;flex-wrap:wrap;gap:8px}
+.choice button{appearance:none;border:1.5px solid #8b95a3;border-radius:8px;padding:7px 14px;font-size:1rem;background:#fff;color:var(--ink);cursor:pointer;text-align:left}
+.choice button:hover{border-color:var(--navy)}
+.choice button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.choice button.ok[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.choice button.no[aria-pressed="true"]{background:var(--bad-bg);color:var(--bad);border:2px dashed var(--bad)}
+.choice button:disabled{cursor:default}
+.choice.stack{flex-direction:column;align-items:flex-start}
+.choice.stack button{width:100%;max-width:40rem}
+.choice.stack button[aria-pressed="true"]{width:100%}
+.pin{font:inherit;font-size:1.05rem;width:7.5em;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;color:var(--ink);background:#fff}
+.pin.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.pin.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.pin:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.row label{font-weight:600}
+select.sel{font:inherit;font-size:1rem;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;background:#fff;color:var(--ink)}
+
+/* Feedback */
+.fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
+.fb.show{display:flex}
+.fb .ic{font-weight:700;font-size:1.05rem;line-height:1.5}
+.fb p{margin:0}
+.fb p+p{margin-top:6px}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok);color:#0f4a2c}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad);color:#6f1712}
+.fb.warn{background:var(--warn-bg);border-color:#c98f12;color:var(--warn)}
+.fb.info{background:var(--info-bg);border-color:#5a86c4;color:var(--info)}
+
+/* Molecule figure */
+.molwrap{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+.mol{width:200px;max-width:100%;height:auto;flex:0 0 auto}
+.mol text{font-family:var(--sans);font-weight:700}
+.mol .dl{font-size:13px;font-weight:700}
+.mol .dm{fill:var(--dm)} .mol .dp{fill:var(--dp)}
+.molname{font-size:1.15rem;font-weight:600;margin:0 0 4px}
+.molnote{color:var(--muted);font-size:.92rem;margin:0}
+
+/* Roadmap chain */
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:14px 0 16px}
+.chain .node{appearance:none;flex:1 1 120px;min-width:0;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.chain .node b{font-size:.95rem;line-height:1.2}
+.chain .node small{font-size:.78rem;color:var(--muted)}
+.chain .node:hover{border-color:var(--navy)}
+.chain .node[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.chain .node[aria-pressed="true"] small{color:#dfe7f3}
+.chain .arr{align-self:center;color:var(--muted);font-size:1.3rem;padding:0 2px}
+.detail{border-left:5px solid var(--navy);background:var(--soft);border-radius:10px;padding:14px 16px;min-height:100px}
+.detail p{margin:0 0 8px}
+.detail p:last-child{margin-bottom:0}
+.detail .ex{font-family:var(--serif);font-size:1.06rem}
+
+/* EN bar */
+.enbar{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,#cfe3c9 0%,#cfe3c9 11%,#f3d9a4 11%,#f3d9a4 48%,#f0b7a8 48%,#f0b7a8 100%);margin:14px 0 26px;max-width:36rem}
+.enbar .mk{position:absolute;top:-6px;width:4px;height:26px;background:var(--navy);border-radius:2px;transform:translateX(-50%)}
+.enbar .lbl{position:absolute;top:18px;font-size:.78rem;color:var(--muted);transform:translateX(-50%);white-space:nowrap}
+.bigpair{font-family:var(--serif);font-size:1.6rem;margin:6px 0}
+.bigpair .dl{font-family:var(--sans);font-size:.85rem;font-weight:700;vertical-align:super}
+.bigpair .dm{color:var(--dm)} .bigpair .dp{color:var(--dp)}
+
+/* Flip cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:10px 0}
+.flip{appearance:none;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;text-align:left;cursor:pointer;color:var(--ink);min-width:0}
+.flip b{display:block;margin-bottom:4px}
+.flip .back{display:none;font-size:.93rem;color:var(--ink)}
+.flip .hint{font-size:.85rem;color:var(--muted)}
+.flip[aria-expanded="true"]{background:var(--soft);border-color:var(--navy)}
+.flip[aria-expanded="true"] .back{display:block}
+.flip[aria-expanded="true"] .hint{display:none}
+
+/* Order-tap */
+.taps{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.taps button{appearance:none;border:1.5px solid #8b95a3;border-radius:8px;padding:8px 14px;background:#fff;color:var(--ink);cursor:pointer;font-size:1rem}
+.taps button:disabled{background:var(--soft);color:var(--muted);cursor:default}
+.seq{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:2.4em;margin:8px 0;font-weight:600}
+.seq .sl{border:1.5px dashed #8b95a3;border-radius:8px;padding:4px 10px;color:var(--muted);font-weight:400}
+.seq .fl{border:1.5px solid var(--navy);border-radius:8px;padding:4px 10px;background:var(--info-bg)}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:.95rem;margin:8px 0}
+.tbl th,.tbl td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.tbl td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tblwrap{overflow-x:auto;max-width:100%}
+.pill{display:inline-block;white-space:nowrap;border-radius:999px;padding:1px 9px;font-size:.8rem;font-weight:700}
+.pill.strong{background:var(--acid-bg);color:var(--acid-ink)}
+.pill.weak{background:var(--warn-bg);color:var(--warn)}
+.pill.base{background:var(--base-bg);color:var(--base-ink)}
+
+/* Beaker/bulb figures */
+.fig{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-start;margin:10px 0}
+.fig svg{max-width:100%;height:auto}
+.fig .cap{flex:1 1 240px;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:.85rem;color:var(--muted);margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:.9em;height:.9em;border-radius:50%;display:inline-block;border:1.5px solid #666}
+
+/* pH scale */
+.phband{height:28px;border-radius:8px;border:1px solid var(--line);background:linear-gradient(90deg,#c8102e 0%,#e2401c 10%,#f07a1a 20%,#f6b31b 30%,#f4de2b 40%,#b6d33a 47%,#4caf50 50%,#2f9e8f 57%,#2275c4 65%,#2f55b5 75%,#4b3ea8 85%,#5b2b8a 95%,#3f1b63 100%)}
+.phticks{position:relative;height:1.4em;font-size:.8rem;color:var(--muted);margin-top:4px}
+.phticks span{position:absolute;transform:translateX(-50%)}
+.phcursor{position:relative;height:0}
+.phcursor i{position:absolute;top:-34px;width:3px;height:34px;background:var(--ink);transform:translateX(-50%);border-radius:2px}
+input[type=range]{width:100%;max-width:100%;margin:8px 0}
+.phread{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.stat{border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;min-width:0}
+.stat .k{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stat .v{font-size:1.2rem;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .v.sm{font-size:1rem}
+.litmus{display:inline-flex;align-items:center;gap:8px;margin-right:14px}
+.litmus i{display:inline-block;width:14px;height:34px;border-radius:3px;border:1px solid #777}
+.chip{display:inline-block;border-radius:999px;padding:2px 10px;font-weight:700;font-size:.85rem}
+.chip.acid{background:var(--acid-bg);color:var(--acid-ink)}
+.chip.base{background:var(--base-bg);color:var(--base-ink)}
+.chip.neu{background:var(--neu-bg);color:var(--neu-ink)}
+
+/* Equations */
+.eq{font-family:var(--serif);font-size:1.3rem;line-height:1.5;background:var(--soft);border-radius:10px;padding:10px 14px;margin:8px 0;overflow-x:auto}
+.eq .hl{background:#fff1dc;border-radius:5px;padding:0 .2em;box-shadow:0 2px 0 #dd962a}
+.eq .hb{background:#ddf2ee;border-radius:5px;padding:0 .2em;box-shadow:0 2px 0 #2c9383}
+.eq.sm{font-size:1.1rem}
+
+/* Review quiz */
+.score{font-size:1.1rem;font-weight:600;margin:10px 0}
+.qnum{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.prog{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;margin:8px 0 14px}
+.prog i{display:block;height:100%;background:var(--navy);width:0}
+.review li{margin-bottom:8px}
+
+/* Key terms */
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+.filters button{appearance:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 12px;background:#fff;color:var(--ink);cursor:pointer;font-size:.88rem;font-weight:600}
+.filters button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+
+
+/* Nuclide symbols: mass number over atomic number, then the element */
+.nuc{white-space:nowrap;font-family:var(--serif)}
+.nuc .pre{display:inline-flex;flex-direction:column;align-items:flex-end;font-size:.62em;line-height:1;vertical-align:-.42em;margin-right:1px;font-family:var(--sans);font-weight:600}
+.nuc .sym{font-size:1em}
+.eq .nuc{font-size:1.15em}
+.nucin{display:inline-flex;flex-direction:column;gap:3px;vertical-align:middle;margin-right:2px}
+.nucin input{font:inherit;font-size:.85rem;width:3.6em;padding:2px 4px;border:1.5px solid #8b95a3;border-radius:6px;text-align:center;background:#fff;color:var(--ink)}
+.nucin input.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.nucin input.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.nucin input:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.bigsym{font-family:var(--serif);font-size:1.5rem;display:inline-flex;align-items:center;gap:6px}
+.unk{display:inline-grid;place-items:center;min-width:2.4em;height:1.6em;border:1.5px dashed #8b95a3;border-radius:6px;color:var(--muted);font-family:var(--sans);font-size:.8em}
+
+/* Bars (half-life, chain reaction, electricity mix, exposure) */
+.bars{display:grid;gap:6px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(7em,12em) 1fr auto;align-items:center;gap:8px;font-size:.92rem}
+.bar .lab{text-align:right;color:var(--ink)}
+.bar .trk{display:block;height:16px;background:var(--soft);border-radius:4px;overflow:hidden}
+.bar .fil{display:block;height:100%;background:var(--navy);border-radius:4px;min-width:2px}
+.bar .fil.alt{background:#2c9383}
+.bar .fil.warm{background:#dd962a}
+.bar .val{font-variant-numeric:tabular-nums;color:var(--muted);min-width:4em}
+.bar.hi .fil{background:#c43c33}
+.bar.hi .lab{font-weight:700}
+
+/* Shielding lab */
+.shield{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0}
+.shield .barrier{border:2px solid var(--line);border-radius:8px;padding:8px 12px;min-width:7em;text-align:center;font-weight:600}
+.shield .barrier.stop{background:var(--ok-bg);border-color:var(--ok)}
+.shield .barrier.pass{background:#fff;border-style:dashed}
+
+/* Flow / path chips */
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.path .step{border:1.5px solid var(--line);border-radius:8px;padding:5px 10px;background:#fff;font-size:.92rem}
+.path .step.src{background:var(--soft);font-weight:600}
+.path .arr{color:var(--muted)}
+
+/* Tower */
+.tower{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-start}
+.tower .layers{display:flex;flex-direction:column;width:230px;max-width:100%;border:2px solid var(--ink);border-radius:60px 60px 10px 10px;overflow:hidden;background:#fff;padding-top:26px}
+.tower .layers button{appearance:none;border:0;border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;font-size:.92rem;cursor:pointer;color:var(--ink);background:#fff;display:flex;justify-content:space-between;gap:6px}
+.tower .layers button:last-child{border-bottom:0}
+.tower .layers button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.tower .layers button small{color:inherit;opacity:.75;white-space:nowrap}
+.tower .info{flex:1 1 260px;min-width:0}
+
+@media (prefers-reduced-motion:no-preference){
+  .bulbglow{transition:opacity .4s}
+}
+@media (max-width:520px){
+  .top h1{font-size:1.6rem}
+  .act{padding:14px}
+  .eq{font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Nuclear Chemistry and Energy Study Guide</h1>
+    <p>Radiation, nuclear equations, half-life, radioisotopes at work, fission and fusion, then energy: reactions, fossil fuels, electricity, nuclear and renewable sources. Start with the roadmap, then work through the sections in order. Each one ends with a short self-check, and the review quiz mixes everything together. Nothing here is graded.</p>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+  <main id="view"></main>
+</div>
+<script>
+(function(){
+'use strict';
+const $ = (s,r) => (r||document).querySelector(s);
+const $$ = (s,r) => Array.from((r||document).querySelectorAll(s));
+const view=$('#view'), nav=$('#tabs');
+
+/* ---------- Formula formatting ---------- */
+function F(s){
+  return String(s)
+    .replace(/\^(\d*)([+\-])/g, (m,n,c)=>'<sup>'+n+(c==='-'?'−':'+')+'</sup>')
+    .replace(/([A-Za-z\)\]])(\d+)/g,'$1<sub>$2</sub>')
+    .replace(/\((aq|s|l|g)\)/g,'<span class="st">($1)</span>')
+    .replace(/->/g,' → ').replace(/<=>/g,' ⇌ ');
+}
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; };
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const fmt = (x,d) => x.toLocaleString(undefined,{maximumFractionDigits:d===undefined?2:d});
+
+/* ---------- Elements and nuclide symbols ---------- */
+const SYM=['n','H','He','Li','Be','B','C','N','O','F','Ne','Na','Mg','Al','Si','P','S','Cl','Ar','K','Ca','Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn','Ga','Ge','As','Se','Br','Kr','Rb','Sr','Y','Zr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd','In','Sn','Sb','Te','I','Xe','Cs','Ba','La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','W','Re','Os','Ir','Pt','Au','Hg','Tl','Pb','Bi','Po','At','Rn','Fr','Ra','Ac','Th','Pa','U','Np','Pu','Am','Cm'];
+const ENAME={H:'hydrogen',He:'helium',Li:'lithium',Be:'beryllium',B:'boron',C:'carbon',N:'nitrogen',O:'oxygen',F:'fluorine',Ne:'neon',Na:'sodium',Mg:'magnesium',Al:'aluminum',Si:'silicon',P:'phosphorus',S:'sulfur',Cl:'chlorine',Ar:'argon',K:'potassium',Ca:'calcium',Fe:'iron',Co:'cobalt',Ni:'nickel',Cu:'copper',Zn:'zinc',Ga:'gallium',Kr:'krypton',Sr:'strontium',Y:'yttrium',Zr:'zirconium',Tc:'technetium',Ru:'ruthenium',Ag:'silver',Cd:'cadmium',Sn:'tin',Sb:'antimony',Te:'tellurium',I:'iodine',Xe:'xenon',Cs:'cesium',Ba:'barium',La:'lanthanum',Gd:'gadolinium',Ir:'iridium',Pt:'platinum',Au:'gold',Hg:'mercury',Tl:'thallium',Pb:'lead',Bi:'bismuth',Po:'polonium',At:'astatine',Rn:'radon',Fr:'francium',Ra:'radium',Ac:'actinium',Th:'thorium',Pa:'protactinium',U:'uranium',Np:'neptunium',Pu:'plutonium',Am:'americium',Cm:'curium',Se:'selenium',Cr:'chromium',Mn:'manganese'};
+const Zof = sym => SYM.indexOf(sym);
+// Nuclide: mass number A over atomic number Z, then symbol. Z may be negative (electron) or 0 (neutron, gamma).
+function N(A,Z,sym){ return '<span class="nuc"><span class="pre"><span>'+A+'</span><span>'+(Z<0?'−'+(-Z):Z)+'</span></span><span class="sym">'+sym+'</span></span>'; }
+const PART={alpha:N(4,2,'He'),beta:N(0,-1,'e'),gamma:N(0,0,'γ'),positron:N(0,1,'e'),neutron:N(1,0,'n'),proton:N(1,1,'p'),electron:N(0,-1,'e')};
+
+/* ---------- Tabs and state ---------- */
+const TABS=[
+  {id:'map',    label:'Roadmap'},
+  {id:'rad',    label:'Radiation', n:1},
+  {id:'eqn',    label:'Nuclear equations', n:2},
+  {id:'half',   label:'Half-life and dating', n:3},
+  {id:'uses',   label:'Radioisotopes at work', n:4},
+  {id:'fiss',   label:'Fission and fusion', n:5},
+  {id:'energy', label:'Energy and reactions', n:6},
+  {id:'fossil', label:'Fossil fuels and electricity', n:7},
+  {id:'renew',  label:'Nuclear and renewable energy', n:8},
+  {id:'review', label:'Review quiz', n:9},
+  {id:'terms',  label:'Key terms'}
+];
+const state={
+  tab:'map', mapSel:'rad', done:{}, cy:{},
+  rad:{type:'alpha', src:null},
+  eqn:{deck:null,i:0,score:0,answered:false, missed:false, id:{deck:null,i:0,score:0,answered:false}},
+  half:{iso:'I131',n:0,start:'100', prac:{P:null,answered:false,solved:0}},
+  uses:{deck:null,i:0,score:0,answered:false},
+  fiss:{k:1, sort:{}},
+  energy:{dev:'bulb',hrs:'5', sort:{}, rxn:'HCl'},
+  fossil:{frac:'gasoline', oct:87, fuel:'petroleum', region:'us'},
+  renew:{src:'pv', path:{}},
+  review:{qs:null,i:0,score:0,answered:false,log:[]},
+  terms:{filter:'all',open:{}}
+};
+function renderTabs(){
+  nav.innerHTML=TABS.map(t=>
+    '<button role="tab" data-tab="'+t.id+'"'+(t.n?' data-n="'+t.n+'"':'')+' aria-selected="'+(state.tab===t.id)+'"'+(state.done[t.id]?' class="done" title="Self-check complete"':'')+'>'+
+    (t.n?'<span class="tn">'+(state.done[t.id]?'✓':t.n)+'</span>':'')+t.label+'</button>').join('');
+}
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(!b) return;
+  state.tab=b.dataset.tab; render(); window.scrollTo({top:0,behavior:'auto'});
+});
+function render(){
+  renderTabs();
+  const R={map:renderMap,rad:renderRad,eqn:renderEqn,half:renderHalf,uses:renderUses,fiss:renderFiss,energy:renderEnergy,fossil:renderFossil,renew:renderRenew,review:renderReview,terms:renderTerms};
+  R[state.tab]();
+}
+function markDone(id){ if(!state.done[id]){ state.done[id]=true; renderTabs(); } }
+
+/* ---------- Shared pieces ---------- */
+const fbBox = (id) => '<div class="fb" id="'+id+'" role="status" aria-live="polite"></div>';
+function setFb(id,type,html){
+  const el=typeof id==='string'?$('#'+id):id; if(!el) return;
+  const ic={ok:'✓',bad:'✗',warn:'!',info:'i'}[type];
+  el.className='fb show '+type; el.innerHTML='<span class="ic" aria-hidden="true">'+ic+'</span><div>'+html+'</div>';
+}
+function clearFb(id){ const el=$('#'+id); if(el){el.className='fb'; el.innerHTML='';} }
+const ideas = items => '<div class="ideas">'+items.map(i=>'<div class="idea"><h4>'+i.t+'</h4>'+(i.p?'<p>'+i.p+'</p>':'')+(i.l?'<ul>'+i.l.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'')+'</div>').join('')+'</div>';
+const world = (title,html) => '<div class="call world"><div class="lab">'+title+'</div>'+html+'</div>';
+const note = (title,html) => '<div class="call"><div class="lab">'+title+'</div>'+html+'</div>';
+const bars = (rows,opt) => { opt=opt||{}; const max=opt.max||Math.max(...rows.map(r=>r.v)); return '<div class="bars" role="list">'+rows.map(r=>'<div class="bar'+(r.hi?' hi':'')+'" role="listitem"><span class="lab">'+r.l+'</span><span class="trk"><span class="fil'+(r.cls?' '+r.cls:'')+'" style="width:'+(max?Math.max(0,Math.min(100,r.v/max*100)):0)+'%"></span></span><span class="val">'+(r.txt!==undefined?r.txt:r.v)+'</span></div>').join('')+'</div>'; };
+
+/* Check yourself */
+function checkYourself(sec, qs){
+  const S=state.cy[sec] || (state.cy[sec]={ok:{},tried:{}});
+  const html='<h3>Check yourself</h3><p class="how" style="color:var(--muted);margin:0 0 10px">Pick an answer for each question. You can change your answer until it is right.</p>'+
+    qs.map((q,qi)=>{
+      const okd=S.ok[qi];
+      return '<div class="act" data-cy="'+qi+'"><p class="q">'+(qi+1)+'. '+q.q+'</p>'+
+        '<div class="choice stack">'+q.o.map((o,oi)=>'<button type="button" data-oi="'+oi+'" aria-pressed="'+(okd===oi)+'"'+(okd!==undefined?' class="ok" disabled':'')+'>'+o+'</button>').join('')+'</div>'+
+        fbBox('cy-'+sec+'-'+qi)+'</div>';
+    }).join('');
+  setTimeout(()=>{
+    $$('[data-cy]',view).forEach(box=>{
+      const qi=+box.dataset.cy, q=qs[qi];
+      if(S.ok[qi]!==undefined){ setFb('cy-'+sec+'-'+qi,'ok','<p>'+q.e+'</p>'); }
+      box.addEventListener('click',e=>{
+        const b=e.target.closest('button[data-oi]'); if(!b||b.disabled) return;
+        const oi=+b.dataset.oi;
+        $$('button[data-oi]',box).forEach(x=>{x.setAttribute('aria-pressed','false');x.classList.remove('ok','no');});
+        b.setAttribute('aria-pressed','true');
+        if(oi===q.a){
+          b.classList.add('ok'); $$('button[data-oi]',box).forEach(x=>x.disabled=true);
+          S.ok[qi]=oi; setFb('cy-'+sec+'-'+qi,'ok','<p>'+q.e+'</p>');
+          if(qs.every((_,i)=>S.ok[i]!==undefined)) markDone(sec);
+        } else {
+          b.classList.add('no'); S.tried[qi]=(S.tried[qi]||0)+1;
+          setFb('cy-'+sec+'-'+qi,'bad','<p>'+(q.w&&q.w[oi]?q.w[oi]:'Not quite. Try another answer.')+'</p>');
+        }
+      });
+    });
+  },0);
+  return html;
+}
+/* Generic one-at-a-time multiple-choice deck. deck items: {q (html), o:[{v,ok}] or o:[strings] with a:index, e (explanation), pre (html before question)} */
+function mcDeck(boxId, S, items, makeDeck, opts){
+  opts=opts||{};
+  const paint=()=>{
+    const box=$('#'+boxId); if(!box) return;
+    if(S.i>=S.deck.length){
+      box.innerHTML='<p class="q">All '+S.deck.length+' done: <b>'+S.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" data-again>'+(opts.againLabel||'Shuffle and go again')+'</button></div>';
+      box.querySelector('[data-again]').addEventListener('click',()=>{S.deck=makeDeck();S.i=0;S.score=0;S.answered=false;paint();}); return;
+    }
+    const q=S.deck[S.i]; const opts2=q.a!==undefined?q.o.map((v,i)=>({v,ok:i===q.a})):q.o; const order=opts.keepOrder?opts2:shuffle(opts2);
+    box.innerHTML='<p class="how">'+(opts.how||'')+' '+(S.i+1)+' of '+S.deck.length+'.</p>'+(q.pre||'')+'<p class="q">'+q.q+'</p>'+
+      '<div class="choice'+(opts.stack?' stack':'')+'" data-ch>'+order.map((o,i)=>'<button type="button" data-i="'+i+'">'+o.v+'</button>').join('')+'</div>'+
+      fbBox(boxId+'-fb')+'<div class="actions" data-act></div><p class="tally">Right on first try: '+S.score+' of '+S.i+'</p>';
+    box.querySelector('[data-ch]').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-i]'); if(!b||S.answered) return; S.answered=true; const right=order[+b.dataset.i].ok;
+      $$('[data-ch] button',box).forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);}); b.classList.add(right?'ok':'no'); if(right) S.score++;
+      const ans=order.find(o=>o.ok).v;
+      setFb(boxId+'-fb',right?'ok':'bad','<p><b>'+(right?'Correct.':'Not quite. The answer is '+ans+'.')+'</b> '+q.e+'</p>');
+      box.querySelector('[data-act]').innerHTML='<button type="button" class="btn primary" data-next>Next</button>';
+      box.querySelector('[data-next]').addEventListener('click',()=>{S.i++;S.answered=false;paint();});
+    });
+  };
+  paint();
+}
+
+/* ================= ROADMAP ================= */
+const MAPINFO={
+  rad:{t:'1. Radiation: what comes out of an unstable nucleus',h:'<p>Some nuclei are unstable and spit out particles or energy: <b>alpha</b> particles, <b>beta</b> particles, and <b>gamma</b> rays. This radiation knocks electrons off molecules in your cells, which is why it is called ionizing radiation and why it can damage DNA. Most of the radiation you receive is natural background, mainly radon from the ground.</p>'},
+  eqn:{t:'2. Nuclear equations: bookkeeping for protons and neutrons',h:'<p>In a nuclear equation the mass numbers must add up on both sides, and so must the atomic numbers. Each decay type changes the nucleus in a predictable way, so you can work out which element is left behind. Unlike chemical reactions, nuclear reactions turn one element into another.</p><p class="ex">Radon-222 → helium-4 (alpha) + polonium-218</p>'},
+  half:{t:'3. Half-life: the clock inside the nucleus',h:'<p>Every radioactive isotope decays at its own fixed rate, measured as a half-life: the time for half of a sample to decay. After one half-life ½ remains, after two ¼, after three ⅛. Carbon-14’s 5730-year half-life dates charcoal and bone; uranium-238’s 4.5-billion-year half-life dates rocks.</p>'},
+  uses:{t:'4. Radioisotopes at work: tracers, scans, and treatments',h:'<p>Because radioisotopes announce themselves by their decay, tiny amounts can be followed through a pipe, a plant, or a patient. Nuclear medicine uses short-lived isotopes for imaging (technetium-99m, iodine-131) and intense sources (cobalt-60) to kill cancer cells. New elements are made by bombarding nuclei with particles.</p>'},
+  fiss:{t:'5. Fission and fusion: energy from mass',h:'<p>A nucleus weighs a little less than its separate protons and neutrons; the missing mass became binding energy (E = mc<sup>2</sup>). Splitting a heavy nucleus (fission) or joining light ones (fusion) releases some of that energy, millions of times more per atom than any chemical reaction. Fission powers reactors and bombs; fusion powers the sun.</p>'},
+  energy:{t:'6. Energy and reactions: joules, watts, and heat',h:'<p>Energy is the ability to do work or transfer heat, measured in joules; power is energy per second, in watts. Chemical reactions release heat (exothermic) or absorb it (endothermic), depending on whether more energy comes out of forming bonds than went into breaking them. Burning a fuel is exothermic oxidation.</p>'},
+  fossil:{t:'7. Fossil fuels and electricity: where most of our energy comes from',h:'<p>Coal, petroleum, and natural gas supply more than 90% of a modern society’s energy. Each is ancient stored sunlight, each is burned to make heat, and most electricity is made by using that heat to boil water and spin a turbine. They are finite, and burning them releases CO<sub>2</sub> and other pollutants.</p>'},
+  renew:{t:'8. Nuclear and renewable energy: the alternatives',h:'<p>Nuclear plants make steam with fission instead of fire and produce almost no air pollution, but they need elaborate safety systems and leave radioactive waste. Renewable sources (solar, wind, water, biomass, geothermal, hydrogen made from them) are sustainable but diffuse, and each has its own trade-offs.</p>'}
+};
+function renderMap(){
+  const order=['rad','eqn','half','uses','fiss','energy','fossil','renew'];
+  const labels={rad:['Radiation','α, β, γ'],eqn:['Nuclear equations','balance A and Z'],half:['Half-life','the nuclear clock'],uses:['Radioisotopes at work','tracers and medicine'],fiss:['Fission and fusion','E = mc²'],energy:['Energy and reactions','joules and watts'],fossil:['Fossil fuels','coal, oil, gas, electricity'],renew:['Nuclear and renewable','the alternatives']};
+  view.innerHTML='<section><h2>The roadmap</h2>'+
+    '<p class="lede">Two chapters, one thread: <b>energy</b>. The first half looks inside the atom, where unstable nuclei give off radiation and where splitting or joining nuclei releases enormous energy. The second half asks where the energy that runs our lives comes from: chemical reactions, fossil fuels, the nucleus, and the sun. Select any step to see how it fits.</p>'+
+    '<div class="chain" role="group" aria-label="Topics in order">'+
+    order.map((k,i)=>(i?'<span class="arr" aria-hidden="true">→</span>':'')+'<button type="button" class="node" data-id="'+k+'" aria-pressed="'+(state.mapSel===k)+'"><b>'+labels[k][0]+'</b><small>'+labels[k][1]+'</small></button>').join('')+
+    '</div><div class="detail" id="mapdetail"></div>'+
+    '<h3>How to use this guide</h3><ul>'+
+    '<li>Each section opens with the key ideas, then activities you can play with, then a short <b>Check yourself</b>. When you get every question right, the tab gets a checkmark.</li>'+
+    '<li>Nuclear symbols are written the way the textbook writes them: '+N(222,86,'Rn')+' is radon with mass number 222 (protons + neutrons) on top and atomic number 86 (protons) below.</li>'+
+    '<li>The <b>Review quiz</b> mixes questions from all eight sections, and the <b>Key terms</b> tab works as flashcards.</li>'+
+    '</ul>'+
+    note('Where this comes from','<p>Sections 1–5 follow Chapter 11 (Nuclear Chemistry) of <i>Chemistry for Changing Times</i>. Sections 6–8 follow Chapter 15 (Energy): sections 15.1–15.3 and 15.5–15.10. The first and second laws of thermodynamics (15.4) are not included.</p>')+
+    '</section>';
+  const paint=()=>{ const d=MAPINFO[state.mapSel]; $('#mapdetail').innerHTML='<p><b>'+d.t+'</b></p>'+d.h; $$('.chain .node').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===state.mapSel)); };
+  paint();
+  $('.chain').addEventListener('click',e=>{ const b=e.target.closest('.node'); if(!b) return; state.mapSel=b.dataset.id; paint(); });
+}
+
+/* ================= 1. RADIATION ================= */
+const RADTYPES={
+  alpha:{n:'Alpha (α) particle',sym:PART.alpha,mass:'4 u',charge:'2+',id:'a helium nucleus: 2 protons + 2 neutrons',speed:'about 0.1 c',stop:0,desc:'Heavy and doubly charged, so it bumps into everything and loses its energy within a few centimeters of air. It cannot get through the dead outer layer of your skin. Dangerous mainly if the source is inhaled or swallowed, which is why radon gas is the big concern.'},
+  beta:{n:'Beta (β) particle',sym:PART.beta,mass:'0.00055 u (an electron)',charge:'1−',id:'a fast electron shot out of the nucleus when a neutron turns into a proton',speed:'up to 0.9 c',stop:1,desc:'Light and fast. It can penetrate a few centimeters of skin and tissue, so it can cause burns, but a sheet of aluminum foil or a thick layer of clothing stops it.'},
+  gamma:{n:'Gamma (γ) ray',sym:PART.gamma,mass:'0',charge:'0',id:'a high-energy photon: pure energy, like a very powerful X-ray',speed:'c (the speed of light)',stop:3,desc:'No mass and no charge, so it passes right through paper, foil, and a human body. It takes several centimeters of lead or a thick wall of concrete to absorb most of it. Gamma sources are handled behind shielding and from a distance.'}
+};
+const BARRIERS=[['Sheet of paper',0],['Aluminum foil',1],['Thick wood or glass',2],['Several cm of lead',3]];
+const EXPOSURE=[['Radon and thoron (from the ground, into homes)',37,'bg'],['Computed tomography (CT) scans',24,'med'],['Nuclear medicine',12,'med'],['Interventional fluoroscopy',7,'med'],['Conventional X-rays and fluoroscopy',5,'med'],['Space (cosmic rays)',5,'bg'],['Internal (potassium-40 and others in your body)',5,'bg'],['Terrestrial (rocks and soil)',3,'bg'],['Consumer products',2,'other'],['Occupational and industrial',0.1,'other']];
+function renderRad(){
+  const S=state.rad;
+  view.innerHTML='<section><h2>1. Radiation</h2>'+
+    '<p class="lede">Most nuclei are stable and last forever. Some are not: they are <b>radioactive</b>, and sooner or later they shoot out a particle or a burst of energy to become more stable. That emission is <b>nuclear radiation</b>. You are bathed in a little of it every day, from the ground, from space, and from inside your own body.</p>'+
+    ideas([
+      {t:'Three kinds of radiation (Table 11.1)',l:['<b>Alpha (α):</b> a helium nucleus, '+PART.alpha+'. Mass 4 u, charge 2+, slow (0.1 c), stopped by paper.','<b>Beta (β):</b> an electron shot out of the nucleus, '+PART.beta+'. Almost no mass, charge 1−, fast, stopped by aluminum foil.','<b>Gamma (γ):</b> a high-energy photon, '+PART.gamma+'. No mass, no charge, the speed of light, needs centimeters of lead.']},
+      {t:'Why it harms cells',p:'All three are <b>ionizing radiation</b>: they knock electrons off molecules, leaving ions and reactive fragments called <b>free radicals</b> that disrupt cell chemistry. Fast-growing cells (bone marrow, white blood cells, the lining of the gut, a fetus) are hit hardest. Damage to DNA causes mutations and can cause cancer.'},
+      {t:'Background radiation',p:'About three-fourths of the average American’s exposure is natural background, and most of that is <b>radon</b>, a radioactive gas that seeps from the ground into basements. Most of the remaining fourth is medical: CT scans alone are about a quarter of total exposure. Cell phones and power lines emit non-ionizing radiation, which does not break molecules.'},
+      {t:'Protection: distance and shielding',p:'Intensity falls off quickly with distance (double the distance, quarter the dose), so step back. Shielding absorbs what is left: paper or skin for alpha, foil or plastic for beta, lead or thick concrete for gamma. Time matters too: less time near the source, less dose.'}
+    ])+
+    '<h3>Shielding lab</h3><div class="act"><p class="how">Choose a type of radiation and see which barriers it gets through. Then read why.</p>'+
+    '<div class="choice" id="rtype">'+Object.keys(RADTYPES).map(k=>'<button type="button" data-v="'+k+'" aria-pressed="'+(S.type===k)+'">'+RADTYPES[k].n+'</button>').join('')+'</div>'+
+    '<div id="rout"></div></div>'+
+    '<h3>Where your radiation comes from</h3><div class="act"><p class="how">Average sources of radiation exposure in the United States (Figure 11.1), as a percentage of the total. Natural background is in blue, medical in teal, everything else in orange.</p>'+
+    bars(EXPOSURE.map(e=>({l:e[0],v:e[1],txt:e[1]+'%',cls:e[2]==='med'?'alt':e[2]==='other'?'warm':''})),{max:40})+
+    '<p class="src">Background adds up to about 50% and medical to about 48%; the textbook rounds these to three-fourths background and one-fourth medical when counting only involuntary exposure. The medical share has grown fast as CT scans have become common.</p></div>'+
+    checkYourself('rad',[
+      {q:'Which type of radiation is a helium nucleus?',o:['Alpha','Beta','Gamma','X-ray'],a:0,e:'An alpha particle is two protons and two neutrons: a helium-4 nucleus with a 2+ charge.',w:{1:'A beta particle is an electron.',2:'A gamma ray is a photon, with no mass or charge.',3:'X-rays are photons, like gamma rays but lower in energy.'}},
+      {q:'A sheet of aluminum foil stops beta particles but not gamma rays. Gamma rays need …',o:['a sheet of paper','several centimeters of lead','a glass window','nothing; they are harmless'],a:1,e:'Gamma rays have no mass or charge, so they pass through most materials. Dense lead or thick concrete absorbs them.',w:{0:'Paper stops only alpha particles.',2:'Gamma rays pass through glass easily.',3:'Gamma rays are the most penetrating and are dangerous without shielding.'}},
+      {q:'Radiation is called “ionizing” because it …',o:['comes from ions.','knocks electrons off molecules, creating ions.','makes salt.','is attracted to ions.'],a:1,e:'Ionizing radiation strips electrons from molecules in cells, producing ions and free radicals that damage DNA and other molecules.',w:{0:'The name describes what the radiation does, not where it comes from.',2:'Salt is an ionic compound, but that is not the connection.',3:'Gamma rays have no charge and are not attracted to anything.'}},
+      {q:'The largest single source of radiation exposure for the average American is …',o:['nuclear power plants','cell phones','radon gas from the ground','cosmic rays from space'],a:2,e:'Radon (and its relative thoron) accounts for about 37% of average exposure. It seeps from soil and rock into buildings.',w:{0:'Power plants contribute a tiny fraction of average exposure.',1:'Cell phones emit non-ionizing radio waves, which do not ionize molecules.',3:'Cosmic rays are about 5%.'}}
+    ])+
+    '</section>';
+  const paintR=()=>{
+    const r=RADTYPES[S.type];
+    $('#rout').innerHTML='<div class="shield">'+'<span class="bigsym">'+r.sym+'</span><span class="arr" aria-hidden="true" style="color:var(--muted)">→</span>'+
+      BARRIERS.slice(0,r.stop+1).map((b,i)=>{ const stops=i===r.stop; return '<span class="barrier '+(stops?'stop':'pass')+'">'+b[0]+'<br><small style="font-weight:400">'+(stops?'stopped here':'passes through')+'</small></span>'+(stops?'':'<span class="arr" aria-hidden="true" style="color:var(--muted)">→</span>'); }).join('')+
+      '</div>'+
+      '<p><b>'+r.n+':</b> '+r.id+'. Mass '+r.mass+', charge '+r.charge+', speed '+r.speed+'.</p><p>'+r.desc+'</p>';
+    $$('#rtype button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S.type));
+  };
+  $('#rtype').addEventListener('click',e=>{ const b=e.target.closest('button[data-v]'); if(!b) return; S.type=b.dataset.v; paintR(); });
+  paintR();
+}
+
+/* ================= 2. NUCLEAR EQUATIONS ================= */
+const DECAYS=[
+  {p:[222,86],t:'alpha',d:[218,84],note:'Radon-222 is the gas that seeps into basements. Alpha decay drops the mass number by 4 and the atomic number by 2.'},
+  {p:[238,92],t:'alpha',d:[234,90],note:'Uranium-238 starts a long chain of decays that ends at stable lead-206.'},
+  {p:[226,88],t:'alpha',d:[222,86],note:'Radium-226 decays to radon-222. Marie Curie isolated radium in 1898.'},
+  {p:[239,94],t:'alpha',d:[235,92],note:'Plutonium-239 is the fissionable isotope made in reactors for weapons.'},
+  {p:[210,84],t:'alpha',d:[206,82],note:'Polonium-210 is the last radioactive step before stable lead-206.'},
+  {p:[3,1],t:'beta',d:[3,2],note:'Tritium (hydrogen-3): a neutron becomes a proton, so hydrogen becomes helium. Mass number stays 3.'},
+  {p:[14,6],t:'beta',d:[14,7],note:'Carbon-14 decays back to the nitrogen-14 it was made from. This is the decay used in radiocarbon dating.'},
+  {p:[60,27],t:'beta',d:[60,28],note:'Cobalt-60 is used in cancer radiation therapy; its decay also releases gamma rays.'},
+  {p:[131,53],t:'beta',d:[131,54],note:'Iodine-131 is used to diagnose and treat the thyroid and is a dangerous fallout isotope for the same reason: the thyroid collects iodine.'},
+  {p:[90,38],t:'beta',d:[90,39],note:'Strontium-90, a fallout isotope that behaves like calcium and settles in bone.'},
+  {p:[32,15],t:'beta',d:[32,16],note:'Phosphorus-32 is used to detect skin cancer and eye tumors and as a tracer of phosphorus in plants.'},
+  {p:[40,19],t:'beta',d:[40,20],note:'Potassium-40 is in every banana and in you; it is most of your internal background dose. Its 1.25-billion-year half-life dates rocks.'},
+  {p:[18,9],t:'positron',d:[18,8],note:'Fluorine-18 is the isotope in PET scans. A proton becomes a neutron, so the atomic number drops by one while the mass number stays the same.'},
+  {p:[22,11],t:'positron',d:[22,10],note:'Sodium-22 decays by positron emission to neon-22.'},
+  {p:[125,53],t:'ec',d:[125,52],note:'Iodine-125 captures one of its own inner electrons: a proton becomes a neutron, so the atomic number drops by one.'},
+  {p:['99m',43],t:'gamma',d:[99,43],note:'Technetium-99m (the m means “metastable”) gives off a gamma ray and becomes ordinary technetium-99. Nothing else changes, which is what makes it ideal for imaging.'}
+];
+const DTYPE={alpha:{n:'alpha decay',part:PART.alpha,side:'right',dA:-4,dZ:-2,rule:'Alpha: mass number −4, atomic number −2.'},beta:{n:'beta decay',part:PART.beta,side:'right',dA:0,dZ:1,rule:'Beta: mass number unchanged, atomic number +1 (a neutron became a proton).'},positron:{n:'positron emission',part:PART.positron,side:'right',dA:0,dZ:-1,rule:'Positron: mass number unchanged, atomic number −1 (a proton became a neutron).'},ec:{n:'electron capture',part:PART.electron,side:'left',dA:0,dZ:-1,rule:'Electron capture: mass number unchanged, atomic number −1. The electron is a reactant, written on the left.'},gamma:{n:'gamma emission',part:PART.gamma,side:'right',dA:0,dZ:0,rule:'Gamma: no change in mass number or atomic number. Only energy leaves.'}};
+const IDQ=[
+  {q:'Mass number goes down by 4 and atomic number goes down by 2.',a:'alpha'},
+  {q:'Mass number stays the same and atomic number goes up by 1.',a:'beta'},
+  {q:'Nothing about the nucleus changes except that it loses energy.',a:'gamma'},
+  {q:'Mass number stays the same and atomic number goes down by 1; a particle with the mass of an electron but a positive charge is emitted.',a:'positron'},
+  {q:'The nucleus absorbs one of the atom’s own inner electrons; the atomic number goes down by 1.',a:'ec'},
+  {q:'A neutron in the nucleus turns into a proton.',a:'beta'},
+  {q:'A helium nucleus is emitted.',a:'alpha'},
+  {q:'The product is the same isotope, written without its “m”.',a:'gamma'}
+];
+function renderEqn(){
+  const S=state.eqn;
+  const mk=()=>shuffle(DECAYS).slice(0,8);
+  if(!S.deck){ S.deck=mk(); S.i=0; S.score=0; S.answered=false; }
+  view.innerHTML='<section><h2>2. Nuclear equations</h2>'+
+    '<p class="lede">A nuclear equation shows what a nucleus turns into. The bookkeeping is simple: the <b>mass numbers</b> (protons + neutrons) on the left must add up to those on the right, and so must the <b>atomic numbers</b> (protons). Because the atomic number can change, one element can become another, something no chemical reaction can do.</p>'+
+    ideas([
+      {t:'How to read a nuclide symbol',p:N(222,86,'Rn')+' means radon with 222 nucleons (protons + neutrons) and 86 protons, so 222 − 86 = 136 neutrons. The symbol and the atomic number say the same thing: radon is always element 86. Particles get symbols too: '+PART.alpha+' alpha, '+PART.beta+' beta (electron), '+PART.positron+' positron, '+PART.neutron+' neutron, '+PART.gamma+' gamma.'},
+      {t:'What each decay does (Table 11.2)',l:['<b>Alpha:</b> mass number −4, atomic number −2. '+N(222,86,'Rn')+' → '+PART.alpha+' + '+N(218,84,'Po'),'<b>Beta:</b> a neutron becomes a proton. Mass number unchanged, atomic number +1. '+N(3,1,'H')+' → '+PART.beta+' + '+N(3,2,'He'),'<b>Gamma:</b> no change in either number; the nucleus just sheds energy.','<b>Positron emission:</b> a proton becomes a neutron. Atomic number −1. '+N(18,9,'F')+' → '+PART.positron+' + '+N(18,8,'O'),'<b>Electron capture:</b> the nucleus swallows an inner electron. Atomic number −1. '+N(125,53,'I')+' + '+PART.electron+' → '+N(125,52,'Te')]},
+      {t:'Balancing',p:'Add up the top numbers on each side; add up the bottom numbers on each side. Whatever is missing tells you the mass number and atomic number of the unknown, and the atomic number tells you the element.'},
+      {t:'Nuclear versus chemical reactions (Table 11.3)',l:['Chemical: atoms keep their identity; only outer electrons are involved; small energy changes; faster when hot.','Nuclear: atoms usually change into other elements; protons and neutrons are involved and the electrons do not matter; enormous energy changes with a measurable loss of mass (E = mc<sup>2</sup>); rate is unaffected by temperature or chemical form.']}
+    ])+
+    '<h3>Balance the decay</h3><div class="act" id="dbox"></div>'+
+    '<h3>Name that decay</h3><div class="act" id="idbox"></div>'+
+    checkYourself('eqn',[
+      {q:'In any nuclear equation, which two things must balance?',o:['Mass and volume','Mass numbers and atomic numbers','Charges and colors','Protons and electrons'],a:1,e:'Nucleons (mass number) and protons (atomic number) are conserved. Balance the top numbers and the bottom numbers separately.',w:{0:'Volume has nothing to do with it.',2:'Charge is part of it, but the rule is stated in terms of mass number and atomic number.',3:'Electrons are not what nuclear equations track; the nucleus is.'}},
+      {q:'When '+N(238,92,'U')+' emits an alpha particle, the product is …',o:[N(234,90,'Th'),N(238,93,'Np'),N(234,92,'U'),N(242,94,'Pu')],a:0,e:'Subtract 4 from the mass number and 2 from the atomic number: 234 and 90, which is thorium.',w:{1:'That is what beta decay would give (atomic number +1).',2:'The atomic number also drops by 2, so it is no longer uranium.',3:'Alpha decay removes mass; it does not add it.'}},
+      {q:'In beta decay, a neutron in the nucleus becomes …',o:['an alpha particle','a proton (and an electron is emitted)','a gamma ray','a positron'],a:1,e:'The neutron turns into a proton plus an electron; the electron (beta particle) flies out. The atomic number goes up by one.',w:{0:'An alpha particle is emitted in alpha decay, not made from a neutron.',2:'Gamma rays are energy, not a particle a neutron turns into.',3:'A positron comes from a proton turning into a neutron, the opposite process.'}},
+      {q:'Which statement is true of nuclear reactions but not chemical reactions?',o:['They happen faster when heated.','Atoms keep their identity.','One element can change into another.','Only the outer electrons are involved.'],a:2,e:'Nuclear reactions change the number of protons, so they change the element. Chemical reactions only rearrange atoms.',w:{0:'Nuclear decay rates do not depend on temperature.',1:'That is true of chemical reactions.',3:'That is true of chemical reactions; nuclear reactions involve protons and neutrons.'}}
+    ])+
+    '</section>';
+
+  // Balance-the-decay activity
+  const paintD=()=>{
+    const box=$('#dbox');
+    if(S.i>=S.deck.length){ box.innerHTML='<p class="q">All '+S.deck.length+' done: <b>'+S.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="dagain">New set</button></div>'; $('#dagain').addEventListener('click',()=>{S.deck=mk();S.i=0;S.score=0;S.answered=false;paintD();}); return; }
+    const d=S.deck[S.i], T=DTYPE[d.t]; const pSym=SYM[d.p[1]], dSym=SYM[d.d[1]];
+    const left=N(d.p[0],d.p[1],pSym)+(T.side==='left'?' + '+T.part:'');
+    const unknown='<span class="nucin"><input type="text" inputmode="numeric" id="inA" aria-label="Mass number of the product" placeholder="A"><input type="text" inputmode="numeric" id="inZ" aria-label="Atomic number of the product" placeholder="Z"></span><span class="unk" id="unkSym">?</span>';
+    box.innerHTML='<p class="how">Decay '+(S.i+1)+' of '+S.deck.length+'. '+ENAME[pSym].charAt(0).toUpperCase()+ENAME[pSym].slice(1)+'-'+d.p[0]+' undergoes <b>'+T.n+'</b>. Fill in the mass number (top) and atomic number (bottom) of the product, then check. The element symbol appears when you get the atomic number right.</p>'+
+      '<div class="eq">'+left+' → '+(T.side==='right'&&d.t!=='gamma'?T.part+' + ':'')+unknown+(d.t==='gamma'?' + '+T.part:'')+'</div>'+
+      '<div class="actions"><button type="button" class="btn primary" id="dcheck">Check</button></div>'+fbBox('dfb')+'<div class="actions" id="dact"></div><p class="tally">Right on first try: '+S.score+' of '+S.i+'</p>';
+    const chk=()=>{
+      if(S.answered) return;
+      const A=parseInt($('#inA').value,10), Z=parseInt($('#inZ').value,10);
+      if(isNaN(A)||isNaN(Z)){ setFb('dfb','warn','<p>Enter both numbers: mass number on top, atomic number below.</p>'); return; }
+      const okA=A===d.d[0], okZ=Z===d.d[1];
+      $('#inA').classList.toggle('ok',okA); $('#inA').classList.toggle('no',!okA); $('#inZ').classList.toggle('ok',okZ); $('#inZ').classList.toggle('no',!okZ);
+      const u=$('#unkSym'); if(okZ&&u) u.outerHTML='<span class="nuc"><span class="sym">'+dSym+'</span></span>';
+      if(okA&&okZ){
+        S.answered=true; if(!S.missed) S.score++; S.missed=false;
+        $('#inA').disabled=true; $('#inZ').disabled=true;
+        setFb('dfb','ok','<p><b>Balanced.</b> '+T.rule+' The product is '+ENAME[dSym]+'-'+d.d[0]+', '+N(d.d[0],d.d[1],dSym)+'.</p><p>'+d.note+'</p>');
+        $('#dact').innerHTML='<button type="button" class="btn primary" id="dnext">Next decay</button>'; $('#dnext').addEventListener('click',()=>{S.i++;S.answered=false;S.missed=false;paintD();});
+      } else {
+        S.missed=true;
+        let msg=[]; if(!okA) msg.push('Mass number: '+(d.t==='alpha'?'an alpha particle carries away 4, so subtract 4.':'this decay does not change the mass number.')); if(!okZ) msg.push('Atomic number: '+T.rule.split(': ')[1]);
+        setFb('dfb','bad','<p>'+msg.join(' ')+' Try again.</p>');
+      }
+    };
+    $('#dcheck').addEventListener('click',chk); ['inA','inZ'].forEach(id=>$('#'+id).addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); }));
+    $('#inA').focus();
+  };
+  S.missed=false; paintD();
+
+  // Name that decay
+  const names={alpha:'Alpha decay',beta:'Beta decay',gamma:'Gamma emission',positron:'Positron emission',ec:'Electron capture'};
+  const mkId=()=>shuffle(IDQ).map(x=>({q:x.q,o:Object.keys(names).map(k=>({v:names[k],ok:k===x.a})),e:DTYPE[x.a].rule}));
+  if(!S.id.deck){ S.id.deck=mkId(); }
+  mcDeck('idbox',S.id,null,mkId,{how:'Which kind of decay is this? Description',keepOrder:true,stack:true});
+}
+
+/* ================= 3. HALF-LIFE AND DATING ================= */
+const ISOS={
+  I131:{n:'Iodine-131',t:8.04,u:'days',use:'thyroid diagnosis and therapy; a fallout isotope'},
+  Tc99m:{n:'Technetium-99m',t:6.0,u:'hours',use:'medical imaging of brain, heart, bones, and more'},
+  P32:{n:'Phosphorus-32',t:14.3,u:'days',use:'detecting skin and eye tumors; plant tracer'},
+  Co60:{n:'Cobalt-60',t:5.271,u:'years',use:'cancer radiation therapy'},
+  H3:{n:'Tritium (hydrogen-3)',t:12.26,u:'years',use:'dating wines and brandies up to 100 years old'},
+  Sr90:{n:'Strontium-90',t:28.5,u:'years',use:'a fallout isotope that collects in bone'},
+  C14:{n:'Carbon-14',t:5730,u:'years',use:'dating charcoal, wood, bone, and cloth from 100 to 50,000 years old'},
+  K40:{n:'Potassium-40',t:1.25e9,u:'years',use:'dating rocks and the moon’s crust'},
+  U238:{n:'Uranium-238',t:4.51e9,u:'years',use:'dating the oldest rocks on Earth'}
+};
+function fmtT(x){ return x>=1e6? (x/1e9>=1? fmt(x/1e9,2)+' billion' : fmt(x/1e6,2)+' million') : fmt(x,2); }
+function makeHalfProblem(){
+  const t=pick(['remain','remain','howlong','count','date','date']);
+  if(t==='remain'){ const k=pick(['I131','P32','Co60','Sr90','Tc99m']); const iso=ISOS[k]; const n=1+Math.floor(Math.random()*4); const start=pick([80,100,120,160,200,400]); return {t,q:'You start with '+start+' mg of '+iso.n+' (half-life '+iso.t+' '+iso.u+'). How many milligrams remain after '+fmt(iso.t*n,2)+' '+iso.u+'?',ans:start/Math.pow(2,n),e:fmt(iso.t*n,2)+' '+iso.u+' is '+n+' half-li'+(n>1?'ves':'fe')+'. Halve '+start+' mg '+n+' time'+(n>1?'s':'')+': '+start/Math.pow(2,n)+' mg remain.'}; }
+  if(t==='howlong'){ const k=pick(['I131','P32','Co60','Sr90','H3']); const iso=ISOS[k]; const n=1+Math.floor(Math.random()*4); const frac=['1/2','1/4','1/8','1/16'][n-1]; return {t,q:'How long does it take for a sample of '+iso.n+' (half-life '+iso.t+' '+iso.u+') to decay to '+frac+' of its original amount? Answer in '+iso.u+'.',ans:iso.t*n,e:frac+' of the original means '+n+' half-li'+(n>1?'ves':'fe')+' have passed: '+n+' × '+iso.t+' = '+fmt(iso.t*n,2)+' '+iso.u+'.'}; }
+  if(t==='count'){ const n=1+Math.floor(Math.random()*5); const start=pick([64,80,96,160,320,640]); return {t,q:'A sample decays from '+start+' g to '+start/Math.pow(2,n)+' g. How many half-lives have passed?',ans:n,e:'Keep halving: '+Array.from({length:n},(_,i)=>start/Math.pow(2,i+1)).join(' → ')+'. That is '+n+' halvings, so '+n+' half-li'+(n>1?'ves':'fe')+'.'}; }
+  const n=1+Math.floor(Math.random()*4); const frac=['one-half','one-fourth','one-eighth','one-sixteenth'][n-1];
+  return {t,q:'A piece of charcoal from an ancient fire pit has '+frac+' as much carbon-14 as a living tree. About how old is it, in years? (Half-life of carbon-14: 5730 years.)',ans:5730*n,e:frac.charAt(0).toUpperCase()+frac.slice(1)+' remaining means '+n+' half-li'+(n>1?'ves':'fe')+': '+n+' × 5730 = '+fmt(5730*n,0)+' years.'};
+}
+function renderHalf(){
+  const S=state.half;
+  if(!S.prac.P){ S.prac.P=makeHalfProblem(); S.prac.answered=false; }
+  view.innerHTML='<section><h2>3. Half-life and dating</h2>'+
+    '<p class="lede">You cannot predict when one particular nucleus will decay, but a large sample decays at a perfectly steady rate. The <b>half-life</b> is the time it takes for half of the sample to decay. It is fixed for each isotope and cannot be sped up or slowed down by heat, pressure, or chemistry, which is what makes it a reliable clock.</p>'+
+    ideas([
+      {t:'The halving rule',p:'After 1 half-life, ½ of the original is left. After 2, ¼. After 3, ⅛. After <i>n</i> half-lives, the fraction remaining is (½)<sup><i>n</i></sup>. Nothing ever quite reaches zero, but after 10 half-lives less than 0.1% is left.'},
+      {t:'Half-lives range enormously',p:'Technetium-99m: 6 hours. Iodine-131: 8 days. Cobalt-60: 5.3 years. Strontium-90: 28.5 years. Carbon-14: 5730 years. Uranium-238: 4.5 billion years. Short half-lives mean intense radiation that fades fast; long half-lives mean weak radiation that lasts almost forever.'},
+      {t:'Carbon-14 dating',p:'Cosmic rays in the upper atmosphere turn nitrogen-14 into carbon-14. Living things take it in with their carbon; when they die, intake stops and the carbon-14 ticks away with a half-life of 5730 years. Compare how much is left with a living sample and you have the age, good from about 100 to 50,000 years.'},
+      {t:'Other dating clocks (Table 11.5)',l:['Tritium (12.26 y): aged wines and brandies, 1–100 years.','Lead-210 (22 y): skeletal remains, 1–75 years.','Potassium-40 (1.25 billion y) and uranium-238 (4.51 billion y): rocks, Earth’s crust, the moon.','Rhenium-187 (43 billion y): meteorites, the oldest objects in the solar system.']}
+    ])+
+    '<h3>Half-life simulator</h3><div class="act"><p class="how">Pick an isotope and a starting amount, then slide through the half-lives.</p>'+
+    '<div class="row"><label for="hiso">Isotope</label><select class="sel" id="hiso">'+Object.keys(ISOS).map(k=>'<option value="'+k+'"'+(S.iso===k?' selected':'')+'>'+ISOS[k].n+' ('+fmtT(ISOS[k].t)+' '+ISOS[k].u+')</option>').join('')+'</select>'+
+    '<label for="hstart">Start with</label><input class="pin" id="hstart" type="text" inputmode="decimal" value="'+esc(S.start)+'"> g</div>'+
+    '<label for="hn" style="font-weight:600;display:block;margin-top:12px">Half-lives elapsed: <span id="hnv">'+S.n+'</span></label><input type="range" id="hn" min="0" max="10" step="1" value="'+S.n+'">'+
+    '<div id="hout"></div></div>'+
+    '<h3>Practice</h3><div class="act" id="hprac"></div>'+
+    world('Why half-life matters in the real world','<p><b>Medicine:</b> technetium-99m (6 h) and iodine-131 (8 d) give a clear scan and then disappear from the body in days, while cobalt-60 (5.3 y) stays intense enough to run a therapy machine for years. <b>Fallout:</b> iodine-131 is dangerous for a few weeks after a release; strontium-90 (28.5 y) and cesium-137 (30 y) stay in soil and food for a century. <b>Waste:</b> plutonium-239 (24,000 y) is why spent reactor fuel must be isolated for thousands of years. <b>Dating:</b> the Shroud of Turin, the Dead Sea Scrolls, Ötzi the Iceman, and the age of the Earth itself were all dated by half-lives.</p>')+
+    checkYourself('half',[
+      {q:'The half-life of a radioactive isotope is …',o:['half the time it takes to decay completely.','the time for half of a sample to decay.','the time for the sample to lose half its mass to evaporation.','always 5730 years.'],a:1,e:'After one half-life, half of the original nuclei have decayed. After another, half of what was left, and so on.',w:{0:'Decay never truly finishes, so there is no “complete” time to halve.',2:'Mass is lost only as the tiny decay particles; the atoms turn into other elements and mostly stay put.',3:'5730 years is carbon-14’s half-life. Others range from fractions of a second to billions of years.'}},
+      {q:'Iodine-131 has a half-life of 8 days. Starting with 40 mg, how much is left after 24 days?',o:['20 mg','10 mg','5 mg','0 mg'],a:2,e:'24 days is 3 half-lives: 40 → 20 → 10 → 5 mg.',w:{0:'That is after one half-life (8 days).',1:'That is after two half-lives (16 days).',3:'Each half-life removes only half of what is left; it never reaches exactly zero.'}},
+      {q:'A bone has one-eighth the carbon-14 of a living animal. Its age is about …',o:['5,730 years','11,460 years','17,190 years','45,840 years'],a:2,e:'One-eighth is (½)<sup>3</sup>, three half-lives: 3 × 5730 = 17,190 years.',w:{0:'That would leave one-half.',1:'That would leave one-fourth.',3:'That is eight half-lives, which would leave 1/256.'}},
+      {q:'Which can change the half-life of a radioactive isotope?',o:['Heating it','Dissolving it in acid','Compressing it','None of these'],a:3,e:'Half-life is a property of the nucleus. Temperature, pressure, and chemical bonding only affect the electrons, so they have no effect on decay.',w:{0:'Heat affects chemical reactions, not nuclear decay.',1:'Chemistry involves electrons; the nucleus does not notice.',2:'Pressure does not reach the nucleus either.'}}
+    ])+
+    '</section>';
+  const paintH=()=>{
+    const iso=ISOS[S.iso]; const start=parseFloat(String(S.start).replace(/,/g,'')); const ok=start>0;
+    const n=S.n; $('#hnv').textContent=n;
+    const rows=[]; for(let i=0;i<=Math.max(5,n);i++){ const amt=ok?start/Math.pow(2,i):0; rows.push({l:i+' half-li'+(i===1?'fe':'ves'),v:ok?amt:0,txt:ok?fmt(amt,3)+' g':'',hi:i===n}); }
+    const rem=ok?start/Math.pow(2,n):0; const elapsed=iso.t*n;
+    $('#hout').innerHTML=(ok?'':'<p class="src">Enter a starting amount greater than zero.</p>')+
+      '<div class="phread"><div class="stat"><div class="k">Time elapsed</div><div class="v sm">'+fmtT(elapsed)+' '+iso.u+'</div></div><div class="stat"><div class="k">Fraction remaining</div><div class="v sm">'+(n===0?'1':'1/'+fmt(Math.pow(2,n),0))+' = '+fmt(100/Math.pow(2,n),4)+'%</div></div><div class="stat"><div class="k">Amount remaining</div><div class="v sm">'+(ok?fmt(rem,4)+' g':'—')+'</div></div><div class="stat"><div class="k">Amount decayed</div><div class="v sm">'+(ok?fmt(start-rem,4)+' g':'—')+'</div></div></div>'+
+      bars(rows.slice(0,Math.max(6,n+1)),{max:ok?start:1})+
+      '<p class="src">'+iso.n+' is used for '+iso.use+'. '+(n>=10?'After 10 half-lives less than a thousandth of the original is left, which is often treated as “gone.”':'')+'</p>';
+  };
+  $('#hiso').addEventListener('change',()=>{S.iso=$('#hiso').value;paintH();});
+  $('#hstart').addEventListener('input',()=>{S.start=$('#hstart').value;paintH();});
+  $('#hn').addEventListener('input',()=>{S.n=+$('#hn').value;paintH();});
+  paintH();
+
+  const P=S.prac;
+  const paintPrac=()=>{
+    const p=P.P; const box=$('#hprac');
+    box.innerHTML='<p class="how">New problems every time. Solved this session: '+P.solved+'.</p><p class="q">'+p.q+'</p>'+
+      '<div class="row"><input class="pin" id="hans" type="text" inputmode="decimal" aria-label="Your answer"><button type="button" class="btn primary" id="hcheck">Check</button></div>'+fbBox('hfb')+'<div class="actions" id="hact"></div>';
+    const chk=()=>{ if(P.answered) return; const raw=$('#hans').value.trim().replace(/,/g,''); const v=parseFloat(raw); if(isNaN(v)){ setFb('hfb','warn','<p>Enter a number.</p>'); return; }
+      const right=Math.abs(v-p.ans)<=Math.max(0.011,Math.abs(p.ans)*0.01); $('#hans').classList.add(right?'ok':'no'); $('#hans').disabled=true; P.answered=true; if(right) P.solved++;
+      setFb('hfb',right?'ok':'bad','<p><b>'+(right?'Correct.':'Not quite. The answer is '+fmt(p.ans,3)+'.')+'</b> '+p.e+'</p>');
+      $('#hact').innerHTML='<button type="button" class="btn primary" id="hnext">Next problem</button>'; $('#hnext').addEventListener('click',()=>{P.P=makeHalfProblem();P.answered=false;paintPrac();}); };
+    $('#hcheck').addEventListener('click',chk); $('#hans').addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); });
+  };
+  paintPrac();
+}
+
+/* ================= 4. RADIOISOTOPES AT WORK ================= */
+const MED=[
+  ['11C','Carbon-11','20.39 min','Brain scans'],['15O','Oxygen-15','2.05 min','Oxygen metabolism, blood flow and volume'],['51Cr','Chromium-51','27.8 d','Blood volume determination'],['57Co','Cobalt-57','270 d','Measuring vitamin B<sub>12</sub> uptake'],['60Co','Cobalt-60','5.271 y','Radiation cancer therapy'],['153Gd','Gadolinium-153','242 d','Determining bone density'],['67Ga','Gallium-67','78.1 h','Scan for lung tumors'],['131I','Iodine-131','8.040 d','Thyroid diagnosis and therapy'],['192Ir','Iridium-192','74 d','Breast cancer therapy'],['59Fe','Iron-59','44.5 d','Detection of anemia'],['32P','Phosphorus-32','14.3 d','Detection of skin cancer or eye tumors'],['238Pu','Plutonium-238','86 y','Power for pacemakers'],['226Ra','Radium-226','1600 y','Radiation therapy for cancer'],['75Se','Selenium-75','120 d','Pancreas scans'],['24Na','Sodium-24','14.66 h','Locating obstructions in blood flow'],['99mTc','Technetium-99m','6.0 h','Imaging of brain, liver, bone marrow, kidney, lung, or heart'],['201Tl','Thallium-201','73 h','Heart problems during a treadmill stress test'],['3H','Tritium','12.26 y','Determining total body water'],['133Xe','Xenon-133','5.27 d','Lung imaging']
+];
+const JOBS=[
+  {q:'A patient needs a scan of the heart during a treadmill stress test. Which isotope?',a:'Thallium-201',o:['Thallium-201','Uranium-238','Cobalt-60','Carbon-14'],e:'Thallium-201 (73 h half-life) is taken up by heart muscle and shows which parts are getting blood during exercise.'},
+  {q:'A doctor wants to image a kidney today and have the radioactivity gone by tomorrow. Which isotope?',a:'Technetium-99m',o:['Technetium-99m','Strontium-90','Plutonium-238','Radium-226'],e:'Technetium-99m has a 6-hour half-life and gives off only gamma rays, so it images cleanly and is essentially gone in a couple of days. It is the workhorse of nuclear medicine.'},
+  {q:'A thyroid tumor needs to be diagnosed and treated. The thyroid concentrates one element in particular. Which isotope?',a:'Iodine-131',o:['Iodine-131','Iron-59','Xenon-133','Gallium-67'],e:'The thyroid collects iodine, so iodine-131 goes straight to it. Small doses image the gland; large doses destroy overactive or cancerous thyroid tissue.'},
+  {q:'A hospital needs an intense gamma source that will keep working for years in a cancer-therapy machine. Which isotope?',a:'Cobalt-60',o:['Cobalt-60','Oxygen-15','Sodium-24','Technetium-99m'],e:'Cobalt-60’s 5.3-year half-life is long enough to be practical but short enough that the source is intensely radioactive. Its gamma rays are aimed at the tumor from outside the body.'},
+  {q:'An engineer wants to find a leak in a buried pipeline without digging it all up. What technique?',a:'Add a radioactive tracer to the fluid and follow the radiation from above ground',o:['Add a radioactive tracer to the fluid and follow the radiation from above ground','Irradiate the pipe with gamma rays to seal it','Date the pipe with carbon-14','Heat the pipe to speed up decay'],e:'Tracers work because radioisotopes are easy to detect in tiny amounts. The radiation shows up above the leak. The same idea traces wear in piston rings and phosphorus uptake in plants.'},
+  {q:'A spacecraft heading past Pluto needs electricity for decades where sunlight is too weak for solar panels. What provides it?',a:'The heat from plutonium-238 decay',o:['The heat from plutonium-238 decay','A tritium-dating clock','Fission in a small reactor core','Cobalt-57 vitamin uptake'],e:'Plutonium-238 (86-year half-life) decays by alpha emission and gets hot. The heat is converted to electricity. Table 11.6 lists the same isotope for powering early pacemakers.'},
+  {q:'An archaeologist wants to date a wooden beam from an ancient building. Which isotope?',a:'Carbon-14',o:['Carbon-14','Uranium-238','Technetium-99m','Iodine-131'],e:'Wood was once living, so it contains carbon-14 that has been decaying since the tree was cut. Half-life 5730 years, useful to about 50,000 years.'},
+  {q:'A scientist wants to measure a patient’s total body water. Which isotope?',a:'Tritium (hydrogen-3)',o:['Tritium (hydrogen-3)','Chromium-51','Gadolinium-153','Selenium-75'],e:'Tritium is radioactive hydrogen. Given as tritiated water, it mixes with all the water in the body; how much it is diluted tells you the total.'},
+  {q:'A new element is to be made by bombarding a known nucleus with alpha particles or neutrons. What is this process called?',a:'Artificial transmutation',o:['Artificial transmutation','Fractional distillation','Radioactive dating','Half-life'],e:'Artificial transmutation turns one element into another on purpose by hitting nuclei with particles. All the elements beyond uranium were made this way.'}
+];
+function renderUses(){
+  const S=state.uses;
+  const mk=()=>shuffle(JOBS).slice(0,7).map(j=>({q:j.q,o:j.o.map(v=>({v,ok:v===j.a})),e:j.e}));
+  if(!S.deck){ S.deck=mk(); }
+  view.innerHTML='<section><h2>4. Radioisotopes at work</h2>'+
+    '<p class="lede">Radioactive atoms are easy to find: a Geiger counter or a gamma camera can detect a vanishingly small number of them. That makes radioisotopes useful as <b>tracers</b> and as the basis of <b>nuclear medicine</b>. Physicists also make new elements by hitting nuclei with particles, which is how everything past uranium came to exist.</p>'+
+    ideas([
+      {t:'Artificial transmutation',p:'Bombarding a stable nucleus with alpha particles, neutrons, or other particles can change it into a different element. Rutherford did it first in 1919: '+N(14,7,'N')+' + '+PART.alpha+' → '+N(17,8,'O')+' + '+PART.proton+'. Every element beyond uranium (neptunium, plutonium, americium in your smoke detector, and on up) was made by transmutation.'},
+      {t:'Tracers',p:'Mix a little radioisotope into a system and follow the radiation. Tracers detect leaks in underground pipes, measure wear in engine piston rings, and show how plants take up phosphorus from fertilizer. In the body, the tracer goes where its element normally goes.'},
+      {t:'Diagnosis: short half-lives, gamma rays',p:'Imaging isotopes should have short half-lives (hours to days) so the dose fades quickly, and should emit gamma rays, which escape the body to reach the camera. Technetium-99m (6 h) images brain, heart, bone, liver, lungs, and kidneys. Iodine-131 goes to the thyroid; thallium-201 to the heart; xenon-133 to the lungs.'},
+      {t:'Therapy: radiation kills fast-growing cells',p:'Cancer cells divide fast, which makes them more vulnerable to radiation than normal tissue. Cobalt-60 gamma beams are aimed from outside; iridium-192 seeds or iodine-131 doses are placed or taken inside. Nausea and hair loss during therapy are early signs of radiation sickness in the healthy fast-growing cells that are hit too.'}
+    ])+
+    '<h3>Pick the isotope for the job</h3><div class="act" id="jobbox"></div>'+
+    '<h3>Medical radioisotopes (Table 11.6)</h3><div class="tblwrap"><table class="tbl"><thead><tr><th>Isotope</th><th>Half-life</th><th>Use</th></tr></thead><tbody>'+
+    MED.map(r=>'<tr><td><b>'+r[1]+'</b> <span style="color:var(--muted)">'+F(r[0].replace(/^(\d+m?)/,'')+'')+'-'+r[0].match(/^\d+m?/)[0]+'</span></td><td class="num">'+r[2]+'</td><td>'+r[3]+'</td></tr>').join('')+
+    '</tbody></table></div><p class="src">Notice the pattern: imaging isotopes have half-lives of minutes to days; therapy and power sources last years.</p>'+
+    world('The nuclear age in everyday objects','<p>Smoke detectors use americium-241 to ionize air so a tiny current flows; smoke interrupts it. Gauges on factory lines use beta sources to measure the thickness of paper, metal sheet, and plastic film. Gamma rays sterilize surgical sutures and medical supplies, kill insects for pest control, and preserve foods such as spices and ground beef. Airports detect explosives by neutron activation. Pipelines use tracers to measure flow. And every element heavier than uranium, including the plutonium that powers deep-space probes, exists only because of artificial transmutation.</p>')+
+    checkYourself('uses',[
+      {q:'Why are radioisotopes useful as tracers?',o:['They are heavier than ordinary atoms.','They can be detected in tiny amounts by their radiation.','They glow in the dark.','They dissolve better than ordinary atoms.'],a:1,e:'A detector can pick up the decay of a very small number of atoms, so a trace of radioisotope can be followed through a pipe, a plant, or a body.',w:{0:'The small mass difference is not what makes them detectable.',2:'Most radioisotopes do not glow visibly.',3:'A radioisotope behaves chemically just like its stable twin.'}},
+      {q:'A good isotope for medical imaging should have …',o:['a half-life of thousands of years.','a short half-life and give off gamma rays.','a long half-life and give off alpha particles.','no radioactivity at all.'],a:1,e:'Short half-life means the dose fades in hours or days; gamma rays escape the body so the camera can see them. Technetium-99m is the classic example.',w:{0:'A long half-life would keep irradiating the patient for years.',2:'Alpha particles cannot leave the body to be imaged, and they do a lot of damage inside.',3:'Without radiation there is nothing to detect.'}},
+      {q:'Radiation therapy works against cancer because …',o:['cancer cells are made of different elements.','radiation is most damaging to rapidly dividing cells.','radiation heats the tumor until it melts.','cancer cells attract gamma rays.'],a:1,e:'Cancer cells divide quickly and are more easily killed by radiation than normal tissue. Fast-growing normal cells (hair, gut lining, marrow) are hit too, which causes the side effects.',w:{0:'Cancer cells contain the same elements as healthy cells.',2:'The damage is to DNA, not from heat.',3:'Gamma rays are not attracted by anything; they are aimed.'}},
+      {q:'Making a new element by bombarding a nucleus with neutrons or alpha particles is called …',o:['fission','artificial transmutation','radiocarbon dating','ionization'],a:1,e:'Transmutation changes one element into another. Artificial transmutation does it deliberately, with particle beams or reactor neutrons.',w:{0:'Fission is splitting a heavy nucleus into two medium ones.',2:'Dating uses natural decay as a clock.',3:'Ionization is removing electrons from atoms or molecules.'}}
+    ])+
+    '</section>';
+  mcDeck('jobbox',S,null,mk,{how:'Scenario',stack:true});
+}
+
+/* ================= 5. FISSION AND FUSION ================= */
+const FF_ITEMS=[
+  ['Powers the sun and the stars','fusion'],['Used in every nuclear power plant operating today','fission'],['Splits uranium-235 into two medium-sized nuclei','fission'],['Joins hydrogen isotopes (deuterium and tritium) into helium','fusion'],['A neutron starts it and the neutrons it releases keep it going (chain reaction)','fission'],['Requires temperatures of millions of degrees','fusion'],['Leaves long-lived radioactive waste (fission products)','fission'],['Fuel (deuterium) can be taken from ordinary water','fusion'],['Made the bombs dropped on Hiroshima and Nagasaki','fission'],['The reaction in a hydrogen bomb, triggered by a fission bomb','fusion'],['Controlled with control rods that absorb neutrons','fission'],['Would make minimal radioactive waste, but no practical reactor yet exists','fusion']
+];
+function renderFiss(){
+  const S=state.fiss;
+  view.innerHTML='<section><h2>5. Fission and fusion</h2>'+
+    '<p class="lede">Chemical reactions shuffle electrons and release a few hundred kilojoules per mole. Nuclear reactions rearrange protons and neutrons and release millions of times more, because a little mass disappears and turns into energy. Einstein wrote the exchange rate in 1905: <b>E = mc<sup>2</sup></b>. Since c is 300,000,000 m/s, a tiny mass is an enormous energy.</p>'+
+    ideas([
+      {t:'Binding energy: where the energy comes from',p:'Two protons (1.0073 u each) and two neutrons (1.0087 u each) weigh 4.0320 u separately, but a helium-4 nucleus weighs only 4.0015 u. The missing 0.0305 u became the <b>binding energy</b> that holds the nucleus together. Iron has the most tightly bound nucleus of all, so energy is released when heavy nuclei split toward iron (fission) or light nuclei join toward iron (fusion).'},
+      {t:'Fission',p:'A slow neutron hits '+N(235,92,'U')+', which splits into two medium nuclei (for example '+N(141,56,'Ba')+' and '+N(92,36,'Kr')+'), plus two or three new neutrons and a burst of energy. Those neutrons can split more uranium: a <b>chain reaction</b>. Below a certain amount of fuel, the <b>critical mass</b>, too many neutrons escape and the chain dies out.'},
+      {t:'Bomb versus reactor',p:'A bomb packs more than a critical mass of 90% uranium-235 (or plutonium-239) together in a split second, so the chain reaction runs away. A power plant uses uranium enriched to only 2.5–3.5% uranium-235 and <b>control rods</b> that absorb neutrons, so exactly one neutron per fission goes on to cause another. The heat boils water, the steam spins a turbine, and the turbine spins a generator. A reactor cannot explode like a bomb; its fuel is far too dilute.'},
+      {t:'Fusion',p:'Light nuclei join: '+N(2,1,'H')+' + '+N(3,1,'H')+' → '+N(4,2,'He')+' + '+PART.neutron+' + energy. This is the sun’s power source and the reaction in a hydrogen bomb. It needs millions of degrees to force the positive nuclei together, so a controlled fusion reactor must hold a plasma in a magnetic “bottle” (a tokamak). Fusion would make minimal radioactive waste, and deuterium comes from seawater, but no fusion plant has yet produced usable power.'}
+    ])+
+    '<h3>Chain reaction simulator</h3><div class="act"><p class="how">Each fission releases 2 or 3 neutrons, but not all of them go on to split another nucleus; some escape or are absorbed. Set how many neutrons from each fission cause another fission, and watch how the number of fissions changes from one generation to the next.</p>'+
+    '<label for="kval" style="font-weight:600;display:block">Neutrons per fission that cause a new fission: <span id="kv">'+S.k+'</span></label><input type="range" id="kval" min="0.5" max="3" step="0.1" value="'+S.k+'">'+
+    '<div id="kout"></div></div>'+
+    '<h3>Fission or fusion?</h3><div class="act" id="ffbox"></div>'+
+    '<h3>The Manhattan Project and fallout</h3>'+
+    '<p>Launched in 1939 after physicists warned President Roosevelt that Germany might build a bomb, the Manhattan Project had four jobs: sustain a controlled chain reaction (Fermi did it in Chicago in 1942), enrich uranium to concentrate the rare uranium-235, make fissionable plutonium-239 in reactors, and build a bomb. The uranium bomb (“Little Boy,” Hiroshima, August 6, 1945) fired a hollow uranium “bullet” down a gun barrel into a uranium target to assemble a critical mass. The plutonium bomb (“Fat Man,” Nagasaki, August 9, 1945) used explosives to compress a plutonium sphere.</p>'+
+    '<p>A nuclear explosion scatters hundreds of radioactive isotopes as <b>fallout</b>. Two are especially dangerous because the body mistakes them for nutrients: <b>strontium-90</b> (half-life 28.5 years) behaves like calcium and is deposited in bone, where it irradiates marrow for decades; it enters through milk and vegetables. <b>Iodine-131</b> (half-life 8 days) concentrates in the thyroid gland. Potassium iodide tablets handed out after a reactor accident work by filling the thyroid with ordinary iodine first.</p>'+
+    world('Energy from mass, in numbers','<p>Fissioning one gram of uranium-235 releases about as much energy as burning three tons of coal. The entire mass that turned into energy in the Hiroshima bomb was under one gram. The sun converts about 4 million tons of matter into energy every second, and has been doing so for 4.6 billion years with plenty of hydrogen left.</p>')+
+    checkYourself('fiss',[
+      {q:'Nuclear fission is …',o:['the joining of small nuclei into a larger one.','the splitting of a large nucleus into smaller ones.','the loss of an alpha particle.','the burning of uranium in oxygen.'],a:1,e:'Fission splits a heavy nucleus such as uranium-235 into two medium-sized nuclei, releasing neutrons and energy.',w:{0:'That is fusion.',2:'Alpha decay is radioactive decay, not fission.',3:'Burning is a chemical reaction; fission is nuclear.'}},
+      {q:'What keeps a fission chain reaction going?',o:['Heat from the reaction','The neutrons released by each fission','Electrons from the uranium atoms','Oxygen from the air'],a:1,e:'Each fission releases 2–3 neutrons that can split other uranium-235 nuclei. If at least one of them does, the chain continues.',w:{0:'Nuclear reaction rates do not depend on temperature.',2:'Electrons play no part in nuclear reactions.',3:'No oxygen is involved; fission is not combustion.'}},
+      {q:'A nuclear power plant cannot explode like an atomic bomb because …',o:['its uranium is only 2.5–3.5% uranium-235, and control rods absorb neutrons.','it uses fusion instead of fission.','it contains no uranium.','it is cooled with water.'],a:0,e:'Weapons need about 90% uranium-235 assembled almost instantly. Reactor fuel is far too dilute, and control rods keep exactly one neutron per fission going on to the next.',w:{1:'Today’s plants all use fission.',2:'Reactor fuel is uranium (or plutonium).',3:'Cooling matters for safety, but the dilute fuel is why a bomb-like explosion is impossible.'}},
+      {q:'Strontium-90 in fallout is especially dangerous because it …',o:['is a gas that is easily inhaled.','behaves like calcium and is deposited in bone.','has a half-life of only 8 days.','concentrates in the thyroid.'],a:1,e:'Strontium sits below calcium in the periodic table and acts like it, so Sr-90 enters through milk and vegetables and lodges in bone for decades (half-life 28.5 years).',w:{0:'Strontium is a solid metal, not a gas; radon is the gas.',2:'That is iodine-131. Strontium-90’s long half-life is part of the problem.',3:'Iodine-131 goes to the thyroid.'}},
+      {q:'The energy released in fission and fusion comes from …',o:['breaking chemical bonds.','a small amount of mass converting to energy (E = mc<sup>2</sup>).','friction between the nuclei.','the electrons orbiting the nucleus.'],a:1,e:'The products weigh slightly less than the starting nuclei; the lost mass appears as energy, and c<sup>2</sup> is a huge multiplier.',w:{0:'Chemical bonds hold atoms together; nuclear energy is millions of times larger.',2:'There is no friction inside a nucleus.',3:'Electrons are not involved in nuclear reactions.'}}
+    ])+
+    '</section>';
+  const paintK=()=>{
+    const k=S.k; $('#kv').textContent=k.toFixed(1);
+    const rows=[]; let n=1; for(let g=0;g<=8;g++){ rows.push({l:'Generation '+g,v:n,txt:fmt(Math.round(n),0)}); n*=k; }
+    const max=Math.max(...rows.map(r=>r.v));
+    const cls=k<0.95?'sub':k<=1.05?'crit':'super';
+    const msg={sub:'<b>Subcritical:</b> fewer than one new fission per fission, so the chain dies out. This is a reactor with its control rods pushed in, or a lump of uranium smaller than the critical mass, where too many neutrons escape.',crit:'<b>Critical:</b> exactly one new fission per fission, so the reaction runs at a steady rate. This is a nuclear power plant producing a constant flow of heat; the operators adjust the control rods to hold it here.',super:'<b>Supercritical:</b> more than one new fission per fission, so the number of fissions grows exponentially. Even at 2 per fission, 80 generations (about a millionth of a second) are enough to split a kilogram of uranium. This is a bomb.'}[cls];
+    $('#kout').innerHTML=bars(rows,{max:max})+'<div class="fb show '+(cls==='super'?'bad':cls==='crit'?'ok':'info')+'"><span class="ic" aria-hidden="true">'+(cls==='super'?'!':cls==='crit'?'✓':'i')+'</span><div><p>'+msg+'</p></div></div>';
+  };
+  $('#kval').addEventListener('input',()=>{S.k=+$('#kval').value;paintK();}); paintK();
+
+  const paintFF=()=>{
+    $('#ffbox').innerHTML='<p class="how">For each statement, choose fission or fusion.</p>'+
+      FF_ITEMS.map((it,i)=>{ const got=S.sort[i]; return '<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)" data-si="'+i+'"><span style="flex:1 1 18em;min-width:0">'+it[0]+'</span><span class="choice">'+['fission','fusion'].map(k=>'<button type="button" data-k="'+k+'" aria-pressed="'+(got===k)+'"'+(got?' class="'+(k===it[1]?'ok':(got===k?'no':''))+'"':'')+(got===it[1]?' disabled':'')+'>'+k.charAt(0).toUpperCase()+k.slice(1)+'</button>').join('')+'</span></div>'; }).join('')+
+      '<p class="tally">Correct: '+FF_ITEMS.filter((it,i)=>S.sort[i]===it[1]).length+' of '+FF_ITEMS.length+'</p><div class="actions"><button type="button" class="btn" id="ffreset">Clear answers</button></div>';
+  };
+  $('#ffbox').addEventListener('click',e=>{ const b=e.target.closest('button[data-k]'); if(b&&!b.disabled){ const i=+b.closest('[data-si]').dataset.si; S.sort[i]=b.dataset.k; paintFF(); return; } if(e.target.closest('#ffreset')){ S.sort={}; paintFF(); } });
+  paintFF();
+}
+
+/* ================= 6. ENERGY AND REACTIONS ================= */
+const DEVICES={bulb:{n:'Incandescent bulb',w:100},led:{n:'LED bulb (same light as the 100 W bulb)',w:14},phone:{n:'Phone charger',w:5},laptop:{n:'Laptop',w:60},tv:{n:'Large TV',w:150},micro:{n:'Microwave oven',w:1000},heater:{n:'Space heater',w:1500},ac:{n:'Central air conditioner',w:3500},car:{n:'Electric car charging at home',w:7000}};
+const EXO_ITEMS=[['Freezing of water','exo'],['Melting of ice','endo'],['Condensation of water vapor (steam) on a cold window','exo'],['Evaporation of sweat','endo'],['Metabolism of food in your body','exo'],['Photosynthesis in a leaf','endo'],['Forming chemical bonds','exo'],['Breaking chemical bonds','endo'],['A battery discharging to run a flashlight','exo'],['Charging a battery','endo'],['Burning wood in a campfire','exo'],['An instant cold pack (ammonium nitrate dissolving)','endo'],['A disposable hand warmer (iron rusting)','exo'],['Cooking an egg','endo']];
+const BONDS={'H–H':436,'Cl–Cl':243,'H–Cl':431,'F–F':159,'H–F':569,'N≡N':945,'N–H':391,'C–H':414,'O=O':498,'C=O':799,'O–H':464};
+const RXNS={
+  HCl:{eq:'H2 + Cl2 -> 2 HCl',n:'Hydrogen + chlorine → hydrogen chloride',broken:[['H–H',1],['Cl–Cl',1]],formed:[['H–Cl',2]]},
+  HF:{eq:'H2 + F2 -> 2 HF',n:'Hydrogen + fluorine → hydrogen fluoride',broken:[['H–H',1],['F–F',1]],formed:[['H–F',2]]},
+  H2O:{eq:'2 H2 + O2 -> 2 H2O',n:'Hydrogen burning in oxygen',broken:[['H–H',2],['O=O',1]],formed:[['O–H',4]]},
+  CH4:{eq:'CH4 + 2 O2 -> CO2 + 2 H2O',n:'Methane (natural gas) burning',broken:[['C–H',4],['O=O',2]],formed:[['C=O',2],['O–H',4]]},
+  NH3:{eq:'N2 + 3 H2 -> 2 NH3',n:'Making ammonia (fertilizer) from nitrogen and hydrogen',broken:[['N≡N',1],['H–H',3]],formed:[['N–H',6]]}
+};
+function renderEnergy(){
+  const S=state.energy;
+  view.innerHTML='<section><h2>6. Energy and reactions</h2>'+
+    '<p class="lede"><b>Energy</b> is the ability to do work or transfer heat. Nearly all the energy on Earth arrives as sunlight, and nearly all of it eventually leaves again as heat. In between, some of it is stored in chemical bonds, in the water cycle, in wind, and, for a few hundred million years, in fossil fuels. This section covers the units and the chemistry; the next two cover the sources.</p>'+
+    ideas([
+      {t:'Units',l:['<b>Joule (J):</b> the SI unit of energy. 1 calorie = 4.184 J (1 J = 0.2388 cal). A food Calorie is 1000 calories = 4184 J.','<b>Watt (W):</b> the SI unit of power, the rate of using energy: 1 W = 1 J/s. A 100 W bulb uses 100 J every second.','<b>Kilowatt-hour (kWh):</b> what the electric company bills: 1000 W for 1 hour = 3,600,000 J.']},
+      {t:'Two forms of energy',p:'<b>Potential energy</b> is stored energy, energy of position or arrangement: water behind a dam, a stretched spring, the chemical bonds in gasoline. <b>Kinetic energy</b> is energy of motion: moving water, wind, molecules in a hot gas. Most energy technology converts one into the other.'},
+      {t:'Exothermic and endothermic',p:'An <b>exothermic</b> process releases heat to the surroundings (burning, freezing, metabolism, forming bonds). An <b>endothermic</b> process absorbs heat (melting, evaporating, photosynthesis, breaking bonds). Table 15.2 pairs them up: every endothermic process run backward is exothermic.'},
+      {t:'Heat of reaction from bond energies',p:'Breaking a bond always costs energy; forming a bond always releases energy. Heat of reaction ≈ (energy to break the reactant bonds) − (energy released forming the product bonds). If the products’ bonds are stronger, the difference comes out as heat: exothermic.'},
+      {t:'Fuels and combustion',p:'A <b>fuel</b> is a substance that releases a lot of energy when burned. Fuels are <i>reduced</i> substances (rich in C–H and H–H bonds: hydrogen, methane, carbon, glucose, octane); burning oxidizes them to CO<sub>2</sub> and H<sub>2</sub>O, which cannot burn further. Combustion is exothermic oxidation.'},
+      {t:'What changes reaction rates',l:['<b>Temperature:</b> hotter means faster. Molecules collide harder and more often.','<b>Concentration:</b> more reactant molecules per liter means more collisions.','<b>Catalysts:</b> speed a reaction by lowering its activation energy (the hill reactants must climb), without being used up. The catalytic converter in a car and the enzymes in your cells are catalysts.']}
+    ])+
+    '<h3>Earth’s energy budget (Table 15.1)</h3><div class="act"><p class="how">Where the sunlight that reaches Earth goes. Everything but the last line is eventually returned to space as heat.</p>'+
+    bars([{l:'Direct heating of land, sea, and air',v:47,txt:'47%'},{l:'Reflected straight back to space',v:30,txt:'30%'},{l:'Powers the water cycle (evaporation, rain)',v:23,txt:'23%'},{l:'Drives the winds',v:0.2,txt:'0.2%'},{l:'Captured by photosynthesis',v:0.02,txt:'0.02%',hi:true}],{max:50})+
+    '<p>That last sliver, under 0.02%, is what feeds every plant and animal on the planet and what made every fossil fuel. Photosynthesis stores sunlight in sugar: 6 CO<sub>2</sub> + 6 H<sub>2</sub>O + energy → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6 O<sub>2</sub>. Burning or metabolizing the sugar runs the reaction backward and releases the energy.</p></div>'+
+    '<h3>Power, energy, and your electric bill</h3><div class="act"><p class="how">Power (watts) times time (hours) gives energy (watt-hours). Pick a device and how long it runs.</p>'+
+    '<div class="row"><label for="dev">Device</label><select class="sel" id="dev">'+Object.keys(DEVICES).map(k=>'<option value="'+k+'"'+(S.dev===k?' selected':'')+'>'+DEVICES[k].n+' ('+fmt(DEVICES[k].w,0)+' W)</option>').join('')+'</select><label for="hrs">runs for</label><input class="pin" id="hrs" type="text" inputmode="decimal" value="'+esc(S.hrs)+'"> hours</div><div id="devout"></div></div>'+
+    '<h3>Exothermic or endothermic?</h3><div class="act" id="exobox"></div>'+
+    '<h3>Heat of reaction from bond energies</h3><div class="act"><p class="how">Choose a reaction. Energy goes in to break the bonds on the left and comes out as the bonds on the right form. The difference is the heat of reaction. (Typical average bond energies in kJ per mole of bonds.)</p>'+
+    '<div class="row"><label for="rxn">Reaction</label><select class="sel" id="rxn">'+Object.keys(RXNS).map(k=>'<option value="'+k+'"'+(S.rxn===k?' selected':'')+'>'+RXNS[k].n+'</option>').join('')+'</select></div><div id="rxnout"></div></div>'+
+    checkYourself('energy',[
+      {q:'A watt is a unit of …',o:['energy','power (energy per second)','temperature','force'],a:1,e:'1 W = 1 J/s. Power is how fast energy is used or delivered; the joule measures the energy itself.',w:{0:'The joule is the unit of energy. A watt is a joule per second.',2:'Temperature is in degrees or kelvins.',3:'Force is in newtons.'}},
+      {q:'Which process is endothermic?',o:['Freezing water','Burning wood','Melting ice','A hand warmer heating up'],a:2,e:'Melting absorbs heat from the surroundings (that is why ice cools your drink). Freezing, burning, and the hand warmer all release heat.',w:{0:'Freezing releases heat; it is exothermic.',1:'Combustion releases heat.',3:'The warmer releases heat to your hands.'}},
+      {q:'In terms of bond energies, a reaction is exothermic when …',o:['more energy is released forming the product bonds than was needed to break the reactant bonds.','the reactants have more bonds than the products.','no bonds are broken.','the reaction is fast.'],a:0,e:'Breaking bonds costs energy; forming bonds releases it. When the new bonds are stronger overall, the surplus leaves as heat.',w:{1:'It is the strength of the bonds, not the count, that matters.',2:'Every reaction breaks some bonds.',3:'Speed and heat are separate questions; a catalyst changes the speed but not the heat released.'}},
+      {q:'A catalyst speeds up a reaction by …',o:['raising the temperature.','being consumed in place of the reactants.','lowering the activation energy.','adding more reactant.'],a:2,e:'A catalyst provides an easier path with a lower energy hill, and it is not used up. The catalytic converter in a car exhaust is an everyday example.',w:{0:'Catalysts work without changing the temperature.',1:'A catalyst is not consumed; it is still there at the end.',3:'A catalyst does not change the amounts of reactants.'}},
+      {q:'A 1500 W space heater running for 2 hours uses how much energy?',o:['750 Wh','1.5 kWh','3 kWh','3000 J'],a:2,e:'1500 W × 2 h = 3000 Wh = 3 kWh. At about 15 cents per kWh, that is around 45 cents.',w:{0:'Multiply watts by hours, do not divide.',1:'That is one hour’s worth.',3:'3000 J would run the heater for only 2 seconds.'}}
+    ])+
+    '</section>';
+  const paintDev=()=>{
+    S.dev=$('#dev').value; S.hrs=$('#hrs').value; const d=DEVICES[S.dev]; const h=parseFloat(S.hrs.replace(/,/g,''));
+    if(!(h>=0)){ $('#devout').innerHTML='<p class="src">Enter a number of hours.</p>'; return; }
+    const wh=d.w*h, kwh=wh/1000, j=wh*3600;
+    $('#devout').innerHTML='<div class="phread"><div class="stat"><div class="k">Power</div><div class="v sm">'+fmt(d.w,0)+' W = '+fmt(d.w,0)+' J/s</div></div><div class="stat"><div class="k">Energy</div><div class="v sm">'+fmt(kwh,3)+' kWh</div></div><div class="stat"><div class="k">In joules</div><div class="v sm">'+(j>=1e6?fmt(j/1e6,2)+' million J':fmt(j,0)+' J')+'</div></div><div class="stat"><div class="k">Cost at 15¢/kWh</div><div class="v sm">$'+fmt(kwh*0.15,2)+'</div></div></div>'+
+      '<p class="src">'+fmt(d.w,0)+' W × '+fmt(h,2)+' h = '+fmt(wh,0)+' Wh. In food terms, '+fmt(j/4184,0)+' Calories'+(S.dev==='led'?'. Compare with the incandescent bulb: the LED gives the same light for about one-seventh the energy.':'.')+'</p>';
+  };
+  $('#dev').addEventListener('change',paintDev); $('#hrs').addEventListener('input',paintDev); paintDev();
+
+  const paintExo=()=>{
+    $('#exobox').innerHTML='<p class="how">Does each process release heat to its surroundings (exothermic) or absorb heat from them (endothermic)?</p>'+
+      EXO_ITEMS.map((it,i)=>{ const got=S.sort[i]; return '<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)" data-si="'+i+'"><span style="flex:1 1 18em;min-width:0">'+it[0]+'</span><span class="choice">'+['exo','endo'].map(k=>'<button type="button" data-k="'+k+'" aria-pressed="'+(got===k)+'"'+(got?' class="'+(k===it[1]?'ok':(got===k?'no':''))+'"':'')+(got===it[1]?' disabled':'')+'>'+(k==='exo'?'Exothermic':'Endothermic')+'</button>').join('')+'</span></div>'; }).join('')+
+      '<p class="tally">Correct: '+EXO_ITEMS.filter((it,i)=>S.sort[i]===it[1]).length+' of '+EXO_ITEMS.length+'</p><div class="actions"><button type="button" class="btn" id="exoreset">Clear answers</button></div>';
+  };
+  $('#exobox').addEventListener('click',e=>{ const b=e.target.closest('button[data-k]'); if(b&&!b.disabled){ const i=+b.closest('[data-si]').dataset.si; S.sort[i]=b.dataset.k; paintExo(); return; } if(e.target.closest('#exoreset')){ S.sort={}; paintExo(); } });
+  paintExo();
+
+  const paintRxn=()=>{
+    S.rxn=$('#rxn').value; const r=RXNS[S.rxn];
+    const sum=list=>list.reduce((t,b)=>t+BONDS[b[0]]*b[1],0);
+    const inE=sum(r.broken), outE=sum(r.formed), dH=inE-outE;
+    const row=list=>list.map(b=>'<tr><td>'+b[0]+'</td><td class="num">'+b[1]+'</td><td class="num">'+BONDS[b[0]]+'</td><td class="num">'+fmt(BONDS[b[0]]*b[1],0)+'</td></tr>').join('');
+    $('#rxnout').innerHTML='<div class="eq">'+F(r.eq)+'</div><div class="tblwrap"><table class="tbl"><thead><tr><th>Bonds broken (energy in)</th><th>How many</th><th>kJ each</th><th>kJ</th></tr></thead><tbody>'+row(r.broken)+'<tr><td colspan="3"><b>Total in</b></td><td class="num"><b>'+fmt(inE,0)+'</b></td></tr></tbody></table>'+
+      '<table class="tbl"><thead><tr><th>Bonds formed (energy out)</th><th>How many</th><th>kJ each</th><th>kJ</th></tr></thead><tbody>'+row(r.formed)+'<tr><td colspan="3"><b>Total out</b></td><td class="num"><b>'+fmt(outE,0)+'</b></td></tr></tbody></table></div>'+
+      '<p><b>Heat of reaction ≈ '+fmt(inE,0)+' − '+fmt(outE,0)+' = '+(dH>0?'+':'−')+fmt(Math.abs(dH),0)+' kJ</b> for the equation as written. '+(dH<0?'Negative: more energy comes out than went in, so the reaction is <b>exothermic</b> and releases about '+fmt(-dH,0)+' kJ of heat.':'Positive: the reaction is endothermic.')+(S.rxn==='CH4'?' This is why natural gas is a fuel: its C–H bonds are traded for the much stronger bonds in CO<sub>2</sub> and H<sub>2</sub>O.':'')+'</p>';
+  };
+  $('#rxn').addEventListener('change',paintRxn); paintRxn();
+}
+
+/* ================= 7. FOSSIL FUELS AND ELECTRICITY ================= */
+const FRACTIONS=[
+  {k:'gas',n:'Petroleum gas',size:'CH4 to C4H10',bp:'below 40 °C',use:'Fuel (propane, butane); starting materials for plastics'},
+  {k:'gasoline',n:'Gasoline',size:'C5H12 to C12H26',bp:'40–200 °C',use:'Fuel for cars; solvents. A mixture of more than 150 compounds.'},
+  {k:'kerosene',n:'Kerosene',size:'C12H26 to C16H34',bp:'175–275 °C',use:'Diesel fuel; jet fuel; cracked to make more gasoline'},
+  {k:'heating',n:'Heating oil',size:'C15H32 to C16H34',bp:'250–400 °C',use:'Industrial and home heating; cracked to make gasoline'},
+  {k:'lube',n:'Lubricating oils and greases',size:'C17H36 and up',bp:'above 300 °C',use:'Motor oil and other lubricants'},
+  {k:'residue',n:'Residue',size:'C20H42 and up',bp:'above 350 °C (some decomposition)',use:'Paraffin wax; asphalt for roads and roofing'}
+];
+const RESERVES={coal:{n:'Coal',unit:'billion tons',us:[259,0.890],world:[1038,8.40]},petroleum:{n:'Petroleum',unit:'billion barrels',us:[33.4,6.7],world:[1526,32.6]},gas:{n:'Natural gas',unit:'trillion cubic feet',us:[323,24.5],world:[6845,120]}};
+function renderFossil(){
+  const S=state.fossil;
+  view.innerHTML='<section><h2>7. Fossil fuels and electricity</h2>'+
+    '<p class="lede">Coal, petroleum, and natural gas are the remains of plants and plankton that captured sunlight hundreds of millions of years ago. They supply more than 90% of the energy a modern society uses, and nearly all of it is released the same way: by burning. The most convenient form of that energy, electricity, is mostly made by boiling water.</p>'+
+    ideas([
+      {t:'Coal: the carbon rock',p:'Mostly carbon: C + O<sub>2</sub> → CO<sub>2</sub>. Ranked by carbon content from peat and lignite (25–35% C, lots of water) up to anthracite (85–95% C). Coal is by far the most plentiful fossil fuel, but it is hazardous to mine and awkward to use because it is a solid. Its sulfur burns to SO<sub>2</sub>, the main cause of acid rain. Heated without air it gives <b>coke</b> (for making steel) and <b>coal tar</b> (a source of chemicals).'},
+      {t:'Natural gas: mostly methane',p:'CH<sub>4</sub> + 2 O<sub>2</sub> → CO<sub>2</sub> + 2 H<sub>2</sub>O. The cleanest-burning fossil fuel: no ash, little sulfur, and the least CO<sub>2</sub> per unit of energy because so much of its energy comes from hydrogen. Also the raw material for fertilizer, plastics, and hydrogen.'},
+      {t:'Petroleum: liquid hydrocarbons',p:'Crude oil is a complex mixture of hydrocarbons. By 1950 it had displaced coal as the main fuel because liquids can be pumped, piped, and poured into a tank. A refinery separates it by boiling point in a <b>fractional distillation</b> tower and uses <b>cracking</b> to break big molecules into gasoline-sized ones.'},
+      {t:'Gasoline and octane',p:'Straight-run gasoline from the tower knocks (ignites before the spark) in a modern high-compression engine. The <b>octane rating</b> measures knock resistance: isooctane, a branched molecule, is set at 100 and straight-chain heptane at 0. 90-octane gasoline behaves like a 90:10 mixture of the two. Refineries raise octane by <b>catalytic reforming</b> of straight chains into branched ones.'},
+      {t:'Why liquids and gases beat solids',p:'Liquid and gaseous fuels flow through pipes, meter exactly, mix completely with air, and leave no ash. Coal can be made more convenient by <b>gasification</b> (to a gas) or <b>liquefaction</b>, at a cost in energy. Alternative liquid fuels: diesel (C<sub>9</sub>–C<sub>12</sub>), biodiesel from vegetable oils and fats, and E85 (85% ethanol).'},
+      {t:'Electricity: the most convenient fuel',p:'A coal plant pulverizes coal and burns it in a boiler; the steam spins a turbine that spins a generator; transmission lines carry the current away. River water cools the steam back to water and goes back warmer (thermal pollution). The stack releases CO<sub>2</sub>, nitrogen oxides, and sulfur oxides. Gas, nuclear, biomass, and geothermal plants use the same steam–turbine–generator chain with a different heat source.'}
+    ])+
+    '<h3>Inside a distillation tower</h3><div class="act"><p class="how">Crude oil is heated and the vapor rises up the tower. Small molecules boil easily and climb to the cool top; big ones condense near the hot bottom. Select a fraction.</p>'+
+    '<div class="tower"><div class="layers" role="group" aria-label="Fractions, top to bottom">'+FRACTIONS.map(f=>'<button type="button" data-f="'+f.k+'" aria-pressed="'+(S.frac===f.k)+'"><span>'+f.n+'</span><small>'+f.bp.replace('below ','&lt; ').replace('above ','&gt; ').replace(/ \(.*\)/,'')+'</small></button>').join('')+'</div><div class="info" id="fracinfo"></div></div></div>'+
+    '<h3>Octane rating</h3><div class="act"><p class="how">Slide to see what a given octane rating means.</p>'+
+    '<label for="oct" style="font-weight:600;display:block">Octane rating: <span id="octv">'+S.oct+'</span></label><input type="range" id="oct" min="0" max="100" step="1" value="'+S.oct+'"><div id="octout"></div></div>'+
+    '<h3>How long will it last?</h3><div class="act"><p class="how">Table 15.3 gives economically recoverable reserves and the amount burned each year. Dividing one by the other gives a rough “years left at today’s rate.” Reserves grow as prices rise and technology improves, and consumption changes, so treat the result as a warning, not a prediction.</p>'+
+    '<div class="row"><label for="rfuel">Fuel</label><select class="sel" id="rfuel">'+Object.keys(RESERVES).map(k=>'<option value="'+k+'"'+(S.fuel===k?' selected':'')+'>'+RESERVES[k].n+'</option>').join('')+'</select><label for="rreg">Region</label><select class="sel" id="rreg"><option value="us"'+(S.region==='us'?' selected':'')+'>United States</option><option value="world"'+(S.region==='world'?' selected':'')+'>World</option></select></div><div id="rout2"></div></div>'+
+    '<h3>Where U.S. electricity comes from</h3><div class="act"><p class="how">Percentages of U.S. electric power generation by source, 2003 (Figure 15.11) versus 2017 (U.S. Energy Information Administration).</p>'+
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px"><div><h4>2003</h4>'+bars([{l:'Coal',v:45,txt:'45%'},{l:'Natural gas',v:23,txt:'23%'},{l:'Nuclear',v:20,txt:'20%'},{l:'Hydroelectric',v:7,txt:'7%'},{l:'Petroleum',v:1,txt:'1%'},{l:'Wind and other',v:0.3,txt:'&lt;1%'}],{max:50})+'</div><div><h4>2017</h4>'+bars([{l:'Natural gas',v:33.8,txt:'33.8%',cls:'alt'},{l:'Coal',v:30.4,txt:'30.4%',cls:'alt'},{l:'Nuclear',v:19.7,txt:'19.7%',cls:'alt'},{l:'Hydroelectric',v:6.5,txt:'6.5%',cls:'alt'},{l:'Wind',v:5.5,txt:'5.5%',cls:'alt'},{l:'Other (solar, biomass, oil)',v:2.6,txt:'2.6%',cls:'alt'}],{max:50})+'</div></div>'+
+    '<p class="src">In fourteen years coal fell from nearly half to under a third, replaced mainly by natural gas (cheaper after hydraulic fracturing) and wind. Nuclear held steady at about one-fifth.</p></div>'+
+    checkYourself('fossil',[
+      {q:'Which fossil fuel is the most plentiful?',o:['Petroleum','Natural gas','Coal','Propane'],a:2,e:'Coal reserves dwarf those of oil and gas. Its drawbacks are mining hazards, sulfur, ash, and the inconvenience of a solid.',w:{0:'Oil is the most convenient, not the most plentiful.',1:'Gas reserves are large but far smaller than coal’s.',3:'Propane is a minor fraction of petroleum and natural gas.'}},
+      {q:'Burning high-sulfur coal is a major cause of …',o:['the ozone hole','acid rain','radon in basements','nuclear waste'],a:1,e:'Sulfur in coal burns to sulfur dioxide, which forms sulfuric acid in the air and falls as acid rain.',w:{0:'The ozone hole came from chlorofluorocarbons.',2:'Radon comes from uranium in rock and soil.',3:'Coal plants do not make nuclear waste.'}},
+      {q:'In a fractional distillation tower, the fractions that collect near the top are …',o:['the heaviest molecules, which rise fastest.','the smallest molecules, which have the lowest boiling points.','asphalt and wax.','the ones with the highest octane.'],a:1,e:'Small hydrocarbons boil at low temperatures, so they stay as vapor all the way to the cool top of the tower. Big molecules condense near the hot bottom.',w:{0:'Heavy molecules condense low in the tower.',2:'Those are the residue at the very bottom.',3:'Octane is about knock resistance, not where a fraction condenses.'}},
+      {q:'Gasoline with an octane rating of 90 …',o:['is 90% octane by mass.','resists knocking as well as a 90:10 mix of isooctane and heptane.','contains 90 carbon atoms per molecule.','has 90% of the energy of pure octane.'],a:1,e:'The octane scale compares a fuel’s knock resistance with reference mixtures: isooctane = 100, heptane = 0.',w:{0:'The rating is a performance comparison, not a percentage of any ingredient.',2:'Gasoline molecules have about 5 to 12 carbons.',3:'Octane rating says nothing about energy content.'}},
+      {q:'In a coal-fired power plant, what actually spins the generator?',o:['The burning coal','Steam pushing a turbine','Electricity from the grid','Water from the river'],a:1,e:'Coal heat boils water; the high-pressure steam spins a turbine connected to the generator. Nuclear, gas, geothermal, and biomass plants use the same chain with a different heat source.',w:{0:'The coal only supplies heat.',2:'The plant makes the electricity; it does not consume it.',3:'River water cools the steam back to water; it does not drive the turbine (that is a hydroelectric dam).'}}
+    ])+
+    '</section>';
+  const paintFrac=()=>{ const f=FRACTIONS.find(x=>x.k===S.frac); $('#fracinfo').innerHTML='<p><b>'+f.n+'</b></p><p>Molecules: '+F(f.size)+'<br>Boils at: '+f.bp+'<br>Used for: '+f.use+'</p>'+(S.frac==='gasoline'?'<p class="src">Gasoline is in high demand, so refineries crack the heavier fractions (kerosene, heating oil) into gasoline-sized molecules.</p>':S.frac==='residue'?'<p class="src">What will not boil at all becomes the asphalt under your tires and the wax in candles.</p>':''); $$('.layers button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===S.frac)); };
+  $('.layers').addEventListener('click',e=>{ const b=e.target.closest('button[data-f]'); if(!b) return; S.frac=b.dataset.f; paintFrac(); }); paintFrac();
+  const paintOct=()=>{ S.oct=+$('#oct').value; $('#octv').textContent=S.oct; $('#octout').innerHTML=bars([{l:'Isooctane (branched)',v:S.oct,txt:S.oct+'%'},{l:'Heptane (straight chain)',v:100-S.oct,txt:(100-S.oct)+'%',cls:'warm'}],{max:100})+'<p>A fuel rated '+S.oct+' resists knocking exactly as well as a mixture of '+S.oct+'% isooctane and '+(100-S.oct)+'% heptane. '+(S.oct>=91?'Premium gasoline. High-compression and turbocharged engines need it to avoid knock.':S.oct>=87?'Regular gasoline in the United States (87) is fine for most cars.':S.oct>=70?'Straight-run gasoline from the distillation tower is in this range: it knocks badly in a modern engine, which is why it is reformed.':'Not usable as gasoline in a modern engine.')+' Branched molecules like isooctane burn smoothly; straight chains like heptane ignite too early from compression alone.</p>'; };
+  $('#oct').addEventListener('input',paintOct); paintOct();
+  const paintRes=()=>{ S.fuel=$('#rfuel').value; S.region=$('#rreg').value; const r=RESERVES[S.fuel]; const d=r[S.region]; const yrs=d[0]/d[1];
+    $('#rout2').innerHTML='<div class="phread"><div class="stat"><div class="k">Reserves</div><div class="v sm">'+fmt(d[0],1)+' '+r.unit+'</div></div><div class="stat"><div class="k">Used per year</div><div class="v sm">'+fmt(d[1],2)+' '+r.unit+'</div></div><div class="stat"><div class="k">Years at that rate</div><div class="v">'+fmt(yrs,0)+'</div></div></div>'+
+      '<p class="src">'+fmt(d[0],1)+' ÷ '+fmt(d[1],2)+' ≈ '+fmt(yrs,0)+' years. '+(S.fuel==='petroleum'&&S.region==='us'?'The United States imports much of its oil, which is why its own reserves look so small against its consumption.':S.fuel==='coal'?'Coal is the one fossil fuel with centuries of reserves, which is exactly why its carbon dioxide is such a concern.':'The textbook’s point: within the lifetime of today’s 18-year-old, petroleum and natural gas may become too scarce to burn as fuel.')+' Data: U.S. Energy Information Administration, 2012.</p>'; };
+  $('#rfuel').addEventListener('change',paintRes); $('#rreg').addEventListener('change',paintRes); paintRes();
+}
+
+/* ================= 8. NUCLEAR AND RENEWABLE ENERGY ================= */
+const SOURCES={
+  nuclear:{n:'Nuclear fission',how:'Uranium fuel rods (2.5–3.5% U-235) sit in water inside a containment building. Fission heats the water, which makes steam; the steam spins a turbine and generator. Control rods absorb neutrons to hold the chain reaction at exactly critical.',pro:'Enormous energy from little fuel; essentially no air pollution or CO<sub>2</sub> while running; steady output day and night. France gets about 73% of its electricity this way; the United States about 19% from 104 plants.',con:'Elaborate and expensive safety systems; accidents (Three Mile Island, Chernobyl, Fukushima) are rare but serious; fission products in spent fuel stay dangerously radioactive for thousands of years and need long-term storage; uranium is not renewable.',path:'heat'},
+  fusion:{n:'Nuclear fusion (not yet practical)',how:'Deuterium and tritium nuclei are forced together at millions of degrees inside a doughnut-shaped magnetic bottle (a tokamak), producing helium, a neutron, and energy, the way the sun does.',pro:'Deuterium can be extracted from seawater; the main product is harmless helium; radioactive waste would be minimal; no chain reaction to run away.',con:'No reactor has yet produced more usable energy than it consumes; holding a plasma hotter than the sun’s core is extraordinarily difficult; decades of engineering remain.',path:'heat'},
+  solarheat:{n:'Solar heating',how:'Dark collectors on a roof absorb sunlight and heat water or air that is pumped through them, with a storage tank and a backup heater for cloudy days. Passive designs use south-facing windows and thick walls.',pro:'Free fuel, simple technology, no emissions, works anywhere with sun.',con:'Sunlight is diffuse and must be collected over a large area; nothing at night or in bad weather; mainly for heating, not electricity.',path:'none'},
+  pv:{n:'Solar cells (photovoltaic)',how:'Sunlight striking a sandwich of n-type and p-type silicon knocks electrons loose; they flow out one side, through the load, and back in the other. Electricity comes straight from light, with no moving parts.',pro:'No fuel, no emissions, no noise, no moving parts; works at any scale from a calculator to a power plant; cost has fallen dramatically.',con:'Still diffuse: large areas needed; no output at night and less in winter or clouds, so storage or backup is required; making cells takes energy and some toxic materials.',path:'direct'},
+  biomass:{n:'Biomass',how:'Plants are stored sunlight. Burn agricultural waste or fast-growing willows for heat; ferment sugars and starches to ethanol for fuel; let bacteria digest manure and sewage into methane.',pro:'Renewable as long as plants regrow; uses wastes; the CO<sub>2</sub> released was recently taken from the air by the plants; wood and dung are still the main fuel for a third of humanity.',con:'Low energy density; burning makes smoke and particulates; crops for fuel compete with crops for food and need land, water, and fertilizer.',path:'heat'},
+  hydrogen:{n:'Hydrogen',how:'Burned, hydrogen gives only water and energy: 2 H<sub>2</sub> + O<sub>2</sub> → 2 H<sub>2</sub>O. In a fuel cell, hydrogen is split into H<sup>+</sup> at a platinum electrode, the protons cross a polymer membrane, and they meet oxygen at the other electrode to make water, with the electrons flowing through the circuit as electricity.',pro:'The cleanest fuel: the exhaust is water. Fuel cells are quiet and efficient. Hydrogen can store energy from wind or solar for use later.',con:'There are no hydrogen mines: it must be made, usually from natural gas (which releases CO<sub>2</sub>) or by splitting water with electricity. It is a way to carry energy, not a source. Light, leaky, and hard to store.',path:'direct'},
+  wind:{n:'Wind',how:'Moving air turns the blades of a turbine, which spin a generator directly. Wind farms cluster hundreds of turbines on windy plains, ridges, and offshore.',pro:'No fuel, no emissions, small land footprint beneath the towers; among the cheapest new electricity.',con:'Only when the wind blows, so it needs backup or storage; the best sites are far from cities; some people object to the sight, sound, and bird kills.',path:'motion'},
+  hydro:{n:'Hydroelectric',how:'A dam stores water behind it (potential energy); water falling through the dam spins turbines and generators. Waterwheels used the same idea for two thousand years.',pro:'No fuel, no emissions, very reliable, can be turned up and down quickly to match demand; about 6–7% of U.S. electricity.',con:'Dams flood valleys, block fish migration, trap silt, and can fail; nearly all the good sites in the United States are already used; droughts cut output.',path:'motion'},
+  geo:{n:'Geothermal',how:'Water pumped into hot rock deep underground comes back as steam that spins a turbine. On a smaller scale, a geothermal heat pump moves heat between a house and the steady temperature of the ground a few meters down.',pro:'Steady output around the clock; small footprint; nearly emission-free.',con:'Good hot-rock sites are limited (Iceland, the western United States); drilling is expensive; some wells release dissolved minerals and gases.',path:'heat'},
+  ocean:{n:'Ocean energy',how:'Tides raise and lower water that can turn turbines twice a day; waves can drive floats and pistons; the temperature difference between warm surface water and cold deep water can run a heat engine (ocean thermal energy, shown to work in the 1930s).',pro:'Huge and predictable (tides) resource; no fuel.',con:'Seawater corrodes everything; few sites have large enough tides; ocean thermal plants are inefficient because the temperature difference is small.',path:'motion'}
+};
+const PATHS={heat:'Heat → steam → turbine → generator',motion:'Moving water or air → turbine → generator directly',direct:'Straight to electricity, no turbine',none:'Used as heat; not for electricity'};
+const PATH_ITEMS=['nuclear','pv','wind','geo','hydro','biomass','hydrogen','ocean','solarheat'];
+function renderRenew(){
+  const S=state.renew;
+  view.innerHTML='<section><h2>8. Nuclear and renewable energy</h2>'+
+    '<p class="lede">Fossil fuels are running down and warming the planet, so what else is there? <b>Nuclear fission</b> already makes about a fifth of U.S. electricity. <b>Renewable</b> sources (solar, wind, water, biomass, geothermal) are replenished by the sun and the Earth and cannot run out, but each comes with its own catch. Hydrogen is a clean fuel that must first be made from some other source of energy.</p>'+
+    ideas([
+      {t:'A nuclear power plant',p:'Fission in the fuel rods heats water; steam spins a turbine and generator, exactly as in a coal plant, with a reactor in place of a boiler. The fuel is only 2.5–3.5% uranium-235, so it cannot explode like a bomb. Minimal air pollution and no CO<sub>2</sub>, but elaborate safety precautions and radioactive waste that must be isolated for thousands of years.'},
+      {t:'Nuclear around the world (Table 15.7)',p:'France: 73% of its electricity from 58 plants. Ukraine 44%, Sweden 43%, Korea 28%. The United States: about 19% from 104 plants, the most of any country but a smaller share than many developed nations. China had 28 plants under construction.'},
+      {t:'Renewable means replenished',p:'Sunlight arrives every day; wind, rain, waves, and plant growth are all driven by it; geothermal heat and tides come from the Earth and moon. These sources will outlast us. Their common problem is that they are <b>diffuse</b>: sunlight and wind must be gathered over large areas and often stored for later.'},
+      {t:'Hydrogen is a carrier, not a source',p:'Hydrogen burns to pure water and runs fuel cells cleanly, but there is no free hydrogen on Earth. It is made from natural gas (releasing CO<sub>2</sub>) or by splitting water with electricity. Hydrogen is a way to store and move energy from wind, solar, or nuclear, like a battery you can refill.'}
+    ])+
+    '<h3>Energy source explorer</h3><div class="act"><p class="how">Select a source to see how it works and its advantages and disadvantages.</p>'+
+    '<div class="filters" id="srcpick">'+Object.keys(SOURCES).map(k=>'<button type="button" data-s="'+k+'" aria-pressed="'+(S.src===k)+'">'+SOURCES[k].n.replace(/ \(.*\)/,'')+'</button>').join('')+'</div><div id="srcout"></div></div>'+
+    '<h3>How does it make electricity?</h3><div class="act" id="pathbox"></div>'+
+    world('How much is too much?','<p>The demand for energy keeps rising while the easy sources dwindle. The United States, with under 5% of the world’s people, uses roughly a sixth of the world’s energy, and the average American uses more than twice as much as the average European. Every source in this section has a cost; using less is the one option with none. The textbook’s green-chemistry principles point the same way: design processes that need less energy, run at room temperature, and use renewable feedstocks.</p>')+
+    checkYourself('renew',[
+      {q:'What does a nuclear power plant use the fission reaction for?',o:['To make electricity directly from the neutrons','To make heat that boils water into steam for a turbine','To split water into hydrogen and oxygen','To charge batteries'],a:1,e:'The reactor is a heat source. Steam spins a turbine that spins a generator, just as in a coal plant.',w:{0:'Neutrons sustain the reaction; they do not make electricity.',2:'Splitting water is electrolysis, not what a reactor does.',3:'Plants feed the grid; batteries are not involved.'}},
+      {q:'Which is the main disadvantage of solar and wind energy?',o:['They produce acid rain.','They produce radioactive waste.','They are diffuse and intermittent, so they need large areas and storage or backup.','They use up the sun and the wind.'],a:2,e:'Sunlight and wind are spread thin and come and go, so collecting enough and keeping the lights on at night or in calm weather is the challenge.',w:{0:'Neither burns anything.',1:'Neither involves nuclear reactions.',3:'They are renewable; using them does not deplete them.'}},
+      {q:'Why is hydrogen called an energy carrier rather than an energy source?',o:['It has very little energy.','There is no free hydrogen to mine; it must be made using energy from another source.','It cannot be burned.','It is radioactive.'],a:1,e:'Hydrogen is made from natural gas or by splitting water with electricity, so it stores and delivers energy that came from somewhere else.',w:{0:'Hydrogen has more energy per kilogram than any other fuel.',2:'It burns very well, to water.',3:'Ordinary hydrogen is not radioactive (tritium is a rare isotope).'}},
+      {q:'Which source makes electricity without a turbine?',o:['Hydroelectric dam','Geothermal plant','Photovoltaic solar cell','Nuclear plant'],a:2,e:'A solar cell turns light directly into electric current in a slab of silicon. Dams, geothermal, and nuclear plants all spin turbines.',w:{0:'Falling water spins a turbine.',1:'Steam from hot rock spins a turbine.',3:'Fission heat makes steam for a turbine.'}},
+      {q:'Which country gets the largest share of its electricity from nuclear power?',o:['United States','China','France','Canada'],a:2,e:'France: about 73%. The United States has more plants than any other country but gets only about a fifth of its electricity from them.',w:{0:'About 19%.',1:'Only a few percent, though many plants were under construction.',3:'About 16%.'}}
+    ])+
+    '</section>';
+  const paintSrc=()=>{ const s=SOURCES[S.src]; $('#srcout').innerHTML='<h4 style="font-family:var(--serif);font-size:1.15rem">'+s.n+'</h4><p><b>How it works:</b> '+s.how+'</p><div class="ideas"><div class="idea" style="background:var(--ok-bg);border-color:var(--ok)"><h4>Advantages</h4><p>'+s.pro+'</p></div><div class="idea" style="background:var(--bad-bg);border-color:var(--bad)"><h4>Disadvantages</h4><p>'+s.con+'</p></div></div><div class="path"><span class="step src">Path to electricity</span><span class="arr" aria-hidden="true">→</span><span class="step">'+PATHS[s.path]+'</span></div>'; $$('#srcpick button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===S.src)); };
+  $('#srcpick').addEventListener('click',e=>{ const b=e.target.closest('button[data-s]'); if(!b) return; S.src=b.dataset.s; paintSrc(); }); paintSrc();
+  const PL={heat:'Heat → steam → turbine',motion:'Moving air or water → turbine',direct:'Directly to electricity',none:'Heat only, no electricity'};
+  const paintPath=()=>{
+    $('#pathbox').innerHTML='<p class="how">Most power plants are steam engines with different fires. For each source, choose how it makes electricity.</p>'+
+      PATH_ITEMS.map((k,i)=>{ const got=S.path[k]; const ans=SOURCES[k].path; return '<div data-pi="'+k+'" style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="row"><span style="flex:1 1 12em;min-width:0"><b>'+SOURCES[k].n.replace(/ \(.*\)/,'')+'</b></span><span class="choice">'+Object.keys(PL).map(p=>'<button type="button" data-p="'+p+'" aria-pressed="'+(got===p)+'"'+(got?' class="'+(p===ans?'ok':(got===p?'no':''))+'"':'')+(got===ans?' disabled':'')+'>'+PL[p]+'</button>').join('')+'</span></div>'+(got&&got!==ans?'<p class="src" style="color:var(--bad)">Not quite. '+SOURCES[k].how.split('. ')[0]+'.</p>':'')+'</div>'; }).join('')+
+      '<p class="tally">Correct: '+PATH_ITEMS.filter(k=>S.path[k]===SOURCES[k].path).length+' of '+PATH_ITEMS.length+'</p><div class="actions"><button type="button" class="btn" id="pathreset">Clear answers</button></div>';
+  };
+  $('#pathbox').addEventListener('click',e=>{ const b=e.target.closest('button[data-p]'); if(b&&!b.disabled){ const k=b.closest('[data-pi]').dataset.pi; S.path[k]=b.dataset.p; paintPath(); return; } if(e.target.closest('#pathreset')){ S.path={}; paintPath(); } });
+  paintPath();
+}
+
+/* ================= 9. REVIEW QUIZ ================= */
+const BANK=[
+  {s:'Radiation',q:'Which type of radiation is stopped by a sheet of paper?',o:['Alpha','Beta','Gamma','X-rays'],a:0,e:'Alpha particles are heavy and doubly charged; they lose their energy in a few centimeters of air or a sheet of paper.'},
+  {s:'Radiation',q:'A beta particle is …',o:['a helium nucleus','a high-energy photon','an electron emitted from the nucleus','a neutron'],a:2,e:'Beta decay turns a neutron into a proton and shoots out an electron.'},
+  {s:'Radiation',q:'Which radiation requires several centimeters of lead to stop?',o:['Alpha','Beta','Gamma','All three equally'],a:2,e:'Gamma rays have no mass or charge and penetrate deeply.'},
+  {s:'Radiation',q:'About what fraction of the average person’s radiation exposure is natural background?',o:['One-tenth','One-fourth','Three-fourths','All of it'],a:2,e:'Roughly three-fourths is background (mostly radon); most of the rest is medical.'},
+  {s:'Radiation',q:'Ionizing radiation harms cells mainly by …',o:['heating them.','knocking electrons off molecules and damaging DNA.','making them radioactive.','freezing them.'],a:1,e:'The ions and free radicals it creates disrupt cell chemistry; DNA damage causes mutations.'},
+  {s:'Nuclear equations',q:'When '+N(226,88,'Ra')+' emits an alpha particle, the product is …',o:[N(222,86,'Rn'),N(226,89,'Ac'),N(230,90,'Th'),N(222,88,'Ra')],a:0,e:'Mass number −4, atomic number −2: 222 and 86, radon.'},
+  {s:'Nuclear equations',q:'When '+N(14,6,'C')+' emits a beta particle, the product is …',o:[N(14,5,'B'),N(14,7,'N'),N(10,4,'Be'),N(13,6,'C')],a:1,e:'Beta decay keeps the mass number and raises the atomic number by one: nitrogen-14.'},
+  {s:'Nuclear equations',q:'Which decay leaves both the mass number and the atomic number unchanged?',o:['Alpha','Beta','Gamma','Positron emission'],a:2,e:'A gamma ray is pure energy; the nucleus just settles to a lower energy state.'},
+  {s:'Nuclear equations',q:'Positron emission and electron capture both …',o:['raise the atomic number by one.','lower the atomic number by one.','lower the mass number by four.','produce helium.'],a:1,e:'In both, a proton becomes a neutron, so the atomic number drops by one and the mass number stays the same.'},
+  {s:'Nuclear equations',q:'Unlike chemical reactions, nuclear reactions …',o:['conserve mass exactly.','speed up when heated.','can change one element into another.','involve only outer electrons.'],a:2,e:'Changing the number of protons changes the element.'},
+  {s:'Half-life',q:'After three half-lives, what fraction of a radioactive sample remains?',o:['1/3','1/6','1/8','1/16'],a:2,e:'½ × ½ × ½ = 1/8.'},
+  {s:'Half-life',q:'Technetium-99m has a half-life of 6 hours. How much of a 40 mg dose remains after 12 hours?',o:['30 mg','20 mg','10 mg','0 mg'],a:2,e:'12 hours is two half-lives: 40 → 20 → 10 mg.'},
+  {s:'Half-life',q:'Carbon-14 dating works for objects up to about …',o:['100 years','50,000 years','5 million years','4.5 billion years'],a:1,e:'With a 5730-year half-life, after about 50,000 years too little carbon-14 is left to measure.'},
+  {s:'Half-life',q:'Which isotope would you use to date a rock billions of years old?',o:['Carbon-14','Tritium','Iodine-131','Uranium-238'],a:3,e:'Uranium-238’s 4.5-billion-year half-life matches the age of the Earth; carbon-14 would be long gone.'},
+  {s:'Radioisotopes at work',q:'Technetium-99m is ideal for medical imaging because it …',o:['has a half-life of thousands of years.','emits only gamma rays and has a 6-hour half-life.','emits alpha particles.','is found naturally in the body.'],a:1,e:'The gamma rays leave the body to reach the camera, and the short half-life limits the dose.'},
+  {s:'Radioisotopes at work',q:'Iodine-131 is used to treat thyroid disease because …',o:['it is the least radioactive isotope.','the thyroid concentrates iodine.','it has a half-life of 1600 years.','it emits no radiation.'],a:1,e:'The thyroid takes up iodine from the blood, so I-131 delivers its radiation right where it is needed.'},
+  {s:'Radioisotopes at work',q:'Cobalt-60 is used for …',o:['dating wine','radiation cancer therapy','powering pacemakers','detecting pipe leaks'],a:1,e:'Its intense gamma rays are aimed at tumors from outside the body.'},
+  {s:'Radioisotopes at work',q:'The elements beyond uranium on the periodic table were made by …',o:['artificial transmutation','fractional distillation','photosynthesis','carbon dating'],a:0,e:'Bombarding heavy nuclei with neutrons or other particles builds up heavier elements.'},
+  {s:'Fission and fusion',q:'The energy of a nuclear reaction comes from …',o:['burning the fuel','converting a small amount of mass to energy','breaking chemical bonds','friction'],a:1,e:'E = mc<sup>2</sup>: the products weigh slightly less, and the missing mass appears as energy.'},
+  {s:'Fission and fusion',q:'In nuclear fission, …',o:['small nuclei combine.','a large nucleus splits into smaller ones, releasing neutrons.','an electron is captured.','a gamma ray is absorbed.'],a:1,e:'Uranium-235 splits into two medium nuclei plus two or three neutrons that can continue the chain.'},
+  {s:'Fission and fusion',q:'The sun’s energy comes from …',o:['fission of uranium','fusion of hydrogen into helium','burning hydrogen in oxygen','radioactive decay of iron'],a:1,e:'Fusion of light nuclei at millions of degrees powers the sun and other stars.'},
+  {s:'Fission and fusion',q:'Weapons-grade uranium is about 90% U-235. Reactor fuel is about …',o:['0.1%','3%','50%','100%'],a:1,e:'Power plants use uranium enriched to only 2.5–3.5% U-235, far too dilute to explode.'},
+  {s:'Fission and fusion',q:'Which fallout isotope is dangerous because it concentrates in the thyroid gland?',o:['Strontium-90','Iodine-131','Carbon-14','Uranium-238'],a:1,e:'Iodine goes to the thyroid; potassium iodide tablets block its uptake after a release.'},
+  {s:'Fission and fusion',q:'Control rods in a reactor work by …',o:['adding neutrons','absorbing neutrons','cooling the fuel','slowing the turbine'],a:1,e:'Absorbing neutrons keeps the chain reaction at exactly one new fission per fission.'},
+  {s:'Energy and reactions',q:'1 calorie equals …',o:['0.2388 J','1 J','4.184 J','1000 J'],a:2,e:'4.184 J = 1 cal, and 1 J = 0.2388 cal.'},
+  {s:'Energy and reactions',q:'Water behind a dam has …',o:['kinetic energy','potential energy','nuclear energy','no energy'],a:1,e:'Stored energy of position. It becomes kinetic energy as the water falls.'},
+  {s:'Energy and reactions',q:'Photosynthesis is …',o:['exothermic; it releases heat.','endothermic; it stores the sun’s energy in sugar.','a nuclear reaction.','combustion.'],a:1,e:'Plants absorb sunlight to build glucose from CO<sub>2</sub> and water. Burning or metabolizing the sugar releases the energy again.'},
+  {s:'Energy and reactions',q:'Which change would slow a chemical reaction?',o:['Raising the temperature','Adding a catalyst','Lowering the concentration of a reactant','Grinding a solid reactant into powder'],a:2,e:'Fewer reactant molecules means fewer collisions. The other three all speed reactions up.'},
+  {s:'Fossil fuels',q:'Fossil fuels supply about what share of a modern society’s energy?',o:['10%','50%','More than 90%','100%'],a:2,e:'Coal, oil, and gas together supply more than 90%.'},
+  {s:'Fossil fuels',q:'Which coal has the highest carbon content?',o:['Lignite','Sub-bituminous','Bituminous','Anthracite'],a:3,e:'Anthracite is 85–95% carbon with little water; lignite is 25–35% carbon.'},
+  {s:'Fossil fuels',q:'The cleanest-burning fossil fuel is …',o:['coal','petroleum','natural gas','coke'],a:2,e:'Methane burns to CO<sub>2</sub> and water with no ash and little sulfur, and releases the least CO<sub>2</sub> per unit of energy.'},
+  {s:'Fossil fuels',q:'“Cracking” in a refinery means …',o:['separating crude oil by boiling point.','breaking large hydrocarbon molecules into smaller ones such as gasoline.','adding lead to gasoline.','removing sulfur from coal.'],a:1,e:'Cracking turns kerosene and heavier fractions into more of the gasoline the market wants.'},
+  {s:'Fossil fuels',q:'Isooctane has an octane rating of 100 because it …',o:['burns hottest.','resists knocking very well.','is the main ingredient of gasoline.','contains 100 carbon atoms.'],a:1,e:'The branched molecule burns smoothly instead of igniting early from compression. Heptane, the straight chain, is the 0 reference.'},
+  {s:'Nuclear and renewable',q:'Compared with a coal plant, a nuclear plant …',o:['releases more CO<sub>2</sub>.','releases almost no air pollution but leaves radioactive waste.','needs no safety systems.','cannot make steam.'],a:1,e:'Fission makes heat without combustion, so no smoke or CO<sub>2</sub>, but the spent fuel stays radioactive for thousands of years.'},
+  {s:'Nuclear and renewable',q:'A photovoltaic cell converts …',o:['sunlight directly into electricity.','sunlight into heat for water.','wind into electricity.','hydrogen into water.'],a:0,e:'Light knocks electrons loose in a silicon sandwich; no turbine, no moving parts.'},
+  {s:'Nuclear and renewable',q:'Which is NOT a renewable energy source?',o:['Wind','Biomass','Natural gas','Geothermal'],a:2,e:'Natural gas is a fossil fuel formed over millions of years; once burned it is gone.'},
+  {s:'Nuclear and renewable',q:'A fuel cell running on hydrogen produces electricity and …',o:['carbon dioxide','water','sulfur dioxide','helium'],a:1,e:'Hydrogen combines with oxygen to give only water, which is why hydrogen is the cleanest fuel.'},
+  {s:'Nuclear and renewable',q:'The main problem with solar energy is that it …',o:['is radioactive.','produces acid rain.','is diffuse and must be collected over large areas.','will run out soon.'],a:2,e:'Sunlight is spread thin and stops at night, so collecting and storing enough of it is the challenge.'}
+];
+function renderReview(){
+  const R=state.review;
+  if(!R.qs){ R.qs=shuffle(BANK).slice(0,12); R.i=0; R.score=0; R.answered=false; R.log=[]; }
+  const paint=()=>{
+    if(R.i>=R.qs.length){
+      const pct=Math.round(R.score/R.qs.length*100);
+      view.innerHTML='<section><h2>9. Review quiz</h2><p class="score">You scored '+R.score+' of '+R.qs.length+' ('+pct+'%).</p>'+
+        '<p>'+(pct>=90?'Excellent. From alpha particles to solar cells, you have it.':pct>=70?'Good work. Look over the ones you missed and revisit those sections.':'Worth another pass. Each missed question names its section so you know where to go back.')+'</p>'+
+        (R.log.some(l=>!l.ok)?'<h3>Questions to revisit</h3><ol class="review">'+R.log.filter(l=>!l.ok).map(l=>'<li><b>'+l.s+':</b> '+l.q+'<br><span style="color:var(--muted)">Answer: '+l.ans+'. '+l.e+'</span></li>').join('')+'</ol>':'')+
+        '<div class="actions"><button type="button" class="btn primary" id="ragain">Take a new quiz</button></div></section>';
+      $('#ragain').addEventListener('click',()=>{R.qs=null;renderReview();});
+      if(pct>=70) markDone('review');
+      return;
+    }
+    const q=R.qs[R.i]; const order=shuffle(q.o.map((o,i)=>({o,i})));
+    view.innerHTML='<section><h2>9. Review quiz</h2><p class="lede">Twelve questions drawn from all eight sections, in a new mix each time. Answer each one, read the explanation, and move on. Score 70% or better to earn the checkmark.</p>'+
+      '<div class="act"><div class="qnum">Question '+(R.i+1)+' of '+R.qs.length+' · '+q.s+'</div><div class="prog" aria-hidden="true"><i style="width:'+(R.i/R.qs.length*100)+'%"></i></div><p class="q">'+q.q+'</p>'+
+      '<div class="choice stack" id="rch">'+order.map(x=>'<button type="button" data-i="'+x.i+'">'+x.o+'</button>').join('')+'</div>'+fbBox('rfb')+'<div class="actions" id="ract"></div><p class="tally">Score so far: '+R.score+' of '+R.i+'</p></div></section>';
+    $('#rch').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-i]'); if(!b||R.answered) return; R.answered=true; const right=+b.dataset.i===q.a;
+      $$('#rch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b); if(+x.dataset.i===q.a&&!right){x.style.outline='2px solid var(--ok)';x.style.outlineOffset='-2px';}});
+      b.classList.add(right?'ok':'no'); if(right) R.score++;
+      R.log.push({s:q.s,q:q.q,ok:right,ans:q.o[q.a],e:q.e});
+      setFb('rfb',right?'ok':'bad','<p><b>'+(right?'Correct.':'The answer is: '+q.o[q.a]+'.')+'</b> '+q.e+'</p>');
+      $('#ract').innerHTML='<button type="button" class="btn primary" id="rnext">'+(R.i+1<R.qs.length?'Next question':'See my score')+'</button>';
+      $('#rnext').addEventListener('click',()=>{R.i++;R.answered=false;paint();});
+    });
+  };
+  paint();
+}
+
+/* ================= KEY TERMS ================= */
+const TERMS=[
+  ['Radioactivity','Radiation','The spontaneous emission of particles or energy from an unstable nucleus.'],
+  ['Alpha particle','Radiation','A helium nucleus ('+N(4,2,'He')+'): two protons and two neutrons, charge 2+. Stopped by paper or skin.'],
+  ['Beta particle','Radiation','An electron ('+N(0,-1,'e')+') shot out of the nucleus when a neutron turns into a proton. Stopped by aluminum foil.'],
+  ['Gamma ray','Radiation','A high-energy photon with no mass or charge. The most penetrating radiation; needs lead or thick concrete.'],
+  ['Ionizing radiation','Radiation','Radiation energetic enough to knock electrons off molecules, forming ions and free radicals that damage cells and DNA.'],
+  ['Free radical','Radiation','A molecular fragment with an unpaired electron, formed when radiation splits a molecule; highly reactive and damaging to cells.'],
+  ['Background radiation','Radiation','The natural radiation everyone receives from radon, cosmic rays, rocks and soil, and isotopes inside the body; about three-fourths of average exposure.'],
+  ['Radon','Radiation','A radioactive noble gas produced by uranium decay in rock and soil that seeps into buildings; the largest source of background exposure.'],
+  ['Mass number','Nuclear equations','The number of protons plus neutrons (nucleons) in a nucleus; written as a superscript to the left of the symbol.'],
+  ['Atomic number','Nuclear equations','The number of protons in a nucleus, which determines the element; written as a subscript to the left of the symbol.'],
+  ['Nuclear equation','Nuclear equations','An equation showing a nuclear change, balanced so that mass numbers and atomic numbers add up on both sides.'],
+  ['Alpha decay','Nuclear equations','Emission of an alpha particle: mass number −4, atomic number −2.'],
+  ['Beta decay','Nuclear equations','Emission of a beta particle: a neutron becomes a proton; mass number unchanged, atomic number +1.'],
+  ['Positron','Nuclear equations','A particle with the mass of an electron but a positive charge ('+N(0,1,'e')+'). Positron emission lowers the atomic number by one.'],
+  ['Electron capture','Nuclear equations','A nucleus absorbs one of the atom’s inner electrons; a proton becomes a neutron and the atomic number drops by one.'],
+  ['Half-life','Half-life','The time required for one-half of a radioactive sample to decay. Fixed for each isotope; unaffected by temperature or chemistry.'],
+  ['Radiocarbon dating','Half-life','Finding the age of once-living material from how much carbon-14 (half-life 5730 years) remains; useful to about 50,000 years.'],
+  ['Tritium','Half-life','Hydrogen-3, a radioactive isotope of hydrogen with a 12.26-year half-life, used for dating wines and in fusion fuel.'],
+  ['Artificial transmutation','Radioisotopes at work','Changing one element into another by bombarding nuclei with alpha particles, neutrons, or other particles.'],
+  ['Tracer','Radioisotopes at work','A radioisotope added in small amounts so that the movement of a substance can be followed by detecting its radiation.'],
+  ['Nuclear medicine','Radioisotopes at work','The use of radioisotopes to diagnose (imaging with technetium-99m, iodine-131) and treat (cobalt-60, iridium-192) disease.'],
+  ['Radiation therapy','Radioisotopes at work','Using radiation to kill cancer cells, which are more vulnerable because they divide rapidly.'],
+  ['E = mc²','Fission and fusion','Einstein’s equation relating mass and energy; a tiny loss of mass releases an enormous amount of energy.'],
+  ['Binding energy','Fission and fusion','The energy that holds a nucleus together, equal to the mass lost when its protons and neutrons combine.'],
+  ['Nuclear fission','Fission and fusion','The splitting of a heavy nucleus (such as uranium-235) into two smaller nuclei, with the release of neutrons and energy.'],
+  ['Chain reaction','Fission and fusion','A self-sustaining series of fissions in which neutrons from each fission cause further fissions.'],
+  ['Critical mass','Fission and fusion','The minimum amount of fissionable material needed to sustain a chain reaction.'],
+  ['Nuclear fusion','Fission and fusion','The joining of small nuclei (such as deuterium and tritium) into a larger one, releasing energy; the sun’s energy source.'],
+  ['Thermonuclear reaction','Fission and fusion','A fusion reaction, so called because it requires temperatures of millions of degrees.'],
+  ['Fallout','Fission and fusion','Radioactive isotopes scattered by a nuclear explosion; strontium-90 (bone) and iodine-131 (thyroid) are the most hazardous.'],
+  ['Control rods','Fission and fusion','Neutron-absorbing rods that regulate the chain reaction in a nuclear reactor.'],
+  ['Energy','Energy and reactions','The ability to do work or transfer heat. SI unit: the joule (J). 1 cal = 4.184 J.'],
+  ['Power','Energy and reactions','The rate at which energy is used or delivered. SI unit: the watt (W) = 1 J/s.'],
+  ['Potential energy','Energy and reactions','Stored energy, or energy of position: water behind a dam, chemical bonds in a fuel.'],
+  ['Kinetic energy','Energy and reactions','Energy of motion.'],
+  ['Exothermic','Energy and reactions','Releasing heat to the surroundings (combustion, freezing, forming bonds).'],
+  ['Endothermic','Energy and reactions','Absorbing heat from the surroundings (melting, evaporation, photosynthesis, breaking bonds).'],
+  ['Bond energy','Energy and reactions','The energy needed to break a bond (and released when it forms); heat of reaction ≈ energy in to break bonds − energy out from forming bonds.'],
+  ['Catalyst','Energy and reactions','A substance that speeds a reaction by lowering its activation energy without being consumed.'],
+  ['Fuel','Energy and reactions','A reduced substance that releases a large amount of energy when burned (oxidized).'],
+  ['Fossil fuel','Fossil fuels','Coal, petroleum, or natural gas: fuels formed from ancient plants and plankton; more than 90% of a modern society’s energy.'],
+  ['Coke','Fossil fuels','Nearly pure carbon left when coal is heated without air; used to make iron and steel.'],
+  ['Fractional distillation','Fossil fuels','Separating crude oil into fractions (gas, gasoline, kerosene, heating oil, lubricants, residue) by boiling point in a tall tower.'],
+  ['Cracking','Fossil fuels','Breaking large hydrocarbon molecules into smaller ones, mainly to make more gasoline.'],
+  ['Octane rating','Fossil fuels','A measure of a gasoline’s resistance to knocking: isooctane = 100, heptane = 0.'],
+  ['Gasification / liquefaction','Fossil fuels','Converting solid coal into a gaseous or liquid fuel to make it more convenient.'],
+  ['Renewable energy','Nuclear and renewable','Energy from sources that are continually replenished: sunlight, wind, water, biomass, geothermal heat, tides.'],
+  ['Photovoltaic cell','Nuclear and renewable','A solar cell: a silicon device that converts sunlight directly into electricity.'],
+  ['Biomass','Nuclear and renewable','Plant material and animal waste used as fuel, directly by burning or after fermentation to ethanol or methane.'],
+  ['Fuel cell','Nuclear and renewable','An electrochemical cell that oxidizes a fuel such as hydrogen to produce electricity directly, with water as the only exhaust.'],
+  ['Tokamak','Nuclear and renewable','A doughnut-shaped magnetic container designed to hold the hot plasma of a fusion reactor.'],
+  ['Geothermal energy','Nuclear and renewable','Heat from inside the Earth, tapped by pumping water into hot rock to make steam or with ground-source heat pumps.']
+];
+function renderTerms(){
+  const T=state.terms; const secs=['all','Radiation','Nuclear equations','Half-life','Radioisotopes at work','Fission and fusion','Energy and reactions','Fossil fuels','Nuclear and renewable'];
+  view.innerHTML='<section><h2>Key terms</h2><p class="lede">Flashcards. Select a card to show its definition; select it again to hide it. Filter by section, or shuffle and quiz yourself.</p>'+
+    '<div class="filters" role="group" aria-label="Filter by section">'+secs.map(s=>'<button type="button" data-f="'+s+'" aria-pressed="'+(T.filter===s)+'">'+(s==='all'?'All terms':s)+'</button>').join('')+'</div>'+
+    '<div class="actions" style="margin:0 0 12px"><button type="button" class="btn" id="tshuffle">Shuffle</button><button type="button" class="btn" id="tshow">Show all</button><button type="button" class="btn" id="thide">Hide all</button></div>'+
+    '<div class="terms" id="tcards"></div></section>';
+  let list=TERMS.map((t,i)=>({t,i}));
+  const paint=()=>{
+    const vis=list.filter(x=>T.filter==='all'||x.t[1]===T.filter);
+    $('#tcards').innerHTML=vis.map(x=>'<button type="button" class="flip" data-i="'+x.i+'" aria-expanded="'+!!T.open[x.i]+'"><b>'+x.t[0]+'</b><span class="hint">'+x.t[1]+' · show definition</span><span class="back">'+x.t[2]+'</span></button>').join('');
+  };
+  $('.filters').addEventListener('click',e=>{ const b=e.target.closest('button[data-f]'); if(!b) return; T.filter=b.dataset.f; $$('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b)); paint(); });
+  $('#tcards').addEventListener('click',e=>{ const b=e.target.closest('.flip'); if(!b) return; const i=+b.dataset.i; T.open[i]=!T.open[i]; b.setAttribute('aria-expanded',!!T.open[i]); });
+  $('#tshuffle').addEventListener('click',()=>{ list=shuffle(list); T.open={}; paint(); });
+  $('#tshow').addEventListener('click',()=>{ TERMS.forEach((_,i)=>T.open[i]=true); paint(); });
+  $('#thide').addEventListener('click',()=>{ T.open={}; paint(); });
+  paint();
+}
+
+render();
+})();
+</script>
+</body>
+</html>
