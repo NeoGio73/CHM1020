@@ -267,6 +267,43 @@ input[type=range]{width:100%;max-width:100%;margin:8px 0}
 .tower .layers button small{color:inherit;opacity:.75;white-space:nowrap}
 .tower .info{flex:1 1 260px;min-width:0}
 
+
+/* Help levels and guided practice (same pattern as the CHM1045 guides) */
+.modebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.modebar-label{font-size:.9rem;font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;font-size:.9rem;border:0;background:#fff;color:var(--ink);padding:7px 12px;cursor:pointer;border-left:1.5px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.seg button:focus-visible{outline-offset:-3px}
+.problem{border:1.5px solid var(--line);border-radius:14px;padding:18px 20px 16px;min-width:0}
+.ctx{margin:0 0 10px;color:var(--muted)}
+.setup{background:var(--soft);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+.setup p{margin:0 0 8px}
+.setup p:last-child{margin-bottom:0}
+.setup .lab{font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);margin-bottom:6px}
+.blank{font:inherit;width:3.4em;text-align:center;border:1.5px solid #8b95a3;border-radius:6px;padding:3px 4px;background:#fff;color:var(--ink)}
+.blank.wide{width:6em}
+.blank.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.blank.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.blank:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.parts{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}
+.part{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.part .plab{font-weight:600;flex:1 1 14em}
+.part .pctl{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.pmark{font-weight:700;min-width:1em}
+.pmark.ok{color:var(--ok)} .pmark.no{color:var(--bad)}
+.hintbox{border-left:5px solid #5a86c4;background:var(--info-bg);border-radius:10px;padding:10px 14px;margin:0 0 10px;color:var(--info)}
+.hintbox p{margin:0}
+.solution{margin-top:10px;padding:12px 16px 6px;border-radius:10px;background:var(--soft)}
+.solution ol{margin:0;padding-left:1.3em}
+.solution li{margin-bottom:8px}
+details.soldet{margin-top:12px}
+details.soldet summary{cursor:pointer;font-weight:600;color:var(--navy)}
+.example{border:1.5px solid var(--line);border-radius:14px;padding:14px 20px;margin:12px 0}
+.example summary{cursor:pointer;font-weight:600;color:var(--navy)}
+.example .exq{margin:10px 0 6px;font-size:1.02rem}
+
 @media (prefers-reduced-motion:no-preference){
   .bulbglow{transition:opacity .4s}
 }
@@ -427,6 +464,95 @@ function mcDeck(boxId, S, items, makeDeck, opts){
   paint();
 }
 
+/* ---------- Guided practice engine: three help levels, worked solutions, streak level-up ---------- */
+const MODES=[{id:'guided',label:'Guided setup'},{id:'hint',label:'Hints if I ask'},{id:'solo',label:'On my own'}];
+const freshPrac = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[], sol:false});
+const LET='abcdef';
+const blank = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="text" autocomplete="off" aria-label="'+esc(label)+'">';
+function parseNum(raw){
+  let s=String(raw).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'');
+  if(!s) return null;
+  s=s.replace(/^\$/,'').replace(/[×x]10\^?\(?(-?\d+)\)?/,'e$1').replace(/^10\^\(?(-?\d+)\)?$/,'1e$1').replace(/−/g,'-');
+  if(/^[0-9]+\/[0-9]+$/.test(s)){ const [a,b]=s.split('/').map(Number); return b?a/b:null; }
+  const v=parseFloat(s); return isFinite(v)?v:null;
+}
+const near = (v,want,tol,abs) => Math.abs(v-want) <= Math.max(Math.abs(want)*(tol===undefined?0.01:tol), abs||1e-9);
+// Mounts a practice module into #boxId. S is the module's state; gen() returns a problem P.
+// P: {ctx?, q, parts:[{type:'num',label,ans,unit?,tol?,show} | {type:'mc',label,options:[{v,ok}],show}],
+//     guided (html with blank()s), blanks:{k:{want,tol?}}, blankMsg(got)->string, hints:[html,html], solution (html), done?(html)}
+function mountPractice(boxId, S, gen, opts){
+  opts=opts||{};
+  const box=$('#'+boxId); if(!box) return;
+  if(!S.P){ S.P=gen(); S.misses=0; S.hint=0; S.done=false; S.partDone=[]; S.sol=false; }
+  box.innerHTML='<div class="modebar"><span class="modebar-label" id="'+boxId+'-ml">How much help</span><div class="seg" role="group" aria-labelledby="'+boxId+'-ml">'+
+    MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+'</div></div>'+
+    '<article class="problem" data-problem></article><p class="tally" data-tally></p>';
+  const prob=box.querySelector('[data-problem]');
+  const next=()=>{ S.P=gen(); S.misses=0; S.hint=0; S.done=false; S.partDone=[]; S.sol=false; };
+  const setMode=m=>{ S.mode=m; S.hint=0; $$('.seg button',box).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===m))); if(S.done){ next(); draw(true); } else { drawHelp(); drawActions(); } };
+  const partHTML=(p,i,multi)=>{
+    const tag=multi?'<b>('+LET[i]+')</b> ':'';
+    if(p.type==='mc') return '<li class="part" data-pi="'+i+'"><span class="plab">'+tag+p.label+'</span><span class="pctl"><span class="choice" data-mc>'+p.options.map((o,oi)=>'<button type="button" data-oi="'+oi+'" aria-pressed="false">'+o.v+'</button>').join('')+'</span><span class="pmark" aria-hidden="true"></span></span></li>';
+    return '<li class="part" data-pi="'+i+'"><span class="plab">'+tag+p.label+'</span><span class="pctl"><input class="pin" data-pi="'+i+'" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-label="'+esc(p.label.replace(/<[^>]+>/g,''))+'">'+(p.unit?'<span class="unit">'+p.unit+'</span>':'')+'<span class="pmark" aria-hidden="true"></span></span></li>';
+  };
+  const draw=focus=>{
+    const P=S.P, multi=P.parts.length>1;
+    prob.innerHTML=(P.ctx?'<p class="ctx">'+P.ctx+'</p>':'')+'<p class="q">'+P.q+'</p>'+
+      '<form data-form novalidate autocomplete="off"><div data-help></div><ol class="parts">'+P.parts.map((p,i)=>partHTML(p,i,multi)).join('')+'</ol>'+
+      '<div class="actions" style="margin-top:12px"><button class="btn primary" type="submit">Check answer'+(multi?'s':'')+'</button></div></form>'+
+      '<div class="fb" data-fb role="status" aria-live="polite"></div><div data-sol></div><div class="actions" data-actions></div>';
+    prob.querySelector('[data-form]').addEventListener('submit',e=>{ e.preventDefault(); check(); });
+    $$('[data-mc]',prob).forEach(mc=>mc.addEventListener('click',e=>{ const b=e.target.closest('button[data-oi]'); if(!b||b.disabled) return; $$('button',mc).forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
+    drawHelp(); drawActions(); drawTally();
+    if(focus){ const f=prob.querySelector('[data-help] input')||prob.querySelector('.pin'); if(f) f.focus(); }
+  };
+  const drawHelp=()=>{ const P=S.P; let out=''; if(S.mode==='guided') out='<div class="setup"><div class="lab">Set it up</div>'+P.guided+'</div>'; else if(S.mode==='hint') out=P.hints.slice(0,S.hint).map(h=>'<div class="hintbox"><p>'+h+'</p></div>').join(''); prob.querySelector('[data-help]').innerHTML=out; };
+  const drawActions=()=>{ let out=''; if(S.mode==='hint'&&!S.done&&S.hint<S.P.hints.length) out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>'; if(!S.done&&S.misses>=2&&!S.sol) out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>'; out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>'; prob.querySelector('[data-actions]').innerHTML=out; };
+  const drawTally=()=>{ box.querySelector('[data-tally]').textContent=S.solved===0?'No problems solved yet this session.':'Solved this session: '+S.solved+(S.streak>1?' ('+S.streak+' in a row)':''); };
+  const fb=(type,html)=>setFb(prob.querySelector('[data-fb]'),type,html);
+  const lock=()=>{ $$('.pin,[data-help] input,[data-mc] button',prob).forEach(i=>i.disabled=true); };
+  const checkBlanks=()=>{ const P=S.P, res={any:false,allOK:true,msg:''}, got={}; if(!P.blanks) return res;
+    Object.keys(P.blanks).forEach(k=>{ const i=prob.querySelector('[data-help] input[data-k="'+k+'"]'); if(!i) return; const raw=i.value.trim(); i.classList.remove('ok','no'); if(!raw){ res.allOK=false; got[k]={empty:true}; return; } res.any=true; const v=parseNum(raw); const b=P.blanks[k]; const good=v!==null&&near(v,b.want,b.tol,b.abs); i.classList.add(good?'ok':'no'); if(!good) res.allOK=false; got[k]={v,good}; });
+    res.msg=(P.blankMsg&&P.blankMsg(got))||''; return res; };
+  const grade=(p,i)=>{
+    if(p.type==='mc'){ const li=prob.querySelector('[data-pi="'+i+'"]'); const sel=li.querySelector('button[aria-pressed="true"]'); if(!sel) return {status:'empty'}; return {status:p.options[+sel.dataset.oi].ok?'correct':'wrong', msg:p.msg||'That is not the right choice. Look at how the mass number and atomic number changed.'}; }
+    const inp=prob.querySelector('.pin[data-pi="'+i+'"]'); const raw=inp.value.trim(); if(!raw) return {status:'empty'}; const v=parseNum(raw); if(v===null) return {status:'invalid',msg:'Enter a number for '+p.label.replace(/<[^>]+>/g,'')+'.'};
+    if(near(v,p.ans,p.tol,p.abs)) return {status:'correct'};
+    if(p.tol!==0&&p.ans!==0&&near(v,p.ans,0.1)) return {status:'close',msg:'Close, but not within rounding. Check your arithmetic'+(p.closeMsg?' '+p.closeMsg:'.')};
+    if(p.ans!==0&&(near(v,-p.ans,p.tol))) return {status:'wrong',msg:'Right size, wrong sign.'+(p.signMsg?' '+p.signMsg:'')};
+    return {status:'wrong',msg:p.wrong?p.wrong(v):'Not quite. Check the setup and try again.'};
+  };
+  const mark=(i,ok)=>{ const li=prob.querySelector('[data-pi="'+i+'"]'); const m=li.querySelector('.pmark'); m.textContent=ok?'✓':'✗'; m.className='pmark '+(ok?'ok':'no'); const inp=li.querySelector('.pin'); if(inp){ inp.classList.remove('ok','no'); inp.classList.add(ok?'ok':'no'); if(ok) inp.disabled=true; } const mc=li.querySelector('[data-mc]'); if(mc){ const sel=mc.querySelector('button[aria-pressed="true"]'); if(sel){ sel.classList.remove('ok','no'); sel.classList.add(ok?'ok':'no'); } if(ok) $$('button',mc).forEach(b=>b.disabled=true); } };
+  const check=()=>{
+    const P=S.P; if(S.done) return; const multi=P.parts.length>1, tag=i=>multi?'<b>('+LET[i]+')</b> ':'';
+    const bl=S.mode==='guided'?checkBlanks():{any:false,allOK:true,msg:''};
+    const res=P.parts.map((p,i)=>S.partDone[i]?{status:'done'}:grade(p,i));
+    const open=res.filter(r=>r.status!=='done');
+    if(open.every(r=>r.status==='empty')){
+      if(bl.any&&bl.msg) fb('bad','<p>'+bl.msg+'</p>'); else if(bl.any&&bl.allOK) fb('info','<p>The setup is right. Now finish the calculation and enter your answer'+(multi?'s':'')+'.</p>'); else if(bl.any) fb('info','<p>Good so far. Fill in the remaining blanks, then calculate.</p>'); else fb('info','<p>Enter your answer'+(multi?'s':'')+', then select Check.</p>'); return; }
+    const inv=res.findIndex(r=>r.status==='invalid'); if(inv>=0){ fb('info','<p>'+tag(inv)+res[inv].msg+'</p>'); return; }
+    const wrong=[]; res.forEach((r,i)=>{ if(r.status==='correct'){ S.partDone[i]=true; mark(i,true); } else if(r.status==='wrong'||r.status==='close'){ mark(i,false); wrong.push(i); } });
+    if(P.parts.every((p,i)=>S.partDone[i])){
+      S.done=true; S.solved++; S.streak++; lock();
+      let html='<p><b>'+(multi?'All parts correct.':'Correct.')+'</b> '+P.parts.map((p,i)=>(multi?'('+LET[i]+') ':'')+p.show).join('; ')+'</p>'+(P.done||'');
+      if(S.streak>=2&&S.mode!=='solo') html+='<p>That is '+S.streak+' in a row. Ready for less help?</p><button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+      fb('ok',html); prob.querySelector('[data-sol]').innerHTML='<details class="soldet"'+(S.sol?' open':'')+'><summary>See the worked solution</summary><div class="solution">'+P.solution+'</div></details>';
+      drawActions(); drawTally(); const nx=prob.querySelector('[data-act="next"]'); if(nx) nx.focus(); return; }
+    if(wrong.length){ S.misses++; S.streak=0; let msg=(bl.msg?'<p><b>Setup.</b> '+bl.msg+'</p>':'')+wrong.map(i=>'<p>'+tag(i)+res[i].msg+'</p>').join(''); if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>'; fb(wrong.every(i=>res[i].status==='close')&&!bl.msg?'warn':'bad',msg); }
+    else { const todo=P.parts.map((p,i)=>i).filter(i=>!S.partDone[i]); fb(bl.msg?'bad':'info',(bl.msg?'<p><b>Setup.</b> '+bl.msg+'</p>':'')+'<p>Right so far. Now answer part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ')+'.</p>'); }
+    drawActions(); drawTally();
+  };
+  box.querySelector('.seg').addEventListener('click',e=>{ const b=e.target.closest('button[data-mode]'); if(!b) return; setMode(b.dataset.mode); });
+  prob.addEventListener('click',e=>{ const b=e.target.closest('button[data-act]'); if(!b) return; const a=b.dataset.act;
+    if(a==='hint'){ S.hint++; drawHelp(); drawActions(); }
+    else if(a==='solution'){ S.sol=true; prob.querySelector('[data-sol]').innerHTML='<div class="solution">'+S.P.solution+'</div>'; drawActions(); }
+    else if(a==='next'){ next(); draw(true); }
+    else if(a==='levelup'){ setMode(S.mode==='guided'?'hint':'solo'); } });
+  draw(false);
+}
+// A worked example shown above a practice module: a fixed problem with its full solution.
+const workedExample = P => '<details class="example"><summary>Worked example</summary>'+(P.ctx?'<p class="ctx" style="margin-top:10px">'+P.ctx+'</p>':'')+'<p class="exq">'+P.q+'</p><div class="solution">'+P.solution+'</div></details>';
+
 /* ================= ROADMAP ================= */
 const MAPINFO={
   rad:{t:'1. Radiation: what comes out of an unstable nucleus',h:'<p>Some nuclei are unstable and spit out particles or energy: <b>alpha</b> particles, <b>beta</b> particles, and <b>gamma</b> rays. This radiation knocks electrons off molecules in your cells, which is why it is called ionizing radiation and why it can damage DNA. Most of the radiation you receive is natural background, mainly radon from the ground.</p>'},
@@ -448,6 +574,7 @@ function renderMap(){
     '</div><div class="detail" id="mapdetail"></div>'+
     '<h3>How to use this guide</h3><ul>'+
     '<li>Each section opens with the key ideas, then activities you can play with, then a short <b>Check yourself</b>. When you get every question right, the tab gets a checkmark.</li>'+
+    '<li>Sections 2, 3, 6, and 7 have <b>practice problems</b> with three help levels. <b>Guided setup</b> walks you through the setup with blanks to fill in; <b>Hints if I ask</b> gives you up to two hints on request; <b>On my own</b> is just the problem. After two wrong tries you can open the worked solution, and every solved problem shows one. Each starts with a fully worked example.</li>'+
     '<li>Nuclear symbols are written the way the textbook writes them: '+N(222,86,'Rn')+' is radon with mass number 222 (protons + neutrons) on top and atomic number 86 (protons) below.</li>'+
     '<li>The <b>Review quiz</b> mixes questions from all eight sections, and the <b>Key terms</b> tab works as flashcards.</li>'+
     '</ul>'+
@@ -533,8 +660,6 @@ const IDQ=[
 ];
 function renderEqn(){
   const S=state.eqn;
-  const mk=()=>shuffle(DECAYS).slice(0,8);
-  if(!S.deck){ S.deck=mk(); S.i=0; S.score=0; S.answered=false; }
   view.innerHTML='<section><h2>2. Nuclear equations</h2>'+
     '<p class="lede">A nuclear equation shows what a nucleus turns into. The bookkeeping is simple: the <b>mass numbers</b> (protons + neutrons) on the left must add up to those on the right, and so must the <b>atomic numbers</b> (protons). Because the atomic number can change, one element can become another, something no chemical reaction can do.</p>'+
     ideas([
@@ -543,7 +668,7 @@ function renderEqn(){
       {t:'Balancing',p:'Add up the top numbers on each side; add up the bottom numbers on each side. Whatever is missing tells you the mass number and atomic number of the unknown, and the atomic number tells you the element.'},
       {t:'Nuclear versus chemical reactions (Table 11.3)',l:['Chemical: atoms keep their identity; only outer electrons are involved; small energy changes; faster when hot.','Nuclear: atoms usually change into other elements; protons and neutrons are involved and the electrons do not matter; enormous energy changes with a measurable loss of mass (E = mc<sup>2</sup>); rate is unaffected by temperature or chemical form.']}
     ])+
-    '<h3>Balance the decay</h3><div class="act" id="dbox"></div>'+
+    '<h3>Nuclear equation practice</h3><p>Four kinds of problem come up, in a new mix each time: find the product of a decay, identify the particle, work backward to the parent, and complete a bombardment (transmutation) equation. Start with the guided setup, then try hints only, then on your own.</p>'+workedExample(genNuc('product'))+'<div id="nucprac"></div>'+
     '<h3>Name that decay</h3><div class="act" id="idbox"></div>'+
     checkYourself('eqn',[
       {q:'In any nuclear equation, which two things must balance?',o:['Mass and volume','Mass numbers and atomic numbers','Charges and colors','Protons and electrons'],a:1,e:'Nucleons (mass number) and protons (atomic number) are conserved. Balance the top numbers and the bottom numbers separately.',w:{0:'Volume has nothing to do with it.',2:'Charge is part of it, but the rule is stated in terms of mass number and atomic number.',3:'Electrons are not what nuclear equations track; the nucleus is.'}},
@@ -553,38 +678,8 @@ function renderEqn(){
     ])+
     '</section>';
 
-  // Balance-the-decay activity
-  const paintD=()=>{
-    const box=$('#dbox');
-    if(S.i>=S.deck.length){ box.innerHTML='<p class="q">All '+S.deck.length+' done: <b>'+S.score+'</b> right on the first try.</p><div class="actions"><button type="button" class="btn primary" id="dagain">New set</button></div>'; $('#dagain').addEventListener('click',()=>{S.deck=mk();S.i=0;S.score=0;S.answered=false;paintD();}); return; }
-    const d=S.deck[S.i], T=DTYPE[d.t]; const pSym=SYM[d.p[1]], dSym=SYM[d.d[1]];
-    const left=N(d.p[0],d.p[1],pSym)+(T.side==='left'?' + '+T.part:'');
-    const unknown='<span class="nucin"><input type="text" inputmode="numeric" id="inA" aria-label="Mass number of the product" placeholder="A"><input type="text" inputmode="numeric" id="inZ" aria-label="Atomic number of the product" placeholder="Z"></span><span class="unk" id="unkSym">?</span>';
-    box.innerHTML='<p class="how">Decay '+(S.i+1)+' of '+S.deck.length+'. '+ENAME[pSym].charAt(0).toUpperCase()+ENAME[pSym].slice(1)+'-'+d.p[0]+' undergoes <b>'+T.n+'</b>. Fill in the mass number (top) and atomic number (bottom) of the product, then check. The element symbol appears when you get the atomic number right.</p>'+
-      '<div class="eq">'+left+' → '+(T.side==='right'&&d.t!=='gamma'?T.part+' + ':'')+unknown+(d.t==='gamma'?' + '+T.part:'')+'</div>'+
-      '<div class="actions"><button type="button" class="btn primary" id="dcheck">Check</button></div>'+fbBox('dfb')+'<div class="actions" id="dact"></div><p class="tally">Right on first try: '+S.score+' of '+S.i+'</p>';
-    const chk=()=>{
-      if(S.answered) return;
-      const A=parseInt($('#inA').value,10), Z=parseInt($('#inZ').value,10);
-      if(isNaN(A)||isNaN(Z)){ setFb('dfb','warn','<p>Enter both numbers: mass number on top, atomic number below.</p>'); return; }
-      const okA=A===d.d[0], okZ=Z===d.d[1];
-      $('#inA').classList.toggle('ok',okA); $('#inA').classList.toggle('no',!okA); $('#inZ').classList.toggle('ok',okZ); $('#inZ').classList.toggle('no',!okZ);
-      const u=$('#unkSym'); if(okZ&&u) u.outerHTML='<span class="nuc"><span class="sym">'+dSym+'</span></span>';
-      if(okA&&okZ){
-        S.answered=true; if(!S.missed) S.score++; S.missed=false;
-        $('#inA').disabled=true; $('#inZ').disabled=true;
-        setFb('dfb','ok','<p><b>Balanced.</b> '+T.rule+' The product is '+ENAME[dSym]+'-'+d.d[0]+', '+N(d.d[0],d.d[1],dSym)+'.</p><p>'+d.note+'</p>');
-        $('#dact').innerHTML='<button type="button" class="btn primary" id="dnext">Next decay</button>'; $('#dnext').addEventListener('click',()=>{S.i++;S.answered=false;S.missed=false;paintD();});
-      } else {
-        S.missed=true;
-        let msg=[]; if(!okA) msg.push('Mass number: '+(d.t==='alpha'?'an alpha particle carries away 4, so subtract 4.':'this decay does not change the mass number.')); if(!okZ) msg.push('Atomic number: '+T.rule.split(': ')[1]);
-        setFb('dfb','bad','<p>'+msg.join(' ')+' Try again.</p>');
-      }
-    };
-    $('#dcheck').addEventListener('click',chk); ['inA','inZ'].forEach(id=>$('#'+id).addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); }));
-    $('#inA').focus();
-  };
-  S.missed=false; paintD();
+  if(!S.prac) S.prac=freshPrac();
+  mountPractice('nucprac',S.prac,()=>genNuc());
 
   // Name that decay
   const names={alpha:'Alpha decay',beta:'Beta decay',gamma:'Gamma emission',positron:'Positron emission',ec:'Electron capture'};
@@ -606,17 +701,8 @@ const ISOS={
   U238:{n:'Uranium-238',t:4.51e9,u:'years',use:'dating the oldest rocks on Earth'}
 };
 function fmtT(x){ return x>=1e6? (x/1e9>=1? fmt(x/1e9,2)+' billion' : fmt(x/1e6,2)+' million') : fmt(x,2); }
-function makeHalfProblem(){
-  const t=pick(['remain','remain','howlong','count','date','date']);
-  if(t==='remain'){ const k=pick(['I131','P32','Co60','Sr90','Tc99m']); const iso=ISOS[k]; const n=1+Math.floor(Math.random()*4); const start=pick([80,100,120,160,200,400]); return {t,q:'You start with '+start+' mg of '+iso.n+' (half-life '+iso.t+' '+iso.u+'). How many milligrams remain after '+fmt(iso.t*n,2)+' '+iso.u+'?',ans:start/Math.pow(2,n),e:fmt(iso.t*n,2)+' '+iso.u+' is '+n+' half-li'+(n>1?'ves':'fe')+'. Halve '+start+' mg '+n+' time'+(n>1?'s':'')+': '+start/Math.pow(2,n)+' mg remain.'}; }
-  if(t==='howlong'){ const k=pick(['I131','P32','Co60','Sr90','H3']); const iso=ISOS[k]; const n=1+Math.floor(Math.random()*4); const frac=['1/2','1/4','1/8','1/16'][n-1]; return {t,q:'How long does it take for a sample of '+iso.n+' (half-life '+iso.t+' '+iso.u+') to decay to '+frac+' of its original amount? Answer in '+iso.u+'.',ans:iso.t*n,e:frac+' of the original means '+n+' half-li'+(n>1?'ves':'fe')+' have passed: '+n+' × '+iso.t+' = '+fmt(iso.t*n,2)+' '+iso.u+'.'}; }
-  if(t==='count'){ const n=1+Math.floor(Math.random()*5); const start=pick([64,80,96,160,320,640]); return {t,q:'A sample decays from '+start+' g to '+start/Math.pow(2,n)+' g. How many half-lives have passed?',ans:n,e:'Keep halving: '+Array.from({length:n},(_,i)=>start/Math.pow(2,i+1)).join(' → ')+'. That is '+n+' halvings, so '+n+' half-li'+(n>1?'ves':'fe')+'.'}; }
-  const n=1+Math.floor(Math.random()*4); const frac=['one-half','one-fourth','one-eighth','one-sixteenth'][n-1];
-  return {t,q:'A piece of charcoal from an ancient fire pit has '+frac+' as much carbon-14 as a living tree. About how old is it, in years? (Half-life of carbon-14: 5730 years.)',ans:5730*n,e:frac.charAt(0).toUpperCase()+frac.slice(1)+' remaining means '+n+' half-li'+(n>1?'ves':'fe')+': '+n+' × 5730 = '+fmt(5730*n,0)+' years.'};
-}
 function renderHalf(){
   const S=state.half;
-  if(!S.prac.P){ S.prac.P=makeHalfProblem(); S.prac.answered=false; }
   view.innerHTML='<section><h2>3. Half-life and dating</h2>'+
     '<p class="lede">You cannot predict when one particular nucleus will decay, but a large sample decays at a perfectly steady rate. The <b>half-life</b> is the time it takes for half of the sample to decay. It is fixed for each isotope and cannot be sped up or slowed down by heat, pressure, or chemistry, which is what makes it a reliable clock.</p>'+
     ideas([
@@ -630,7 +716,7 @@ function renderHalf(){
     '<label for="hstart">Start with</label><input class="pin" id="hstart" type="text" inputmode="decimal" value="'+esc(S.start)+'"> g</div>'+
     '<label for="hn" style="font-weight:600;display:block;margin-top:12px">Half-lives elapsed: <span id="hnv">'+S.n+'</span></label><input type="range" id="hn" min="0" max="10" step="1" value="'+S.n+'">'+
     '<div id="hout"></div></div>'+
-    '<h3>Practice</h3><div class="act" id="hprac"></div>'+
+    '<h3>Half-life practice</h3><p>Six kinds of problem: amount remaining, time to reach a fraction, counting half-lives, carbon-14 dating, finding a half-life from data, and percent remaining. Every problem needs the same two steps: count the half-lives, then halve (or un-halve) that many times.</p>'+workedExample(genHalf('remain'))+'<div id="hprac"></div>'+
     world('Why half-life matters in the real world','<p><b>Medicine:</b> technetium-99m (6 h) and iodine-131 (8 d) give a clear scan and then disappear from the body in days, while cobalt-60 (5.3 y) stays intense enough to run a therapy machine for years. <b>Fallout:</b> iodine-131 is dangerous for a few weeks after a release; strontium-90 (28.5 y) and cesium-137 (30 y) stay in soil and food for a century. <b>Waste:</b> plutonium-239 (24,000 y) is why spent reactor fuel must be isolated for thousands of years. <b>Dating:</b> the Shroud of Turin, the Dead Sea Scrolls, Ötzi the Iceman, and the age of the Earth itself were all dated by half-lives.</p>')+
     checkYourself('half',[
       {q:'The half-life of a radioactive isotope is …',o:['half the time it takes to decay completely.','the time for half of a sample to decay.','the time for the sample to lose half its mass to evaporation.','always 5730 years.'],a:1,e:'After one half-life, half of the original nuclei have decayed. After another, half of what was left, and so on.',w:{0:'Decay never truly finishes, so there is no “complete” time to halve.',2:'Mass is lost only as the tiny decay particles; the atoms turn into other elements and mostly stay put.',3:'5730 years is carbon-14’s half-life. Others range from fractions of a second to billions of years.'}},
@@ -654,18 +740,240 @@ function renderHalf(){
   $('#hn').addEventListener('input',()=>{S.n=+$('#hn').value;paintH();});
   paintH();
 
-  const P=S.prac;
-  const paintPrac=()=>{
-    const p=P.P; const box=$('#hprac');
-    box.innerHTML='<p class="how">New problems every time. Solved this session: '+P.solved+'.</p><p class="q">'+p.q+'</p>'+
-      '<div class="row"><input class="pin" id="hans" type="text" inputmode="decimal" aria-label="Your answer"><button type="button" class="btn primary" id="hcheck">Check</button></div>'+fbBox('hfb')+'<div class="actions" id="hact"></div>';
-    const chk=()=>{ if(P.answered) return; const raw=$('#hans').value.trim().replace(/,/g,''); const v=parseFloat(raw); if(isNaN(v)){ setFb('hfb','warn','<p>Enter a number.</p>'); return; }
-      const right=Math.abs(v-p.ans)<=Math.max(0.011,Math.abs(p.ans)*0.01); $('#hans').classList.add(right?'ok':'no'); $('#hans').disabled=true; P.answered=true; if(right) P.solved++;
-      setFb('hfb',right?'ok':'bad','<p><b>'+(right?'Correct.':'Not quite. The answer is '+fmt(p.ans,3)+'.')+'</b> '+p.e+'</p>');
-      $('#hact').innerHTML='<button type="button" class="btn primary" id="hnext">Next problem</button>'; $('#hnext').addEventListener('click',()=>{P.P=makeHalfProblem();P.answered=false;paintPrac();}); };
-    $('#hcheck').addEventListener('click',chk); $('#hans').addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); });
-  };
-  paintPrac();
+  if(!S.prac||!S.prac.mode) S.prac=freshPrac();
+  mountPractice('hprac',S.prac,()=>genHalf());
+}
+
+/* ---------- Problem generators for the practice modules ---------- */
+const nucName = (A,Z) => ENAME[SYM[Z]]+'-'+A;
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+const PINFO={alpha:{pA:4,pZ:2,name:'an alpha particle',sym:PART.alpha,desc:'a helium nucleus: two protons and two neutrons'},beta:{pA:0,pZ:-1,name:'a beta particle',sym:PART.beta,desc:'an electron: no mass number, charge −1'},positron:{pA:0,pZ:1,name:'a positron',sym:PART.positron,desc:'a positive electron: no mass number, charge +1'},ec:{pA:0,pZ:-1,name:'a captured electron',sym:PART.electron,desc:'an electron absorbed by the nucleus: no mass number, charge −1, written on the left'},gamma:{pA:0,pZ:0,name:'a gamma ray',sym:PART.gamma,desc:'pure energy: no mass number, no charge'}};
+const BOMBARD=[
+  {l:[[14,7],[4,2]],r:[[17,8],[1,1]],unk:0,note:'Rutherford’s 1919 experiment, the first artificial transmutation: nitrogen became oxygen.'},
+  {l:[[27,13],[4,2]],r:[[30,15],[1,0]],unk:0,note:'The Joliot-Curies made phosphorus-30 this way in 1934, the first artificial radioactive isotope.'},
+  {l:[[238,92],[1,0]],r:[[239,92]],unk:0,note:'Uranium-239 then beta-decays twice to plutonium-239, which is how reactors make plutonium.'},
+  {l:[[9,4],[4,2]],r:[[12,6],[1,0]],unk:0,note:'Chadwick discovered the neutron with this reaction in 1932.'},
+  {l:[[14,7],[1,0]],r:[[14,6],[1,1]],unk:0,note:'This is how cosmic-ray neutrons make the carbon-14 used in radiocarbon dating.'},
+  {l:[[239,94],[4,2]],r:[[242,96],[1,0]],unk:0,note:'Curium, element 96, was first made this way in 1944 and named for Marie and Pierre Curie.'},
+  {l:[[98,42],[1,0]],r:[[99,42]],unk:0,note:'Molybdenum-99 is the parent that hospitals “milk” for technetium-99m.'}
+];
+function genNuc(fixed){
+  const type=fixed||pick(['product','product','particle','parent','bombard']);
+  if(type==='bombard'){
+    const b=pick(BOMBARD); const known=b.r.filter((_,i)=>i!==b.unk); const u=b.r[b.unk];
+    const LA=b.l.reduce((t,x)=>t+x[0],0), LZ=b.l.reduce((t,x)=>t+x[1],0); const KA=known.reduce((t,x)=>t+x[0],0), KZ=known.reduce((t,x)=>t+x[1],0);
+    const nl=x=>N(x[0],x[1],x[1]===0?'n':x[1]===1&&x[0]===1?'p':SYM[x[1]]);
+    const eq='<div class="eq">'+b.l.map(nl).join(' + ')+' → <span class="unk">?</span>'+(known.length?' + '+known.map(nl).join(' + '):'')+'</div>';
+    return {ctx:'Artificial transmutation: a nucleus is struck by a particle and a new nucleus forms.',q:'Identify the missing product in this bombardment reaction.'+eq,
+      parts:[{type:'num',label:'Mass number of the missing nucleus',ans:u[0],tol:0,show:'mass number '+u[0]},{type:'num',label:'Atomic number of the missing nucleus',ans:u[1],tol:0,show:'atomic number '+u[1]+' ('+ENAME[SYM[u[1]]]+')'}],
+      guided:'<p>Add up the two sides. Left side, mass numbers: '+b.l.map(x=>x[0]).join(' + ')+' = '+blank('LA','total mass number on the left')+'. Left side, atomic numbers: '+b.l.map(x=>x[1]).join(' + ')+' = '+blank('LZ','total atomic number on the left')+'.</p><p>The right side must add up to the same totals. Subtract the known product'+(known.length>1?'s':'')+' ('+(known.length?known.map(x=>x[0]).join(' + ')+' on top, '+known.map(x=>x[1]).join(' + ')+' on the bottom':'none')+') to get the unknown.</p>',
+      blanks:{LA:{want:LA,tol:0},LZ:{want:LZ,tol:0}},
+      blankMsg:g=>g.LA&&g.LA.good===false?'Add the mass numbers (top numbers) of both reactants.':g.LZ&&g.LZ.good===false?'Add the atomic numbers (bottom numbers) of both reactants. A neutron is 0; a proton is 1.':'',
+      hints:['Both sides of a nuclear equation must have the same total mass number and the same total atomic number.','Add the left side’s top numbers, subtract the known product’s top number, and you have the unknown’s mass number. Do the same with the bottom numbers.'],
+      solution:'<ol><li>Totals on the left: mass numbers '+b.l.map(x=>x[0]).join(' + ')+' = '+LA+'; atomic numbers '+b.l.map(x=>x[1]).join(' + ')+' = '+LZ+'.</li><li>Mass number of the unknown: '+LA+' − '+KA+' = <b>'+u[0]+'</b>.</li><li>Atomic number of the unknown: '+LZ+' − '+KZ+' = <b>'+u[1]+'</b>, which is '+ENAME[SYM[u[1]]]+'.</li><li>Balanced: '+b.l.map(nl).join(' + ')+' → '+b.r.map(nl).join(' + ')+'.</li></ol><p class="src">'+b.note+'</p>',
+      done:'<p>The missing nucleus is '+nucName(u[0],u[1])+', '+N(u[0],u[1],SYM[u[1]])+'. '+b.note+'</p>'};
+  }
+  const d=fixed==='product'?DECAYS[2]:pick(DECAYS.filter(x=>type==='particle'?x.t!=='ec':true)); const T=PINFO[d.t]; const D=DTYPE[d.t];
+  const pA=d.p[0], pZ=d.p[1], dA=d.d[0], dZ=d.d[1]; const pSym=SYM[pZ], dSym=SYM[dZ];
+  const parentN=N(pA,pZ,pSym), daughterN=N(dA,dZ,dSym);
+  const fullEq=(d.t==='ec'?parentN+' + '+T.sym+' → '+daughterN:parentN+' → '+daughterN+' + '+T.sym);
+  const pAnum=typeof pA==='string'?parseInt(pA,10):pA;
+  if(type==='particle'){
+    const opts=[{k:'alpha',v:'Alpha particle, '+PART.alpha},{k:'beta',v:'Beta particle, '+PART.beta},{k:'gamma',v:'Gamma ray, '+PART.gamma},{k:'positron',v:'Positron, '+PART.positron},{k:'ec',v:'An electron is captured, '+PART.electron}];
+    const chA=dA-pAnum, chZ=dZ-pZ;
+    return {ctx:cap(ENAME[pSym])+'-'+pA+' decays to '+nucName(dA,dZ)+'.',q:'What particle is involved?<div class="eq">'+parentN+' → '+daughterN+' + <span class="unk">?</span></div>',
+      parts:[{type:'mc',label:'The particle',options:opts.map(o=>({v:o.v,ok:o.k===d.t})),show:T.name+', '+T.sym,msg:'Not that one. Compare the two mass numbers and the two atomic numbers, then match the change to a particle.'}],
+      guided:'<p>Change in mass number: '+dA+' − '+pAnum+' = '+blank('dA','change in mass number')+'. Change in atomic number: '+dZ+' − '+pZ+' = '+blank('dZ','change in atomic number')+'.</p><p>Match the change: −4 and −2 is alpha; 0 and +1 is beta; 0 and −1 is a positron or a captured electron; 0 and 0 is gamma.</p>',
+      blanks:{dA:{want:chA,tol:0},dZ:{want:chZ,tol:0}},
+      blankMsg:g=>g.dA&&g.dA.good===false?'Subtract the parent’s mass number from the product’s.':g.dZ&&g.dZ.good===false?'Subtract the parent’s atomic number from the product’s. The result can be negative.':'',
+      hints:['Work out how much the mass number changed and how much the atomic number changed.',D.rule+' Electron capture gives the same change as positron emission; the difference is that the electron is a reactant.'],
+      solution:'<ol><li>Mass number: '+dA+' − '+pAnum+' = '+chA+'. Atomic number: '+dZ+' − '+pZ+' = '+(chZ>0?'+':'')+chZ+'.</li><li>'+D.rule+'</li><li>So the particle is '+T.name+' ('+T.desc+'): '+fullEq+'.</li></ol><p class="src">'+d.note+'</p>',
+      done:'<p>'+fullEq+'. '+d.note+'</p>'};
+  }
+  if(type==='parent'){
+    return {ctx:'A nucleus undergoes '+D.n+' and the product is '+nucName(dA,dZ)+'.',q:'Identify the parent nucleus.<div class="eq"><span class="unk">?</span> '+(d.t==='ec'?'+ '+T.sym+' → '+daughterN:'→ '+daughterN+' + '+T.sym)+'</div>',
+      parts:[{type:'num',label:'Mass number of the parent',ans:pAnum,tol:0,show:'mass number '+pAnum},{type:'num',label:'Atomic number of the parent',ans:pZ,tol:0,show:'atomic number '+pZ+' ('+ENAME[pSym]+')'}],
+      guided:'<p>The particle is '+T.name+', '+T.sym+'. Its mass number is '+blank('pA','mass number of the particle')+' and its atomic number (charge) is '+blank('pZ','atomic number of the particle')+'.</p><p>'+(d.t==='ec'?'The electron is on the <b>left</b> with the parent, so parent + electron = product: parent = product − electron.':'The parent must equal product + particle, top numbers and bottom numbers separately.')+'</p>',
+      blanks:{pA:{want:T.pA,tol:0},pZ:{want:T.pZ,tol:0}},
+      blankMsg:g=>g.pA&&g.pA.good===false?cap(T.name)+' has mass number '+T.pA+'.':g.pZ&&g.pZ.good===false?cap(T.name)+' has atomic number (charge) '+(T.pZ<0?'−'+(-T.pZ):T.pZ)+'.':'',
+      hints:['Write the particle with its numbers: '+T.sym+'.',(d.t==='ec'?'Here the electron is a reactant. Parent + (0, −1) = product, so parent = product − (0, −1): the atomic number goes <i>up</i> by one going backward.':'Going backward, add the particle’s numbers to the product’s: parent mass number = '+dA+' + '+T.pA+'; parent atomic number = '+dZ+' + ('+T.pZ+').')],
+      solution:'<ol><li>The particle: '+T.name+', '+T.sym+' ('+T.desc+').</li><li>Mass numbers: parent = '+dA+(d.t==='ec'?' − 0':' + '+T.pA)+' = <b>'+pAnum+'</b>.</li><li>Atomic numbers: parent = '+dZ+(d.t==='ec'?' − (−1)':' + ('+T.pZ+')')+' = <b>'+pZ+'</b>, which is '+ENAME[pSym]+'.</li><li>Balanced: '+fullEq+'.</li></ol><p class="src">'+d.note+'</p>',
+      done:'<p>The parent is '+nucName(pA,pZ)+': '+fullEq+'.</p>'};
+  }
+  // product
+  return {ctx:cap(ENAME[pSym])+'-'+pA+' undergoes '+D.n+'.',q:'Give the mass number and atomic number of the product nucleus.<div class="eq">'+(d.t==='ec'?parentN+' + '+T.sym+' → <span class="unk">?</span>':parentN+' → <span class="unk">?</span> + '+T.sym)+'</div>',
+    parts:[{type:'num',label:'Mass number of the product',ans:dA,tol:0,show:'mass number '+dA},{type:'num',label:'Atomic number of the product',ans:dZ,tol:0,show:'atomic number '+dZ+' ('+ENAME[dSym]+')'}],
+    guided:'<p>The particle is '+T.name+', '+T.sym+'. Its mass number is '+blank('pA','mass number of the particle')+' and its atomic number (charge) is '+blank('pZ','atomic number of the particle')+'.</p><p>'+(d.t==='ec'?'The electron is on the <b>left</b>, so add it to the parent: product mass number = '+pAnum+' + 0; product atomic number = '+pZ+' + (−1).':'Subtract the particle from the parent: product mass number = '+pAnum+' − (particle); product atomic number = '+pZ+' − (particle). A negative particle charge means you add one.')+'</p>',
+    blanks:{pA:{want:T.pA,tol:0},pZ:{want:T.pZ,tol:0}},
+    blankMsg:g=>g.pA&&g.pA.good===false?cap(T.name)+' has mass number '+T.pA+'.':g.pZ&&g.pZ.good===false?cap(T.name)+' has atomic number (charge) '+(T.pZ<0?'−'+(-T.pZ):T.pZ)+'.':'',
+    hints:[D.rule,'Top line: '+pAnum+' = '+(d.t==='ec'?'(product) − 0':T.pA+' + (product)')+'. Bottom line: '+pZ+' = '+(d.t==='ec'?'(product) − (−1)':'('+T.pZ+') + (product)')+'. Then look up the element with that atomic number.'],
+    solution:'<ol><li>The particle: '+T.name+', '+T.sym+' ('+T.desc+').</li><li>Mass numbers: '+(d.t==='ec'?pAnum+' + 0 = <b>'+dA+'</b>':pAnum+' = '+T.pA+' + A, so A = <b>'+dA+'</b>')+'.</li><li>Atomic numbers: '+(d.t==='ec'?pZ+' + (−1) = <b>'+dZ+'</b>':pZ+' = ('+T.pZ+') + Z, so Z = <b>'+dZ+'</b>')+'.</li><li>Element '+dZ+' is '+ENAME[dSym]+': '+fullEq+'.</li></ol><p class="src">'+d.note+'</p>',
+    done:'<p>The product is '+nucName(dA,dZ)+': '+fullEq+'.</p>'};
+}
+
+function genHalf(fixed){
+  const type=fixed||pick(['remain','remain','howlong','count','date','findhalf','percent']);
+  const fr=['1/2','1/4','1/8','1/16','1/32'], words=['one-half','one-fourth','one-eighth','one-sixteenth','one thirty-second'];
+  const halfLives=n=>n+' half-li'+(n===1?'fe':'ves');
+  if(type==='remain'){
+    const k=fixed?'I131':pick(['I131','P32','Co60','Sr90','Tc99m','H3']); const iso=ISOS[k]; const n=fixed?3:1+Math.floor(Math.random()*4); const start=fixed?80:pick([40,80,100,120,160,200,400,500]); const t=iso.t*n; const ans=start/Math.pow(2,n);
+    return {ctx:iso.n+' has a half-life of '+iso.t+' '+iso.u+'. It is used for '+iso.use+'.',q:'A sample starts at '+start+' mg. How much remains after '+fmt(t,2)+' '+iso.u+'?',
+      parts:[{type:'num',label:'Amount remaining',ans:ans,unit:'mg',show:ans+' mg remain'}],
+      guided:'<p>Number of half-lives: '+fmt(t,2)+' ÷ '+iso.t+' = '+blank('n','number of half-lives')+'.</p><p>Fraction remaining: (½)<sup>n</sup> = '+blank('f','fraction remaining as a decimal or fraction',true)+'. Amount remaining = '+start+' mg × fraction.</p>',
+      blanks:{n:{want:n,tol:0},f:{want:1/Math.pow(2,n),tol:0.01}},
+      blankMsg:g=>g.n&&g.n.good===false?'Divide the elapsed time by the half-life to count half-lives.':g.f&&g.f.good===false?'Halve 1 that many times: ½, ¼, ⅛, … You can enter it as a fraction (1/8) or a decimal (0.125).':'',
+      hints:['How many half-lives fit into '+fmt(t,2)+' '+iso.u+'? Divide by '+iso.t+'.','Start with '+start+' mg and cut it in half '+n+' time'+(n>1?'s':'')+'.'],
+      solution:'<ol><li>Half-lives elapsed: '+fmt(t,2)+' ÷ '+iso.t+' = '+n+'.</li><li>Fraction remaining: (½)<sup>'+n+'</sup> = '+fr[n-1]+' = '+fmt(100/Math.pow(2,n),3)+'%.</li><li>Amount: '+start+' mg × '+fr[n-1]+' = <b>'+ans+' mg</b>. (Or halve it step by step: '+Array.from({length:n},(_,i)=>start/Math.pow(2,i+1)).join(' → ')+'.)</li></ol>'};
+  }
+  if(type==='howlong'){
+    const k=pick(['I131','P32','Co60','Sr90','H3','C14']); const iso=ISOS[k]; const n=1+Math.floor(Math.random()*4); const ans=iso.t*n;
+    return {ctx:iso.n+' has a half-life of '+iso.t+' '+iso.u+'.',q:'How long does it take for a sample to decay to '+fr[n-1]+' of its original amount?',
+      parts:[{type:'num',label:'Time',ans:ans,unit:iso.u,show:fmt(ans,2)+' '+iso.u}],
+      guided:'<p>'+fr[n-1]+' = (½)<sup>n</sup>, so n = '+blank('n','number of half-lives')+' half-lives.</p><p>Time = n × half-life = n × '+iso.t+' '+iso.u+'.</p>',
+      blanks:{n:{want:n,tol:0}},blankMsg:g=>g.n&&g.n.good===false?'How many times must you halve 1 to reach '+fr[n-1]+'? That is n.':'',
+      hints:['Each half-life cuts the amount in half. How many halvings get you from 1 to '+fr[n-1]+'?','Multiply that number of half-lives by '+iso.t+' '+iso.u+'.'],
+      solution:'<ol><li>'+fr[n-1]+' = '+Array.from({length:n},()=>'½').join(' × ')+' = (½)<sup>'+n+'</sup>, so '+halfLives(n)+' must pass.</li><li>Time = '+n+' × '+iso.t+' '+iso.u+' = <b>'+fmt(ans,2)+' '+iso.u+'</b>.</li></ol>'};
+  }
+  if(type==='count'){
+    const n=1+Math.floor(Math.random()*5); const start=pick([64,80,96,160,320,640,1000]); const end=start/Math.pow(2,n);
+    return {q:'A radioactive sample decays from '+start+' g to '+fmt(end,4)+' g. How many half-lives have passed?',
+      parts:[{type:'num',label:'Number of half-lives',ans:n,tol:0,show:halfLives(n)}],
+      guided:'<p>Fraction remaining = '+fmt(end,4)+' ÷ '+start+' = '+blank('f','fraction remaining',true)+'.</p><p>Write that fraction as (½)<sup>n</sup>; n is the answer.</p>',
+      blanks:{f:{want:end/start,tol:0.01}},blankMsg:g=>g.f&&g.f.good===false?'Divide the final amount by the starting amount.':'',
+      hints:['Keep halving '+start+' g until you reach '+fmt(end,4)+' g, counting the halvings.','The fraction left is '+fr[n-1]+', which is ½ multiplied by itself '+n+' time'+(n>1?'s':'')+'.'],
+      solution:'<ol><li>Halve repeatedly: '+start+' → '+Array.from({length:n},(_,i)=>fmt(start/Math.pow(2,i+1),4)).join(' → ')+' g.</li><li>That took '+n+' halving'+(n>1?'s':'')+', so <b>'+halfLives(n)+'</b> passed. (Check: '+fmt(end,4)+' ÷ '+start+' = '+fr[n-1]+'.)</li></ol>'};
+  }
+  if(type==='date'){
+    const n=1+Math.floor(Math.random()*4); const obj=pick(['A piece of charcoal from an ancient fire pit','A wooden beam from a buried temple','A fragment of linen wrapping','A bone from a cave burial','A seed found in a cliff dwelling']);
+    return {ctx:'Carbon-14 has a half-life of 5730 years. Living things keep a steady level of it; after death it decays.',q:obj+' has '+words[n-1]+' as much carbon-14 as living material. About how old is it?',
+      parts:[{type:'num',label:'Age',ans:5730*n,unit:'years',show:fmt(5730*n,0)+' years'}],
+      guided:'<p>'+words[n-1]+' remaining means n = '+blank('n','number of half-lives')+' half-lives have passed.</p><p>Age = n × 5730 years.</p>',
+      blanks:{n:{want:n,tol:0}},blankMsg:g=>g.n&&g.n.good===false?words[n-1].charAt(0).toUpperCase()+words[n-1].slice(1)+' is '+fr[n-1]+' = (½)<sup>'+n+'</sup>.':'',
+      hints:['How many halvings take 1 down to '+fr[n-1]+'?','Multiply that number by the half-life, 5730 years.'],
+      solution:'<ol><li>'+cap(words[n-1])+' = '+fr[n-1]+' = (½)<sup>'+n+'</sup>: '+halfLives(n)+'.</li><li>Age = '+n+' × 5730 = <b>'+fmt(5730*n,0)+' years</b>.</li></ol>'};
+  }
+  if(type==='findhalf'){
+    const n=2+Math.floor(Math.random()*3); const start=pick([80,120,160,200,400]); const end=start/Math.pow(2,n); const th=pick([5,8,12,15,20,30,50]); const t=th*n;
+    return {q:'A sample of a radioisotope drops from '+start+' mg to '+fmt(end,3)+' mg in '+t+' days. What is its half-life?',
+      parts:[{type:'num',label:'Half-life',ans:th,unit:'days',show:th+' days'}],
+      guided:'<p>Fraction remaining: '+fmt(end,3)+' ÷ '+start+' = '+fr[n-1]+', so n = '+blank('n','number of half-lives')+' half-lives passed.</p><p>Half-life = total time ÷ n = '+t+' days ÷ n.</p>',
+      blanks:{n:{want:n,tol:0}},blankMsg:g=>g.n&&g.n.good===false?'Count the halvings from '+start+' to '+fmt(end,3)+'.':'',
+      hints:['Count how many times '+start+' mg was halved to reach '+fmt(end,3)+' mg.','Those halvings happened in '+t+' days, so one half-life is '+t+' ÷ (number of halvings).'],
+      solution:'<ol><li>'+start+' → '+Array.from({length:n},(_,i)=>fmt(start/Math.pow(2,i+1),3)).join(' → ')+' mg: '+halfLives(n)+'.</li><li>Half-life = '+t+' days ÷ '+n+' = <b>'+th+' days</b>.</li></ol>'};
+  }
+  const n=1+Math.floor(Math.random()*5); const pct=100/Math.pow(2,n);
+  return {q:'What percentage of a radioactive sample remains after '+halfLives(n)+'?',
+    parts:[{type:'num',label:'Percent remaining',ans:pct,unit:'%',show:fmt(pct,4)+'%'}],
+    guided:'<p>Fraction remaining = (½)<sup>'+n+'</sup> = '+blank('f','fraction remaining',true)+'.</p><p>Percent = fraction × 100.</p>',
+    blanks:{f:{want:1/Math.pow(2,n),tol:0.01}},blankMsg:g=>g.f&&g.f.good===false?'Multiply ½ by itself '+n+' time'+(n>1?'s':'')+'.':'',
+    hints:['After one half-life, 50% is left. After two, 25%. Keep going.','(½)<sup>'+n+'</sup> = '+fr[n-1]+'. Turn that into a percentage.'],
+    solution:'<ol><li>(½)<sup>'+n+'</sup> = '+fr[n-1]+' = '+fmt(1/Math.pow(2,n),5)+'.</li><li>× 100 = <b>'+fmt(pct,4)+'%</b> remains; '+fmt(100-pct,4)+'% has decayed.</li></ol>'};
+}
+
+function genEnergy(fixed){
+  const type=fixed||pick(['kwh','joules','cost','power','calories','bond','time']);
+  const devs=Object.keys(DEVICES);
+  if(type==='kwh'||type==='cost'){
+    const k=fixed?'heater':pick(devs); const d=DEVICES[k]; const h=fixed?3:pick([0.5,1,2,3,4,6,8,10,24]); const kwh=d.w*h/1000; const rate=fixed?0.15:pick([0.12,0.15,0.18,0.20]);
+    const parts=[{type:'num',label:'Energy used',ans:kwh,unit:'kWh',show:fmt(kwh,3)+' kWh'}]; if(type==='cost'||fixed) parts.push({type:'num',label:'Cost at $'+rate.toFixed(2)+' per kWh',ans:kwh*rate,unit:'dollars',tol:0.02,abs:0.006,show:'$'+(kwh*rate).toFixed(2)});
+    return {ctx:'Electric companies bill in kilowatt-hours: 1 kWh is 1000 watts running for 1 hour.',q:'A '+d.s+' rated at '+fmt(d.w,0)+' W runs for '+h+' hour'+(h===1?'':'s')+'.'+(parts.length>1?' How much energy does it use, and what does it cost at $'+rate.toFixed(2)+' per kWh?':' How much energy does it use?'),
+      parts,
+      guided:'<p>Convert the power to kilowatts: '+fmt(d.w,0)+' W ÷ 1000 = '+blank('kw','power in kilowatts',true)+' kW.</p><p>Energy = power × time = (kW) × '+h+' h'+(parts.length>1?'; cost = kWh × $'+rate.toFixed(2)+'.':'.')+'</p>',
+      blanks:{kw:{want:d.w/1000,tol:0.01}},blankMsg:g=>g.kw&&g.kw.good===false?'There are 1000 watts in a kilowatt: divide by 1000.':'',
+      hints:['Energy = power × time. Use kilowatts and hours to get kilowatt-hours directly.',fmt(d.w,0)+' W is '+fmt(d.w/1000,3)+' kW. Multiply by '+h+' h'+(parts.length>1?', then by the price per kWh.':'.')],
+      solution:'<ol><li>Power in kW: '+fmt(d.w,0)+' ÷ 1000 = '+fmt(d.w/1000,3)+' kW.</li><li>Energy: '+fmt(d.w/1000,3)+' kW × '+h+' h = <b>'+fmt(kwh,3)+' kWh</b>'+(parts.length>1?'.</li><li>Cost: '+fmt(kwh,3)+' kWh × $'+rate.toFixed(2)+' = <b>$'+(kwh*rate).toFixed(2)+'</b>.</li>':' (that is '+fmt(kwh*3.6,2)+' million joules).</li>')+'</ol>'};
+  }
+  if(type==='joules'){
+    const k=pick(devs); const d=DEVICES[k]; const m=pick([1,2,5,10,15,30]); const s=m*60; const J=d.w*s;
+    return {ctx:'A watt is one joule per second.',q:'How many joules does a '+fmt(d.w,0)+' W '+d.s+' use in '+m+' minute'+(m>1?'s':'')+'?',
+      parts:[{type:'num',label:'Energy',ans:J,unit:'J',show:fmt(J,0)+' J'+(J>=1e6?' ('+fmt(J/1e6,2)+' million J)':'')}],
+      guided:'<p>Time in seconds: '+m+' min × 60 = '+blank('s','time in seconds',true)+' s.</p><p>Energy = power × time = '+fmt(d.w,0)+' J/s × (seconds).</p>',
+      blanks:{s:{want:s,tol:0}},blankMsg:g=>g.s&&g.s.good===false?'There are 60 seconds in a minute.':'',
+      hints:['1 W = 1 J/s, so multiply watts by seconds to get joules.','Convert '+m+' minutes to seconds first (× 60).'],
+      solution:'<ol><li>Time: '+m+' × 60 = '+s+' s.</li><li>Energy: '+fmt(d.w,0)+' J/s × '+s+' s = <b>'+fmt(J,0)+' J</b>'+(J>=1000?' = '+fmt(J/1000,1)+' kJ':'')+'.</li></ol>'};
+  }
+  if(type==='power'){
+    const J=pick([3000,6000,9000,18000,36000,90000]); const s=pick([10,30,60,120,300]); const W=J/s;
+    return {ctx:'Power is how fast energy is used.',q:'A device uses '+fmt(J,0)+' J of energy in '+s+' seconds. What is its power?',
+      parts:[{type:'num',label:'Power',ans:W,unit:'W',show:fmt(W,1)+' W'}],
+      guided:'<p>Power = energy ÷ time. Energy = '+fmt(J,0)+' J, time = '+blank('s','time in seconds')+' s.</p>',
+      blanks:{s:{want:s,tol:0}},blankMsg:g=>g.s&&g.s.good===false?'The time is given in seconds already: '+s+'.':'',
+      hints:['A watt is a joule per second: divide joules by seconds.',fmt(J,0)+' ÷ '+s+'.'],
+      solution:'<ol><li>Power = '+fmt(J,0)+' J ÷ '+s+' s = <b>'+fmt(W,1)+' W</b>.</li><li>For comparison, a bright incandescent bulb is 100 W and a microwave oven about 1000 W.</li></ol>'};
+  }
+  if(type==='calories'){
+    const food=pick([['a candy bar',250],['a can of soda',140],['a slice of pizza',285],['a banana',105],['a cheeseburger',300],['a bowl of cereal with milk',200]]); const kJ=food[1]*4.184;
+    return {ctx:'A food Calorie (capital C) is a kilocalorie: 1000 calories. One calorie is 4.184 joules.',q:cap(food[0])+' provides '+food[1]+' Calories. How many kilojoules is that?',
+      parts:[{type:'num',label:'Energy',ans:kJ,unit:'kJ',show:fmt(kJ,0)+' kJ'}],
+      guided:'<p>'+food[1]+' Calories = '+blank('cal','number of calories',true)+' calories.</p><p>Joules = calories × 4.184; divide by 1000 for kJ. (Shortcut: 1 Calorie = 4.184 kJ.)</p>',
+      blanks:{cal:{want:food[1]*1000,tol:0}},blankMsg:g=>g.cal&&g.cal.good===false?'A food Calorie is 1000 calories, so multiply by 1000.':'',
+      hints:['1 Calorie (food) = 1 kilocalorie = 1000 calories = 4184 J = 4.184 kJ.','Multiply '+food[1]+' by 4.184.'],
+      solution:'<ol><li>'+food[1]+' Cal × 1000 = '+fmt(food[1]*1000,0)+' cal.</li><li>'+fmt(food[1]*1000,0)+' cal × 4.184 J/cal = '+fmt(kJ*1000,0)+' J = <b>'+fmt(kJ,0)+' kJ</b>.</li><li>That is enough energy to run a 100 W bulb for about '+fmt(kJ*1000/100/60,0)+' minutes.</li></ol>'};
+  }
+  if(type==='time'){
+    const k=pick(['bulb','led','laptop','tv','phone']); const d=DEVICES[k]; const E=pick([1,2,5]); const h=E*1000/d.w;
+    return {ctx:'Turn the energy equation around: time = energy ÷ power.',q:'How many hours can a '+fmt(d.w,0)+' W '+d.s+' run on '+E+' kWh?',
+      parts:[{type:'num',label:'Time',ans:h,unit:'hours',show:fmt(h,1)+' hours'}],
+      guided:'<p>'+E+' kWh = '+blank('wh','energy in watt-hours',true)+' Wh.</p><p>Time = Wh ÷ W.</p>',
+      blanks:{wh:{want:E*1000,tol:0}},blankMsg:g=>g.wh&&g.wh.good===false?'1 kWh = 1000 Wh.':'',
+      hints:['Energy = power × time, so time = energy ÷ power. Keep the units matched: watt-hours and watts.',E+' kWh is '+fmt(E*1000,0)+' Wh. Divide by '+fmt(d.w,0)+' W.'],
+      solution:'<ol><li>'+E+' kWh × 1000 = '+fmt(E*1000,0)+' Wh.</li><li>Time = '+fmt(E*1000,0)+' Wh ÷ '+fmt(d.w,0)+' W = <b>'+fmt(h,1)+' hours</b>'+(h>=24?' (about '+fmt(h/24,1)+' days)':'')+'.</li></ol>'};
+  }
+  const k=pick(Object.keys(RXNS)); const r=RXNS[k]; const sum=l=>l.reduce((t,b)=>t+BONDS[b[0]]*b[1],0); const inE=sum(r.broken), outE=sum(r.formed), dH=inE-outE;
+  const tbl='<div class="tblwrap"><table class="tbl"><thead><tr><th>Bond</th><th>kJ per mole of bonds</th></tr></thead><tbody>'+[...new Set([...r.broken,...r.formed].map(b=>b[0]))].map(b=>'<tr><td>'+b+'</td><td class="num">'+BONDS[b]+'</td></tr>').join('')+'</tbody></table></div>';
+  return {ctx:'Breaking bonds costs energy; forming bonds releases it. Heat of reaction ≈ (energy to break reactant bonds) − (energy released forming product bonds).',q:'Estimate the heat of reaction for '+r.n.toLowerCase()+':<div class="eq">'+F(r.eq)+'</div>'+tbl,
+    parts:[{type:'num',label:'Heat of reaction (negative if exothermic)',ans:dH,unit:'kJ',tol:0.02,show:(dH<0?'−':'+')+fmt(Math.abs(dH),0)+' kJ ('+(dH<0?'exothermic':'endothermic')+')',signMsg:'Energy in minus energy out: a negative result means heat is released.'}],
+    guided:'<p>Bonds broken (reactants): '+r.broken.map(b=>b[1]+' × '+b[0]).join(' + ')+' = '+blank('in','energy to break the reactant bonds',true)+' kJ in.</p><p>Bonds formed (products): '+r.formed.map(b=>b[1]+' × '+b[0]).join(' + ')+' = '+blank('out','energy released forming the product bonds',true)+' kJ out.</p><p>Heat of reaction = in − out.</p>',
+    blanks:{in:{want:inE,tol:0.01},out:{want:outE,tol:0.01}},blankMsg:g=>g.in&&g.in.good===false?'Multiply each reactant bond’s energy by how many of that bond there are, then add.':g.out&&g.out.good===false?'Do the same for the product bonds. Count every bond: '+r.formed.map(b=>b[1]+' '+b[0]).join(', ')+'.':'',
+    hints:['Count the bonds on each side of the equation, including coefficients. Energy goes in to break the reactant bonds and comes out as product bonds form.','In: '+r.broken.map(b=>b[1]+' × '+BONDS[b[0]]).join(' + ')+'. Out: '+r.formed.map(b=>b[1]+' × '+BONDS[b[0]]).join(' + ')+'. Subtract out from in.'],
+    solution:'<ol><li>Energy in (bonds broken): '+r.broken.map(b=>b[1]+' × '+BONDS[b[0]]).join(' + ')+' = '+fmt(inE,0)+' kJ.</li><li>Energy out (bonds formed): '+r.formed.map(b=>b[1]+' × '+BONDS[b[0]]).join(' + ')+' = '+fmt(outE,0)+' kJ.</li><li>Heat of reaction ≈ '+fmt(inE,0)+' − '+fmt(outE,0)+' = <b>'+(dH<0?'−':'+')+fmt(Math.abs(dH),0)+' kJ</b>. '+(dH<0?'More energy comes out than went in: exothermic.':'Endothermic.')+'</li></ol>'};
+}
+
+function genFuel(fixed){
+  const type=fixed||pick(['years','share','co2','carbon','octane']);
+  if(type==='years'){
+    const k=pick(Object.keys(RESERVES)); const reg=pick(['us','world']); const r=RESERVES[k]; const d=r[reg]; const yrs=d[0]/d[1];
+    return {ctx:'Table 15.3: economically recoverable reserves and annual consumption, '+(reg==='us'?'United States':'world')+'.',q:r.n+' reserves: '+fmt(d[0],1)+' '+r.unit+'. Consumption: '+fmt(d[1],2)+' '+r.unit+' per year. At that rate, how many years would the reserves last?',
+      parts:[{type:'num',label:'Years',ans:yrs,unit:'years',tol:0.02,show:fmt(yrs,0)+' years'}],
+      guided:'<p>Years = reserves ÷ consumption per year = '+fmt(d[0],1)+' ÷ '+blank('c','annual consumption',true)+'.</p>',
+      blanks:{c:{want:d[1],tol:0.001}},blankMsg:g=>g.c&&g.c.good===false?'The annual consumption is given: '+fmt(d[1],2)+' '+r.unit+' per year.':'',
+      hints:['If you have R of something and use C of it each year, it lasts R ÷ C years.',fmt(d[0],1)+' ÷ '+fmt(d[1],2)+'.'],
+      solution:'<ol><li>Years = '+fmt(d[0],1)+' ÷ '+fmt(d[1],2)+' = <b>'+fmt(yrs,0)+' years</b> at the current rate.</li><li>This assumes no new discoveries and no change in use, so it is a warning, not a forecast.'+(k==='petroleum'&&reg==='us'?' The United States imports much of its oil, which is why its own reserves look so short.':'')+'</li></ol>'};
+  }
+  if(type==='share'){
+    const src=pick([['natural gas',33.8],['coal',30.4],['nuclear power',19.7],['hydroelectric dams',6.5],['wind',5.5]]); const tot=pick([1000,2500,4000,6000]); const ans=tot*src[1]/100;
+    return {ctx:'In 2017, '+src[1]+'% of U.S. electricity came from '+src[0]+'.',q:'A region generated '+fmt(tot,0)+' million kWh in a year with that same mix. How much of it came from '+src[0]+'?',
+      parts:[{type:'num',label:'From '+src[0],ans:ans,unit:'million kWh',show:fmt(ans,0)+' million kWh'}],
+      guided:'<p>'+src[1]+'% as a decimal is '+blank('d','percent as a decimal',true)+'.</p><p>Amount = total × decimal.</p>',
+      blanks:{d:{want:src[1]/100,tol:0.001}},blankMsg:g=>g.d&&g.d.good===false?'Divide the percent by 100.':'',
+      hints:['A percent is a fraction of 100: '+src[1]+'% = '+src[1]+'/100.','Multiply '+fmt(tot,0)+' by '+(src[1]/100)+'.'],
+      solution:'<ol><li>'+src[1]+'% = '+(src[1]/100)+'.</li><li>'+fmt(tot,0)+' × '+(src[1]/100)+' = <b>'+fmt(ans,0)+' million kWh</b>.</li></ol>'};
+  }
+  if(type==='co2'){
+    const m=fixed?1:pick([1,2,5,10,50,100,1000]); const ans=m*44/12;
+    return {ctx:'Coal is mostly carbon, and carbon burns to carbon dioxide: C + O<sub>2</sub> → CO<sub>2</sub>. Every 12 g of carbon becomes 44 g of CO<sub>2</sub>, because the two oxygen atoms (16 g each) come along.',q:'Burning '+fmt(m,0)+' kg of carbon releases how many kilograms of CO<sub>2</sub>?',
+      parts:[{type:'num',label:'Mass of CO<sub>2</sub>',ans:ans,unit:'kg',show:fmt(ans,2)+' kg of CO<sub>2</sub>'}],
+      guided:'<p>Mass ratio: 44 g CO<sub>2</sub> ÷ 12 g C = '+blank('r','grams of carbon dioxide per gram of carbon',true)+'.</p><p>Mass of CO<sub>2</sub> = mass of carbon × that ratio.</p>',
+      blanks:{r:{want:44/12,tol:0.01}},blankMsg:g=>g.r&&g.r.good===false?'44 divided by 12 is about 3.67.':'',
+      hints:['Carbon weighs 12 per atom; CO<sub>2</sub> weighs 12 + 16 + 16 = 44 per molecule. The mass grows by 44/12.','Multiply '+fmt(m,0)+' kg by 3.67.'],
+      solution:'<ol><li>Ratio: 44 ÷ 12 = 3.67 kg of CO<sub>2</sub> per kg of carbon.</li><li>'+fmt(m,0)+' kg × 3.67 = <b>'+fmt(ans,2)+' kg of CO<sub>2</sub></b>.</li><li>The product weighs more than the fuel because the oxygen from the air is now part of it. A car burning 40 L (about 30 kg) of gasoline puts out roughly 90 kg of CO<sub>2</sub>.</li></ol>'};
+  }
+  if(type==='carbon'){
+    const coal=pick([['lignite',30],['sub-bituminous',50],['bituminous',75],['anthracite',90]]); const tons=pick([1,2,10,100]); const ans=tons*coal[1]/100;
+    return {ctx:'Table 15.4: '+coal[0]+' coal is about '+coal[1]+'% carbon; the rest is water, minerals (ash), and volatile matter.',q:'How many tons of carbon are in '+tons+' ton'+(tons>1?'s':'')+' of '+coal[0]+'?',
+      parts:[{type:'num',label:'Carbon',ans:ans,unit:'tons',show:fmt(ans,2)+' tons of carbon'}],
+      guided:'<p>'+coal[1]+'% = '+blank('d','percent as a decimal',true)+' as a decimal.</p><p>Carbon = tons of coal × decimal.</p>',
+      blanks:{d:{want:coal[1]/100,tol:0.001}},blankMsg:g=>g.d&&g.d.good===false?'Divide the percent by 100.':'',
+      hints:['Percent means per hundred: '+coal[1]+'% is '+coal[1]+' parts out of 100.',tons+' × '+(coal[1]/100)+'.'],
+      solution:'<ol><li>'+coal[1]+'% = '+(coal[1]/100)+'.</li><li>'+tons+' × '+(coal[1]/100)+' = <b>'+fmt(ans,2)+' tons of carbon</b>; the other '+fmt(tons-ans,2)+' tons are water, ash, and volatiles, which is why low-grade coal gives less heat per ton.</li></ol>'};
+  }
+  const oct=pick([87,89,91,93]); const vol=pick([200,500,1000]); const ans=vol*oct/100;
+  return {ctx:'A gasoline’s octane rating says it resists knocking like a mixture of that percent isooctane and the rest heptane.',q:'To make '+vol+' mL of the reference mixture for '+oct+'-octane gasoline, how many milliliters of isooctane are needed?',
+    parts:[{type:'num',label:'Isooctane',ans:ans,unit:'mL',show:fmt(ans,0)+' mL isooctane and '+fmt(vol-ans,0)+' mL heptane'}],
+    guided:'<p>'+oct+'% as a decimal is '+blank('d','percent as a decimal',true)+'.</p><p>Isooctane = total volume × decimal; heptane is the rest.</p>',
+    blanks:{d:{want:oct/100,tol:0.001}},blankMsg:g=>g.d&&g.d.good===false?'Divide the percent by 100.':'',
+    hints:['The octane number is the percent of isooctane in the matching reference mixture.',vol+' × '+(oct/100)+'.'],
+    solution:'<ol><li>'+oct+'% = '+(oct/100)+'.</li><li>'+vol+' mL × '+(oct/100)+' = <b>'+fmt(ans,0)+' mL of isooctane</b>, plus '+fmt(vol-ans,0)+' mL of heptane.</li></ol>'};
 }
 
 /* ================= 4. RADIOISOTOPES AT WORK ================= */
@@ -760,7 +1068,7 @@ function renderFiss(){
 }
 
 /* ================= 6. ENERGY AND REACTIONS ================= */
-const DEVICES={bulb:{n:'Incandescent bulb',w:100},led:{n:'LED bulb (same light as the 100 W bulb)',w:14},phone:{n:'Phone charger',w:5},laptop:{n:'Laptop',w:60},tv:{n:'Large TV',w:150},micro:{n:'Microwave oven',w:1000},heater:{n:'Space heater',w:1500},ac:{n:'Central air conditioner',w:3500},car:{n:'Electric car charging at home',w:7000}};
+const DEVICES={bulb:{n:'Incandescent bulb',s:'incandescent bulb',w:100},led:{n:'LED bulb (same light as the 100 W bulb)',s:'LED bulb',w:14},phone:{n:'Phone charger',s:'phone charger',w:5},laptop:{n:'Laptop',s:'laptop',w:60},tv:{n:'Large TV',s:'large TV',w:150},micro:{n:'Microwave oven',s:'microwave oven',w:1000},heater:{n:'Space heater',s:'space heater',w:1500},ac:{n:'Central air conditioner',s:'central air conditioner',w:3500},car:{n:'Electric car charging at home',s:'electric car charger',w:7000}};
 const EXO_ITEMS=[['Freezing of water','exo'],['Melting of ice','endo'],['Condensation of water vapor (steam) on a cold window','exo'],['Evaporation of sweat','endo'],['Metabolism of food in your body','exo'],['Photosynthesis in a leaf','endo'],['Forming chemical bonds','exo'],['Breaking chemical bonds','endo'],['A battery discharging to run a flashlight','exo'],['Charging a battery','endo'],['Burning wood in a campfire','exo'],['An instant cold pack (ammonium nitrate dissolving)','endo'],['A disposable hand warmer (iron rusting)','exo'],['Cooking an egg','endo']];
 const BONDS={'H–H':436,'Cl–Cl':243,'H–Cl':431,'F–F':159,'H–F':569,'N≡N':945,'N–H':391,'C–H':414,'O=O':498,'C=O':799,'O–H':464};
 const RXNS={
@@ -790,6 +1098,7 @@ function renderEnergy(){
     '<h3>Exothermic or endothermic?</h3><div class="act" id="exobox"></div>'+
     '<h3>Heat of reaction from bond energies</h3><div class="act"><p class="how">Choose a reaction. Energy goes in to break the bonds on the left and comes out as the bonds on the right form. The difference is the heat of reaction. (Typical average bond energies in kJ per mole of bonds.)</p>'+
     '<div class="row"><label for="rxn">Reaction</label><select class="sel" id="rxn">'+Object.keys(RXNS).map(k=>'<option value="'+k+'"'+(S.rxn===k?' selected':'')+'>'+RXNS[k].n+'</option>').join('')+'</select></div><div id="rxnout"></div></div>'+
+    '<h3>Energy calculations practice</h3><p>Power and energy problems of the kind in Section 15.1, plus heats of reaction from bond energies: kilowatt-hours and cost, joules from watts and seconds, power from energy and time, food Calories to kilojoules, and how long a device can run on a given energy.</p>'+workedExample(genEnergy('kwh'))+'<div id="eprac"></div>'+
     checkYourself('energy',[
       {q:'A watt is a unit of …',o:['energy','power (energy per second)','temperature','force'],a:1,e:'1 W = 1 J/s. Power is how fast energy is used or delivered; the joule measures the energy itself.',w:{0:'The joule is the unit of energy. A watt is a joule per second.',2:'Temperature is in degrees or kelvins.',3:'Force is in newtons.'}},
       {q:'Which process is endothermic?',o:['Freezing water','Burning wood','Melting ice','A hand warmer heating up'],a:2,e:'Melting absorbs heat from the surroundings (that is why ice cools your drink). Freezing, burning, and the hand warmer all release heat.',w:{0:'Freezing releases heat; it is exothermic.',1:'Combustion releases heat.',3:'The warmer releases heat to your hands.'}},
@@ -825,6 +1134,8 @@ function renderEnergy(){
       '<p><b>Heat of reaction ≈ '+fmt(inE,0)+' − '+fmt(outE,0)+' = '+(dH>0?'+':'−')+fmt(Math.abs(dH),0)+' kJ</b> for the equation as written. '+(dH<0?'Negative: more energy comes out than went in, so the reaction is <b>exothermic</b> and releases about '+fmt(-dH,0)+' kJ of heat.':'Positive: the reaction is endothermic.')+(S.rxn==='CH4'?' This is why natural gas is a fuel: its C–H bonds are traded for the much stronger bonds in CO<sub>2</sub> and H<sub>2</sub>O.':'')+'</p>';
   };
   $('#rxn').addEventListener('change',paintRxn); paintRxn();
+  if(!S.prac) S.prac=freshPrac();
+  mountPractice('eprac',S.prac,()=>genEnergy());
 }
 
 /* ================= 7. FOSSIL FUELS AND ELECTRICITY ================= */
@@ -855,6 +1166,7 @@ function renderFossil(){
     '<label for="oct" style="font-weight:600;display:block">Octane rating: <span id="octv">'+S.oct+'</span></label><input type="range" id="oct" min="0" max="100" step="1" value="'+S.oct+'"><div id="octout"></div></div>'+
     '<h3>How long will it last?</h3><div class="act"><p class="how">Table 15.3 gives economically recoverable reserves and the amount burned each year. Dividing one by the other gives a rough “years left at today’s rate.” Reserves grow as prices rise and technology improves, and consumption changes, so treat the result as a warning, not a prediction.</p>'+
     '<div class="row"><label for="rfuel">Fuel</label><select class="sel" id="rfuel">'+Object.keys(RESERVES).map(k=>'<option value="'+k+'"'+(S.fuel===k?' selected':'')+'>'+RESERVES[k].n+'</option>').join('')+'</select><label for="rreg">Region</label><select class="sel" id="rreg"><option value="us"'+(S.region==='us'?' selected':'')+'>United States</option><option value="world"'+(S.region==='world'?' selected':'')+'>World</option></select></div><div id="rout2"></div></div>'+
+    '<h3>Fuel numbers practice</h3><p>Short calculations with the chapter’s own numbers: how long reserves last, how much electricity a source supplies, how much CO<sub>2</sub> burning carbon releases, how much carbon a grade of coal contains, and what an octane rating means as a mixture.</p>'+workedExample(genFuel('co2'))+'<div id="fprac"></div>'+
     '<h3>Where U.S. electricity comes from</h3><div class="act"><p class="how">Percentages of U.S. electric power generation by source, 2003 (Figure 15.11) versus 2017 (U.S. Energy Information Administration).</p>'+
     '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px"><div><h4>2003</h4>'+bars([{l:'Coal',v:45,txt:'45%'},{l:'Natural gas',v:23,txt:'23%'},{l:'Nuclear',v:20,txt:'20%'},{l:'Hydroelectric',v:7,txt:'7%'},{l:'Petroleum',v:1,txt:'1%'},{l:'Wind and other',v:0.3,txt:'&lt;1%'}],{max:50})+'</div><div><h4>2017</h4>'+bars([{l:'Natural gas',v:33.8,txt:'33.8%',cls:'alt'},{l:'Coal',v:30.4,txt:'30.4%',cls:'alt'},{l:'Nuclear',v:19.7,txt:'19.7%',cls:'alt'},{l:'Hydroelectric',v:6.5,txt:'6.5%',cls:'alt'},{l:'Wind',v:5.5,txt:'5.5%',cls:'alt'},{l:'Other (solar, biomass, oil)',v:2.6,txt:'2.6%',cls:'alt'}],{max:50})+'</div></div>'+
     '<p class="src">In fourteen years coal fell from nearly half to under a third, replaced mainly by natural gas (cheaper after hydraulic fracturing) and wind. Nuclear held steady at about one-fifth.</p></div>'+
@@ -874,6 +1186,8 @@ function renderFossil(){
     $('#rout2').innerHTML='<div class="phread"><div class="stat"><div class="k">Reserves</div><div class="v sm">'+fmt(d[0],1)+' '+r.unit+'</div></div><div class="stat"><div class="k">Used per year</div><div class="v sm">'+fmt(d[1],2)+' '+r.unit+'</div></div><div class="stat"><div class="k">Years at that rate</div><div class="v">'+fmt(yrs,0)+'</div></div></div>'+
       '<p class="src">'+fmt(d[0],1)+' ÷ '+fmt(d[1],2)+' ≈ '+fmt(yrs,0)+' years. '+(S.fuel==='petroleum'&&S.region==='us'?'The United States imports much of its oil, which is why its own reserves look so small against its consumption.':S.fuel==='coal'?'Coal is the one fossil fuel with centuries of reserves, which is exactly why its carbon dioxide is such a concern.':'The textbook’s point: within the lifetime of today’s 18-year-old, petroleum and natural gas may become too scarce to burn as fuel.')+' Data: U.S. Energy Information Administration, 2012.</p>'; };
   $('#rfuel').addEventListener('change',paintRes); $('#rreg').addEventListener('change',paintRes); paintRes();
+  if(!S.prac) S.prac=freshPrac();
+  mountPractice('fprac',S.prac,()=>genFuel());
 }
 
 /* ================= 8. NUCLEAR AND RENEWABLE ENERGY ================= */
