@@ -101,7 +101,7 @@ li{margin-bottom:4px}
 .pin:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
 .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .row label{font-weight:600}
-select.sel{font:inherit;font-size:1rem;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;background:#fff;color:var(--ink)}
+select.sel{font:inherit;font-size:1rem;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
 
 /* Feedback */
 .fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
@@ -220,6 +220,43 @@ input[type=range]{width:100%;max-width:100%;margin:8px 0}
 .filters button{appearance:none;border:1.5px solid var(--line);border-radius:999px;padding:4px 12px;background:#fff;color:var(--ink);cursor:pointer;font-size:.88rem;font-weight:600}
 .filters button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
 
+/* Help levels and guided practice (same pattern as the CHM1045 guides) */
+.modebar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
+.modebar-label{font-size:.9rem;font-weight:600}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{appearance:none;font-size:.9rem;border:0;background:#fff;color:var(--ink);padding:7px 12px;cursor:pointer;border-left:1.5px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.seg button:focus-visible{outline-offset:-3px}
+.problem{border:1.5px solid var(--line);border-radius:14px;padding:18px 20px 16px;min-width:0}
+.ctx{margin:0 0 10px;color:var(--muted)}
+.setup{background:var(--soft);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+.setup p{margin:0 0 8px}
+.setup p:last-child{margin-bottom:0}
+.setup .lab{font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);margin-bottom:6px}
+.blank{font:inherit;width:3.4em;text-align:center;border:1.5px solid #8b95a3;border-radius:6px;padding:3px 4px;background:#fff;color:var(--ink)}
+.blank.wide{width:6em}
+.blank.ok{border:2px solid var(--ok);background:var(--ok-bg)}
+.blank.no{border:2px dashed var(--bad);background:var(--bad-bg)}
+.blank:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
+.parts{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}
+.part{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.part .plab{font-weight:600;flex:1 1 14em}
+.part .pctl{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.pmark{font-weight:700;min-width:1em}
+.pmark.ok{color:var(--ok)} .pmark.no{color:var(--bad)}
+.hintbox{border-left:5px solid #5a86c4;background:var(--info-bg);border-radius:10px;padding:10px 14px;margin:0 0 10px;color:var(--info)}
+.hintbox p{margin:0}
+.solution{margin-top:10px;padding:12px 16px 6px;border-radius:10px;background:var(--soft)}
+.solution ol{margin:0;padding-left:1.3em}
+.solution li{margin-bottom:8px}
+details.soldet{margin-top:12px}
+details.soldet summary{cursor:pointer;font-weight:600;color:var(--navy)}
+.example{border:1.5px solid var(--line);border-radius:14px;padding:14px 20px;margin:12px 0}
+.example summary{cursor:pointer;font-weight:600;color:var(--navy)}
+.example .exq{margin:10px 0 6px;font-size:1.02rem}
+
+.unk{display:inline-grid;place-items:center;min-width:2.4em;height:1.6em;border:1.5px dashed #8b95a3;border-radius:6px;color:var(--muted);font-family:var(--sans);font-size:.8em}
 @media (prefers-reduced-motion:no-preference){
   .bulbglow{transition:opacity .4s}
 }
@@ -437,6 +474,96 @@ function particlesFor(kind){
   return pts.map(p=>({x:p[0],y:p[1],t:'m'}));
 }
 
+/* ---------- Guided practice engine: three help levels, worked solutions, streak level-up ---------- */
+const fmt = (x,d) => x.toLocaleString(undefined,{maximumFractionDigits:d===undefined?2:d});
+const MODES=[{id:'guided',label:'Guided setup'},{id:'hint',label:'Hints if I ask'},{id:'solo',label:'On my own'}];
+const freshPrac = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[], sol:false});
+const LET='abcdef';
+const blank = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="text" autocomplete="off" aria-label="'+esc(label)+'">';
+function parseNum(raw){
+  let s=String(raw).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'');
+  if(!s) return null;
+  s=s.replace(/^\$/,'').replace(/[×x]10\^?\(?(-?\d+)\)?/,'e$1').replace(/^10\^\(?(-?\d+)\)?$/,'1e$1').replace(/−/g,'-');
+  if(/^[0-9]+\/[0-9]+$/.test(s)){ const [a,b]=s.split('/').map(Number); return b?a/b:null; }
+  const v=parseFloat(s); return isFinite(v)?v:null;
+}
+const near = (v,want,tol,abs) => Math.abs(v-want) <= Math.max(Math.abs(want)*(tol===undefined?0.01:tol), abs||1e-9);
+// Mounts a practice module into #boxId. S is the module's state; gen() returns a problem P.
+// P: {ctx?, q, parts:[{type:'num',label,ans,unit?,tol?,show} | {type:'mc',label,options:[{v,ok}],show}],
+//     guided (html with blank()s), blanks:{k:{want,tol?}}, blankMsg(got)->string, hints:[html,html], solution (html), done?(html)}
+function mountPractice(boxId, S, gen, opts){
+  opts=opts||{};
+  const box=$('#'+boxId); if(!box) return;
+  if(!S.P){ S.P=gen(); S.misses=0; S.hint=0; S.done=false; S.partDone=[]; S.sol=false; }
+  box.innerHTML='<div class="modebar"><span class="modebar-label" id="'+boxId+'-ml">How much help</span><div class="seg" role="group" aria-labelledby="'+boxId+'-ml">'+
+    MODES.map(o=>'<button type="button" data-mode="'+o.id+'" aria-pressed="'+(S.mode===o.id)+'">'+o.label+'</button>').join('')+'</div></div>'+
+    '<article class="problem" data-problem></article><p class="tally" data-tally></p>';
+  const prob=box.querySelector('[data-problem]');
+  const next=()=>{ S.P=gen(); S.misses=0; S.hint=0; S.done=false; S.partDone=[]; S.sol=false; };
+  const setMode=m=>{ S.mode=m; S.hint=0; $$('.seg button',box).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===m))); if(S.done){ next(); draw(true); } else { drawHelp(); drawActions(); } };
+  const partHTML=(p,i,multi)=>{
+    const tag=multi?'<b>('+LET[i]+')</b> ':'';
+    if(p.type==='mc') return '<li class="part" data-pi="'+i+'"><span class="plab">'+tag+p.label+'</span><span class="pctl"><span class="choice" data-mc>'+p.options.map((o,oi)=>'<button type="button" data-oi="'+oi+'" aria-pressed="false">'+o.v+'</button>').join('')+'</span><span class="pmark" aria-hidden="true"></span></span></li>';
+    return '<li class="part" data-pi="'+i+'"><span class="plab">'+tag+p.label+'</span><span class="pctl"><input class="pin" data-pi="'+i+'" type="text" inputmode="text" autocomplete="off" spellcheck="false" aria-label="'+esc(p.label.replace(/<[^>]+>/g,''))+'">'+(p.unit?'<span class="unit">'+p.unit+'</span>':'')+'<span class="pmark" aria-hidden="true"></span></span></li>';
+  };
+  const draw=focus=>{
+    const P=S.P, multi=P.parts.length>1;
+    prob.innerHTML=(P.ctx?'<p class="ctx">'+P.ctx+'</p>':'')+'<p class="q">'+P.q+'</p>'+
+      '<form data-form novalidate autocomplete="off"><div data-help></div><ol class="parts">'+P.parts.map((p,i)=>partHTML(p,i,multi)).join('')+'</ol>'+
+      '<div class="actions" style="margin-top:12px"><button class="btn primary" type="submit">Check answer'+(multi?'s':'')+'</button></div></form>'+
+      '<div class="fb" data-fb role="status" aria-live="polite"></div><div data-sol></div><div class="actions" data-actions></div>';
+    prob.querySelector('[data-form]').addEventListener('submit',e=>{ e.preventDefault(); check(); });
+    $$('[data-mc]',prob).forEach(mc=>mc.addEventListener('click',e=>{ const b=e.target.closest('button[data-oi]'); if(!b||b.disabled) return; $$('button',mc).forEach(x=>x.setAttribute('aria-pressed',String(x===b))); }));
+    drawHelp(); drawActions(); drawTally();
+    if(focus){ const f=prob.querySelector('[data-help] input')||prob.querySelector('.pin'); if(f) f.focus(); }
+  };
+  const drawHelp=()=>{ const P=S.P; let out=''; if(S.mode==='guided') out='<div class="setup"><div class="lab">Set it up</div>'+P.guided+'</div>'; else if(S.mode==='hint') out=P.hints.slice(0,S.hint).map(h=>'<div class="hintbox"><p>'+h+'</p></div>').join(''); prob.querySelector('[data-help]').innerHTML=out; };
+  const drawActions=()=>{ let out=''; if(S.mode==='hint'&&!S.done&&S.hint<S.P.hints.length) out+='<button type="button" class="btn" data-act="hint">'+(S.hint===0?'Show a hint':'Show another hint')+'</button>'; if(!S.done&&S.misses>=2&&!S.sol) out+='<button type="button" class="btn" data-act="solution">Show worked solution</button>'; out+='<button type="button" class="btn'+(S.done?' primary':'')+'" data-act="next">'+(S.done?'Next problem':'Skip to a new problem')+'</button>'; prob.querySelector('[data-actions]').innerHTML=out; };
+  const drawTally=()=>{ box.querySelector('[data-tally]').textContent=S.solved===0?'No problems solved yet this session.':'Solved this session: '+S.solved+(S.streak>1?' ('+S.streak+' in a row)':''); };
+  const fb=(type,html)=>setFb(prob.querySelector('[data-fb]'),type,html);
+  const lock=()=>{ $$('.pin,[data-help] input,[data-mc] button',prob).forEach(i=>i.disabled=true); };
+  const checkBlanks=()=>{ const P=S.P, res={any:false,allOK:true,msg:''}, got={}; if(!P.blanks) return res;
+    Object.keys(P.blanks).forEach(k=>{ const i=prob.querySelector('[data-help] input[data-k="'+k+'"]'); if(!i) return; const raw=i.value.trim(); i.classList.remove('ok','no'); if(!raw){ res.allOK=false; got[k]={empty:true}; return; } res.any=true; const v=parseNum(raw); const b=P.blanks[k]; const good=v!==null&&near(v,b.want,b.tol,b.abs); i.classList.add(good?'ok':'no'); if(!good) res.allOK=false; got[k]={v,good}; });
+    res.msg=(P.blankMsg&&P.blankMsg(got))||''; return res; };
+  const grade=(p,i)=>{
+    if(p.type==='mc'){ const li=prob.querySelector('[data-pi="'+i+'"]'); const sel=li.querySelector('button[aria-pressed="true"]'); if(!sel) return {status:'empty'}; return {status:p.options[+sel.dataset.oi].ok?'correct':'wrong', msg:p.msg||'That is not the right choice. Look at how the mass number and atomic number changed.'}; }
+    const inp=prob.querySelector('.pin[data-pi="'+i+'"]'); const raw=inp.value.trim(); if(!raw) return {status:'empty'}; const v=parseNum(raw); if(v===null) return {status:'invalid',msg:'Enter a number for '+p.label.replace(/<[^>]+>/g,'')+'.'};
+    if(near(v,p.ans,p.tol,p.abs)) return {status:'correct'};
+    if(p.tol!==0&&p.ans!==0&&near(v,p.ans,0.1)) return {status:'close',msg:'Close, but not within rounding. Check your arithmetic'+(p.closeMsg?' '+p.closeMsg:'.')};
+    if(p.ans!==0&&(near(v,-p.ans,p.tol))) return {status:'wrong',msg:'Right size, wrong sign.'+(p.signMsg?' '+p.signMsg:'')};
+    return {status:'wrong',msg:p.wrong?p.wrong(v):'Not quite. Check the setup and try again.'};
+  };
+  const mark=(i,ok)=>{ const li=prob.querySelector('[data-pi="'+i+'"]'); const m=li.querySelector('.pmark'); m.textContent=ok?'✓':'✗'; m.className='pmark '+(ok?'ok':'no'); const inp=li.querySelector('.pin'); if(inp){ inp.classList.remove('ok','no'); inp.classList.add(ok?'ok':'no'); if(ok) inp.disabled=true; } const mc=li.querySelector('[data-mc]'); if(mc){ const sel=mc.querySelector('button[aria-pressed="true"]'); if(sel){ sel.classList.remove('ok','no'); sel.classList.add(ok?'ok':'no'); } if(ok) $$('button',mc).forEach(b=>b.disabled=true); } };
+  const check=()=>{
+    const P=S.P; if(S.done) return; const multi=P.parts.length>1, tag=i=>multi?'<b>('+LET[i]+')</b> ':'';
+    const bl=S.mode==='guided'?checkBlanks():{any:false,allOK:true,msg:''};
+    const res=P.parts.map((p,i)=>S.partDone[i]?{status:'done'}:grade(p,i));
+    const open=res.filter(r=>r.status!=='done');
+    if(open.every(r=>r.status==='empty')){
+      if(bl.any&&bl.msg) fb('bad','<p>'+bl.msg+'</p>'); else if(bl.any&&bl.allOK) fb('info','<p>The setup is right. Now finish the calculation and enter your answer'+(multi?'s':'')+'.</p>'); else if(bl.any) fb('info','<p>Good so far. Fill in the remaining blanks, then calculate.</p>'); else fb('info','<p>Enter your answer'+(multi?'s':'')+', then select Check.</p>'); return; }
+    const inv=res.findIndex(r=>r.status==='invalid'); if(inv>=0){ fb('info','<p>'+tag(inv)+res[inv].msg+'</p>'); return; }
+    const wrong=[]; res.forEach((r,i)=>{ if(r.status==='correct'){ S.partDone[i]=true; mark(i,true); } else if(r.status==='wrong'||r.status==='close'){ mark(i,false); wrong.push(i); } });
+    if(P.parts.every((p,i)=>S.partDone[i])){
+      S.done=true; S.solved++; S.streak++; lock();
+      let html='<p><b>'+(multi?'All parts correct.':'Correct.')+'</b> '+P.parts.map((p,i)=>(multi?'('+LET[i]+') ':'')+p.show).join('; ')+'</p>'+(P.done||'');
+      if(S.streak>=2&&S.mode!=='solo') html+='<p>That is '+S.streak+' in a row. Ready for less help?</p><button type="button" class="btn inline" data-act="levelup">Try one '+(S.mode==='guided'?'with hints only if you ask':'on your own')+'</button>';
+      fb('ok',html); prob.querySelector('[data-sol]').innerHTML='<details class="soldet"'+(S.sol?' open':'')+'><summary>See the worked solution</summary><div class="solution">'+P.solution+'</div></details>';
+      drawActions(); drawTally(); const nx=prob.querySelector('[data-act="next"]'); if(nx) nx.focus(); return; }
+    if(wrong.length){ S.misses++; S.streak=0; let msg=(bl.msg?'<p><b>Setup.</b> '+bl.msg+'</p>':'')+wrong.map(i=>'<p>'+tag(i)+res[i].msg+'</p>').join(''); if(S.misses===2) msg+='<p>You can try again or open the worked solution below.</p>'; fb(wrong.every(i=>res[i].status==='close')&&!bl.msg?'warn':'bad',msg); }
+    else { const todo=P.parts.map((p,i)=>i).filter(i=>!S.partDone[i]); fb(bl.msg?'bad':'info',(bl.msg?'<p><b>Setup.</b> '+bl.msg+'</p>':'')+'<p>Right so far. Now answer part'+(todo.length>1?'s ':' ')+todo.map(i=>'('+LET[i]+')').join(' and ')+'.</p>'); }
+    drawActions(); drawTally();
+  };
+  box.querySelector('.seg').addEventListener('click',e=>{ const b=e.target.closest('button[data-mode]'); if(!b) return; setMode(b.dataset.mode); });
+  prob.addEventListener('click',e=>{ const b=e.target.closest('button[data-act]'); if(!b) return; const a=b.dataset.act;
+    if(a==='hint'){ S.hint++; drawHelp(); drawActions(); }
+    else if(a==='solution'){ S.sol=true; prob.querySelector('[data-sol]').innerHTML='<div class="solution">'+S.P.solution+'</div>'; drawActions(); }
+    else if(a==='next'){ next(); draw(true); }
+    else if(a==='levelup'){ setMode(S.mode==='guided'?'hint':'solo'); } });
+  draw(false);
+}
+// A worked example shown above a practice module: a fixed problem with its full solution.
+const workedExample = P => '<details class="example"><summary>Worked example</summary>'+(P.ctx?'<p class="ctx" style="margin-top:10px">'+P.ctx+'</p>':'')+'<p class="exq">'+P.q+'</p><div class="solution">'+P.solution+'</div></details>';
+
 /* ================= ROADMAP ================= */
 const MAPINFO={
   polar:{t:'1. Polarity: some molecules have a + end and a − end',
@@ -462,6 +589,7 @@ function renderMap(){
     '</div><div class="detail" id="mapdetail"></div>'+
     '<h3>How to use this guide</h3><ul>'+
     '<li>Each section opens with the key ideas, then one or more activities you can play with, then a short <b>Check yourself</b>. When you get every question right, the tab gets a checkmark.</li>'+
+    '<li>Sections 1, 3, 5, and 6 have <b>practice problems</b> with three help levels. <b>Guided setup</b> walks you through the setup with blanks to fill in; <b>Hints if I ask</b> gives you up to two hints on request; <b>On my own</b> is just the problem. After two wrong tries you can open the worked solution, and every solved problem shows one. Each starts with a fully worked example.</li>'+
     '<li>The <b>Review quiz</b> mixes questions from all six sections, and the <b>Key terms</b> tab works as flashcards.</li>'+
     '<li>Formulas are written the way your textbook writes them, for example H<sub>2</sub>O for water and OH<sup>−</sup> for the hydroxide ion. A small raised number or sign is a charge; a small lowered number counts atoms.</li>'+
     '</ul>'+
@@ -501,6 +629,7 @@ function renderPolar(){
     '<div class="row"><label for="enA">Element A</label><select class="sel" id="enA">'+Object.keys(EN).map(e=>'<option value="'+e+'"'+(P.a===e?' selected':'')+'>'+e+' ('+ENAMES[e]+', '+EN[e].toFixed(1)+')</option>').join('')+'</select>'+
     '<label for="enB">Element B</label><select class="sel" id="enB">'+Object.keys(EN).map(e=>'<option value="'+e+'"'+(P.b===e?' selected':'')+'>'+e+' ('+ENAMES[e]+', '+EN[e].toFixed(1)+')</option>').join('')+'</select></div>'+
     '<div id="enout"></div></div>'+
+    '<h3>Bond polarity practice</h3><p>Given two elements and their electronegativities, find ΔEN, decide which atom gets the larger share of the electrons, and classify the bond as nonpolar covalent, polar covalent, or ionic.</p>'+workedExample(genBond('example'))+'<div id="bprac"></div>'+
     '<h3>Polar or nonpolar?</h3><div class="act" id="pdeck"></div>'+
     checkYourself('polar',[
       {q:'Which statement best describes a polar covalent bond?',o:['The two atoms share electrons equally.','One atom pulls the shared electrons more strongly, so one end is δ− and the other δ+.','One atom takes the electrons completely, forming ions.','The atoms do not share any electrons.'],a:1,e:'A polar bond is unequal sharing. The atom with the higher electronegativity gets the larger share and is δ−.',w:{0:'Equal sharing is a nonpolar covalent bond.',2:'Complete transfer makes an ionic bond, not a polar covalent one.',3:'A bond with no shared electrons is not covalent at all.'}},
@@ -551,6 +680,8 @@ function renderPolar(){
     });
   };
   paintDeck();
+  if(!P.prac) P.prac=freshPrac();
+  mountPractice('bprac',P.prac,()=>genBond());
 }
 
 /* ================= 2. INTERMOLECULAR FORCES ================= */
@@ -660,6 +791,178 @@ function renderIMF(){
   $('#wflips').addEventListener('click',e=>{ const b=e.target.closest('.flip'); if(!b) return; b.setAttribute('aria-expanded',b.getAttribute('aria-expanded')!=='true'); });
 }
 
+/* ---------- Problem generators for the practice modules ---------- */
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+const sciStr = (m,n) => m+' × 10<sup>−'+n+'</sup>';
+
+/* 1. Bond polarity: ΔEN, which atom is δ−, bond type */
+const BOND_PAIRS=[['O','H'],['N','H'],['C','H'],['H','Cl'],['C','O'],['H','F'],['C','Cl'],['Na','Cl'],['K','F'],['Mg','O'],['Ca','Cl'],['S','H'],['C','N'],['Br','Br'],['O','O'],['Li','F'],['C','S'],['P','H'],['N','O'],['H','I']];
+function genBond(fixed){
+  const pr=fixed?['O','H']:pick(BOND_PAIRS); const [A,B]=pr; const a=EN[A], b=EN[B]; const d=Math.abs(a-b);
+  const mA=METALS.includes(A), mB=METALS.includes(B); const ionic=mA||mB;
+  const kind=ionic?'ionic':d<=0.4?'nonpolar':'polar';
+  const neg=a>b?A:b>a?B:null; const hi=Math.max(a,b), lo=Math.min(a,b);
+  const kindLabel={ionic:'Ionic',nonpolar:'Nonpolar covalent',polar:'Polar covalent'};
+  const parts=[
+    {type:'num',label:'Electronegativity difference, ΔEN',ans:d,tol:0,abs:0.051,show:'ΔEN = '+d.toFixed(1)},
+    {type:'mc',label:'Which atom gets the larger share of the electrons'+(ionic?' (becomes the negative ion)':' (is δ−)')+'?',options:[{v:A+' ('+ENAMES[A]+')',ok:neg===A},{v:B+' ('+ENAMES[B]+')',ok:neg===B},{v:'Neither; they share equally',ok:neg===null}],show:neg?neg+' is the '+(ionic?'negative ion':'δ− end'):'equal sharing',msg:'The atom with the higher electronegativity pulls harder and gets the larger share.'},
+    {type:'mc',label:'Type of bond',options:[{v:'Nonpolar covalent',ok:kind==='nonpolar'},{v:'Polar covalent',ok:kind==='polar'},{v:'Ionic',ok:kind==='ionic'}],show:kindLabel[kind]+' bond',msg:ionic?'Look at the periodic table first: is one of these a metal?':'For two nonmetals, use the size of ΔEN: about 0.4 or less is nonpolar covalent; larger is polar covalent.'}
+  ];
+  return {ctx:'Electronegativities: '+A+' = '+a.toFixed(1)+', '+B+' = '+b.toFixed(1)+'. '+(mA?A+' is a metal. ':'')+(mB?B+' is a metal. ':'')+(!ionic?'Both are nonmetals.':''),
+    q:'Describe the bond between '+ENAMES[A]+' and '+ENAMES[B]+' ('+A+'–'+B+').',parts,
+    guided:'<p>ΔEN is the larger value minus the smaller: '+blank('hi','larger electronegativity',false)+' − '+blank('lo','smaller electronegativity',false)+'.</p><p>Then decide: metal + nonmetal → ionic. Two nonmetals: ΔEN up to about 0.4 → nonpolar covalent; above that → polar covalent. The atom with the larger electronegativity is δ−.</p>',
+    blanks:{hi:{want:hi,tol:0,abs:0.01},lo:{want:lo,tol:0,abs:0.01}},
+    blankMsg:g=>g.hi&&g.hi.good===false?'The larger of the two values is '+hi.toFixed(1)+'.':g.lo&&g.lo.good===false?'The smaller of the two values is '+lo.toFixed(1)+'.':'',
+    hints:['Subtract the two electronegativities (larger minus smaller). The atom with the higher value pulls harder.',ionic?'One of these is a metal. Metal + nonmetal: the electrons transfer completely, which is an ionic bond.':'Both are nonmetals, so the bond is covalent. Is ΔEN ('+d.toFixed(1)+') small enough (about 0.4 or less) to call it nonpolar?'],
+    solution:'<ol><li>ΔEN = '+hi.toFixed(1)+' − '+lo.toFixed(1)+' = <b>'+d.toFixed(1)+'</b>.</li><li>'+(neg?cap(ENAMES[neg])+' ('+EN[neg].toFixed(1)+') pulls harder, so <b>'+neg+'</b> is the '+(ionic?'negative ion':'δ− end')+' and '+(neg===A?B:A)+' is '+(ionic?'the positive ion':'δ+')+'.':'The two atoms are identical, so they pull equally: <b>neither</b> end is charged.')+'</li><li>'+(ionic?(mA?A:B)+' is a metal and '+(mA?B:A)+' is a nonmetal, so the electrons are transferred, not shared: an <b>ionic bond</b>.':kind==='nonpolar'?'Two nonmetals with ΔEN of '+d.toFixed(1)+' (0.4 or less): a <b>nonpolar covalent bond</b>. '+(A==='C'&&B==='H'||A==='H'&&B==='C'?'This is why hydrocarbons such as fats and gasoline are nonpolar.':''):'Two nonmetals with ΔEN of '+d.toFixed(1)+' (more than 0.4): a <b>polar covalent bond</b>, with '+neg+' δ− and '+(neg===A?B:A)+' δ+.'+(pr.includes('O')&&pr.includes('H')?' The O–H bond is the reason water is polar and hydrogen-bonds.':''))+'</li></ol>'};
+}
+
+/* 3. Concentration */
+function genConc(fixed){
+  const type=fixed||pick(['pctmass','ppm2mg','mg2ppb','pct2ppm','limit','molarity','moles']);
+  if(type==='pctmass'){
+    const item=fixed?['vinegar','acetic acid',4.0]:pick([['vinegar','acetic acid',4.0],['seawater','dissolved salt',3.5],['a sports drink','sugar',6.0],['rubbing alcohol','isopropyl alcohol',70],['hydrogen peroxide (drugstore)','hydrogen peroxide',3.0],['household bleach','sodium hypochlorite',5.0]]); const g=fixed?250:pick([100,250,500,750,1000]); const ans=g*item[2]/100;
+    return {ctx:cap(item[0])+' is '+item[2]+'% '+item[1]+' by mass: '+item[2]+' g of '+item[1]+' in every 100 g of solution.',q:'How many grams of '+item[1]+' are in '+g+' g of '+item[0]+'?',
+      parts:[{type:'num',label:'Mass of '+item[1],ans:ans,unit:'g',show:fmt(ans,2)+' g'}],
+      guided:'<p>'+item[2]+'% as a decimal is '+blank('d','percent as a decimal',true)+'.</p><p>Mass of solute = mass of solution × decimal.</p>',
+      blanks:{d:{want:item[2]/100,tol:0.001}},blankMsg:g2=>g2.d&&g2.d.good===false?'Divide the percent by 100.':'',
+      hints:['Percent by mass means grams of solute per 100 g of solution.','Multiply '+g+' g by '+item[2]/100+'.'],
+      solution:'<ol><li>'+item[2]+'% = '+item[2]/100+'.</li><li>'+g+' g × '+item[2]/100+' = <b>'+fmt(ans,2)+' g of '+item[1]+'</b>; the other '+fmt(g-ans,2)+' g is mostly water.</li></ol>'};
+  }
+  if(type==='ppm2mg'){
+    const c=pick(EPA.filter(x=>['nitrate','fluoride','copper','chloride','iron'].includes(x.k))); const ppm=+(c.mcl*pick([0.2,0.5,0.8,1.5])).toPrecision(2); const V=pick([2,5,10,20]); const ans=ppm*V;
+    return {ctx:'1 ppm means 1 part per million by mass, and for water that is the same as 1 mg per liter.',q:'A water report lists '+c.n.split(' (')[0].toLowerCase()+' at '+ppm+' ppm. (a) How many milligrams are in 1 L? (b) How many milligrams are in '+V+' L?',
+      parts:[{type:'num',label:'In 1 L',ans:ppm,unit:'mg',show:ppm+' mg per liter'},{type:'num',label:'In '+V+' L',ans:ans,unit:'mg',show:fmt(ans,3)+' mg in '+V+' L'}],
+      guided:'<p>1 ppm = '+blank('u','milligrams per liter in 1 ppm')+' mg/L, so '+ppm+' ppm = '+ppm+' mg/L.</p><p>Milligrams in '+V+' L = mg/L × '+V+'.</p>',
+      blanks:{u:{want:1,tol:0}},blankMsg:g=>g.u&&g.u.good===false?'A liter of water weighs 1,000,000 mg, so 1 mg in a liter is 1 part per million.':'',
+      hints:['For water, ppm and mg/L are the same number.','Multiply the mg/L by the number of liters.'],
+      solution:'<ol><li>'+ppm+' ppm = <b>'+ppm+' mg/L</b>.</li><li>'+ppm+' mg/L × '+V+' L = <b>'+fmt(ans,3)+' mg</b>.</li><li>For comparison, the EPA limit for '+c.n.split(' (')[0].toLowerCase()+' is '+c.mcl+' mg/L, so this water is '+(ppm>c.mcl?'above':'below')+' it.</li></ol>'};
+  }
+  if(type==='mg2ppb'){
+    const c=pick(EPA.filter(x=>['lead','arsenic','benzene','cyanide'].includes(x.k))); const mg=+(c.mcl*pick([0.3,0.6,1.2,2])).toPrecision(2); const ans=mg*1000;
+    return {ctx:'Very small concentrations are reported in parts per billion: 1 ppb = 1 µg/L = 0.001 mg/L.',q:'A sample contains '+mg+' mg/L of '+c.n.toLowerCase()+'. Express that in parts per billion.',
+      parts:[{type:'num',label:'Concentration',ans:ans,unit:'ppb',show:fmt(ans,2)+' ppb'}],
+      guided:'<p>1 mg/L = 1 ppm = '+blank('k','ppb in one ppm',true)+' ppb.</p><p>ppb = mg/L × that number.</p>',
+      blanks:{k:{want:1000,tol:0}},blankMsg:g=>g.k&&g.k.good===false?'A billion is a thousand millions, so 1 ppm = 1000 ppb.':'',
+      hints:['ppm to ppb: multiply by 1000 (a billion is 1000 million).',mg+' × 1000.'],
+      solution:'<ol><li>'+mg+' mg/L = '+mg+' ppm.</li><li>'+mg+' ppm × 1000 = <b>'+fmt(ans,2)+' ppb</b>.</li><li>The EPA limit for '+c.n.toLowerCase()+' is '+c.mcl+' mg/L = '+fmt(c.mcl*1000,1)+' ppb, so this sample is '+(mg>c.mcl?'above':'below')+' the limit.</li></ol>'};
+  }
+  if(type==='pct2ppm'){
+    const item=pick([['seawater','salt',3.5],['a saline rinse','salt',0.9],['vinegar','acetic acid',4.0],['hard water','dissolved minerals',0.05]]); const ans=item[2]*10000;
+    return {ctx:'Percent and ppm are both “parts per”: percent is parts per hundred, ppm is parts per million.',q:cap(item[0])+' is about '+item[2]+'% '+item[1]+'. What is that in ppm?',
+      parts:[{type:'num',label:'Concentration',ans:ans,unit:'ppm',show:fmt(ans,0)+' ppm'}],
+      guided:'<p>1% = 1 part in 100 = '+blank('k','ppm in one percent',true)+' parts in a million.</p><p>ppm = percent × that number.</p>',
+      blanks:{k:{want:10000,tol:0}},blankMsg:g=>g.k&&g.k.good===false?'1/100 = 10,000/1,000,000, so 1% = 10,000 ppm.':'',
+      hints:['A million is 10,000 hundreds, so 1% = 10,000 ppm.',item[2]+' × 10,000.'],
+      solution:'<ol><li>1% = 10,000 ppm.</li><li>'+item[2]+'% × 10,000 = <b>'+fmt(ans,0)+' ppm</b>'+(item[0]==='seawater'?' (35 g of salt per kilogram of seawater)':'')+'.</li></ol>'};
+  }
+  if(type==='limit'){
+    const c=pick(EPA.filter(x=>!x.n.includes('secondary'))); const factor=pick([1.5,2,2.5,3,4,5]); const meas=+(c.mcl*factor).toPrecision(2); const ans=meas/c.mcl;
+    return {ctx:'The EPA maximum contaminant level for '+c.n.toLowerCase()+' is '+c.mcl+' mg/L. '+c.note,q:'A well tests at '+meas+' mg/L. How many times the limit is that?',
+      parts:[{type:'num',label:'Times the limit',ans:ans,tol:0.03,show:fmt(ans,2)+' times the limit'}],
+      guided:'<p>Times the limit = measured ÷ limit = '+meas+' ÷ '+blank('l','the EPA limit',true)+'.</p>',
+      blanks:{l:{want:c.mcl,tol:0.001}},blankMsg:g=>g.l&&g.l.good===false?'The limit is given above: '+c.mcl+' mg/L.':'',
+      hints:['Divide the measured value by the allowed value.',meas+' ÷ '+c.mcl+'.'],
+      solution:'<ol><li>'+meas+' ÷ '+c.mcl+' = <b>'+fmt(ans,2)+'</b> times the maximum contaminant level.</li><li>Water above a primary limit must be treated or not served.</li></ol>'};
+  }
+  if(type==='molarity'){
+    const sol=pick(['NaCl','sugar','KBr','glucose','MgSO4 (Epsom salt)']); const mol=pick([0.10,0.25,0.50,1.0,1.5,2.0]); const L=pick([0.50,1.0,2.0,2.5,4.0]); const ans=mol/L;
+    return {ctx:'Molarity (M) is moles of solute per liter of solution: M = mol ÷ L.',q:mol+' mol of '+F(sol)+' is dissolved in enough water to make '+L+' L of solution. What is the molarity?',
+      parts:[{type:'num',label:'Molarity',ans:ans,unit:'M (mol/L)',show:fmt(ans,3)+' M'}],
+      guided:'<p>M = moles ÷ liters = '+mol+' ÷ '+blank('v','volume in liters')+'.</p>',
+      blanks:{v:{want:L,tol:0.001}},blankMsg:g=>g.v&&g.v.good===false?'The volume is already in liters: '+L+'.':'',
+      hints:['Molarity is moles divided by liters.',mol+' ÷ '+L+'.'],
+      solution:'<ol><li>M = '+mol+' mol ÷ '+L+' L = <b>'+fmt(ans,3)+' M</b>.</li><li>Read it as “'+fmt(ans,3)+' moles per liter.” The pH table in Section 6 uses the same unit for hydrogen ion.</li></ol>'};
+  }
+  const sol=pick(['NaCl','sugar','KCl','glucose']); const M=pick([0.10,0.20,0.50,0.80,1.0,2.0]); const mL=pick([100,250,500,750,1500]); const ans=M*mL/1000;
+  return {ctx:'Molarity (M) is moles per liter, so moles = M × liters.',q:'How many moles of '+F(sol)+' are in '+mL+' mL of a '+M+' M solution?',
+    parts:[{type:'num',label:'Moles',ans:ans,unit:'mol',show:fmt(ans,3)+' mol'}],
+    guided:'<p>'+mL+' mL = '+blank('v','volume in liters',true)+' L.</p><p>Moles = '+M+' mol/L × liters.</p>',
+    blanks:{v:{want:mL/1000,tol:0.001}},blankMsg:g=>g.v&&g.v.good===false?'Divide milliliters by 1000 to get liters.':'',
+    hints:['Convert the volume to liters first (1000 mL = 1 L).','Multiply the molarity by the volume in liters: '+M+' × '+mL/1000+'.'],
+    solution:'<ol><li>'+mL+' mL ÷ 1000 = '+mL/1000+' L.</li><li>'+M+' mol/L × '+mL/1000+' L = <b>'+fmt(ans,3)+' mol</b>.</li></ol>'};
+}
+
+/* 5. Neutralization */
+function genNeut(fixed){
+  const a=fixed?'H2SO4':pick(['HCl','HNO3','H2SO4','HCl','CH3COOH']); const b=fixed?'NaOH':pick(Object.keys(BASES));
+  const r=neutralization(a,b); const A=r.A,B=r.B; const salt=r.salt;
+  // distractor formulas
+  const an=A.anion==='CH3COO'?'CH3COO':A.anion; const cat=B.cat;
+  const wrap=(f,n)=>n===1?f:(/\d/.test(f)||f.length>2?'('+f+')'+n:f+n);
+  const cands=[cat+(an==='CH3COO'?'CH3COO':an), wrap(cat,2)+an, cat+wrap(an,2), cat+'H'+an, cat+'OH'+an, wrap(cat,2)+wrap(an,2)];
+  const wrong=[...new Set(cands.filter(f=>f!==salt.f))].slice(0,3);
+  const opts=shuffle([{v:F(salt.f),ok:true},...wrong.map(f=>({v:F(f),ok:false}))]);
+  return {ctx:cap(A.n)+' ('+F(a)+') supplies '+A.h+' H<sup>+</sup> per molecule; '+B.n+' ('+F(b)+') supplies '+B.oh+' OH<sup>−</sup> per formula unit.',
+    q:'Complete the neutralization: '+F(a)+' + '+F(b)+' → salt + water.<div class="eq">'+(r.cA>1?r.cA+' ':'')+F(a)+' + '+(r.cB>1?r.cB+' ':'')+F(b)+' → <span class="unk">?</span> + <span class="unk">?</span> H<sub>2</sub>O</div>',
+    parts:[{type:'mc',label:'Formula of the salt',options:opts,show:salt.name+', '+F(salt.f),msg:'Not that one. The salt pairs the base’s cation ('+F(cat+'^'+(B.oh>1?B.oh:'')+'+')+') with the acid’s anion ('+F(an+'^'+(A.h>1?A.h:'')+'-')+'); the subscripts make the charges cancel.'},
+      {type:'num',label:'Number of water molecules formed (the coefficient of H<sub>2</sub>O)',ans:r.cW,tol:0,show:r.cW+' H<sub>2</sub>O'}],
+    guided:'<p>H<sup>+</sup> available per acid molecule: '+blank('h','hydrogen ions per acid molecule')+'. OH<sup>−</sup> available per base formula: '+blank('oh','hydroxide ions per base formula')+'.</p><p>Every H<sup>+</sup> meets one OH<sup>−</sup> to make one H<sub>2</sub>O. With '+(r.cA>1?r.cA+' ':'')+F(a)+' and '+(r.cB>1?r.cB+' ':'')+F(b)+', count the total H<sup>+</sup>: that is the number of waters. The leftover ions, '+F(cat+'^'+(B.oh>1?B.oh:'')+'+')+' and '+F(an+'^'+(A.h>1?A.h:'')+'-')+', pair up in the salt with subscripts that cancel the charges.</p>',
+    blanks:{h:{want:A.h,tol:0},oh:{want:B.oh,tol:0}},
+    blankMsg:g=>g.h&&g.h.good===false?F(a)+' has '+A.h+' acidic hydrogen'+(A.h>1?'s':'')+(a==='CH3COOH'?' (only the one on the oxygen counts)':'')+'.':g.oh&&g.oh.good===false?F(b)+' has '+B.oh+' hydroxide'+(B.oh>1?'s':'')+' per formula unit.':'',
+    hints:['Acid + base → salt + water. The salt is the base’s metal ion with the acid’s leftover anion; the H<sup>+</sup> and OH<sup>−</sup> become water.','Cation '+F(cat+'^'+(B.oh>1?B.oh:'')+'+')+' and anion '+F(an+'^'+(A.h>1?A.h:'')+'-')+': choose subscripts so the total charge is zero. Water molecules = total H<sup>+</sup> = '+r.cA+' × '+A.h+'.'],
+    solution:'<ol><li>Ions: '+F(cat+'^'+(B.oh>1?B.oh:'')+'+')+' from the base and '+F(an+'^'+(A.h>1?A.h:'')+'-')+' from the acid. '+(salt.nCat>1||salt.nAn>1?'To cancel the charges you need '+salt.nCat+' '+F(cat+'^'+(B.oh>1?B.oh:'')+'+')+' for every '+salt.nAn+' '+F(an+'^'+(A.h>1?A.h:'')+'-')+', so the salt is ':'The charges already match one to one, so the salt is ')+'<b>'+F(salt.f)+'</b>, '+salt.name+(SALT_NOTES[salt.f]?' ('+SALT_NOTES[salt.f]+')':'')+'.</li><li>Each acid molecule gives '+A.h+' H<sup>+</sup> and each base formula gives '+B.oh+' OH<sup>−</sup>; the smallest numbers that match them are '+r.cA+' acid to '+r.cB+' base, which makes '+r.cA*A.h+' H<sup>+</sup> + '+r.cB*B.oh+' OH<sup>−</sup> → <b>'+r.cW+' H<sub>2</sub>O</b>.</li><li>Balanced: '+F(r.eq)+'.</li></ol>',
+    done:'<p>'+F(r.eq)+'</p>'};
+}
+
+/* 6. pH */
+function genPH(fixed){
+  const type=fixed||pick(['toPH','toH','toOH','times','class','calc','calcH']);
+  const EX=[[0,'4% hydrochloric acid'],[1,'stomach acid'],[2,'lemon juice'],[3,'cola'],[4,'tomato juice'],[5,'black coffee'],[6,'milk'],[7,'pure water'],[8,'seawater'],[9,'baking soda solution'],[10,'milk of magnesia'],[11,'household ammonia'],[12,'washing soda'],[13,'4% sodium hydroxide'],[14,'1 M sodium hydroxide']];
+  const cls=p=>p<7?'acidic':p>7?'basic':'neutral';
+  if(type==='toPH'){ const n=Math.floor(Math.random()*15);
+    return {ctx:'pH is the power of ten in the hydrogen-ion concentration, with the sign flipped (Table 7.4).',q:'A solution has [H<sup>+</sup>] = '+sciStr(1,n)+' mol/L. What is its pH?',
+      parts:[{type:'num',label:'pH',ans:n,tol:0,show:'pH '+n+' ('+cls(n)+')'}],
+      guided:'<p>Write the exponent of 10: '+blank('e','the exponent',false)+'. pH is that exponent with its sign flipped.</p>',
+      blanks:{e:{want:-n,tol:0}},blankMsg:g=>g.e&&g.e.good===false?'The exponent in 1 × 10<sup>−'+n+'</sup> is −'+n+'.':'',
+      hints:['Look at the power of ten. pH is the number in the exponent, made positive.','10<sup>−'+n+'</sup> → pH '+n+'.'],
+      solution:'<ol><li>[H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L: the exponent is −'+n+'.</li><li>pH = <b>'+n+'</b>. '+(n<7?'Below 7: acidic':n>7?'Above 7: basic':'Exactly 7: neutral')+'; about the pH of '+EX[n][1]+'.</li></ol>'}; }
+  if(type==='toH'){ const n=Math.floor(Math.random()*15);
+    return {ctx:'Going the other way: [H<sup>+</sup>] = 10<sup>−pH</sup> mol/L.',q:'A solution has pH '+n+'. What is its hydrogen-ion concentration in mol/L? (You can type it as 1e-'+n+', 1x10^-'+n+', or a decimal.)',
+      parts:[{type:'num',label:'[H<sup>+</sup>]',ans:Math.pow(10,-n),tol:0.02,unit:'mol/L',show:sciStr(1,n)+' mol/L'}],
+      guided:'<p>The exponent is the pH with its sign flipped: 10 to the '+blank('e','the exponent',false)+' power.</p>',
+      blanks:{e:{want:-n,tol:0}},blankMsg:g=>g.e&&g.e.good===false?'pH '+n+' means 10<sup>−'+n+'</sup>.':'',
+      hints:['pH '+n+' means [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup>.','As a decimal that is 0.'+'0'.repeat(Math.max(0,n-1))+'1 (a 1 in the '+n+'th decimal place)'+(n===0?'; for pH 0 it is 1 mol/L':'')+'.'],
+      solution:'<ol><li>pH '+n+' → exponent −'+n+'.</li><li>[H<sup>+</sup>] = <b>'+sciStr(1,n)+' mol/L</b>'+(n>0?' = '+(n<=6?Math.pow(10,-n).toFixed(n):'0.'+'0'.repeat(n-1)+'1')+' mol/L':'')+'.</li></ol>'}; }
+  if(type==='toOH'){ const n=Math.floor(Math.random()*15); const m=14-n;
+    return {ctx:'In any water solution, [H<sup>+</sup>] × [OH<sup>−</sup>] = 1 × 10<sup>−14</sup>, so the two exponents always add up to −14.',q:'A solution has pH '+n+'. What is its hydroxide-ion concentration, [OH<sup>−</sup>], in mol/L?',
+      parts:[{type:'num',label:'[OH<sup>−</sup>]',ans:Math.pow(10,-m),tol:0.02,unit:'mol/L',show:sciStr(1,m)+' mol/L'}],
+      guided:'<p>[H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup>. The OH<sup>−</sup> exponent is 14 − pH = '+blank('p','14 minus the pH')+' (with a minus sign in front).</p>',
+      blanks:{p:{want:m,tol:0}},blankMsg:g=>g.p&&g.p.good===false?'14 − '+n+' = '+m+'.':'',
+      hints:['The two exponents add to −14: if [H<sup>+</sup>] is 10<sup>−'+n+'</sup>, then [OH<sup>−</sup>] is 10<sup>−(14 − '+n+')</sup>.','[OH<sup>−</sup>] = 1 × 10<sup>−'+m+'</sup> mol/L.'],
+      solution:'<ol><li>pH '+n+' → [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L.</li><li>14 − '+n+' = '+m+', so [OH<sup>−</sup>] = <b>'+sciStr(1,m)+' mol/L</b>.</li><li>Check: 10<sup>−'+n+'</sup> × 10<sup>−'+m+'</sup> = 10<sup>−14</sup>. '+(n<7?'More H<sup>+</sup> than OH<sup>−</sup>: acidic.':n>7?'More OH<sup>−</sup> than H<sup>+</sup>: basic.':'Equal: neutral.')+'</li></ol>'}; }
+  if(type==='times'){ const a=fixed?3:Math.floor(Math.random()*11); const d=fixed?3:1+Math.floor(Math.random()*5); const b=a+d; const ans=Math.pow(10,d);
+    return {ctx:'Each step of one pH unit is a factor of 10 in hydrogen-ion concentration.',q:'Solution A has pH '+a+' ('+EX[a][1]+') and solution B has pH '+b+' ('+EX[b][1]+'). How many times more hydrogen ion does A have than B?',
+      parts:[{type:'num',label:'Times more H<sup>+</sup> in A',ans:ans,tol:0,show:fmt(ans,0)+' times'}],
+      guided:'<p>Difference in pH: '+b+' − '+a+' = '+blank('d','difference in pH units')+' units.</p><p>Factor = 10 multiplied by itself that many times (10<sup>difference</sup>).</p>',
+      blanks:{d:{want:d,tol:0}},blankMsg:g=>g.d&&g.d.good===false?'Subtract the two pH values.':'',
+      hints:['Find the difference between the two pH values. Each unit is ×10.','10<sup>'+d+'</sup>: write a 1 followed by '+d+' zero'+(d>1?'s':'')+'.'],
+      solution:'<ol><li>pH difference: '+b+' − '+a+' = '+d+'.</li><li>Factor: 10<sup>'+d+'</sup> = <b>'+fmt(ans,0)+'</b>. The lower pH (A) has '+fmt(ans,0)+' times more H<sup>+</sup>.</li><li>In concentrations: '+sciStr(1,a)+' ÷ '+sciStr(1,b)+' = 10<sup>'+d+'</sup>.</li></ol>'}; }
+  if(type==='class'){ const p=+(Math.random()*14).toFixed(1); const c=cls(p);
+    return {q:'A solution has pH '+p.toFixed(1)+'.',
+      parts:[{type:'mc',label:'The solution is',options:[{v:'Acidic',ok:c==='acidic'},{v:'Neutral',ok:c==='neutral'},{v:'Basic (alkaline)',ok:c==='basic'}],show:c,msg:'Below 7 is acidic, 7 is neutral, above 7 is basic.'},
+        {type:'mc',label:'Compared with pure water it has',options:[{v:'more hydrogen ion',ok:p<7},{v:'the same hydrogen ion',ok:p===7},{v:'less hydrogen ion',ok:p>7}],show:(p<7?'more':p>7?'less':'the same')+' H<sup>+</sup> than water',msg:'Lower pH means more H<sup>+</sup>; higher pH means less.'},
+        {type:'mc',label:'Blue litmus paper dipped in it',options:[{v:'turns red',ok:p<6.95},{v:'stays blue',ok:p>=6.95}],show:'blue litmus '+(p<6.95?'turns red':'stays blue'),msg:'Blue litmus turns red only in acid.'}],
+      guided:'<p>Compare with 7: '+p.toFixed(1)+' is '+blank('s','how far from 7, as a positive number',false)+' units '+(p<7?'below':p>7?'above':'from')+' 7.</p><p>Below 7 → acidic (more H<sup>+</sup> than water; blue litmus turns red). Above 7 → basic (less H<sup>+</sup>; red litmus turns blue). Exactly 7 → neutral.</p>',
+      blanks:{s:{want:Math.abs(p-7),tol:0,abs:0.051}},blankMsg:g=>g.s&&g.s.good===false?'Subtract: |'+p.toFixed(1)+' − 7| = '+Math.abs(p-7).toFixed(1)+'.':'',
+      hints:['7 is neutral. Which side of 7 is this pH on?','Lower pH means more hydrogen ion. Acids turn blue litmus red; bases turn red litmus blue.'],
+      solution:'<ol><li>pH '+p.toFixed(1)+' is '+(p<7?'below':p>7?'above':'exactly')+' 7: <b>'+c+'</b>.</li><li>It has <b>'+(p<7?'more':p>7?'less':'the same')+'</b> hydrogen ion than pure water'+(p!==7?' (about '+fmt(Math.pow(10,Math.abs(7-p)),0)+' times '+(p<7?'more':'less')+')':'')+'.</li><li>Blue litmus <b>'+(p<6.95?'turns red':'stays blue')+'</b>'+(p>7.05?'; red litmus would turn blue':'')+'.</li></ol>'}; }
+  if(type==='calc'){ const m=pick([2.0,2.5,3.2,4.0,5.0,6.3,7.9]); const n=1+Math.floor(Math.random()*12); const pH=n-Math.log10(m);
+    return {ctx:'Calculator problem. When the concentration is not a plain power of ten, use pH = −log[H<sup>+</sup>].',q:'A solution has [H<sup>+</sup>] = '+sciStr(m.toFixed(1),n)+' mol/L. What is its pH, to two decimal places?',
+      parts:[{type:'num',label:'pH',ans:pH,tol:0,abs:0.03,show:'pH '+pH.toFixed(2)}],
+      guided:'<p>Split the number: '+m.toFixed(1)+' × 10<sup>−'+n+'</sup>. log('+m.toFixed(1)+') = '+blank('lg','log of the first number',true)+' (two decimals).</p><p>pH = '+n+' − log('+m.toFixed(1)+'). The answer lies between '+(n-1)+' and '+n+'.</p>',
+      blanks:{lg:{want:Math.log10(m),tol:0,abs:0.011}},blankMsg:g=>g.lg&&g.lg.good===false?'Use the log key: log('+m.toFixed(1)+') = '+Math.log10(m).toFixed(2)+'.':'',
+      hints:['pH = −log[H<sup>+</sup>]. Enter the concentration in your calculator, press log, and flip the sign.','log(a × 10<sup>−n</sup>) = log(a) − n, so pH = n − log(a) = '+n+' − '+Math.log10(m).toFixed(2)+'.'],
+      solution:'<ol><li>pH = −log('+m.toFixed(1)+' × 10<sup>−'+n+'</sup>).</li><li>log('+m.toFixed(1)+') = '+Math.log10(m).toFixed(2)+', so −log[H<sup>+</sup>] = '+n+' − '+Math.log10(m).toFixed(2)+' = <b>'+pH.toFixed(2)+'</b>.</li><li>Sense check: '+sciStr(m.toFixed(1),n)+' is between 1 × 10<sup>−'+n+'</sup> (pH '+n+') and 1 × 10<sup>−'+(n-1)+'</sup> (pH '+(n-1)+'), and so is the answer.</li></ol>'}; }
+  const pH=+(1+Math.random()*12).toFixed(1); if(Number.isInteger(pH)) return genPH('calcH'); const H=Math.pow(10,-pH); const n=Math.ceil(pH); const m=Math.pow(10,n-pH);
+  return {ctx:'Calculator problem. [H<sup>+</sup>] = 10<sup>−pH</sup>, which needs the 10<sup>x</sup> key when the pH is not a whole number.',q:'A solution has pH '+pH.toFixed(1)+'. What is [H<sup>+</sup>] in mol/L? (Type it as a decimal or as 3.2e-5 style.)',
+    parts:[{type:'num',label:'[H<sup>+</sup>]',ans:H,tol:0.03,unit:'mol/L',show:sciStr(m.toFixed(1),n)+' mol/L'}],
+    guided:'<p>pH '+pH.toFixed(1)+' lies between '+(n-1)+' and '+n+', so [H<sup>+</sup>] is between 1 × 10<sup>−'+(n-1)+'</sup> and 1 × 10<sup>−'+n+'</sup>. Write 10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup>. On a calculator 10<sup>'+(n-pH).toFixed(1)+'</sup> = '+blank('m','ten to the fractional power',true)+'.</p>',
+    blanks:{m:{want:m,tol:0.02}},blankMsg:g=>g.m&&g.m.good===false?'10<sup>'+(n-pH).toFixed(1)+'</sup> = '+m.toFixed(2)+'. Use the 10<sup>x</sup> (or inverse log) key.':'',
+    hints:['[H<sup>+</sup>] = 10<sup>−pH</sup>. Enter −'+pH.toFixed(1)+' and use the 10<sup>x</sup> key.','The answer is '+m.toFixed(1)+' × 10<sup>−'+n+'</sup>: between pH '+(n-1)+' and pH '+n+' on the table.'],
+    solution:'<ol><li>[H<sup>+</sup>] = 10<sup>−'+pH.toFixed(1)+'</sup> mol/L.</li><li>10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup> = '+m.toFixed(2)+' × 10<sup>−'+n+'</sup>, so [H<sup>+</sup>] = <b>'+sciStr(m.toFixed(1),n)+' mol/L</b> ('+H.toExponential(1).replace('e-',' × 10^−').replace(/\^−(\d+)/,'<sup>−$1</sup>')+').</li><li>Check: pH '+pH.toFixed(1)+' is '+cls(pH)+', and the concentration sits between the table values for pH '+(n-1)+' and pH '+n+'.</li></ol>'};
+}
+
 /* ================= 3. SOLUTIONS ================= */
 const SOLUTES={
   salt:{n:'Table salt (NaCl)',type:'ionic',water:true,oil:false,why:'Salt is ionic. Water molecules surround each Na<sup>+</sup> with their δ− oxygen ends and each Cl<sup>−</sup> with their δ+ hydrogen ends, pulling the ions out of the crystal one by one. Oil molecules are nonpolar and have no charged ends to offer, so the crystal just sits there.'},
@@ -707,6 +1010,7 @@ function renderSol(){
     '<label for="ccont">of</label><select class="sel" id="ccont">'+EPA.map(c=>'<option value="'+c.k+'"'+(S.conc.cont===c.k?' selected':'')+'>'+c.n+'</option>').join('')+'</select></div>'+
     '<div id="cout" style="margin-top:12px"></div>'+
     '<p class="src">Limits from Table 14.3 (EPA drinking-water standards). A sense of scale: 1 ppm is about one minute in two years; 1 ppb is about one second in 32 years.</p></div>'+
+    '<h3>Concentration practice</h3><p>Seven kinds of problem: percent by mass, ppm to milligrams, mg/L to ppb, percent to ppm, how many times over a limit, molarity from moles and liters, and moles from molarity and volume.</p>'+workedExample(genConc('pctmass'))+'<div id="cprac"></div>'+
     checkYourself('sol',[
       {q:'In a glass of salt water, the water is the …',o:['solute','solvent','solution','precipitate'],a:1,e:'The solvent does the dissolving and is present in the larger amount. Salt is the solute, and the mixture is the solution.',w:{0:'The solute is the substance being dissolved: the salt.',2:'The solution is the whole mixture.',3:'A precipitate is a solid that comes <i>out</i> of a solution.'}},
       {q:'Which of these would you expect to dissolve in vegetable oil?',o:['Table salt','Sugar','Candle wax','Baking soda'],a:2,e:'Like dissolves like. Wax is nonpolar, and oil is nonpolar.',w:{0:'Salt is ionic; it needs a polar solvent such as water.',1:'Sugar is polar and hydrogen-bonds to water, not to oil.',3:'Baking soda is ionic and dissolves in water.'}},
@@ -754,6 +1058,8 @@ function renderSol(){
       '<div class="fb show '+(over?'bad':'ok')+'"><span class="ic" aria-hidden="true">'+(over?'✗':'✓')+'</span><div><p><b>'+(over?'Above':'At or below')+' the limit.</b> '+fmt(ppm)+' ppm is '+(over?fmt(ppm/c.mcl)+' times the':( ppm===0?'well under the':fmt(ppm/c.mcl*100)+'% of the'))+' maximum of '+c.mcl+' mg/L. '+c.note+'</p></div></div>';
   };
   ['cval','cunit','ccont'].forEach(id=>$('#'+id).addEventListener('input',paintC)); paintC();
+  if(!S.prac) S.prac=freshPrac();
+  mountPractice('cprac',S.prac,()=>genConc());
 }
 
 /* ================= 4. ELECTROLYTES ================= */
@@ -915,6 +1221,7 @@ function renderAcid(){
     '<h3>Neutralization builder</h3><div class="act"><p class="how">Choose an acid and a base. The builder writes the balanced neutralization equation and names the salt. Notice that every H<sup>+</sup> needs one OH<sup>−</sup>, which is where the coefficients come from.</p>'+
     '<div class="row"><label for="nacid">Acid</label><select class="sel" id="nacid">'+Object.keys(ACIDS).map(k=>'<option value="'+k+'"'+(S.acid===k?' selected':'')+'>'+k.replace(/(\d)/g,'$1')+' ('+ACIDS[k].n+')</option>').join('')+'</select>'+
     '<label for="nbase">Base</label><select class="sel" id="nbase">'+Object.keys(BASES).map(k=>'<option value="'+k+'"'+(S.base===k?' selected':'')+'>'+k+' ('+BASES[k].n+')</option>').join('')+'</select></div><div id="nout"></div></div>'+
+    '<h3>Neutralization practice</h3><p>Pick the salt and count the water molecules for an acid–base pair. The guided setup starts from how many H<sup>+</sup> the acid gives and how many OH<sup>−</sup> the base gives.</p>'+workedExample(genNeut('example'))+'<div id="nprac"></div>'+
     '<h3>Conjugate pairs</h3><div class="act" id="cjbox"></div>'+
     '<h3>Who donated the proton?</h3><div class="act" id="blbox"></div>'+
     world('Acids and bases in daily life','<p><b>Antacids</b> (baking soda NaHCO<sub>3</sub>, Tums CaCO<sub>3</sub>, Amphojel Al(OH)<sub>3</sub>, milk of magnesia Mg(OH)<sub>2</sub>) neutralize excess stomach acid. Too much antacid can push blood pH up (alkalosis), so acid reducers that cut acid production are now more common. <b>Acid rain</b> (pH below 5.6) forms when SO<sub>2</sub> and nitrogen oxides from burning coal and from engines react with water in the air; it damages lakes, forests, metal, and limestone and marble buildings. <b>In industry,</b> sulfuric acid is the top chemical made in the U.S. (about 40 billion kg a year, for fertilizer and batteries); lime made by heating limestone becomes slaked lime for mortar, cement, and soil; lye makes soap and unclogs drains; ammonia is fertilizer. Concentrated acids and bases are corrosive because they tear apart the proteins in skin and eyes.</p>')+
@@ -986,6 +1293,8 @@ function renderAcid(){
     });
   };
   paintBL();
+  if(!S.prac) S.prac=freshPrac();
+  mountPractice('nprac',S.prac,()=>genNeut());
 }
 
 /* ================= 6. THE pH SCALE ================= */
@@ -999,17 +1308,8 @@ function sci(n){ // 10^-n as 1 × 10^-k or decimal-friendly string
 function phColor(v){ const stops=[[0,'#c8102e'],[1.4,'#e2401c'],[2.8,'#f07a1a'],[4.2,'#f6b31b'],[5.6,'#f4de2b'],[6.6,'#b6d33a'],[7,'#4caf50'],[8,'#2f9e8f'],[9.1,'#2275c4'],[10.5,'#2f55b5'],[11.9,'#4b3ea8'],[13.3,'#5b2b8a'],[14,'#3f1b63']];
   for(let i=1;i<stops.length;i++){ if(v<=stops[i][0]){ const a=stops[i-1],b=stops[i]; const t=(v-a[0])/(b[0]-a[0]); const h=x=>parseInt(x,16); const c1=[h(a[1].slice(1,3)),h(a[1].slice(3,5)),h(a[1].slice(5,7))], c2=[h(b[1].slice(1,3)),h(b[1].slice(3,5)),h(b[1].slice(5,7))]; return 'rgb('+c1.map((x,j)=>Math.round(x+(c2[j]-x)*t)).join(',')+')'; } }
   return stops[stops.length-1][1]; }
-function makePHProblem(){
-  const t=pick(['toPH','toH','times','which','class','class','toPH']);
-  if(t==='toPH'){ const n=Math.floor(Math.random()*15); return {t,q:'A solution has a hydrogen-ion concentration of '+sci(n)+' mol/L. What is its pH?',ans:n,type:'num',e:'pH is the exponent with the sign flipped: 1 × 10<sup>−'+n+'</sup> mol/L means pH '+n+'. '+(n<7?'Acidic.':n===7?'Neutral.':'Basic.')}; }
-  if(t==='toH'){ const n=Math.floor(Math.random()*15); const o=shuffle([n,(n+1)%15,(n+2)%15,(n+13)%15].map(k=>({v:sci(k)+' mol/L',ok:k===n}))); return {t,q:'A solution has pH '+n+'. What is its hydrogen-ion concentration?',o,type:'mc',e:'pH '+n+' means [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L. Lower pH, more H<sup>+</sup>.'}; }
-  if(t==='times'){ let a=Math.floor(Math.random()*12), d=1+Math.floor(Math.random()*4); const b=a+d; return {t,q:'Solution A has pH '+a+' and solution B has pH '+b+'. How many times more hydrogen ion does A have than B? (Enter a number.)',ans:Math.pow(10,d),type:'num',e:'Each pH unit is a factor of 10. A difference of '+d+' unit'+(d>1?'s':'')+' is 10<sup>'+d+'</sup> = '+Math.pow(10,d).toLocaleString()+' times more H<sup>+</sup> in the lower-pH solution.'}; }
-  if(t==='which'){ const a=(Math.random()*14).toFixed(1), b=(Math.random()*14).toFixed(1); if(a===b) return makePHProblem(); const lo=Math.min(+a,+b); const o=shuffle([{v:'pH '+a,ok:+a===lo},{v:'pH '+b,ok:+b===lo}]); return {t,q:'Which solution is more acidic: pH '+a+' or pH '+b+'?',o,type:'mc',e:'The lower pH has more hydrogen ion, so it is more acidic. pH '+lo+' it is.'}; }
-  const v=(Math.random()*14).toFixed(1); const cls=+v<7?'Acidic':+v>7?'Basic':'Neutral'; return {t,q:'A solution has pH '+v+'. Is it acidic, basic, or neutral?',o:[{v:'Acidic',ok:cls==='Acidic'},{v:'Neutral',ok:cls==='Neutral'},{v:'Basic',ok:cls==='Basic'}],type:'mc',e:'Below 7 is acidic, 7 is neutral, above 7 is basic. pH '+v+' is '+cls.toLowerCase()+'.'};
-}
 function renderPH(){
   const S=state.ph;
-  if(!S.prac.P){ S.prac.P=makePHProblem(); S.prac.answered=false; }
   view.innerHTML='<section><h2>6. The pH scale</h2>'+
     '<p class="lede">The hydrogen-ion concentration of everyday solutions runs from about 1 mol/L down to 0.00000000000001 mol/L. The pH scale squeezes that enormous range into a number between 0 and 14. “pH” stands for “power of hydrogen”: it is the power of ten in the concentration, with the sign flipped.</p>'+
     ideas([
@@ -1024,7 +1324,7 @@ function renderPH(){
     '<div id="phout"></div></div>'+
     '<h3>Compare two solutions</h3><div class="act"><p class="how">Pick two pH values to see how different their hydrogen-ion concentrations really are.</p>'+
     '<div class="row"><label for="cmpA">pH</label><input class="pin" id="cmpA" type="number" min="0" max="14" step="1" value="'+S.cmpA+'"><label for="cmpB">compared with pH</label><input class="pin" id="cmpB" type="number" min="0" max="14" step="1" value="'+S.cmpB+'"></div><div id="cmpout" style="margin-top:10px"></div></div>'+
-    '<h3>Practice</h3><div class="act" id="phprac"></div>'+
+    '<h3>pH practice</h3><p>Seven kinds of problem: pH from a concentration, concentration from pH, hydroxide concentration from pH, how many times more acidic, classifying a solution, and two calculator problems for concentrations that are not plain powers of ten.</p>'+workedExample(genPH('times'))+'<div id="phprac"></div>'+
     world('pH in your body and your world','<p><b>Blood</b> stays between 7.35 and 7.45; the carbonic acid–bicarbonate buffer holds it there, and drifting even a few tenths either way is a medical emergency. <b>Stomach acid</b> is pH 1.6–1.8, strong enough to dissolve metal, which is why the stomach lining is replaced every few days. <b>Skin</b> is slightly acidic (about 5.5), which is what “pH-balanced” products are matched to. <b>Rain</b> is naturally slightly acidic (5.6) from dissolved CO<sub>2</sub>; below 5.6 counts as acid rain. Farmers raise soil pH with lime; pool owners chase a pH near 7.4 so chlorine works and eyes do not sting.</p>')+
     checkYourself('ph',[
       {q:'A solution has [H<sup>+</sup>] = 1 × 10<sup>−11</sup> mol/L. Its pH is …',o:['−11','11','3','1 × 10<sup>11</sup>'],a:1,e:'pH is the exponent with its sign flipped: 11. That is basic.',w:{0:'Flip the sign of the exponent: pH is a positive number here.',2:'That would be [H<sup>+</sup>] = 1 × 10<sup>−3</sup>.',3:'pH is just the small number 11, not a concentration.'}},
@@ -1059,28 +1359,8 @@ function renderPH(){
   };
   $('#cmpA').addEventListener('input',paintCmp); $('#cmpB').addEventListener('input',paintCmp); paintCmp();
 
-  const P=S.prac;
-  const paintPrac=()=>{
-    const p=P.P; const box=$('#phprac');
-    box.innerHTML='<p class="how">New problems every time. Solved this session: '+P.solved+'.</p><p class="q">'+p.q+'</p>'+
-      (p.type==='num'?'<div class="row"><input class="pin" id="pans" type="text" inputmode="numeric" aria-label="Your answer"><button type="button" class="btn primary" id="pcheck">Check</button></div>':
-       '<div class="choice" id="pch">'+p.o.map((o,i)=>'<button type="button" data-i="'+i+'">'+o.v+'</button>').join('')+'</div>')+
-      fbBox('pfb2')+'<div class="actions" id="pact2"></div>';
-    const finish=(right,extra)=>{
-      P.answered=true; if(right) P.solved++;
-      setFb('pfb2',right?'ok':'bad','<p><b>'+(right?'Correct.':'Not quite.')+'</b> '+(extra||'')+p.e+'</p>');
-      $('#pact2').innerHTML='<button type="button" class="btn primary" id="pnext2">Next problem</button>';
-      $('#pnext2').addEventListener('click',()=>{P.P=makePHProblem();P.answered=false;paintPrac();});
-    };
-    if(p.type==='num'){
-      const chk=()=>{ if(P.answered) return; const raw=$('#pans').value.trim().replace(/,/g,''); const v=parseFloat(raw); if(isNaN(v)){ setFb('pfb2','warn','<p>Enter a number.</p>'); return; } const right=Math.abs(v-p.ans)<1e-9; $('#pans').classList.add(right?'ok':'no'); $('#pans').disabled=true; finish(right, right?'':'You entered '+esc(raw)+'. '); };
-      $('#pcheck').addEventListener('click',chk); $('#pans').addEventListener('keydown',e=>{ if(e.key==='Enter') chk(); });
-      $('#pans').focus();
-    } else {
-      $('#pch').addEventListener('click',e=>{ const b=e.target.closest('button[data-i]'); if(!b||P.answered) return; const right=p.o[+b.dataset.i].ok; $$('#pch button').forEach(x=>{x.disabled=true;x.setAttribute('aria-pressed',x===b);}); b.classList.add(right?'ok':'no'); finish(right); });
-    }
-  };
-  paintPrac();
+  if(!S.prac||!S.prac.mode) S.prac=freshPrac();
+  mountPractice('phprac',S.prac,()=>genPH());
 }
 
 /* ================= 7. REVIEW QUIZ ================= */
