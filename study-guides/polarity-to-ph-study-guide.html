@@ -476,18 +476,20 @@ function particlesFor(kind){
 
 /* ---------- Guided practice engine: three help levels, worked solutions, streak level-up ---------- */
 const fmt = (x,d) => x.toLocaleString(undefined,{maximumFractionDigits:d===undefined?2:d});
+const sig2 = x => Number(x.toPrecision(2)).toLocaleString();
 const MODES=[{id:'guided',label:'Guided setup'},{id:'hint',label:'Hints if I ask'},{id:'solo',label:'On my own'}];
 const freshPrac = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, solved:0, streak:0, partDone:[], sol:false});
 const LET='abcdef';
 const blank = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="text" autocomplete="off" aria-label="'+esc(label)+'">';
 function parseNum(raw){
-  let s=String(raw).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'');
+  let s=String(raw).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'').replace(/[−–]/g,'-').replace(/[×*·]/g,'x');
   if(!s) return null;
-  s=s.replace(/^\$/,'').replace(/[×x]10\^?\(?(-?\d+)\)?/,'e$1').replace(/^10\^\(?(-?\d+)\)?$/,'1e$1').replace(/−/g,'-');
+  s=s.replace(/^\$/,'').replace(/%$/,'').replace(/x10\^?\(?([+-]?\d+)\)?$/,'e$1').replace(/^10\^\(?([+-]?\d+)\)?$/,'1e$1');
   if(/^[0-9]+\/[0-9]+$/.test(s)){ const [a,b]=s.split('/').map(Number); return b?a/b:null; }
-  const v=parseFloat(s); return isFinite(v)?v:null;
+  if(!/^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/.test(s)) return null;
+  const v=Number(s); return isFinite(v)?v:null;
 }
-const near = (v,want,tol,abs) => Math.abs(v-want) <= Math.max(Math.abs(want)*(tol===undefined?0.01:tol), abs||1e-9);
+const near = (v,want,tol,abs) => Math.abs(v-want) <= Math.max(Math.abs(want)*(tol===undefined?0.01:tol), abs===undefined?0:abs);
 // Mounts a practice module into #boxId. S is the module's state; gen() returns a problem P.
 // P: {ctx?, q, parts:[{type:'num',label,ans,unit?,tol?,show} | {type:'mc',label,options:[{v,ok}],show}],
 //     guided (html with blank()s), blanks:{k:{want,tol?}}, blankMsg(got)->string, hints:[html,html], solution (html), done?(html)}
@@ -648,7 +650,7 @@ function renderPolar(){
     else if(d<=0.4){ kind='Nonpolar covalent bond (essentially)'; expl='ΔEN = '+d.toFixed(1)+'. The sharing is so close to equal that chemists treat the bond as nonpolar. C–H bonds are the classic example; this is why fats and oils are nonpolar.'; }
     else { kind='Polar covalent bond'; const neg=EN[a]>EN[b]?a:b, pos=neg===a?b:a; expl='ΔEN = '+d.toFixed(1)+'. '+ENAMES[neg].charAt(0).toUpperCase()+ENAMES[neg].slice(1)+' pulls harder, so the '+neg+' end is δ− and the '+pos+' end is δ+.'+(d>=1.5?' This is a very polar bond, close to the ionic end of the range.':''); }
     const neg=EN[a]>=EN[b]?a:b, pos=neg===a?b:a;
-    const pair=(a===b||mA||mB)?'<div class="bigpair">'+a+'–'+b+'</div>':'<div class="bigpair"><span class="dl dp">δ+</span>'+pos+'–'+neg+'<span class="dl dm">δ−</span></div>';
+    const pair=(a===b||mA||mB||d<=0.4)?'<div class="bigpair">'+a+'–'+b+'</div>':'<div class="bigpair"><span class="dl dp">δ+</span>'+pos+'–'+neg+'<span class="dl dm">δ−</span></div>';
     const pct=Math.min(100,d/3.5*100);
     $('#enout').innerHTML=pair+'<p style="margin:4px 0"><b>'+kind+'.</b> '+expl+'</p>'+
       '<div class="enbar" aria-hidden="true"><span class="mk" style="left:'+pct+'%"></span><span class="lbl" style="left:5%">0–0.4 nonpolar</span><span class="lbl" style="left:30%">0.5–1.9 polar covalent</span><span class="lbl" style="left:75%">2.0 and up: usually ionic</span></div>'+
@@ -793,7 +795,7 @@ function renderIMF(){
 
 /* ---------- Problem generators for the practice modules ---------- */
 const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
-const sciStr = (m,n) => m+' × 10<sup>−'+n+'</sup>';
+const sciStr = (m,n) => m+' × 10<sup>'+(n?'−'+n:0)+'</sup>';
 
 /* 1. Bond polarity: ΔEN, which atom is δ−, bond type */
 const BOND_PAIRS=[['O','H'],['N','H'],['C','H'],['H','Cl'],['C','O'],['H','F'],['C','Cl'],['Na','Cl'],['K','F'],['Mg','O'],['Ca','Cl'],['S','H'],['C','N'],['Br','Br'],['O','O'],['Li','F'],['C','S'],['P','H'],['N','O'],['H','I']];
@@ -908,29 +910,29 @@ function genNeut(fixed){
 /* 6. pH */
 function genPH(fixed){
   const type=fixed||pick(['toPH','toH','toOH','times','class','calc','calcH']);
-  const EX=[[0,'4% hydrochloric acid'],[1,'stomach acid'],[2,'lemon juice'],[3,'cola'],[4,'tomato juice'],[5,'black coffee'],[6,'milk'],[7,'pure water'],[8,'seawater'],[9,'baking soda solution'],[10,'milk of magnesia'],[11,'household ammonia'],[12,'washing soda'],[13,'4% sodium hydroxide'],[14,'1 M sodium hydroxide']];
+  const EX=[[0,'4% hydrochloric acid'],[1,'stomach acid'],[2,'lemon juice'],[3,'cola'],[4,'tomato juice'],[5,'black coffee'],[6,'milk'],[7,'pure water'],[8,'seawater'],[9,'baking soda solution'],[10,'milk of magnesia'],[11,'household ammonia'],[12,'washing soda'],[13,'0.4% (0.1 M) sodium hydroxide'],[14,'1 M sodium hydroxide']];
   const cls=p=>p<7?'acidic':p>7?'basic':'neutral';
   if(type==='toPH'){ const n=Math.floor(Math.random()*15);
     return {ctx:'pH is the power of ten in the hydrogen-ion concentration, with the sign flipped (Table 7.4).',q:'A solution has [H<sup>+</sup>] = '+sciStr(1,n)+' mol/L. What is its pH?',
       parts:[{type:'num',label:'pH',ans:n,tol:0,show:'pH '+n+' ('+cls(n)+')'}],
       guided:'<p>Write the exponent of 10: '+blank('e','the exponent',false)+'. pH is that exponent with its sign flipped.</p>',
-      blanks:{e:{want:-n,tol:0}},blankMsg:g=>g.e&&g.e.good===false?'The exponent in 1 × 10<sup>−'+n+'</sup> is −'+n+'.':'',
-      hints:['Look at the power of ten. pH is the number in the exponent, made positive.','10<sup>−'+n+'</sup> → pH '+n+'.'],
-      solution:'<ol><li>[H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L: the exponent is −'+n+'.</li><li>pH = <b>'+n+'</b>. '+(n<7?'Below 7: acidic':n>7?'Above 7: basic':'Exactly 7: neutral')+'; about the pH of '+EX[n][1]+'.</li></ol>'}; }
+      blanks:{e:{want:-n,tol:0}},blankMsg:g=>g.e&&g.e.good===false?'The exponent in 1 × 10<sup>'+(n?'−'+n:0)+'</sup> is '+(n?'−'+n:0)+'.':'',
+      hints:['Look at the power of ten. pH is the number in the exponent, made positive.','10<sup>'+(n?'−'+n:0)+'</sup> → pH '+n+'.'],
+      solution:'<ol><li>[H<sup>+</sup>] = 1 × 10<sup>'+(n?'−'+n:0)+'</sup> mol/L: the exponent is '+(n?'−'+n:0)+'.</li><li>pH = <b>'+n+'</b>. '+(n<7?'Below 7: acidic':n>7?'Above 7: basic':'Exactly 7: neutral')+'; about the pH of '+EX[n][1]+'.</li></ol>'}; }
   if(type==='toH'){ const n=Math.floor(Math.random()*15);
     return {ctx:'Going the other way: [H<sup>+</sup>] = 10<sup>−pH</sup> mol/L.',q:'A solution has pH '+n+'. What is its hydrogen-ion concentration in mol/L? (You can type it as 1e-'+n+', 1x10^-'+n+', or a decimal.)',
       parts:[{type:'num',label:'[H<sup>+</sup>]',ans:Math.pow(10,-n),tol:0.02,unit:'mol/L',show:sciStr(1,n)+' mol/L'}],
       guided:'<p>The exponent is the pH with its sign flipped: 10 to the '+blank('e','the exponent',false)+' power.</p>',
-      blanks:{e:{want:-n,tol:0}},blankMsg:g=>g.e&&g.e.good===false?'pH '+n+' means 10<sup>−'+n+'</sup>.':'',
-      hints:['pH '+n+' means [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup>.','As a decimal that is 0.'+'0'.repeat(Math.max(0,n-1))+'1 (a 1 in the '+n+'th decimal place)'+(n===0?'; for pH 0 it is 1 mol/L':'')+'.'],
-      solution:'<ol><li>pH '+n+' → exponent −'+n+'.</li><li>[H<sup>+</sup>] = <b>'+sciStr(1,n)+' mol/L</b>'+(n>0?' = '+(n<=6?Math.pow(10,-n).toFixed(n):'0.'+'0'.repeat(n-1)+'1')+' mol/L':'')+'.</li></ol>'}; }
+      blanks:{e:{want:-n,tol:0}},blankMsg:g=>g.e&&g.e.good===false?'pH '+n+' means 10<sup>'+(n?'−'+n:0)+'</sup>.':'',
+      hints:['pH '+n+' means [H<sup>+</sup>] = 1 × 10<sup>'+(n?'−'+n:0)+'</sup>.',(n===0?'For pH 0 that is 1 mol/L.':'As a decimal that is 0.'+'0'.repeat(n-1)+'1 (a 1 in decimal place number '+n+').')],
+      solution:'<ol><li>pH '+n+' → exponent '+(n?'−'+n:0)+'.</li><li>[H<sup>+</sup>] = <b>'+sciStr(1,n)+' mol/L</b>'+(n>0?' = '+(n<=6?Math.pow(10,-n).toFixed(n):'0.'+'0'.repeat(n-1)+'1')+' mol/L':'')+'.</li></ol>'}; }
   if(type==='toOH'){ const n=Math.floor(Math.random()*15); const m=14-n;
     return {ctx:'In any water solution, [H<sup>+</sup>] × [OH<sup>−</sup>] = 1 × 10<sup>−14</sup>, so the two exponents always add up to −14.',q:'A solution has pH '+n+'. What is its hydroxide-ion concentration, [OH<sup>−</sup>], in mol/L?',
       parts:[{type:'num',label:'[OH<sup>−</sup>]',ans:Math.pow(10,-m),tol:0.02,unit:'mol/L',show:sciStr(1,m)+' mol/L'}],
-      guided:'<p>[H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup>. The OH<sup>−</sup> exponent is 14 − pH = '+blank('p','14 minus the pH')+' (with a minus sign in front).</p>',
+      guided:'<p>[H<sup>+</sup>] = 1 × 10<sup>'+(n?'−'+n:0)+'</sup>. The OH<sup>−</sup> exponent is 14 − pH = '+blank('p','14 minus the pH')+' (with a minus sign in front).</p>',
       blanks:{p:{want:m,tol:0}},blankMsg:g=>g.p&&g.p.good===false?'14 − '+n+' = '+m+'.':'',
-      hints:['The two exponents add to −14: if [H<sup>+</sup>] is 10<sup>−'+n+'</sup>, then [OH<sup>−</sup>] is 10<sup>−(14 − '+n+')</sup>.','[OH<sup>−</sup>] = 1 × 10<sup>−'+m+'</sup> mol/L.'],
-      solution:'<ol><li>pH '+n+' → [H<sup>+</sup>] = 1 × 10<sup>−'+n+'</sup> mol/L.</li><li>14 − '+n+' = '+m+', so [OH<sup>−</sup>] = <b>'+sciStr(1,m)+' mol/L</b>.</li><li>Check: 10<sup>−'+n+'</sup> × 10<sup>−'+m+'</sup> = 10<sup>−14</sup>. '+(n<7?'More H<sup>+</sup> than OH<sup>−</sup>: acidic.':n>7?'More OH<sup>−</sup> than H<sup>+</sup>: basic.':'Equal: neutral.')+'</li></ol>'}; }
+      hints:['The two exponents add to −14: if [H<sup>+</sup>] is 10<sup>'+(n?'−'+n:0)+'</sup>, then [OH<sup>−</sup>] is 10<sup>−(14 − '+n+')</sup>.','[OH<sup>−</sup>] = 1 × 10<sup>'+(m?'−'+m:0)+'</sup> mol/L.'],
+      solution:'<ol><li>pH '+n+' → [H<sup>+</sup>] = 1 × 10<sup>'+(n?'−'+n:0)+'</sup> mol/L.</li><li>14 − '+n+' = '+m+', so [OH<sup>−</sup>] = <b>'+sciStr(1,m)+' mol/L</b>.</li><li>Check: 10<sup>'+(n?'−'+n:0)+'</sup> × 10<sup>'+(m?'−'+m:0)+'</sup> = 10<sup>−14</sup>. '+(n<7?'More H<sup>+</sup> than OH<sup>−</sup>: acidic.':n>7?'More OH<sup>−</sup> than H<sup>+</sup>: basic.':'Equal: neutral.')+'</li></ol>'}; }
   if(type==='times'){ const d=fixed?3:1+Math.floor(Math.random()*5); const a=fixed?3:Math.floor(Math.random()*(15-d)); const b=a+d; const ans=Math.pow(10,d);
     return {ctx:'Each step of one pH unit is a factor of 10 in hydrogen-ion concentration.',q:'Solution A has pH '+a+' ('+EX[a][1]+') and solution B has pH '+b+' ('+EX[b][1]+'). How many times more hydrogen ion does A have than B?',
       parts:[{type:'num',label:'Times more H<sup>+</sup> in A',ans:ans,tol:0,show:fmt(ans,0)+' times'}],
@@ -946,7 +948,7 @@ function genPH(fixed){
       guided:'<p>Compare with 7: '+p.toFixed(1)+' is '+blank('s','how far from 7, as a positive number',false)+' units '+(p<7?'below':p>7?'above':'from')+' 7.</p><p>Below 7 → acidic (more H<sup>+</sup> than water; blue litmus turns red). Above 7 → basic (less H<sup>+</sup>; red litmus turns blue). Exactly 7 → neutral.</p>',
       blanks:{s:{want:Math.abs(p-7),tol:0,abs:0.051}},blankMsg:g=>g.s&&g.s.good===false?'Subtract: |'+p.toFixed(1)+' − 7| = '+Math.abs(p-7).toFixed(1)+'.':'',
       hints:['7 is neutral. Which side of 7 is this pH on?','Lower pH means more hydrogen ion. Acids turn blue litmus red; bases turn red litmus blue.'],
-      solution:'<ol><li>pH '+p.toFixed(1)+' is '+(p<7?'below':p>7?'above':'exactly')+' 7: <b>'+c+'</b>.</li><li>It has <b>'+(p<7?'more':p>7?'less':'the same')+'</b> hydrogen ion than pure water'+(p!==7?' (about '+fmt(Math.pow(10,Math.abs(7-p)),0)+' times '+(p<7?'more':'less')+')':'')+'.</li><li>Blue litmus <b>'+(p<6.95?'turns red':'stays blue')+'</b>'+(p>7.05?'; red litmus would turn blue':'')+'.</li></ol>'}; }
+      solution:'<ol><li>pH '+p.toFixed(1)+' is '+(p<7?'below':p>7?'above':'exactly')+' 7: <b>'+c+'</b>.</li><li>It has <b>'+(p<7?'more':p>7?'less':'the same')+'</b> hydrogen ion than pure water'+(p!==7?' (about '+sig2(Math.pow(10,Math.abs(7-p)))+' times '+(p<7?'more':'less')+')':'')+'.</li><li>Blue litmus <b>'+(p<6.95?'turns red':'stays blue')+'</b>'+(p>7.05?'; red litmus would turn blue':'')+'.</li></ol>'}; }
   if(type==='calc'){ const m=pick([2.0,2.5,3.2,4.0,5.0,6.3,7.9]); const n=1+Math.floor(Math.random()*12); const pH=n-Math.log10(m);
     return {ctx:'Calculator problem. When the concentration is not a plain power of ten, use pH = −log[H<sup>+</sup>].',q:'A solution has [H<sup>+</sup>] = '+sciStr(m.toFixed(1),n)+' mol/L. What is its pH, to two decimal places?',
       parts:[{type:'num',label:'pH',ans:pH,tol:0,abs:0.03,show:'pH '+pH.toFixed(2)}],
@@ -960,7 +962,7 @@ function genPH(fixed){
     guided:'<p>pH '+pH.toFixed(1)+' lies between '+(n-1)+' and '+n+', so [H<sup>+</sup>] is between 1 × 10<sup>−'+(n-1)+'</sup> and 1 × 10<sup>−'+n+'</sup>. Write 10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup>. On a calculator 10<sup>'+(n-pH).toFixed(1)+'</sup> = '+blank('m','ten to the fractional power',true)+'.</p>',
     blanks:{m:{want:m,tol:0.02}},blankMsg:g=>g.m&&g.m.good===false?'10<sup>'+(n-pH).toFixed(1)+'</sup> = '+m.toFixed(2)+'. Use the 10<sup>x</sup> (or inverse log) key.':'',
     hints:['[H<sup>+</sup>] = 10<sup>−pH</sup>. Enter −'+pH.toFixed(1)+' and use the 10<sup>x</sup> key.','The answer is '+m.toFixed(2)+' × 10<sup>−'+n+'</sup>: between pH '+(n-1)+' and pH '+n+' on the table.'],
-    solution:'<ol><li>[H<sup>+</sup>] = 10<sup>−'+pH.toFixed(1)+'</sup> mol/L.</li><li>10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup> = '+m.toFixed(2)+' × 10<sup>−'+n+'</sup>, so [H<sup>+</sup>] = <b>'+sciStr(m.toFixed(1),n)+' mol/L</b> ('+H.toExponential(1).replace('e-',' × 10^−').replace(/\^−(\d+)/,'<sup>−$1</sup>')+').</li><li>Check: pH '+pH.toFixed(1)+' is '+cls(pH)+', and the concentration sits between the table values for pH '+(n-1)+' and pH '+n+'.</li></ol>'};
+    solution:'<ol><li>[H<sup>+</sup>] = 10<sup>−'+pH.toFixed(1)+'</sup> mol/L.</li><li>10<sup>−'+pH.toFixed(1)+'</sup> = 10<sup>'+(n-pH).toFixed(1)+'</sup> × 10<sup>−'+n+'</sup> = '+m.toFixed(2)+' × 10<sup>−'+n+'</sup>, so [H<sup>+</sup>] = <b>'+sciStr(m.toFixed(2),n)+' mol/L</b> ('+H.toExponential(2).replace('e-',' × 10^−').replace(/\^−(\d+)/,'<sup>−$1</sup>')+').</li><li>Check: pH '+pH.toFixed(1)+' is '+cls(pH)+', and the concentration sits between the table values for pH '+(n-1)+' and pH '+n+'.</li></ol>'};
 }
 
 /* ================= 3. SOLUTIONS ================= */
@@ -1298,10 +1300,10 @@ function renderAcid(){
 }
 
 /* ================= 6. THE pH SCALE ================= */
-const PH_EXAMPLES=[[0,'4% hydrochloric acid; 1 M HCl'],[0.5,'battery acid'],[1.7,'gastric juice (stomach acid)'],[2.1,'lemon juice'],[2.5,'vinegar (4%)'],[2.8,'cola'],[3.5,'oranges'],[4.5,'tomatoes'],[5.0,'black coffee'],[5.6,'normal rainwater'],[6.0,'urine (5.5–7.0)'],[6.5,'milk (6.3–6.6)'],[6.8,'saliva (6.2–7.4)'],[7.0,'pure water'],[7.4,'blood'],[7.8,'fresh egg white (7.6–8.0)'],[8.1,'seawater'],[8.2,'bile (7.8–8.6)'],[8.3,'baking soda solution'],[10.5,'milk of magnesia'],[11.5,'household ammonia'],[12.0,'washing soda'],[13.0,'4% sodium hydroxide'],[14,'1 M sodium hydroxide']];
+const PH_EXAMPLES=[[0,'4% hydrochloric acid; 1 M HCl'],[0.5,'battery acid'],[1.7,'gastric juice (stomach acid)'],[2.1,'lemon juice'],[2.5,'vinegar (4%)'],[2.8,'cola'],[3.5,'oranges'],[4.5,'tomatoes'],[5.0,'black coffee'],[5.6,'normal rainwater'],[6.0,'urine (5.5–7.0)'],[6.5,'milk (6.3–6.6)'],[6.8,'saliva (6.2–7.4)'],[7.0,'pure water'],[7.4,'blood'],[7.8,'fresh egg white (7.6–8.0)'],[8.1,'seawater'],[8.2,'bile (7.8–8.6)'],[8.3,'baking soda solution'],[10.5,'milk of magnesia'],[11.5,'household ammonia'],[12.0,'washing soda'],[13.0,'0.4% (0.1 M) sodium hydroxide'],[14,'1 M sodium hydroxide']];
 function sci(n){ // 10^-n as 1 × 10^-k or decimal-friendly string
   const k=Math.round(n*100)/100;
-  if(Number.isInteger(k)) return '1 × 10<sup>−'+k+'</sup>';
+  if(Number.isInteger(k)) return '1 × 10<sup>'+(k?'−'+k:0)+'</sup>';
   const e=Math.floor(k), m=Math.pow(10,e+1-k);
   return m.toFixed(1)+' × 10<sup>−'+(e+1)+'</sup>';
 }
@@ -1345,7 +1347,7 @@ function renderPH(){
       '<div class="stat"><div class="k">[OH<sup>−</sup>], mol/L</div><div class="v sm">'+sci(14-v)+'</div></div>'+
       '<div class="stat"><div class="k">Litmus</div><div class="v sm"><span class="litmus"><i style="background:'+(cls==='base'?'#3e74c9':'#d8453c')+'"></i>'+(cls==='acid'?'blue turns red':cls==='base'?'red turns blue':'no change')+'</span></div></div></div>'+
       '<p><b>Around pH '+v.toFixed(1)+':</b> '+(near.length?near.join('; '):'nearest example is '+nearest[1]+' (pH '+nearest[0]+')')+'.</p>'+
-      '<p class="src">Compared with pure water, this solution has '+(v<7?Math.pow(10,7-v).toLocaleString(undefined,{maximumFractionDigits:0})+' times more':v>7?Math.pow(10,v-7).toLocaleString(undefined,{maximumFractionDigits:0})+' times less':'the same')+' hydrogen ion. Examples from Table 7.5 and Figure 7.5.</p>';
+      '<p class="src">Compared with pure water, this solution has '+(v<7?sig2(Math.pow(10,7-v))+' times more':v>7?sig2(Math.pow(10,v-7))+' times less':'the same')+' hydrogen ion. Examples from Table 7.5 and Figure 7.5.</p>';
   };
   $('#phr').addEventListener('input',paintPH); paintPH();
 

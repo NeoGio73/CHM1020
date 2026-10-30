@@ -101,7 +101,7 @@ li{margin-bottom:4px}
 .pin:disabled{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink)}
 .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .row label{font-weight:600}
-select.sel{font:inherit;font-size:1rem;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;background:#fff;color:var(--ink)}
+select.sel{font:inherit;font-size:1rem;padding:7px 10px;border:1.5px solid #8b95a3;border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
 
 /* Feedback */
 .fb{display:none;margin-top:14px;padding:11px 14px;border-radius:10px;border-left:5px solid;gap:10px;align-items:flex-start}
@@ -470,13 +470,14 @@ const freshPrac = () => ({mode:'guided', P:null, misses:0, hint:0, done:false, s
 const LET='abcdef';
 const blank = (k,label,wide) => '<input class="blank'+(wide?' wide':'')+'" data-k="'+k+'" type="text" inputmode="text" autocomplete="off" aria-label="'+esc(label)+'">';
 function parseNum(raw){
-  let s=String(raw).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'');
+  let s=String(raw).trim().toLowerCase().replace(/,/g,'').replace(/\s+/g,'').replace(/[−–]/g,'-').replace(/[×*·]/g,'x');
   if(!s) return null;
-  s=s.replace(/^\$/,'').replace(/[×x]10\^?\(?(-?\d+)\)?/,'e$1').replace(/^10\^\(?(-?\d+)\)?$/,'1e$1').replace(/−/g,'-');
+  s=s.replace(/^\$/,'').replace(/%$/,'').replace(/x10\^?\(?([+-]?\d+)\)?$/,'e$1').replace(/^10\^\(?([+-]?\d+)\)?$/,'1e$1');
   if(/^[0-9]+\/[0-9]+$/.test(s)){ const [a,b]=s.split('/').map(Number); return b?a/b:null; }
-  const v=parseFloat(s); return isFinite(v)?v:null;
+  if(!/^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/.test(s)) return null;
+  const v=Number(s); return isFinite(v)?v:null;
 }
-const near = (v,want,tol,abs) => Math.abs(v-want) <= Math.max(Math.abs(want)*(tol===undefined?0.01:tol), abs||1e-9);
+const near = (v,want,tol,abs) => Math.abs(v-want) <= Math.max(Math.abs(want)*(tol===undefined?0.01:tol), abs===undefined?0:abs);
 // Mounts a practice module into #boxId. S is the module's state; gen() returns a problem P.
 // P: {ctx?, q, parts:[{type:'num',label,ans,unit?,tol?,show} | {type:'mc',label,options:[{v,ok}],show}],
 //     guided (html with blank()s), blanks:{k:{want,tol?}}, blankMsg(got)->string, hints:[html,html], solution (html), done?(html)}
@@ -555,13 +556,13 @@ const workedExample = P => '<details class="example"><summary>Worked example</su
 
 /* ================= ROADMAP ================= */
 const MAPINFO={
-  rad:{t:'1. Radiation: what comes out of an unstable nucleus',h:'<p>Some nuclei are unstable and spit out particles or energy: <b>alpha</b> particles, <b>beta</b> particles, and <b>gamma</b> rays. This radiation knocks electrons off molecules in your cells, which is why it is called ionizing radiation and why it can damage DNA. Most of the radiation you receive is natural background, mainly radon from the ground.</p>'},
+  rad:{t:'1. Radiation: what comes out of an unstable nucleus',h:'<p>Some nuclei are unstable and spit out particles or energy: <b>alpha</b> particles, <b>beta</b> particles, and <b>gamma</b> rays. This radiation knocks electrons off molecules in your cells, which is why it is called ionizing radiation and why it can damage DNA. About half of the radiation you receive is natural background, mainly radon from the ground.</p>'},
   eqn:{t:'2. Nuclear equations: bookkeeping for protons and neutrons',h:'<p>In a nuclear equation the mass numbers must add up on both sides, and so must the atomic numbers. Each decay type changes the nucleus in a predictable way, so you can work out which element is left behind. Unlike chemical reactions, nuclear reactions turn one element into another.</p><p class="ex">Radon-222 → helium-4 (alpha) + polonium-218</p>'},
   half:{t:'3. Half-life: the clock inside the nucleus',h:'<p>Every radioactive isotope decays at its own fixed rate, measured as a half-life: the time for half of a sample to decay. After one half-life ½ remains, after two ¼, after three ⅛. Carbon-14’s 5730-year half-life dates charcoal and bone; uranium-238’s 4.5-billion-year half-life dates rocks.</p>'},
   uses:{t:'4. Radioisotopes at work: tracers, scans, and treatments',h:'<p>Because radioisotopes announce themselves by their decay, tiny amounts can be followed through a pipe, a plant, or a patient. Nuclear medicine uses short-lived isotopes for imaging (technetium-99m, iodine-131) and intense sources (cobalt-60) to kill cancer cells. New elements are made by bombarding nuclei with particles.</p>'},
   fiss:{t:'5. Fission and fusion: energy from mass',h:'<p>A nucleus weighs a little less than its separate protons and neutrons; the missing mass became binding energy (E = mc<sup>2</sup>). Splitting a heavy nucleus (fission) or joining light ones (fusion) releases some of that energy, millions of times more per atom than any chemical reaction. Fission powers reactors and bombs; fusion powers the sun.</p>'},
   energy:{t:'6. Energy and reactions: joules, watts, and heat',h:'<p>Energy is the ability to do work or transfer heat, measured in joules; power is energy per second, in watts. Chemical reactions release heat (exothermic) or absorb it (endothermic), depending on whether more energy comes out of forming bonds than went into breaking them. Burning a fuel is exothermic oxidation.</p>'},
-  fossil:{t:'7. Fossil fuels and electricity: where most of our energy comes from',h:'<p>Coal, petroleum, and natural gas supply more than 90% of a modern society’s energy. Each is ancient stored sunlight, each is burned to make heat, and most electricity is made by using that heat to boil water and spin a turbine. They are finite, and burning them releases CO<sub>2</sub> and other pollutants.</p>'},
+  fossil:{t:'7. Fossil fuels and electricity: where most of our energy comes from',h:'<p>Coal, petroleum, and natural gas supply about 80% of a modern society’s energy. Each is ancient stored sunlight, each is burned to make heat, and most electricity is made by using that heat to boil water and spin a turbine. They are finite, and burning them releases CO<sub>2</sub> and other pollutants.</p>'},
   renew:{t:'8. Nuclear and renewable energy: the alternatives',h:'<p>Nuclear plants make steam with fission instead of fire and produce almost no air pollution, but they need elaborate safety systems and leave radioactive waste. Renewable sources (solar, wind, water, biomass, geothermal, hydrogen made from them) are sustainable but diffuse, and each has its own trade-offs.</p>'}
 };
 function renderMap(){
@@ -600,7 +601,7 @@ function renderRad(){
     ideas([
       {t:'Three kinds of radiation (Table 11.1)',l:['<b>Alpha (α):</b> a helium nucleus, '+PART.alpha+'. Mass 4 u, charge 2+, slow (0.1 c), stopped by paper.','<b>Beta (β):</b> an electron shot out of the nucleus, '+PART.beta+'. Almost no mass, charge 1−, fast, stopped by aluminum foil.','<b>Gamma (γ):</b> a high-energy photon, '+PART.gamma+'. No mass, no charge, the speed of light, needs centimeters of lead.']},
       {t:'Why it harms cells',p:'All three are <b>ionizing radiation</b>: they knock electrons off molecules, leaving ions and reactive fragments called <b>free radicals</b> that disrupt cell chemistry. Fast-growing cells (bone marrow, white blood cells, the lining of the gut, a fetus) are hit hardest. Damage to DNA causes mutations and can cause cancer.'},
-      {t:'Background radiation',p:'About three-fourths of the average American’s exposure is natural background, and most of that is <b>radon</b>, a radioactive gas that seeps from the ground into basements. Most of the remaining fourth is medical: CT scans alone are about a quarter of total exposure. Cell phones and power lines emit non-ionizing radiation, which does not break molecules.'},
+      {t:'Background radiation',p:'About half of the average American’s exposure is natural background, and most of that is <b>radon</b>, a radioactive gas that seeps from the ground into basements. Nearly all of the other half is medical: CT scans alone are about a quarter of total exposure. Cell phones and power lines emit non-ionizing radiation, which does not break molecules.'},
       {t:'Protection: distance and shielding',p:'Intensity falls off quickly with distance (double the distance, quarter the dose), so step back. Shielding absorbs what is left: paper or skin for alpha, foil or plastic for beta, lead or thick concrete for gamma. Time matters too: less time near the source, less dose.'}
     ])+
     '<h3>Shielding lab</h3><div class="act"><p class="how">Choose a type of radiation and see which barriers it gets through. Then read why.</p>'+
@@ -608,7 +609,7 @@ function renderRad(){
     '<div id="rout"></div></div>'+
     '<h3>Where your radiation comes from</h3><div class="act"><p class="how">Average sources of radiation exposure in the United States (Figure 11.1), as a percentage of the total. Natural background is in blue, medical in teal, everything else in orange.</p>'+
     bars(EXPOSURE.map(e=>({l:e[0],v:e[1],txt:e[1]+'%',cls:e[2]==='med'?'alt':e[2]==='other'?'warm':''})),{max:40})+
-    '<p class="src">Background adds up to about 50% and medical to about 48%; the textbook rounds these to three-fourths background and one-fourth medical when counting only involuntary exposure. The medical share has grown fast as CT scans have become common.</p></div>'+
+    '<p class="src">Background adds up to about 50% and medical to about 48% (NCRP Report 160). Older sources say three-fourths background because they predate the rise in medical imaging; the medical share has grown fast as CT scans have become common.</p></div>'+
     checkYourself('rad',[
       {q:'Which type of radiation is a helium nucleus?',o:['Alpha','Beta','Gamma','X-ray'],a:0,e:'An alpha particle is two protons and two neutrons: a helium-4 nucleus with a 2+ charge.',w:{1:'A beta particle is an electron.',2:'A gamma ray is a photon, with no mass or charge.',3:'X-rays are photons, like gamma rays but lower in energy.'}},
       {q:'A sheet of aluminum foil stops beta particles but not gamma rays. Gamma rays need …',o:['a sheet of paper','several centimeters of lead','a glass window','nothing; they are harmless'],a:1,e:'Gamma rays have no mass or charge, so they pass through most materials. Dense lead or thick concrete absorbs them.',w:{0:'Paper stops only alpha particles.',2:'Gamma rays pass through glass easily.',3:'Gamma rays are the most penetrating and are dangerous without shielding.'}},
@@ -632,7 +633,7 @@ function renderRad(){
 const DECAYS=[
   {p:[222,86],t:'alpha',d:[218,84],note:'Radon-222 is the gas that seeps into basements. Alpha decay drops the mass number by 4 and the atomic number by 2.'},
   {p:[238,92],t:'alpha',d:[234,90],note:'Uranium-238 starts a long chain of decays that ends at stable lead-206.'},
-  {p:[226,88],t:'alpha',d:[222,86],note:'Radium-226 decays to radon-222. Marie Curie isolated radium in 1898.'},
+  {p:[226,88],t:'alpha',d:[222,86],note:'Radium-226 decays to radon-222. Marie and Pierre Curie discovered radium in 1898.'},
   {p:[239,94],t:'alpha',d:[235,92],note:'Plutonium-239 is the fissionable isotope made in reactors for weapons.'},
   {p:[210,84],t:'alpha',d:[206,82],note:'Polonium-210 is the last radioactive step before stable lead-206.'},
   {p:[3,1],t:'beta',d:[3,2],note:'Tritium (hydrogen-3): a neutron becomes a proton, so hydrogen becomes helium. Mass number stays 3.'},
@@ -875,13 +876,14 @@ function genEnergy(fixed){
   const devs=Object.keys(DEVICES);
   if(type==='kwh'||type==='cost'){
     const k=fixed?'heater':pick(devs); const d=DEVICES[k]; const h=fixed?3:pick([0.5,1,2,3,4,6,8,10,24]); const kwh=d.w*h/1000; const rate=fixed?0.15:pick([0.12,0.15,0.18,0.20]);
-    const parts=[{type:'num',label:'Energy used',ans:kwh,unit:'kWh',show:(kwh<0.1?Number(kwh.toPrecision(2)).toString():fmt(kwh,3))+' kWh'}]; if(type==='cost'||fixed) parts.push({type:'num',label:'Cost at $'+rate.toFixed(2)+' per kWh',ans:kwh*rate,unit:'dollars',tol:0.02,abs:0.006,show:'$'+(kwh*rate<0.01?(kwh*rate).toFixed(4):(kwh*rate).toFixed(2))});
+    const kwhStr=kwh<0.1?Number(kwh.toPrecision(2)).toString():fmt(kwh,3), cost=kwh*rate, costStr=cost>=0.5?cost.toFixed(2):String(Number(cost.toPrecision(3))), mj=kwh*3.6;
+    const parts=[{type:'num',label:'Energy used',ans:kwh,unit:'kWh',show:kwhStr+' kWh'}]; if(type==='cost'||fixed) parts.push({type:'num',label:'Cost at $'+rate.toFixed(2)+' per kWh',ans:cost,unit:'dollars',tol:0.02,abs:0.00005,show:'$'+costStr});
     return {ctx:'Electric companies bill in kilowatt-hours: 1 kWh is 1000 watts running for 1 hour.',q:'A '+d.s+' rated at '+fmt(d.w,0)+' W runs for '+h+' hour'+(h===1?'':'s')+'.'+(parts.length>1?' How much energy does it use, and what does it cost at $'+rate.toFixed(2)+' per kWh?':' How much energy does it use?'),
       parts,
       guided:'<p>Convert the power to kilowatts: '+fmt(d.w,0)+' W ÷ 1000 = '+blank('kw','power in kilowatts',true)+' kW.</p><p>Energy = power × time = (kW) × '+h+' h'+(parts.length>1?'; cost = kWh × $'+rate.toFixed(2)+'.':'.')+'</p>',
       blanks:{kw:{want:d.w/1000,tol:0.01}},blankMsg:g=>g.kw&&g.kw.good===false?'There are 1000 watts in a kilowatt: divide by 1000.':'',
       hints:['Energy = power × time. Use kilowatts and hours to get kilowatt-hours directly.',fmt(d.w,0)+' W is '+fmt(d.w/1000,3)+' kW. Multiply by '+h+' h'+(parts.length>1?', then by the price per kWh.':'.')],
-      solution:'<ol><li>Power in kW: '+fmt(d.w,0)+' ÷ 1000 = '+fmt(d.w/1000,3)+' kW.</li><li>Energy: '+fmt(d.w/1000,3)+' kW × '+h+' h = <b>'+fmt(kwh,3)+' kWh</b>'+(parts.length>1?'.</li><li>Cost: '+fmt(kwh,3)+' kWh × $'+rate.toFixed(2)+' = <b>$'+(kwh*rate).toFixed(2)+'</b>.</li>':' (that is '+fmt(kwh*3.6,2)+' million joules).</li>')+'</ol>'};
+      solution:'<ol><li>Power in kW: '+fmt(d.w,0)+' ÷ 1000 = '+fmt(d.w/1000,3)+' kW.</li><li>Energy: '+fmt(d.w/1000,3)+' kW × '+h+' h = <b>'+kwhStr+' kWh</b>'+(parts.length>1?'.</li><li>Cost: '+kwhStr+' kWh × $'+rate.toFixed(2)+' = <b>$'+costStr+'</b>.</li>':' (that is '+(mj<0.1?Number(mj.toPrecision(2)).toString():fmt(mj,2))+' million joules).</li>')+'</ol>'};
   }
   if(type==='joules'){
     const k=pick(devs); const d=DEVICES[k]; const m=pick([1,2,5,10,15,30]); const s=m*60; const J=d.w*s;
@@ -1151,7 +1153,7 @@ const RESERVES={coal:{n:'Coal',unit:'billion tons',us:[259,0.890],world:[1038,8.
 function renderFossil(){
   const S=state.fossil;
   view.innerHTML='<section><h2>7. Fossil fuels and electricity</h2>'+
-    '<p class="lede">Coal, petroleum, and natural gas are the remains of plants and plankton that captured sunlight hundreds of millions of years ago. They supply more than 90% of the energy a modern society uses, and nearly all of it is released the same way: by burning. The most convenient form of that energy, electricity, is mostly made by boiling water.</p>'+
+    '<p class="lede">Coal, petroleum, and natural gas are the remains of plants and plankton that captured sunlight hundreds of millions of years ago. They supply about 80% of the energy a modern society uses, and nearly all of it is released the same way: by burning. The most convenient form of that energy, electricity, is mostly made by boiling water.</p>'+
     ideas([
       {t:'Coal: the carbon rock',p:'Mostly carbon: C + O<sub>2</sub> → CO<sub>2</sub>. Ranked by carbon content from peat and lignite (25–35% C, lots of water) up to anthracite (85–95% C). Coal is by far the most plentiful fossil fuel, but it is hazardous to mine and awkward to use because it is a solid. Its sulfur burns to SO<sub>2</sub>, the main cause of acid rain. Heated without air it gives <b>coke</b> (for making steel) and <b>coal tar</b> (a source of chemicals).'},
       {t:'Natural gas: mostly methane',p:'CH<sub>4</sub> + 2 O<sub>2</sub> → CO<sub>2</sub> + 2 H<sub>2</sub>O. The cleanest-burning fossil fuel: no ash, little sulfur, and the least CO<sub>2</sub> per unit of energy because so much of its energy comes from hydrogen. Also the raw material for fertilizer, plastics, and hydrogen.'},
@@ -1244,7 +1246,7 @@ const BANK=[
   {s:'Radiation',q:'Which type of radiation is stopped by a sheet of paper?',o:['Alpha','Beta','Gamma','X-rays'],a:0,e:'Alpha particles are heavy and doubly charged; they lose their energy in a few centimeters of air or a sheet of paper.'},
   {s:'Radiation',q:'A beta particle is …',o:['a helium nucleus','a high-energy photon','an electron emitted from the nucleus','a neutron'],a:2,e:'Beta decay turns a neutron into a proton and shoots out an electron.'},
   {s:'Radiation',q:'Which radiation requires several centimeters of lead to stop?',o:['Alpha','Beta','Gamma','All three equally'],a:2,e:'Gamma rays have no mass or charge and penetrate deeply.'},
-  {s:'Radiation',q:'About what fraction of the average person’s radiation exposure is natural background?',o:['One-tenth','One-fourth','Three-fourths','All of it'],a:2,e:'Roughly three-fourths is background (mostly radon); most of the rest is medical.'},
+  {s:'Radiation',q:'About what fraction of the average person’s radiation exposure is natural background?',o:['One-tenth','About half','Three-fourths','All of it'],a:1,e:'About half is background (mostly radon); nearly all the rest is medical, led by CT scans.'},
   {s:'Radiation',q:'Ionizing radiation harms cells mainly by …',o:['heating them.','knocking electrons off molecules and damaging DNA.','making them radioactive.','freezing them.'],a:1,e:'The ions and free radicals it creates disrupt cell chemistry; DNA damage causes mutations.'},
   {s:'Nuclear equations',q:'When '+N(226,88,'Ra')+' emits an alpha particle, the product is …',o:[N(222,86,'Rn'),N(226,89,'Ac'),N(230,90,'Th'),N(222,88,'Ra')],a:0,e:'Mass number −4, atomic number −2: 222 and 86, radon.'},
   {s:'Nuclear equations',q:'When '+N(14,6,'C')+' emits a beta particle, the product is …',o:[N(14,5,'B'),N(14,7,'N'),N(10,4,'Be'),N(13,6,'C')],a:1,e:'Beta decay keeps the mass number and raises the atomic number by one: nitrogen-14.'},
@@ -1269,7 +1271,7 @@ const BANK=[
   {s:'Energy and reactions',q:'Water behind a dam has …',o:['kinetic energy','potential energy','nuclear energy','no energy'],a:1,e:'Stored energy of position. It becomes kinetic energy as the water falls.'},
   {s:'Energy and reactions',q:'Photosynthesis is …',o:['exothermic; it releases heat.','endothermic; it stores the sun’s energy in sugar.','a nuclear reaction.','combustion.'],a:1,e:'Plants absorb sunlight to build glucose from CO<sub>2</sub> and water. Burning or metabolizing the sugar releases the energy again.'},
   {s:'Energy and reactions',q:'Which change would slow a chemical reaction?',o:['Raising the temperature','Adding a catalyst','Lowering the concentration of a reactant','Grinding a solid reactant into powder'],a:2,e:'Fewer reactant molecules means fewer collisions. The other three all speed reactions up.'},
-  {s:'Fossil fuels',q:'Fossil fuels supply about what share of a modern society’s energy?',o:['10%','50%','More than 90%','100%'],a:2,e:'Coal, oil, and gas together supply more than 90%.'},
+  {s:'Fossil fuels',q:'Fossil fuels supply about what share of a modern society’s energy?',o:['10%','50%','About 80%','100%'],a:2,e:'Coal, oil, and gas together supply about 80% (nearly 83% of U.S. energy in 2023).'},
   {s:'Fossil fuels',q:'Which coal has the highest carbon content?',o:['Lignite','Sub-bituminous','Bituminous','Anthracite'],a:3,e:'Anthracite is 85–95% carbon with little water; lignite is 25–35% carbon.'},
   {s:'Fossil fuels',q:'The cleanest-burning fossil fuel is …',o:['coal','petroleum','natural gas','coke'],a:2,e:'Methane burns to CO<sub>2</sub> and water with no ash and little sulfur, and releases the least CO<sub>2</sub> per unit of energy.'},
   {s:'Fossil fuels',q:'“Cracking” in a refinery means …',o:['separating crude oil by boiling point.','breaking large hydrocarbon molecules into smaller ones such as gasoline.','adding lead to gasoline.','removing sulfur from coal.'],a:1,e:'Cracking turns kerosene and heavier fractions into more of the gasoline the market wants.'},
@@ -1319,7 +1321,7 @@ const TERMS=[
   ['Gamma ray','Radiation','A high-energy photon with no mass or charge. The most penetrating radiation; needs lead or thick concrete.'],
   ['Ionizing radiation','Radiation','Radiation energetic enough to knock electrons off molecules, forming ions and free radicals that damage cells and DNA.'],
   ['Free radical','Radiation','A molecular fragment with an unpaired electron, formed when radiation splits a molecule; highly reactive and damaging to cells.'],
-  ['Background radiation','Radiation','The natural radiation everyone receives from radon, cosmic rays, rocks and soil, and isotopes inside the body; about three-fourths of average exposure.'],
+  ['Background radiation','Radiation','The natural radiation everyone receives from radon, cosmic rays, rocks and soil, and isotopes inside the body; about half of average exposure.'],
   ['Radon','Radiation','A radioactive noble gas produced by uranium decay in rock and soil that seeps into buildings; the largest source of background exposure.'],
   ['Mass number','Nuclear equations','The number of protons plus neutrons (nucleons) in a nucleus; written as a superscript to the left of the symbol.'],
   ['Atomic number','Nuclear equations','The number of protons in a nucleus, which determines the element; written as a subscript to the left of the symbol.'],
@@ -1353,7 +1355,7 @@ const TERMS=[
   ['Bond energy','Energy and reactions','The energy needed to break a bond (and released when it forms); heat of reaction ≈ energy in to break bonds − energy out from forming bonds.'],
   ['Catalyst','Energy and reactions','A substance that speeds a reaction by lowering its activation energy without being consumed.'],
   ['Fuel','Energy and reactions','A reduced substance that releases a large amount of energy when burned (oxidized).'],
-  ['Fossil fuel','Fossil fuels','Coal, petroleum, or natural gas: fuels formed from ancient plants and plankton; more than 90% of a modern society’s energy.'],
+  ['Fossil fuel','Fossil fuels','Coal, petroleum, or natural gas: fuels formed from ancient plants and plankton; about 80% of a modern society’s energy.'],
   ['Coke','Fossil fuels','Nearly pure carbon left when coal is heated without air; used to make iron and steel.'],
   ['Fractional distillation','Fossil fuels','Separating crude oil into fractions (gas, gasoline, kerosene, heating oil, lubricants, residue) by boiling point in a tall tower.'],
   ['Cracking','Fossil fuels','Breaking large hydrocarbon molecules into smaller ones, mainly to make more gasoline.'],
