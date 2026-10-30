@@ -647,7 +647,7 @@ function renderPolar(){
     if(mA&&mB){ kind='Metallic bond'; expl='Two metals do not form a covalent or ionic bond with each other in the usual sense; they form a metal, which is not covered here. Pick a nonmetal for one of the elements.'; }
     else if(mA||mB){ kind='Ionic bond'; expl='A metal and a nonmetal with a large electronegativity difference (ΔEN = '+d.toFixed(1)+'). The metal gives up electrons and the nonmetal takes them: separate '+(mA?a:b)+'<sup>+</sup> and '+(mA?b:a)+'<sup>−</sup> ions rather than a shared pair.'; }
     else if(a===b){ kind='Nonpolar covalent bond'; expl='Two identical atoms pull equally (ΔEN = 0). The electrons sit exactly in the middle.'; }
-    else if(d<=0.4){ kind='Nonpolar covalent bond (essentially)'; expl='ΔEN = '+d.toFixed(1)+'. The sharing is so close to equal that chemists treat the bond as nonpolar. C–H bonds are the classic example; this is why fats and oils are nonpolar.'; }
+    else if(d<=0.4){ kind='Nonpolar covalent bond (essentially)'; expl='ΔEN = '+d.toFixed(1)+'. The sharing is so close to equal that chemists treat the bond as nonpolar. C–H bonds are the classic example; this is why fats and oils are nonpolar.'+((a==='H'&&b==='I')||(a==='I'&&b==='H')?' With more precise values (H 2.20, I 2.66) the difference is 0.46, so HI does have a small dipole.':''); }
     else { kind='Polar covalent bond'; const neg=EN[a]>EN[b]?a:b, pos=neg===a?b:a; expl='ΔEN = '+d.toFixed(1)+'. '+ENAMES[neg].charAt(0).toUpperCase()+ENAMES[neg].slice(1)+' pulls harder, so the '+neg+' end is δ− and the '+pos+' end is δ+.'+(d>=1.5?' This is a very polar bond, close to the ionic end of the range.':''); }
     const neg=EN[a]>=EN[b]?a:b, pos=neg===a?b:a;
     const pair=(a===b||mA||mB||d<=0.4)?'<div class="bigpair">'+a+'–'+b+'</div>':'<div class="bigpair"><span class="dl dp">δ+</span>'+pos+'–'+neg+'<span class="dl dm">δ−</span></div>';
@@ -723,7 +723,7 @@ function renderIMF(){
     [
       ['It is a liquid at room temperature','Molecules this small (methane, ammonia, hydrogen sulfide) are normally gases. Water’s hydrogen bonds hold the molecules together up to 100 °C.'],
       ['Ice floats','As water freezes, hydrogen bonds lock the molecules into an open, hexagonal framework (the pattern you see in snowflakes). That takes more space than the liquid, so ice is less dense and floats. Lakes freeze from the top down and life survives underneath.'],
-      ['It takes a long time to heat up or cool down','Water has a very high specific heat: 4.184 J to raise 1 g by 1 °C (1.00 cal/g·°C), about four times that of rock or metal. Much of the added energy goes into loosening hydrogen bonds instead of raising the temperature. Oceans and lakes therefore moderate climate, and coastal cities have milder days and nights than inland ones.'],
+      ['It takes a long time to heat up or cool down','Water has a very high specific heat: 4.184 J to raise 1 g by 1 °C (1.00 cal/g·°C), about five times that of rock and about nine times that of iron. Much of the added energy goes into loosening hydrogen bonds instead of raising the temperature. Oceans and lakes therefore moderate climate, and coastal cities have milder days and nights than inland ones.'],
       ['Sweating cools you','Water has a very high heat of vaporization. A molecule must break free of its hydrogen bonds to escape as vapor, so evaporating even a little water carries away a lot of heat. The same property makes steam burns so severe.'],
       ['It is the “universal solvent”','Water’s polarity and hydrogen bonding let it pull apart salts and surround sugars, acids, and many other polar substances. Blood, sap, and the water cycle all use water to carry dissolved materials. Unfortunately that includes pollutants.'],
       ['Drops bead up and insects walk on it','Molecules at the surface are pulled inward by their neighbors, creating surface tension. Water’s hydrogen bonds give it the highest surface tension of any common liquid. The same attraction pulls water up thin tubes in plants (capillary action).'],
@@ -816,7 +816,7 @@ function genBond(fixed){
     blanks:{hi:{want:hi,tol:0,abs:0.01},lo:{want:lo,tol:0,abs:0.01}},
     blankMsg:g=>g.hi&&g.hi.good===false?'The larger of the two values is '+hi.toFixed(1)+'.':g.lo&&g.lo.good===false?'The smaller of the two values is '+lo.toFixed(1)+'.':'',
     hints:['Subtract the two electronegativities (larger minus smaller). The atom with the higher value pulls harder.',ionic?'One of these is a metal. Metal + nonmetal: the electrons transfer completely, which is an ionic bond.':'Both are nonmetals, so the bond is covalent. Is ΔEN ('+d.toFixed(1)+') small enough (about 0.4 or less) to call it nonpolar?'],
-    solution:'<ol><li>ΔEN = '+hi.toFixed(1)+' − '+lo.toFixed(1)+' = <b>'+d.toFixed(1)+'</b>.</li><li>'+(neg?cap(ENAMES[neg])+' ('+EN[neg].toFixed(1)+') pulls harder, so <b>'+neg+'</b> is the '+(ionic?'negative ion':'δ− end')+' and '+(neg===A?B:A)+' is '+(ionic?'the positive ion':'δ+')+'.':'The two atoms are identical, so they pull equally: <b>neither</b> end is charged.')+'</li><li>'+(ionic?(mA?A:B)+' is a metal and '+(mA?B:A)+' is a nonmetal, so the electrons are transferred, not shared: an <b>ionic bond</b>.':kind==='nonpolar'?'Two nonmetals with ΔEN of '+d.toFixed(1)+' (0.4 or less): a <b>nonpolar covalent bond</b>. '+(A==='C'&&B==='H'||A==='H'&&B==='C'?'This is why hydrocarbons such as fats and gasoline are nonpolar.':''):'Two nonmetals with ΔEN of '+d.toFixed(1)+' (more than 0.4): a <b>polar covalent bond</b>, with '+neg+' δ− and '+(neg===A?B:A)+' δ+.'+(pr.includes('O')&&pr.includes('H')?' The O–H bond is the reason water is polar and hydrogen-bonds.':''))+'</li></ol>'};
+    solution:'<ol><li>ΔEN = '+hi.toFixed(1)+' − '+lo.toFixed(1)+' = <b>'+d.toFixed(1)+'</b>.</li><li>'+(neg?cap(ENAMES[neg])+' ('+EN[neg].toFixed(1)+') pulls harder, so <b>'+neg+'</b> is the '+(ionic?'negative ion':'δ− end')+' and '+(neg===A?B:A)+' is '+(ionic?'the positive ion':'δ+')+'.':'The two atoms are identical, so they pull equally: <b>neither</b> end is charged.')+'</li><li>'+(ionic?(mA?A:B)+' is a metal and '+(mA?B:A)+' is a nonmetal, so the electrons are transferred, not shared: an <b>ionic bond</b>.':kind==='nonpolar'?'Two nonmetals with ΔEN of '+d.toFixed(1)+' (0.4 or less): a <b>nonpolar covalent bond</b>. '+(A==='C'&&B==='H'||A==='H'&&B==='C'?'This is why hydrocarbons such as fats and gasoline are nonpolar.':pr.includes('H')&&pr.includes('I')?'With more precise values (H 2.20, I 2.66) the difference is 0.46, so HI does have a small dipole.':''):'Two nonmetals with ΔEN of '+d.toFixed(1)+' (more than 0.4): a <b>polar covalent bond</b>, with '+neg+' δ− and '+(neg===A?B:A)+' δ+.'+(pr.includes('O')&&pr.includes('H')?' The O–H bond is the reason water is polar and hydrogen-bonds.':''))+'</li></ol>'};
 }
 
 /* 3. Concentration */
@@ -838,7 +838,7 @@ function genConc(fixed){
       guided:'<p>1 ppm = '+blank('u','milligrams per liter in 1 ppm')+' mg/L, so '+ppm+' ppm = '+ppm+' mg/L.</p><p>Milligrams in '+V+' L = mg/L × '+V+'.</p>',
       blanks:{u:{want:1,tol:0}},blankMsg:g=>g.u&&g.u.good===false?'A liter of water weighs 1,000,000 mg, so 1 mg in a liter is 1 part per million.':'',
       hints:['For water, ppm and mg/L are the same number.','Multiply the mg/L by the number of liters.'],
-      solution:'<ol><li>'+ppm+' ppm = <b>'+ppm+' mg/L</b>.</li><li>'+ppm+' mg/L × '+V+' L = <b>'+fmt(ans,3)+' mg</b>.</li><li>For comparison, the EPA limit for '+c.n.split(' (')[0].toLowerCase()+' is '+c.mcl+' mg/L, so this water is '+(ppm>c.mcl?'above':'below')+' it.</li></ol>'};
+      solution:'<ol><li>'+ppm+' ppm = <b>'+ppm+' mg/L</b>.</li><li>'+ppm+' mg/L × '+V+' L = <b>'+fmt(ans,3)+' mg</b>.</li><li>For comparison, the EPA '+LIM(c)+' for '+c.n.split(' (')[0].toLowerCase()+' is '+c.mcl+' mg/L, so this water is '+(ppm>c.mcl?'above':'below')+' it.</li></ol>'};
   }
   if(type==='mg2ppb'){
     const c=pick(EPA.filter(x=>['lead','arsenic','benzene','cyanide'].includes(x.k))); const mg=+(c.mcl*pick([0.3,0.6,1.2,2])).toPrecision(2); const ans=mg*1000;
@@ -847,7 +847,7 @@ function genConc(fixed){
       guided:'<p>1 mg/L = 1 ppm = '+blank('k','ppb in one ppm',true)+' ppb.</p><p>ppb = mg/L × that number.</p>',
       blanks:{k:{want:1000,tol:0}},blankMsg:g=>g.k&&g.k.good===false?'A billion is a thousand millions, so 1 ppm = 1000 ppb.':'',
       hints:['ppm to ppb: multiply by 1000 (a billion is 1000 million).',mg+' × 1000.'],
-      solution:'<ol><li>'+mg+' mg/L = '+mg+' ppm.</li><li>'+mg+' ppm × 1000 = <b>'+fmt(ans,2)+' ppb</b>.</li><li>The EPA limit for '+c.n.toLowerCase()+' is '+c.mcl+' mg/L = '+fmt(c.mcl*1000,1)+' ppb, so this sample is '+(mg>c.mcl?'above':'below')+' the limit.</li></ol>'};
+      solution:'<ol><li>'+mg+' mg/L = '+mg+' ppm.</li><li>'+mg+' ppm × 1000 = <b>'+fmt(ans,2)+' ppb</b>.</li><li>The EPA '+LIM(c)+' for '+c.n.toLowerCase()+' is '+c.mcl+' mg/L = '+fmt(c.mcl*1000,1)+' ppb, so this sample is '+(mg>c.mcl?'above':'below')+' the '+LIM(c)+'.</li></ol>'};
   }
   if(type==='pct2ppm'){
     const item=pick([['seawater','salt',3.5],['a saline rinse','salt',0.9],['vinegar','acetic acid',4.0],['hard water','dissolved minerals',0.05]]); const ans=item[2]*10000;
@@ -860,12 +860,12 @@ function genConc(fixed){
   }
   if(type==='limit'){
     const c=pick(EPA.filter(x=>!x.n.includes('secondary'))); const factor=pick([1.5,2,2.5,3,4,5]); const meas=+(c.mcl*factor).toPrecision(2); const ans=meas/c.mcl;
-    return {ctx:'The EPA maximum contaminant level for '+c.n.toLowerCase()+' is '+c.mcl+' mg/L. '+c.note,q:'A well tests at '+meas+' mg/L. How many times the limit is that?',
-      parts:[{type:'num',label:'Times the limit',ans:ans,tol:0.03,show:fmt(ans,2)+' times the limit'}],
-      guided:'<p>Times the limit = measured ÷ limit = '+meas+' ÷ '+blank('l','the EPA limit',true)+'.</p>',
-      blanks:{l:{want:c.mcl,tol:0.001}},blankMsg:g=>g.l&&g.l.good===false?'The limit is given above: '+c.mcl+' mg/L.':'',
+    return {ctx:'The EPA '+(c.al?'action level':'maximum contaminant level')+' for '+c.n.toLowerCase()+' is '+c.mcl+' mg/L. '+c.note,q:'A well tests at '+meas+' mg/L. How many times the '+LIM(c)+' is that?',
+      parts:[{type:'num',label:'Times the '+LIM(c),ans:ans,tol:0.03,show:fmt(ans,2)+' times the '+LIM(c)}],
+      guided:'<p>Times the '+LIM(c)+' = measured ÷ '+LIM(c)+' = '+meas+' ÷ '+blank('l','the EPA limit',true)+'.</p>',
+      blanks:{l:{want:c.mcl,tol:0.001}},blankMsg:g=>g.l&&g.l.good===false?'The '+LIM(c)+' is given above: '+c.mcl+' mg/L.':'',
       hints:['Divide the measured value by the allowed value.',meas+' ÷ '+c.mcl+'.'],
-      solution:'<ol><li>'+meas+' ÷ '+c.mcl+' = <b>'+fmt(ans,2)+'</b> times the maximum contaminant level.</li><li>Water above a primary limit must be treated or not served.</li></ol>'};
+      solution:'<ol><li>'+meas+' ÷ '+c.mcl+' = <b>'+fmt(ans,2)+'</b> times the '+(c.al?'action level':'maximum contaminant level')+'.</li><li>'+(c.al?'An action level is not a legal limit: going over it triggers treatment and pipe replacement.':'Water above a primary limit must be treated or not served.')+'</li></ol>'};
   }
   if(type==='molarity'){
     const sol=pick(['NaCl','sugar','KBr','glucose','MgSO4 (Epsom salt)']); const mol=pick([0.10,0.25,0.50,1.0,1.5,2.0]); const L=pick([0.50,1.0,2.0,2.5,4.0]); const ans=mol/L;
@@ -940,15 +940,15 @@ function genPH(fixed){
       blanks:{d:{want:d,tol:0}},blankMsg:g=>g.d&&g.d.good===false?'Subtract the two pH values.':'',
       hints:['Find the difference between the two pH values. Each unit is ×10.','10<sup>'+d+'</sup>: write a 1 followed by '+d+' zero'+(d>1?'s':'')+'.'],
       solution:'<ol><li>pH difference: '+b+' − '+a+' = '+d+'.</li><li>Factor: 10<sup>'+d+'</sup> = <b>'+fmt(ans,0)+'</b>. The lower pH (A) has '+fmt(ans,0)+' times more H<sup>+</sup>.</li><li>In concentrations: '+sciStr(1,a)+' ÷ '+sciStr(1,b)+' = 10<sup>'+d+'</sup>.</li></ol>'}; }
-  if(type==='class'){ const p=+(Math.random()*14).toFixed(1); const c=cls(p);
+  if(type==='class'){ const p=+(Math.random()*14).toFixed(1); const c=cls(p); const lit=p<4.5?'turns red':p<=8.3?'turns purple (partway)':'stays blue';
     return {q:'A solution has pH '+p.toFixed(1)+'.',
       parts:[{type:'mc',label:'The solution is',options:[{v:'Acidic',ok:c==='acidic'},{v:'Neutral',ok:c==='neutral'},{v:'Basic (alkaline)',ok:c==='basic'}],show:c,msg:'Below 7 is acidic, 7 is neutral, above 7 is basic.'},
         {type:'mc',label:'Compared with pure water it has',options:[{v:'more hydrogen ion',ok:p<7},{v:'the same hydrogen ion',ok:p===7},{v:'less hydrogen ion',ok:p>7}],show:(p<7?'more':p>7?'less':'the same')+' H<sup>+</sup> than water',msg:'Lower pH means more H<sup>+</sup>; higher pH means less.'},
-        {type:'mc',label:'Blue litmus paper dipped in it',options:[{v:'turns red',ok:p<6.95},{v:'stays blue',ok:p>=6.95}],show:'blue litmus '+(p<6.95?'turns red':'stays blue'),msg:'Blue litmus turns red only in acid.'}],
-      guided:'<p>Compare with 7: '+p.toFixed(1)+' is '+blank('s','how far from 7, as a positive number',false)+' units '+(p<7?'below':p>7?'above':'from')+' 7.</p><p>Below 7 → acidic (more H<sup>+</sup> than water; blue litmus turns red). Above 7 → basic (less H<sup>+</sup>; red litmus turns blue). Exactly 7 → neutral.</p>',
+        {type:'mc',label:'Blue litmus paper dipped in it',options:[{v:'turns red',ok:lit==='turns red'},{v:'turns purple (partway)',ok:lit==='turns purple (partway)'},{v:'stays blue',ok:lit==='stays blue'}],show:'blue litmus '+lit,msg:'Blue litmus turns red in acid; its color changes gradually between about pH 4.5 and 8.3.'}],
+      guided:'<p>Compare with 7: '+p.toFixed(1)+' is '+blank('s','how far from 7, as a positive number',false)+' units '+(p<7?'below':p>7?'above':'from')+' 7.</p><p>Below 7 → acidic (more H<sup>+</sup> than water). Above 7 → basic (less H<sup>+</sup>). Exactly 7 → neutral. Blue litmus turns red in acid, but its color changes gradually between about pH 4.5 and 8.3, so in that range it turns only partway, to purple.</p>',
       blanks:{s:{want:Math.abs(p-7),tol:0,abs:0.051}},blankMsg:g=>g.s&&g.s.good===false?'Subtract: |'+p.toFixed(1)+' − 7| = '+Math.abs(p-7).toFixed(1)+'.':'',
-      hints:['7 is neutral. Which side of 7 is this pH on?','Lower pH means more hydrogen ion. Acids turn blue litmus red; bases turn red litmus blue.'],
-      solution:'<ol><li>pH '+p.toFixed(1)+' is '+(p<7?'below':p>7?'above':'exactly')+' 7: <b>'+c+'</b>.</li><li>It has <b>'+(p<7?'more':p>7?'less':'the same')+'</b> hydrogen ion than pure water'+(p!==7?' (about '+sig2(Math.pow(10,Math.abs(7-p)))+' times '+(p<7?'more':'less')+')':'')+'.</li><li>Blue litmus <b>'+(p<6.95?'turns red':'stays blue')+'</b>'+(p>7.05?'; red litmus would turn blue':'')+'.</li></ol>'}; }
+      hints:['7 is neutral. Which side of 7 is this pH on?','Lower pH means more hydrogen ion. Blue litmus turns red in acid; between about pH 4.5 and 8.3 its color changes only partway, to purple.'],
+      solution:'<ol><li>pH '+p.toFixed(1)+' is '+(p<7?'below':p>7?'above':'exactly')+' 7: <b>'+c+'</b>.</li><li>It has <b>'+(p<7?'more':p>7?'less':'the same')+'</b> hydrogen ion than pure water'+(p!==7?' (about '+sig2(Math.pow(10,Math.abs(7-p)))+' times '+(p<7?'more':'less')+')':'')+'.</li><li>Blue litmus <b>'+lit+'</b>'+(p>8.3?'; red litmus would turn blue':p>=4.5?' (litmus changes color gradually between about pH 4.5 and 8.3)':'')+'.</li></ol>'}; }
   if(type==='calc'){ const m=pick([2.0,2.5,3.2,4.0,5.0,6.3,7.9]); const n=1+Math.floor(Math.random()*12); const pH=n-Math.log10(m);
     return {ctx:'Calculator problem. When the concentration is not a plain power of ten, use pH = −log[H<sup>+</sup>].',q:'A solution has [H<sup>+</sup>] = '+sciStr(m.toFixed(1),n)+' mol/L. What is its pH, to two decimal places?',
       parts:[{type:'num',label:'pH',ans:pH,tol:0,abs:0.03,show:'pH '+pH.toFixed(2)}],
@@ -979,17 +979,18 @@ const SOLUTES={
 };
 const SOLVENTS={water:{n:'Water',pol:'polar'},oil:{n:'Hexane (a nonpolar solvent, like gasoline or oil)',pol:'nonpolar'}};
 const EPA=[
-  {k:'lead',n:'Lead',mcl:0.015,note:'From old pipes and solder. Harms brain development in children.'},
+  {k:'lead',n:'Lead',mcl:0.015,al:true,note:'From old pipes and solder. Harms brain development in children. This is an action level, not a legal limit: going over it triggers treatment and lead-pipe replacement. EPA’s Lead and Copper Rule Improvements (final October 2024) lower it to 0.010 mg/L (10 ppb), with compliance starting in 2027.'},
   {k:'arsenic',n:'Arsenic',mcl:0.010,note:'Natural in some rocks and groundwater; also from old pesticides.'},
   {k:'nitrate',n:'Nitrate (as nitrogen)',mcl:10,note:'From fertilizer and animal waste. Infants can convert it to nitrite, which blocks oxygen transport (“blue baby” syndrome).'},
-  {k:'fluoride',n:'Fluoride',mcl:4.0,note:'Added to many supplies at about 0.7–1.0 ppm to prevent cavities; too much mottles teeth.'},
-  {k:'copper',n:'Copper',mcl:1.3,note:'From copper pipes, especially with acidic water.'},
+  {k:'fluoride',n:'Fluoride',mcl:4.0,note:'Added to many supplies at 0.7 mg/L (0.7 ppm), the single level the U.S. Public Health Service has recommended since 2015 (replacing the older 0.7–1.2 ppm range), to prevent cavities; too much mottles teeth.'},
+  {k:'copper',n:'Copper',mcl:1.3,al:true,note:'From copper pipes, especially with acidic water. An action level, not a legal limit: going over it triggers treatment to make the water less corrosive.'},
   {k:'cyanide',n:'Cyanide',mcl:0.2,note:'From industrial waste.'},
   {k:'benzene',n:'Benzene',mcl:0.005,note:'A volatile organic chemical from fuel spills and leaking tanks; a carcinogen.'},
   {k:'chloride',n:'Chloride (secondary standard)',mcl:250,note:'A taste standard, not a health limit. Road salt and seawater intrusion raise it.'},
-  {k:'iron',n:'Iron (secondary standard)',mcl:0.3,note:'Stains laundry and fixtures. One of the “hard water” ions.'},
+  {k:'iron',n:'Iron (secondary standard)',mcl:0.3,note:'Stains laundry and fixtures and gives water a metallic taste.'},
   {k:'tds',n:'Total dissolved solids (secondary)',mcl:500,note:'Everything dissolved, mostly minerals. Affects taste.'}
 ];
+const LIM = c => c.al ? 'action level' : 'limit';
 function renderSol(){
   const S=state.sol;
   view.innerHTML='<section><h2>3. Solutions</h2>'+
@@ -1000,13 +1001,13 @@ function renderSol(){
       {t:'Solubility and saturation',l:['A solution that holds all the solute it can at that temperature is <b>saturated</b>.','Most solids dissolve better in hot water (sugar in hot tea).','Gases dissolve <i>worse</i> in warm water: warm soda goes flat faster, and warm lake water holds less oxygen for fish.','Pressure forces more gas into a liquid: carbonation.']},
       {t:'Concentration',l:['<b>Percent:</b> vinegar is about 4% acetic acid by mass.','<b>Parts per million (ppm):</b> 1 ppm = 1 mg of solute per liter of water (1 mg/L). Parts per billion (ppb) = 1 µg/L. Used for water quality.','<b>Molarity (M):</b> moles of solute per liter of solution (mol/L). The pH table in Section 6 uses mol/L.']}
     ])+
-    note('Soap: a molecule that lives in both worlds','<p>A soap molecule has a long nonpolar tail that dissolves in grease and a charged, polar head that dissolves in water. Soap surrounds a grease droplet with tails pointing in and heads pointing out, and water carries the whole package away. Hard water (water with dissolved Ca<sup>2+</sup>, Mg<sup>2+</sup>, and iron ions from limestone and other rocks) makes soap scum because those ions combine with the soap and pull it out of solution.</p>')+
+    note('Soap: a molecule that lives in both worlds','<p>A soap molecule has a long nonpolar tail that dissolves in grease and a charged, polar head that dissolves in water. Soap surrounds a grease droplet with tails pointing in and heads pointing out, and water carries the whole package away. Hard water (water with dissolved Ca<sup>2+</sup> and Mg<sup>2+</sup> ions from limestone and other rocks) makes soap scum because those ions combine with the soap and pull it out of solution.</p>')+
     '<h3>Will it dissolve?</h3><div class="act"><p class="how">Pick a solute and a solvent, predict, then test.</p>'+
     '<div class="row"><label for="solute">Solute</label><select class="sel" id="solute">'+Object.keys(SOLUTES).map(k=>'<option value="'+k+'"'+(S.solute===k?' selected':'')+'>'+SOLUTES[k].n.replace(/<[^>]+>/g,'')+'</option>').join('')+'</select>'+
     '<label for="solvent">Solvent</label><select class="sel" id="solvent">'+Object.keys(SOLVENTS).map(k=>'<option value="'+k+'"'+(S.solvent===k?' selected':'')+'>'+SOLVENTS[k].n+'</option>').join('')+'</select></div>'+
     '<p class="q" style="margin-top:12px">Your prediction:</p><div class="choice" id="dch"><button type="button" data-v="yes">It dissolves</button><button type="button" data-v="no">It does not dissolve</button></div>'+
     '<div class="fig" id="dfig"></div>'+fbBox('dfb')+'</div>'+
-    '<h3>Reading a water-quality report</h3><div class="act"><p class="how">Water utilities report contaminants in mg/L, which is the same as parts per million. The Safe Drinking Water Act lets the EPA set a maximum contaminant level (MCL) for each one. Convert a concentration and compare it to the limit.</p>'+
+    '<h3>Reading a water-quality report</h3><div class="act"><p class="how">Water utilities report contaminants in mg/L, which is the same as parts per million. The Safe Drinking Water Act lets the EPA set a maximum contaminant level (MCL) for each one; for lead and copper it sets an action level that triggers treatment instead. Convert a concentration and compare it to the limit.</p>'+
     '<div class="row"><label for="cval">Measured</label><input class="pin" id="cval" type="text" inputmode="decimal" value="'+esc(S.conc.val)+'" aria-label="Measured concentration">'+
     '<select class="sel" id="cunit" aria-label="Unit">'+['mg/L','ppm','ppb','%'].map(u=>'<option'+(S.conc.unit===u?' selected':'')+'>'+u+'</option>').join('')+'</select>'+
     '<label for="ccont">of</label><select class="sel" id="ccont">'+EPA.map(c=>'<option value="'+c.k+'"'+(S.conc.cont===c.k?' selected':'')+'>'+c.n+'</option>').join('')+'</select></div>'+
@@ -1016,7 +1017,7 @@ function renderSol(){
     checkYourself('sol',[
       {q:'In a glass of salt water, the water is the …',o:['solute','solvent','solution','precipitate'],a:1,e:'The solvent does the dissolving and is present in the larger amount. Salt is the solute, and the mixture is the solution.',w:{0:'The solute is the substance being dissolved: the salt.',2:'The solution is the whole mixture.',3:'A precipitate is a solid that comes <i>out</i> of a solution.'}},
       {q:'Which of these would you expect to dissolve in vegetable oil?',o:['Table salt','Sugar','Candle wax','Baking soda'],a:2,e:'Like dissolves like. Wax is nonpolar, and oil is nonpolar.',w:{0:'Salt is ionic; it needs a polar solvent such as water.',1:'Sugar is polar and hydrogen-bonds to water, not to oil.',3:'Baking soda is ionic and dissolves in water.'}},
-      {q:'A water report lists lead at 0.020 mg/L. In parts per million that is …',o:['20 ppm','2.0 ppm','0.020 ppm','0.000020 ppm'],a:2,e:'1 mg/L = 1 ppm, so 0.020 mg/L = 0.020 ppm (20 ppb). That is above the EPA limit of 0.015 mg/L.',w:{0:'That would be 20 mg/L, a thousand times more.',1:'Check the decimal: mg/L and ppm are the same number.',3:'mg/L and ppm are equal, no conversion factor needed.'}},
+      {q:'A water report lists lead at 0.020 mg/L. In parts per million that is …',o:['20 ppm','2.0 ppm','0.020 ppm','0.000020 ppm'],a:2,e:'1 mg/L = 1 ppm, so 0.020 mg/L = 0.020 ppm (20 ppb). That is above the EPA action level of 0.015 mg/L (15 ppb).',w:{0:'That would be 20 mg/L, a thousand times more.',1:'Check the decimal: mg/L and ppm are the same number.',3:'mg/L and ppm are equal, no conversion factor needed.'}},
       {q:'Why does a warm can of soda go flat faster than a cold one?',o:['Gases dissolve less in warm liquids.','Warm water is less polar.','Sugar leaves the solution when warm.','Carbon dioxide turns into water when warm.'],a:0,e:'Gas solubility drops as temperature rises, so the dissolved CO<sub>2</sub> escapes faster from warm soda. The same effect lowers the oxygen available to fish in warm water.',w:{1:'Water’s polarity does not change with temperature.',2:'Sugar dissolves better, not worse, when warm.',3:'CO<sub>2</sub> escapes as a gas; it does not become water.'}}
     ])+
     '</section>';
@@ -1056,8 +1057,8 @@ function renderSol(){
       '<div class="stat"><div class="k">mg/L = ppm</div><div class="v">'+fmt(ppm)+'</div></div>'+
       '<div class="stat"><div class="k">ppb (µg/L)</div><div class="v">'+fmt(ppm*1000)+'</div></div>'+
       '<div class="stat"><div class="k">percent</div><div class="v">'+fmt(ppm/10000)+'%</div></div>'+
-      '<div class="stat"><div class="k">EPA limit for '+c.n.split(' (')[0].toLowerCase()+'</div><div class="v">'+c.mcl+' mg/L</div></div></div>'+
-      '<div class="fb show '+(over?'bad':'ok')+'"><span class="ic" aria-hidden="true">'+(over?'✗':'✓')+'</span><div><p><b>'+(over?'Above':'At or below')+' the limit.</b> '+fmt(ppm)+' ppm is '+(over?fmt(ppm/c.mcl)+' times the':( ppm===0?'well under the':fmt(ppm/c.mcl*100)+'% of the'))+' maximum of '+c.mcl+' mg/L. '+c.note+'</p></div></div>';
+      '<div class="stat"><div class="k">EPA '+LIM(c)+' for '+c.n.split(' (')[0].toLowerCase()+'</div><div class="v">'+c.mcl+' mg/L</div></div></div>'+
+      '<div class="fb show '+(over?'bad':'ok')+'"><span class="ic" aria-hidden="true">'+(over?'✗':'✓')+'</span><div><p><b>'+(over?'Above':'At or below')+' the '+LIM(c)+'.</b> '+fmt(ppm)+' ppm is '+(over?fmt(ppm/c.mcl)+' times the':( ppm===0?'well under the':fmt(ppm/c.mcl*100)+'% of the'))+(c.al?' action level of ':' maximum of ')+c.mcl+' mg/L. '+c.note+'</p></div></div>';
   };
   ['cval','cunit','ccont'].forEach(id=>$('#'+id).addEventListener('input',paintC)); paintC();
   if(!S.prac) S.prac=freshPrac();
@@ -1345,7 +1346,7 @@ function renderPH(){
       '<div class="stat" style="border-color:'+phColor(v)+';border-width:3px"><div class="k">Solution is</div><div class="v"><span class="chip '+cls+'">'+lab+'</span></div></div>'+
       '<div class="stat"><div class="k">[H<sup>+</sup>], mol/L</div><div class="v sm">'+sci(v)+'</div></div>'+
       '<div class="stat"><div class="k">[OH<sup>−</sup>], mol/L</div><div class="v sm">'+sci(14-v)+'</div></div>'+
-      '<div class="stat"><div class="k">Litmus</div><div class="v sm"><span class="litmus"><i style="background:'+(cls==='base'?'#3e74c9':'#d8453c')+'"></i>'+(cls==='acid'?'blue turns red':cls==='base'?'red turns blue':'no change')+'</span></div></div></div>'+
+      '<div class="stat"><div class="k">Litmus</div><div class="v sm"><span class="litmus"><i style="background:'+(v<4.5?'#d8453c':v>8.3?'#3e74c9':'#8a4f9e')+'"></i>'+(v<4.5?'blue turns red':v>8.3?'red turns blue':'partway (purple)')+'</span></div></div></div>'+
       '<p><b>Around pH '+v.toFixed(1)+':</b> '+(near.length?near.join('; '):'nearest example is '+nearest[1]+' (pH '+nearest[0]+')')+'.</p>'+
       '<p class="src">Compared with pure water, this solution has '+(v<7?sig2(Math.pow(10,7-v))+' times more':v>7?sig2(Math.pow(10,v-7))+' times less':'the same')+' hydrogen ion. Examples from Table 7.5 and Figure 7.5.</p>';
   };
@@ -1452,7 +1453,7 @@ const TERMS=[
   ['Solubility','Solutions','How much of a solute dissolves in a given amount of solvent at a given temperature. Most solids dissolve better when warm; gases dissolve worse.'],
   ['Parts per million (ppm)','Solutions','One part of solute in a million parts of solution. For water, 1 ppm = 1 mg/L. Parts per billion (ppb) = 1 µg/L.'],
   ['Molarity (M)','Solutions','Moles of solute per liter of solution (mol/L).'],
-  ['Hard water','Solutions','Water containing dissolved Ca<sup>2+</sup>, Mg<sup>2+</sup>, and iron ions, which form scum with soap and scale in pipes.'],
+  ['Hard water','Solutions','Water containing dissolved Ca<sup>2+</sup> and Mg<sup>2+</sup> ions, which form scum with soap and scale in pipes.'],
   ['Electrolyte','Electrolytes','A substance that produces ions when dissolved in water, so the solution conducts electricity.'],
   ['Nonelectrolyte','Electrolytes','A substance that dissolves as neutral molecules; its solution does not conduct. Sugar and alcohol are examples.'],
   ['Strong electrolyte','Electrolytes','A substance that is completely (or nearly completely) in ion form when dissolved: soluble ionic compounds, strong acids, strong bases.'],
